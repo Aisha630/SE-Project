@@ -15,7 +15,7 @@ const collection = database.collection('productsSTA') // Create a collection obj
 const port = 5003;
 app.use(cors()); // this just allows cross-origin resource sharing. You can read more about this here: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
 
-mongoose.connect(mongoConnectionString).then(() => { console.log('Connected to MongoDB') }).catch(err => console.log(err)); // the path here is the path to your database. this path tells mongoose where your database is located. 
+mongoose.connect(mongoConnectionString).then(() => { console.log('Connected to MongoDB') }).catch(err => console.log(err)); // the path here is the path to your database. this path tells mongoose where your database is located in mongoDB
 
 app.get('/', (req, res) => { // When a GET request comes at this path, the callback function will be executed. In this case, the callback function sends the string "Hello World!" to the client.
   res.send('Hello World!');
