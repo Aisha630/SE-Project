@@ -48,7 +48,7 @@ const productSchema = new Schema({ //
         type: Number,
         required: true,
     },
-});
+}, {timestamps: true});
 
 module.exports = mongoose.model('Product', productSchema); 
 // This exports a Mongoose model named 'Product'. This model is created based on the defined productSchema, and it allows you to interact with the "products" collection in the MongoDB database using Mongoose methods.
