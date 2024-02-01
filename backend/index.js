@@ -4,7 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const baseRoutes = require('./routes/base.js')
-const userRoutes = require('./controllers/userController')
+const userRoutes = require('./routes/user.js')
 
 const app = express();
 
@@ -14,7 +14,6 @@ app.use(baseRoutes)
 app.use(userRoutes)
 
 const PORT = process.env.PORT
-
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
