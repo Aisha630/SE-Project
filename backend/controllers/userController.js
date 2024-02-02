@@ -1,29 +1,52 @@
-const User = require('../models/userModel');
-const jwt = require('jsonwebtoken');
+import User from "../models/userModel.js";
+import jwt from "jsonwebtoken";
+import validator from "validator";
 
-const createToken = (_id) => {
-    return jwt.sign({ _id }, process.env.JWT_PRIVATE_KEY, { expiresIn: '7d' });
-};
+export async function signup(req, res) {
+  const { username, email, password } = req.body;
 
-const handleUserAction = async (action, email, password, res) => {
-    try {
-        const user = await User[action](email, password);
-        const token = createToken(user._id);
-        res.status(200).json({ email: user.email, token });
-    } catch (error) {
-        console.error(`Error ${action} user:`, error);
-        res.status(400).json({ error: 'Invalid credentials' });
-    }
-};
+  const error = User.validate({ username, email, password }).error;
+  if (error) {
+    return res.status(400).json({ error: error.details[0].message });
+  }
 
-const loginUser = async (req, res) => {
-    const { email, password } = req.body;
-    await handleUserAction('login', email, password, res);
-};
+  if (!validator.isStrongPassword(password)) {
+    return res.status(400).json({ error: "Password not strong enough" });
+  }
 
-const signupUser = async (req, res) => {
-    const { email, password } = req.body;
-    await handleUserAction('signup', email, password, res);
-};
+  const exists = await User.findOne({ username });
+  if (exists) {
+    return res.status(409).json({ error: "Username already exists" });
+  }
 
-module.exports = { loginUser, signupUser };
+  const user = new User({ username, email, password });
+
+  try {
+    user.save();
+    res.status(200).json({ message: "User created" });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ error: "Server error" });
+  }
+}
+
+export async function signin(req, res) {
+  const { username, password } = req.body;
+
+  const user = await User.findOne({
+    username,
+  });
+  if (!user) {
+    return res.status(401).json({ error: "Invalid credentials" });
+  }
+
+  if (password != user.password) {
+    return res.status(401).send({ error: "Invalid credentials" });
+  }
+
+  const token = jwt.sign({ username }, process.env.JWT_PRIVATE_KEY, {
+    expiresIn: "1h",
+  });
+
+  res.status(200).json({ username, token });
+}
