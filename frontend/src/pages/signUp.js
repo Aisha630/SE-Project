@@ -1,50 +1,80 @@
 import { useState } from 'react';
-import { useSignup } from '../hooks/useSignup';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { signupUser } from '../stores/authSlice';
+
 const SignUp = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [username, setUsername] = useState('');
-    const { signup, loading, error } = useSignup();
+  const [formData, setFormData] = useState({
+    email: '',
+    username: '',
+    password: ''
+  });
+  const { email, username, password } = formData;
+  const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        await signup(email, password, username);
-    }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
 
-    return (
-        <form className="signup-form" onSubmit={handleSubmit}>
-            <h2>Sign Up</h2>
-            <div className="input-group">
-                <label htmlFor="username">Username</label>
-                <input
-                    type="text"
-                    id="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                />
-            </div>
-            <div className="input-group">
-                <label htmlFor="email">Email</label>
-                <input
-                    type="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-            </div>
-            <div className="input-group">
-                <label htmlFor="password">Password</label>
-                <input
-                    type="password"
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-            </div>
-            <button disabled={loading} type="submit">Sign Up</button>
-            {error && <p>{error}</p>}
-        </form>
-    )
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    dispatch(signupUser(formData))
+      .unwrap()
+      .then(() => {
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error('Failed to sign up:', error);
+        toast.error(error, {
+          position: "top-center",
+          autoClose: 5000,
+          pauseOnHover: true,
+        });
+      });
+  };
+
+  return (
+    <div className="login-container">
+      <form className="login-form" onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="username"
+          placeholder="Username"
+          value={username}
+          onChange={handleChange}
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email Address"
+          value={email}
+          onChange={handleChange}
+        />
+        <div className="password-input-container">
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            placeholder="Password"
+            value={password}
+            onChange={handleChange}
+          />
+          <i
+            onClick={() => setShowPassword(!showPassword)}
+            className={`password-icon fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}
+          ></i>
+        </div>
+        <button type="submit" className="login-button">Sign Up</button>
+        <p className="signup-link">Already a member? <a href="/login">Log in now</a></p>
+      </form>
+    </div>
+  );
 }
 
 export default SignUp;

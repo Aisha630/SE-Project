@@ -1,15 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import App from './App';
-import { AuthContextProvider } from './context/authContext';
+import { store, persistor } from './stores/store';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-
   <React.StrictMode>
-    <AuthContextProvider >
-      <App />
-    </AuthContextProvider>
+
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <ToastContainer />
+          <App />
+      </PersistGate>
+    </Provider>
   </React.StrictMode>
 );
