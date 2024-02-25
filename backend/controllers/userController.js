@@ -37,10 +37,10 @@ export async function signup(req, res) {
 }
 
 export async function signin(req, res) {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
   const user = await User.findOne({
-    username,
+    email,
   });
   if (!user) {
     return res.status(401).json({ error: "Invalid credentials" });
@@ -50,9 +50,11 @@ export async function signin(req, res) {
     return res.status(401).send({ error: "Invalid credentials" });
   }
 
-  const token = jwt.sign({ username }, process.env.JWT_PRIVATE_KEY, {
+  const token = jwt.sign({ email }, process.env.JWT_PRIVATE_KEY, {
     expiresIn: "1h",
   });
 
-  res.status(200).json({ username, token });
+  const { username } = user;
+
+  res.status(200).json({ username, email, token });
 }
