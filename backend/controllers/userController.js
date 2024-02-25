@@ -1,6 +1,8 @@
 import User from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import validator from "validator";
+import bcrypt from "bcrypt";
+
 
 export async function signup(req, res) {
   const { username, email, password } = req.body;
@@ -13,7 +15,9 @@ export async function signup(req, res) {
   if (!validator.isStrongPassword(password)) {
     return res.status(400).json({ error: "Password not strong enough" });
   }
-
+  if (!email.endsWith('@lums.edu.pk')) {
+    return res.status(400).json({ error: "Only @lums.edu.pk emails are allowed" });
+  }
   const exists = await User.findOne({ username });
   if (exists) {
     return res.status(409).json({ error: "Username already exists" });
@@ -23,10 +27,12 @@ export async function signup(req, res) {
     expiresIn: "1h",
   });
 
-
-  const user = new User({ username, email, password });
+  const salt = await bcrypt.genSalt(10);
+  const hash = await bcrypt.hash(password, salt);
+  const user = new User({ username, email, password:hash });
 
   try {
+    
     user.save();
     res.status(200).json({ username, token });
     // res.status(200).json({ message: "User created" });
@@ -46,7 +52,7 @@ export async function signin(req, res) {
     return res.status(401).json({ error: "Invalid credentials" });
   }
 
-  if (password != user.password) {
+  if (!bcrypt.compare(password, user.password)) {
     return res.status(401).send({ error: "Invalid credentials" });
   }
 

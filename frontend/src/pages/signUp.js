@@ -3,10 +3,10 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { signupUser } from '../stores/authSlice';
-import { Box, Button, Container, TextField, Typography, ThemeProvider, createTheme, IconButton, InputAdornment, Link } from '@mui/material';
+import { Box, Button, Container, TextField, Typography, ThemeProvider, IconButton, InputAdornment, Link } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import '../css/login.css';
-import theme from '/Users/aisha/Desktop/SE Pr/frontend/src/themes/authThemes.js';
+import theme from '../themes/authThemes.js';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
