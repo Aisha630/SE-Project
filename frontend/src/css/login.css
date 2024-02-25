@@ -1,54 +1,13 @@
-.login-form-container {
-  background-color: #8bc34a; /* Adjust the color to match the screenshot */
-  width: 300px; /* Adjust width as necessary */
-  margin: 100px auto; /* Center the form on the page */
-  padding: 20px;
-  border-radius: 5px;
-}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-.form-header h1 {
-  text-align: center;
-  /* Additional styling */
-}
-
-.form-body {
-  margin-top: 20px;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-button {
-  width: 100%;
-  padding: 10px;
-  background-color: #4CAF50; /* Adjust the button color to match the screenshot */
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-button:hover {
-  opacity: 0.8;
-}
-
-.form-footer {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.form-footer a {
-  color: #fff; /* Adjust to match the screenshot */
-  text-decoration: none;
-}
-
-.form-footer a:hover {
-  text-decoration: underline;
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: black !important;
+  border: none !important;
+  font-family: 'Poppins' !important;
+  box-shadow: 0 0 0px 1000px "#D1E4D0" inset !important;
+  -webkit-box-shadow: none;
 }

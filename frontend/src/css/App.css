@@ -1,3 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: black !important;
+  border: none !important;
+  font-family: 'Poppins' !important;
+  box-shadow: 0 0 0px 1000px "#D1E4D0" inset !important;
+}
+
 .App {
   text-align: center;
 }
