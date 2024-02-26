@@ -40,6 +40,7 @@ export async function signup(req, res) {
     console.log(err.message);
     res.status(500).json({ error: "Server error" });
   }
+  
 }
 
 export async function signin(req, res) {
