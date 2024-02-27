@@ -15,8 +15,10 @@ export async function signup(req, res) {
     return res.status(400).json({ error: "Password not strong enough" });
   }
 
-  if (!email.endsWith('@lums.edu.pk')) {
-    return res.status(400).json({ error: "Only @lums.edu.pk emails are allowed" });
+  if (!email.endsWith("@lums.edu.pk")) {
+    return res
+      .status(400)
+      .json({ error: "Only @lums.edu.pk emails are allowed" });
   }
 
   const exists = await User.findOne({ username });
@@ -24,31 +26,26 @@ export async function signup(req, res) {
     return res.status(409).json({ error: "Username already exists" });
   }
 
-  const token = jwt.sign({ username }, process.env.JWT_PRIVATE_KEY, {
-    expiresIn: "1h",
-  });
-
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(password, salt);
-  const user = new User({ username, email, password:hash });
+  const user = new User({ username, email, password: hash });
 
   try {
     user.save();
-    res.status(200).json({ username, token });
-    
+    res.status(200).json({ username, email });
   } catch (err) {
     console.log(err.message);
     res.status(500).json({ error: "Server error" });
   }
-  
 }
 
 export async function signin(req, res) {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
 
   const user = await User.findOne({
-    email,
+    username,
   });
+
   if (!user) {
     return res.status(401).json({ error: "Invalid credentials" });
   }
@@ -57,11 +54,9 @@ export async function signin(req, res) {
     return res.status(401).send({ error: "Invalid credentials" });
   }
 
-  const token = jwt.sign({ email }, process.env.JWT_PRIVATE_KEY, {
+  const token = jwt.sign({ username }, process.env.JWT_PRIVATE_KEY, {
     expiresIn: "1h",
   });
 
-  const { username } = user;
-
-  res.status(200).json({ username, email, token });
+  res.status(200).json({ token });
 }

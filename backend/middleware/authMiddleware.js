@@ -15,22 +15,21 @@ export default function authorize(req, res, next) {
 
   jwt.verify(token, process.env.JWT_PRIVATE_KEY, async (err, decoded) => {
     if (err) {
+      console.log(err);
       return res.sendStatus(401);
     }
 
     try {
-      const user = await User.findById(decoded.userId);
+      const user = await User.findOne({ username: decoded.username });
       if (!user) {
         return res.sendStatus(401);
       }
 
       req.user = user;
       next();
-      
     } catch (error) {
       console.error("Error fetching user:", error);
       return res.sendStatus(500);
     }
-
   });
 }
