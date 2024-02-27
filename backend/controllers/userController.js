@@ -29,10 +29,13 @@ export async function signup(req, res) {
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(password, salt);
   const user = new User({ username, email, password: hash });
+  const token = jwt.sign({ username }, process.env.JWT_PRIVATE_KEY, {
+    expiresIn: "1h",
+  });
 
   try {
     user.save();
-    res.status(200).json({ username, email });
+    res.status(200).json({ username, email, token });
   } catch (err) {
     console.log(err.message);
     res.status(500).json({ error: "Server error" });
@@ -49,8 +52,8 @@ export async function signin(req, res) {
   if (!user) {
     return res.status(401).json({ error: "Invalid credentials" });
   }
-
-  if (!bcrypt.compare(password, user.password)) {
+  const match = await bcrypt.compare(password, user.password);
+  if (!match) {
     return res.status(401).send({ error: "Invalid credentials" });
   }
 
@@ -58,5 +61,5 @@ export async function signin(req, res) {
     expiresIn: "1h",
   });
 
-  res.status(200).json({ token });
+  res.status(200).json({ username, token });
 }

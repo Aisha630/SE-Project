@@ -1,18 +1,11 @@
 import { useState } from 'react';
-// import { useAuth} from './useAuth';
-// import useAuthStore from '../context/authStore';
-import { useSelector, useDispatch } from 'react-redux'
-import { login } from '../stores/authSlice'
-
+import { useDispatch } from 'react-redux'
 
 export const useLogin = () => {
 
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(null);
-    // const { dispatch } = useAuth();
-    // const { user, setUser, clearUser } = useAuthStore();
     const dispatch = useDispatch();
-    // const user = useSelector((state) => state.auth.user);
 
     const login = async (password, username) => {
         setLoading(true);
@@ -27,15 +20,8 @@ export const useLogin = () => {
         });
 
         const data = await res.json();
-        console.log("login data",   data);
 
         if (res.ok) {
-            const j = JSON.stringify(data);
-            console.log("login data stringified ",   j);
-            // localStorage.setItem('user', JSON.stringify(data));
-            // dispatch({ type: 'LOGIN', payload: data });
-            // setUser(data);
-            // setUser(data.username, data.token);
             dispatch(login(data.username, data.token));
         } else {
             setError(data.error);

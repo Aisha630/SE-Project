@@ -10,7 +10,7 @@ import theme from '../themes/authThemes.js';
 import '../css/login.css';
 
 const Login = () => {
-  const [credentials, setCredentials] = useState({ email: '', password: '' });
+  const [credentials, setCredentials] = useState({ username: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,8 +40,8 @@ const Login = () => {
           <Box component="img" src="sta_logo.png" alt="STA Logo" sx={{ width: "60%", height: 'auto' }} />
           <Typography component="h6" variant="h6" sx={{ fontWeight: "bold" }}>Second Time Around</Typography>
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1, width: '100%' }}>
-            <TextField margin="normal" required fullWidth id="email" label="Email Address" name="email"
-              value={credentials.email} onChange={handleChange} variant="filled" sx={{ input: "green" }} />
+            <TextField margin="normal" required fullWidth id="username" label="Username" name="username"
+              value={credentials.username} onChange={handleChange} variant="filled" sx={{ input: "green" }} />
             <TextField margin="normal" required fullWidth id="password" label="Password" name="password" type={showPassword ? 'text' : 'password'}
               value={credentials.password} onChange={handleChange} autoComplete="current-password" variant="filled"
               InputProps={{
