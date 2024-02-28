@@ -8,6 +8,9 @@ export async function signup(req, res) {
 
   const error = User.validate({ username, email, password }).error;
   if (error) {
+    console.log(username)
+    console.log(email)
+    console.log(password)
     return res.status(400).json({ error: error.details[0].message });
   }
 
@@ -23,7 +26,7 @@ export async function signup(req, res) {
 
   const exists = await User.findOne({ username });
   if (exists) {
-    return res.status(409).json({ error: "Username already exists" });
+    return res.status(400).json({ error: "Username already exists" });
   }
 
   const salt = await bcrypt.genSalt(10);
@@ -36,6 +39,7 @@ export async function signup(req, res) {
   try {
     user.save();
     res.status(200).json({ username, email, token });
+
   } catch (err) {
     console.log(err.message);
     res.status(500).json({ error: "Server error" });

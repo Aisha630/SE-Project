@@ -1,17 +1,14 @@
+import Joi from "joi";
+import joigoose from "joigoose";
 import mongoose from "mongoose";
 
-const productSchema = new mongoose.Schema({
-  category: { type: String, enum: ['Men', 'Women', 'Technology', 'Miscellaneous'] },
-  size: { type: String },
-  color: { type: String },
-  condition: { type: String, enum: ['old', 'new'] },
-  productName: { type: String, required: true },
-  description: { type: String, required: true },
-  price: { type: Number, required: true },
-  image: { type: String },
-  brand: { type: String },
-  seller: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
+const joiSchema = Joi.object({
+  name: Joi.string().max(50).required(),
+  price: Joi.number().min(0).required(),
+  seller: Joi.string().required()
 });
 
-const Product = mongoose.model('Product', productSchema);
-export default Product
+const productSchema = new mongoose.Schema(joigoose(mongoose).convert(joiSchema));
+productSchema.statics.validate = (product) => joiSchema.validate(product);
+
+export default mongoose.model('Product', productSchema);
