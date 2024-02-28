@@ -1,5 +1,4 @@
-.vscode/
 .DS_Store
-backend/node_modules/
-frontend/node_modules/
-frontend/README.md
+.vscode/
+/database/
+node_modules/
