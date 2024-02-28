@@ -8,9 +8,6 @@ export async function signup(req, res) {
 
   const error = User.validate({ username, email, password }).error;
   if (error) {
-    console.log(username)
-    console.log(email)
-    console.log(password)
     return res.status(400).json({ error: error.details[0].message });
   }
 

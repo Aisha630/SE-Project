@@ -5,7 +5,8 @@ import mongoose from "mongoose";
 const joiSchema = Joi.object({
   name: Joi.string().max(50).required(),
   price: Joi.number().min(0).required(),
-  seller: Joi.string().required()
+  seller: Joi.string().required(),
+  isHold: Joi.boolean().required()
 });
 
 const productSchema = new mongoose.Schema(joigoose(mongoose).convert(joiSchema));
