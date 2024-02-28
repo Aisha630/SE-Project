@@ -1,5 +1,10 @@
 import Product from "../models/productModel.js";
 
+// TODO:
+// 1. Implement categories, subcategories
+// 2. Implement filter
+// 3. Implement email authorization
+
 export async function getAllProducts(_, res) {
   const products = await Product.find({ isHold: false });
   res.json(products);

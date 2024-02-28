@@ -30,8 +30,3 @@ mongoose
     });
   })
   .catch((err) => console.error(err));
-
-// TODO:
-// 1. Run and debug
-// 2. Image upload
-// 3. sub categories

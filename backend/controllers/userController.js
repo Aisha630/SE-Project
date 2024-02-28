@@ -1,7 +1,8 @@
 import User from "../models/userModel.js";
 import jwt from "jsonwebtoken";
-import validator from "validator";
 import bcrypt from "bcrypt";
+
+// TODO: Add email authorization
 
 export async function signup(req, res) {
   const { username, email, password } = req.body;
