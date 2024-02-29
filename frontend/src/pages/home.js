@@ -79,7 +79,7 @@ function Home() {
               <CardMedia
                 component="img"
                 height="140"
-                image="/path/to/image.jpg" // Replace with your image path
+                image="sta_logo.png" 
                 alt="Clothing item 1"
               />
             </Card>
@@ -89,7 +89,7 @@ function Home() {
               <CardMedia
                 component="img"
                 height="140"
-                image="/path/to/another-image.jpg" // Replace with your image path
+                image="sta_logo.png" 
                 alt="Clothing item 2"
               />
             </Card>
