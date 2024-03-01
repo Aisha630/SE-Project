@@ -1,4 +1,4 @@
-import './css/App.css';
+// import './css/App.css';
 import Login from './pages/login';
 import SignUp from './pages/signUp';
 import Home from './pages/home';
@@ -13,10 +13,10 @@ const theme = createTheme({
 
   palette: {
     background: {
-      default: '#58a75b'
+      default: 'rgb(243, 244, 246)'
     },
     primary: {
-      main: '#58a75b',
+      main: 'rgb(243, 244, 246)',
 
     },
     secondary: {
@@ -36,12 +36,12 @@ const theme = createTheme({
 function App() {
 
   return (
-    <ThemeProvider theme={theme} >
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
       <ToastContainer position="top-center" autoClose={2000} toastStyle={{
         backgroundColor: "white",
         color: "black",
       }} />
-      <CssBaseline />
       <AuthProvider>
         <div className="App">
           <BrowserRouter>

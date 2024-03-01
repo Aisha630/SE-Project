@@ -3,21 +3,30 @@ import { createTheme } from '@mui/material';
 const theme = createTheme({
     palette: {
         primary: { main: 'rgb(243, 244, 246)' },
-        secondary: { main: "#58a75b" },
-        
+        secondary: { main: '#58a75b' },
+        background: {
+            default: 'rgb(243, 244, 246)',
+        },
     },
     typography: {
         fontFamily: 'Poppins, Arial, sans-serif',
     },
     components: {
-        MuiTextField: {
+        MuiListItemButton: {
             styleOverrides: {
                 root: {
-                    '& .MuiOutlinedInput-root': {
-                        '&.Mui-focused fieldset': { borderColor: '#58a75b' },
+                    '&:hover': {
+                        backgroundColor: "#58a75b",
+                        '& .MuiListItemIcon-root, & .MuiTypography-root': {
+                            color: "#ffffff",
+                        }
                     },
-                    '& label.Mui-focused': { color: 'green' },
-                    '& label': { color: '#58a75b' },
+                    borderRadius: "30px",
+                    padding: { xs: "5px 15px", sm: "5px 15px", md: "10px 25px" },
+                    '& .MuiListItemIcon-root, & .MuiTypography-root': {
+                        minWidth: { xs: '30px', sm: '40px', md: '50px' },
+                        fontSize: { xs: '0.7rem', sm: '0.875rem', md: '1rem' }
+                    },
                 },
             },
         },
