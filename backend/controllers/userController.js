@@ -1,5 +1,6 @@
 import User from "../models/userModel.js";
 import jwt from "jsonwebtoken";
+import validator from "validator";
 import bcrypt from "bcrypt";
 
 // TODO: Add email authorization
