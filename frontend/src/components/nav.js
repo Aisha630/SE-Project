@@ -23,11 +23,11 @@ const Nav = () => {
     }
 
     return (
-        <AppBar position="static" sx={{ backgroundColor: "rgb(243, 244, 246)" }} >
+        <AppBar position="static" sx={{ backgroundColor: "#e0e0e0" }} >
             <Toolbar>
                 <Box onClick={handleLogoClick} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mr: 2, mt: 3, ml: { xs: '3px', sm: "5px", md: "10px" }, cursor: 'pointer' }}>
-                    <img src="sta_logo.png" alt="Second Time Around Logo" style={{ height: "5.5vh" }} />
-                    <Typography variant="subtitle1" noWrap sx={{ fontWeight: 'bold', lineHeight: '1.25', textAlign: 'center' }}>
+                    <img src="sta_logo.png" alt="Second Time Around Logo" style={{ height: "7vh" }} />
+                    <Typography variant="h6" noWrap sx={{ fontWeight: 'bold', lineHeight: '1.25', textAlign: 'center' }}>
                         Second Time <br />
                         <span style={{ display: 'block' }}>Around</span>
                     </Typography>

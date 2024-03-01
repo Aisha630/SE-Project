@@ -2,9 +2,9 @@
 // import { Box, List, ListItemButton, ListItemIcon, ListItemText, Drawer, Card, CardMedia, CardContent, Grid, ThemeProvider, Typography } from '@mui/material';
 // import HomeIcon from '@mui/icons-material/Home';
 // import ShopIcon from '@mui/icons-material/Shop';
-// import Slider from 'react-slick';
-// import 'slick-carousel/slick/slick.css';
-// import 'slick-carousel/slick/slick-theme.css';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 // import theme from '../themes/homeTheme.js';
 import Nav from '../components/nav.js';
 // import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
@@ -17,6 +17,20 @@ import Nav from '../components/nav.js';
 // import HomeIcon from '@mui/icons-material/Home'; // Import other icons as needed
 // import ShopIcon from '@mui/icons-material/Shop';
 
+import React from 'react';
+import { Box, List, ListItemButton, ListItemIcon, Typography, Grid, ThemeProvider, CssBaseline } from '@mui/material';
+import HomeIcon from '@mui/icons-material/Home';
+import ShopIcon from '@mui/icons-material/Shop';
+import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import InfoIcon from '@mui/icons-material/Info';
+import theme from '../themes/homeTheme.js';
+import CarouselComponent from '../components/carousel.js';
+import ImageCard from '../components/card.js';
+
+
+// Define list items in an array
+
 // const settings = {
 //   dots: true,
 //   infinite: true,
@@ -24,17 +38,6 @@ import Nav from '../components/nav.js';
 //   slidesToShow: 3,
 //   slidesToScroll: 1
 // };
-import React from 'react';
-import { Box, List, ListItemButton, ListItemIcon, Typography, Grid, ThemeProvider } from '@mui/material';
-import HomeIcon from '@mui/icons-material/Home';
-import ShopIcon from '@mui/icons-material/Shop';
-import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import InfoIcon from '@mui/icons-material/Info';
-import theme from '../themes/homeTheme.js';
-
-
-// Define list items in an array
 const menuItems = [
   { text: 'Home', Icon: HomeIcon },
   { text: 'Shop', Icon: ShopIcon },
@@ -62,20 +65,35 @@ const ListItemLink = ({ text, Icon }) => {
 function Home() {
   return (
     <ThemeProvider theme={theme}>
-      <Grid container>
+      {/* <CssBaseline /> */}
+      <Box>
         <Nav />
-        <Box sx={{ width: "15%", padding: 1, minWidth: { xs: '150px', sm: '180px', md: '200px' } }}>
-          <List sx={{ ml: { xs: '3px', sm: "5px", md: "10px" } }}>
-            {menuItems.map(({ text, Icon }) => (
-              <ListItemLink key={text} text={text} Icon={Icon} />
-            ))}
-          </List>
-          <Typography variant="h4" gutterBottom>
-            NEW in Clothing
+      </Box>
+      <Grid container spacing={2} sx={{ padding: 1, }}>
+        <Grid item xs={12} sm={4} md={3} lg={2} sx={{ backgroundColor: "#e0e0e0" }}>
+          <Box sx={{ width: "90%", minWidth: { xs: '150px', sm: '180px', md: '200px' } }}>
+            <List sx={{ ml: { xs: '3px', sm: "5px", md: "10px" } }}>
+              {menuItems.map(({ text, Icon }) => (
+                <ListItemLink key={text} text={text} Icon={Icon} />
+              ))}
+            </List>
+          </Box>
+        </Grid>
+
+        <Grid item xs={12} sm={8} md={9} lg={10} sx={{ backgroundColor: "ffffff" }}>
+          <Typography variant="h4" noWrap sx={{ lineHeight: '1.25', textAlign: 'left', ml: "30px", mt: "20px" }}>
+            <span style={{ color: '#E57373', fontWeight: 'bold' }}>NEW</span><br />
+            <span style={{ display: 'block' }}>
+              <span style={{ color: '#58a75b', fontSize: "20px" }}>in </span>
+              <span style={{ color: '#58a75b' }}>Clothing</span>
+            </span>
           </Typography>
-        </Box>
+          <Box sx={{ width: "95%", minWidth: { xs: '150px', sm: '180px', md: '200px', }, ml: "30px" }}>
+            <CarouselComponent />
+          </Box>
+        </Grid>
       </Grid>
-    </ThemeProvider>
+    </ThemeProvider >
   );
 }
 

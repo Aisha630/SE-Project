@@ -1,4 +1,4 @@
-// import './css/App.css';
+import './css/App.css';
 import Login from './pages/login';
 import SignUp from './pages/signUp';
 import Home from './pages/home';
@@ -21,10 +21,10 @@ const theme = createTheme({
       main: 'rgb(243, 244, 246)',
 
     },
-    secondary: {
-      main: '#ffffff',
-      opacity: 0.7,
-    },
+    // secondary: {
+    //   main: '#ffffff',
+    //   opacity: 0.7,
+    // },
   },
   typography: {
     fontFamily: [

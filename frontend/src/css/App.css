@@ -117,3 +117,8 @@ button:hover {
   background-color: #45a049;
 }
 
+.slick-prev:before, .slick-next:before {
+  color: grey !important;
+}
+
+
