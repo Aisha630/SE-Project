@@ -1,7 +1,7 @@
 import Product from "../models/productModel.js";
 
 // TODO:
-// 1. Implement categories, subcategories
+// 1. Implement categories, subcategories - DONE
 // 2. Implement filter
 // 3. Implement email authorization
 
@@ -11,27 +11,29 @@ export async function getAllProducts(_, res) {
 }
 
 export async function getProduct(req, res) {
-  const product = await Product.findOne({ _id: req.params.id, isHold: false });
+  const { id } = req.params
+
+  const product = await Product.findOne({ _id: id, isHold: false });
   if (!product) {
     return res.status(400).json({ error: 'Product not found' });
   }
+
   res.json(product);
 };
 
 export async function addProduct(req, res) {
-  const { name, price } = req.body
+  const { name, category, tags, price } = req.body
   const seller = req.user.username
 
-  const error = Product.validate({ name, price, seller, isHold: false }).error
+  const { value, error } = Product.validate({ name, category, tags, price, seller })
   if (error) {
     return res.status(400).json({ error: error.details[0].message });
   }
 
-  const product = new Product({ name, price, seller, isHold: false });
-
+  const product = new Product(value);
   try {
     const newProduct = await product.save();
-    res.status(200).json(newProduct);
+    res.status(201).json(newProduct);
 
   } catch (err) {
     console.log(err.message);

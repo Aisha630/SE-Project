@@ -1,0 +1,6 @@
+{
+  "categories": {
+    "clothing": ["shirt", "shoes"],
+    "technology": ["phone", "laptop"]
+  }
+}
