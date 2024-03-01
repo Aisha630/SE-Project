@@ -8,6 +8,8 @@ import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import "@fontsource/poppins";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ShopItems from './pages/shop';
+import ErrorPage from './pages/errorpage';
 
 const theme = createTheme({
 
@@ -49,6 +51,8 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
+              <Route path="/shop" element={<ShopItems />} />
+              <Route path="*" element={<ErrorPage />} />
             </Routes>
           </BrowserRouter>
         </div>
