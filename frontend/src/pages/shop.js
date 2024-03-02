@@ -1,11 +1,11 @@
 import React from 'react'
-import { AppBar, Toolbar, Button, IconButton, Typography, Box, List, ListItem, ListItemIcon, ListItemText, Card, CardMedia, CardContent, Grid, ThemeProvider, Link } from '@mui/material'
-// import { useSelector } from 'react-redux'
-// import { useLogout } from '../hooks/useLogout'
+import { Typography, Box, ListItemButton, ListItemIcon, ThemeProvider } from '@mui/material'
+import { Link as RouterLink } from "react-router-dom";
 import NavBar from '../components/navbarshop.js';
 import theme from '../themes/homeTheme.js';
 import ProductList from '../components/productlisting.js';
 import TuneIcon from '@mui/icons-material/Tune';
+
 
 const ShopItems = () => {
     const products = [
@@ -23,28 +23,54 @@ const ShopItems = () => {
         { name: 'Product 12', image: 'https://via.placeholder.com/300', price: 800 },
     ]
 
-    function n() {
-        alert("This feature is yet to be implemented");
-    }
+    // function n() {
+    //     alert("This feature is yet to be implemented");
+    // }
+
+
+    const ListItemLink = ({ text, Icon, to }) => {
+        const commonStyles = {
+            minWidth: { xs: '30px', sm: '40px', md: '50px' },
+            fontSize: { xs: '0.7rem', sm: '0.875rem', md: '1rem' },
+        };
+
+        return (
+            <ListItemButton component={RouterLink} to={to} sx={{
+                '& .MuiListItemIcon-root, & .MuiTypography-root': commonStyles, '&:hover': {
+                    backgroundColor: "transparent",
+                    textDecoration: 'underline',
+                    textDecorationColor: '#58a75b',
+                    '& .MuiListItemIcon-root, & .MuiTypography-root': {
+                        color: "#58a75b",
+                    }
+                },
+            }}>
+                <ListItemIcon sx={{ mr: 0, padding: 0 }}><Icon /></ListItemIcon>
+                <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: "normal", mt: "5px", ml: 0, ...commonStyles, }}>
+                    {text}
+                </Typography>
+            </ListItemButton>
+        );
+    };
+
 
     return (
         <ThemeProvider theme={theme}>
             <Box>
                 <NavBar />
             </Box>
-            {/* This is the filter and Sort clickable popup */}
-            <Box display="flex" justifyContent="left" mt={2} ml={2} >
-                <ListItem >
-                    <ListItemIcon>
-                        <TuneIcon /> 
-                        <Link href="#" underline="hover" onClick={n} color='grey' sx={{fontSize:'1.5rem', ml:1}}>
-                            <ListItemText primary="Filter and Order" />
-                        </Link>
-                    </ListItemIcon>
-                </ListItem>
+            <Box display="flex" justifyContent="left" mt={2} ml={2} sx={{ width: "15%", fontWeight: "normal", }} >
+                <ListItemLink text={"Filter and Order"} Icon={TuneIcon} to={"#"} sx={{
+                    '&:hover': {
+                        backgroundColor: "#e0e0e0",
+                        '& .MuiListItemIcon-root, & .MuiTypography-root': {
+                            color: "#ffffff",
+                        }
+                    },
+                }} />
             </Box>
 
-            <Box sx={{padding:'30px'}}>
+            <Box sx={{ padding: '30px' }}>
                 <ProductList products={products} />
             </Box>
         </ThemeProvider>
