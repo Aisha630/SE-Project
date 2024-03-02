@@ -31,7 +31,17 @@ const joiSchema = Joi.object({
   tags: Joi.array().items(Joi.string()).custom(isValidTags).default([]),
   price: Joi.number().min(0).required(),
   seller: Joi.string().required(),
-  isHold: Joi.boolean().default(false)
+  isHold: Joi.boolean().default(false),
+  size: Joi.when('category', {
+    is: 'Clothing',
+    then: Joi.string().valid(...config.sizes).required(),
+    otherwise: Joi.forbidden()
+  }),
+  color: Joi.when('category', {
+    is: 'Clothing',
+    then: Joi.string().valid(...config.colors).required(),
+    otherwise: Joi.forbidden()
+  }),
 });
 
 const productSchema = new mongoose.Schema(joigoose(mongoose).convert(joiSchema));

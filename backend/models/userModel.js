@@ -6,6 +6,9 @@ const joiSchema = Joi.object({
   username: Joi.string().required(),
   email: Joi.string().email().required(),
   password: Joi.string().min(8).required(),
+  verificationToken: Joi.string(),
+  tokenExpiry: Joi.date(),
+  verified: Joi.boolean().default(false)
 });
 
 const userSchema = new mongoose.Schema(joigoose(mongoose).convert(joiSchema));

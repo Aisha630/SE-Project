@@ -1,10 +1,5 @@
 import Product from "../models/productModel.js";
 
-// TODO:
-// 1. Implement categories, subcategories - DONE
-// 2. Implement filter
-// 3. Implement email authorization
-
 export async function getAllProducts(_, res) {
   const products = await Product.find({ isHold: false });
   res.json(products);
@@ -60,3 +55,25 @@ export async function deleteProduct(req, res) {
     res.status(500).json({ error: "Server error" });
   }
 };
+
+export async function filterProducts({ category, tag, sizes, colors }) {
+  const query = { isHold: false };
+
+  if (category) {
+    query.category = category;
+  }
+
+  if (tag) {
+    query.tags = tag;
+  }
+
+  if (sizes && sizes.length > 0 && category === "Clothing") {
+    query.size = { $in: Array.isArray(sizes) ? sizes : [sizes] };
+  }
+
+  if (colors && colors.length > 0 && category === "Clothing") {
+    query.color = { $in: Array.isArray(colors) ? colors : [colors] };
+  }
+
+  return await Product.find(query);
+}
