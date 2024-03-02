@@ -1,10 +1,11 @@
-import React from 'react'
-import { Typography, Box, ListItemButton, ListItemIcon, ThemeProvider } from '@mui/material'
+import React, {useState} from 'react'
+import { Drawer, Typography, Box, ListItemButton, ListItemIcon, ThemeProvider } from '@mui/material'
 import { Link as RouterLink } from "react-router-dom";
 import NavBar from '../components/navbarshop.js';
 import theme from '../themes/homeTheme.js';
 import ProductList from '../components/productlisting.js';
 import TuneIcon from '@mui/icons-material/Tune';
+import FilterMenu from '../components/filtermenu.js';
 
 
 const ShopItems = () => {
@@ -30,7 +31,7 @@ const ShopItems = () => {
         };
 
         return (
-            <ListItemButton component={RouterLink} to={to} sx={{
+            <ListItemButton component={RouterLink} to={to} onClick={toggleFilterMenu} sx={{
                 '& .MuiListItemIcon-root, & .MuiTypography-root': commonStyles, '&:hover': {
                     backgroundColor: "transparent",
                     textDecoration: 'underline',
@@ -48,6 +49,17 @@ const ShopItems = () => {
         );
     };
 
+    const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
+
+    const toggleFilterMenu = () => {
+        setIsFilterMenuOpen(!isFilterMenuOpen);
+    };
+
+    const handleDrawerClose = () => {
+        setIsFilterMenuOpen(false);
+    };
+
+
     return (
         <ThemeProvider theme={theme}>
             <Box>
@@ -63,6 +75,16 @@ const ShopItems = () => {
                     },
                 }} />
             </Box>
+            
+
+            <Drawer
+                anchor='top'
+                open={isFilterMenuOpen}
+                onClose={handleDrawerClose}
+                style={{ opacity: 0.9 }}
+            >
+                <FilterMenu />
+            </Drawer>
 
             <Box sx={{ padding: '30px' }}>
                 <ProductList products={products} />
