@@ -4,7 +4,7 @@ import { Box, Slider, Typography } from '@mui/material'
 const PriceRangeSlider = ({value, handleChange, valuetext}) => {
     
     const [minValue, maxValue] = value;
-    // const minStep = Math.floor(minValue * 0.1);
+    
     
 
   return (

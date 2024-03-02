@@ -81,9 +81,9 @@ const ShopItems = () => {
                 anchor='top'
                 open={isFilterMenuOpen}
                 onClose={handleDrawerClose}
-                style={{ opacity: 0.9 }}
+                style={{ opacity: 0.95}}
             >
-                <FilterMenu />
+                <FilterMenu closeFilterMenu={handleDrawerClose}/>
             </Drawer>
 
             <Box sx={{ padding: '30px' }}>
