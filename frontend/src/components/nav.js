@@ -6,7 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
-const Nav = () => {
+const Nav = ({Drawer, Search}) => {
     const navigate = useNavigate();
     const handleLogoClick = () => {
         navigate("/");
@@ -25,8 +25,9 @@ const Nav = () => {
     return (
         <AppBar position="static" sx={{ backgroundColor: "#e0e0e0" }} >
             <Toolbar>
-                <Box onClick={handleLogoClick} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mr: 2, mt: 3, ml: { xs: '3px', sm: "5px", md: "10px" }, cursor: 'pointer' }}>
-                    <img src="sta_logo.png" alt="Second Time Around Logo" style={{ height: "7vh" }} />
+                <Drawer />
+                <Box onClick={handleLogoClick} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mr: 2, mt: 3, mb:3, ml: { xs: '3px', sm: "5px", md: "10px" }, cursor: 'pointer' }}>
+                    <img src="sta_logo.png" alt="Second Time Around Logo" style={{ height: "6vh" }} />
                     <Typography variant="h6" noWrap sx={{ fontWeight: 'bold', lineHeight: '1.25', textAlign: 'center' }}>
                         Second Time <br />
                         <span style={{ display: 'block' }}>Around</span>
@@ -35,6 +36,7 @@ const Nav = () => {
 
                 <Box sx={{ flexGrow: 1 }} />
 
+                <Search />
                 <IconButton edge="start" color="gray" aria-label="menu" aria-haspopup="true" sx={{
                     '&:hover': {
                         backgroundColor: "primary.dark",
@@ -50,6 +52,7 @@ const Nav = () => {
                 }}>
                     <AccountCircle />
                 </IconButton>
+
 
                 <Menu
                     id="menu-account"

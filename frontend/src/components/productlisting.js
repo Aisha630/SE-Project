@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Grid, Typography, Pagination } from '@mui/material';
-import Product from './product'; // Import your Product component
+import { Grid, Pagination } from '@mui/material';
+import Product from './product'; 
 import {Box} from '@mui/material';
 
 

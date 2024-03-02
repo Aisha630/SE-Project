@@ -23,11 +23,6 @@ const ShopItems = () => {
         { name: 'Product 12', image: 'https://via.placeholder.com/300', price: 800 },
     ]
 
-    // function n() {
-    //     alert("This feature is yet to be implemented");
-    // }
-
-
     const ListItemLink = ({ text, Icon, to }) => {
         const commonStyles = {
             minWidth: { xs: '30px', sm: '40px', md: '50px' },
@@ -52,7 +47,6 @@ const ShopItems = () => {
             </ListItemButton>
         );
     };
-
 
     return (
         <ThemeProvider theme={theme}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardMedia, CardContent, Typography, Box } from '@mui/material';
+import { Card, CardMedia, Box } from '@mui/material';
 
 function ImageCard({ imageUrl, style }) {
   return (
@@ -14,7 +14,6 @@ function ImageCard({ imageUrl, style }) {
           width: '100%',
           objectFit: 'cover',
           objectPosition: 'center',
-
         }}
       />
     </Card>

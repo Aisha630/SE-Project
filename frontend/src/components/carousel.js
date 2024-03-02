@@ -2,10 +2,7 @@ import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import OverlayImageCards from './card.js';
-// import ImageCardWithOverlay from "./card2.js"
 import '../css/App.css';
-
-
 
 const CarouselComponent = () => {
     const settings = {
@@ -46,6 +43,14 @@ const CarouselComponent = () => {
             <div><OverlayImageCards bottomCardProps={{ imageUrl: "green.png" }} topCardProps={{ imageUrl: "shp1.jpg" }} /></div>
             <div><OverlayImageCards bottomCardProps={{ imageUrl: "pink.png" }} topCardProps={{ imageUrl: "shp1.jpg" }} /></div>
             <div><OverlayImageCards bottomCardProps={{ imageUrl: "green.png" }} topCardProps={{ imageUrl: "shp1.jpg" }} /></div>
+            {/* {products.map(product => (
+                <div key={product._id}>
+                    <OverlayImageCards 
+                      bottomCardProps={{ imageUrl: product.bottomImageUrl }} 
+                      topCardProps={{ imageUrl: product.topImageUrl }} 
+                    />
+                </div>
+            ))} */}
         </Slider>
     );
 };

@@ -1,53 +1,20 @@
 import React from 'react';
-import { Box, List, ListItemButton, ListItemIcon, Typography, Grid, ThemeProvider } from '@mui/material';
-import HomeIcon from '@mui/icons-material/Home';
-import ShopIcon from '@mui/icons-material/Shop';
-import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import InfoIcon from '@mui/icons-material/Info';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Box, Typography, Grid, ThemeProvider } from '@mui/material';
 import CarouselComponent from '../components/carousel.js';
 import theme from '../themes/homeTheme.js';
 import Nav from '../components/nav.js';
-
-const menuItems = [
-  { text: 'Home', Icon: HomeIcon, to: '/' },
-  { text: 'Shop', Icon: ShopIcon, to: '/shop' },
-  { text: 'Donations', Icon: VolunteerActivismIcon, to: '/auction' },
-  { text: 'Auction', Icon: AttachMoneyIcon, to: '/donation' },
-  { text: 'About', Icon: InfoIcon, to: '/help' },
-];
-
-const ListItemLink = ({ text, Icon, to }) => {
-  const commonStyles = {
-    minWidth: { xs: '30px', sm: '40px', md: '50px' },
-    fontSize: { xs: '0.7rem', sm: '0.875rem', md: '1rem' },
-  };
-
-  return (
-    <ListItemButton component={RouterLink} to={to} sx={{ '& .MuiListItemIcon-root, & .MuiTypography-root': commonStyles }}>
-      <ListItemIcon><Icon /></ListItemIcon>
-      <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: "bold", mt: "5px", ...commonStyles }}>
-        {text}
-      </Typography>
-    </ListItemButton>
-  );
-};
+import SidePanel from '../components/sidePanel.js';
 
 function Home() {
   return (
     <ThemeProvider theme={theme}>
       <Box>
-        <Nav />
+        <Nav Drawer={Box} Search={Box}/>
       </Box>
-      <Grid container spacing={2} sx={{ padding: 1, }}>
-        <Grid item xs={12} sm={4} md={3} lg={2} sx={{ backgroundColor: "#e0e0e0" }}>
-          <Box sx={{ width: "90%", minWidth: { xs: '150px', sm: '180px', md: '200px' } }}>
-            <List sx={{ ml: { xs: '3px', sm: "5px", md: "10px" } }}>
-              {menuItems.map(({ text, Icon, to }) => (
-                <ListItemLink key={text} text={text} Icon={Icon} to={to} />
-              ))}
-            </List>
+      <Grid container spacing={1} sx={{ padding: 1, }}>
+        <Grid item xs={12} sm={4} md={3} lg={2} sx={{ backgroundColor: "#e0e0e0",  }}>
+          <Box sx={{ width: "90%", mr: { xs: '3px', sm: "5px", md: "10px" }, minWidth: { xs: '150px', sm: '180px', md: '200px' } }}>
+            <SidePanel ListStyles={{ ml: { xs: '3px', sm: "5px", md: "10px" }, }} ListItemStyles={{fontWeight: "bold", mt: "5px"}} ListButtonStyles={{margin: "5px" }} />
           </Box>
         </Grid>
 
