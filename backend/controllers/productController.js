@@ -1,11 +1,12 @@
 import Product from "../models/productModel.js";
-import upload from "../middleware/multerConfig.js"
 
+// Retrieve all products that are not currently on hold
 export async function getAllProducts(_, res) {
   const products = await Product.find({ isHold: false });
   res.json(products);
 }
 
+// Retrieve a specific product by its ID
 export async function getProduct(req, res) {
   const { id } = req.params;
 
@@ -17,19 +18,24 @@ export async function getProduct(req, res) {
   res.json(product);
 }
 
+// Add a new product to the database
 export async function addProduct(req, res) {
-  const { name, price, description, category, tags, size, color, condition } = req.body;
+  const { name, price, description, brand, category, tags, size, color, condition } = req.body;
   const seller = req.user.username;
+  // Map uploaded file paths to an array
   const images = req.files.map(file => file.path);
 
+  // Validate that at least one file was uploaded
   if (images.length < 1) {
     return res.status(400).send("No files were uploaded.");
   }
 
+  // Validate the product details against the Product model
   const { value, error } = Product.validate({
     name,
     price,
     description,
+    brand,
     category,
     tags,
     size,
@@ -52,11 +58,13 @@ export async function addProduct(req, res) {
   }
 }
 
+// Delete a product by its ID - seller's functionality after payment
 export async function deleteProduct(req, res) {
   const productId = req.params.id;
   const seller = req.user.username;
 
   try {
+    // Ensure that the product exists and belongs to the seller
     const product = await Product.findOne({ _id: productId, seller });
 
     if (!product) {
@@ -71,10 +79,12 @@ export async function deleteProduct(req, res) {
   }
 }
 
+// Filter products based on criteria like category, tags, sizes, and colors
 export async function filterProducts(req, res) {
   const { category, tags, sizes, colors } = req.body;
   const query = { isHold: false };
 
+  // Build the query based on provided filter criteria
   if (category) {
     query.category = category;
   }
@@ -84,6 +94,7 @@ export async function filterProducts(req, res) {
     query.tags = tags;
   }
 
+  // Filter by size and color if specified and valid
   if (sizes && sizes.length > 0 && category === "Clothing") {
     query.size = { $in: Array.isArray(sizes) ? sizes : [sizes] };
   }
@@ -92,6 +103,7 @@ export async function filterProducts(req, res) {
     query.color = { $in: Array.isArray(colors) ? colors : [colors] };
   }
 
+  // Query the database with the built query
   const products = await Product.find(query);
   res.json(products);
 }
