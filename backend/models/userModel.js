@@ -8,7 +8,7 @@ const joiSchema = Joi.object({
   password: Joi.string().min(8).required(),
   verificationToken: Joi.string(),
   tokenExpiry: Joi.date(),
-  verified: Joi.boolean().default(false)
+  verified: Joi.boolean().default(false),
 });
 
 const userSchema = new mongoose.Schema(joigoose(mongoose).convert(joiSchema));

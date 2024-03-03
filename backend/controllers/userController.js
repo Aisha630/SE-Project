@@ -2,8 +2,8 @@ import User from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import validator from "validator";
 import bcrypt from "bcrypt";
-import crypto from "crypto"
-import { sendVerificationEmail } from '../email/emailAuth.js';
+import crypto from "crypto";
+import { sendVerificationEmail } from "../email/emailAuth.js";
 
 export async function signup(req, res) {
   const { username, email, password } = req.body;
@@ -30,7 +30,7 @@ export async function signup(req, res) {
 
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(password, salt);
-  const verificationToken = crypto.randomBytes(20).toString('hex');
+  const verificationToken = crypto.randomBytes(20).toString("hex");
   const tokenExpiry = new Date(Date.now() + 10 * 60 * 1000);
 
   const user = new User({
@@ -38,13 +38,15 @@ export async function signup(req, res) {
     email,
     password: hash,
     verificationToken,
-    tokenExpiry
+    tokenExpiry,
   });
 
   try {
     await user.save();
     await sendVerificationEmail(user);
-    res.status(200).json({ message: "Please check your email to verify your account." });
+    res
+      .status(200)
+      .json({ message: "Please check your email to verify your account." });
   } catch (err) {
     console.log(err.message);
     res.status(500).json({ error: "Server error" });
@@ -85,11 +87,11 @@ export async function verifyEmail(req, res) {
 
   const user = await User.findOne({
     verificationToken: token,
-    tokenExpiry: { $gte: Date.now() }
+    tokenExpiry: { $gte: Date.now() },
   });
 
   if (!user) {
-    return res.status(400).json({ error: 'Token is invalid or has expired.' });
+    return res.status(400).json({ error: "Token is invalid or has expired." });
   }
 
   user.verified = true;
@@ -97,7 +99,7 @@ export async function verifyEmail(req, res) {
   user.tokenExpiry = undefined;
   await user.save();
 
-  res.send('Email verified successfully! You can now log in.');
+  res.send("Email verified successfully! You can now log in.");
 }
 
 export async function resendVerification(req, res) {
@@ -106,18 +108,22 @@ export async function resendVerification(req, res) {
   const user = await User.findOne({ email, verified: false });
 
   if (!user) {
-    return res.status(404).json({ error: 'User not found or already verified.' });
+    return res
+      .status(404)
+      .json({ error: "User not found or already verified." });
   }
 
-  user.verificationToken = crypto.randomBytes(20).toString('hex');
+  user.verificationToken = crypto.randomBytes(20).toString("hex");
   user.verificationTokenExpires = new Date(Date.now() + 10 * 60 * 1000);
 
   try {
     await user.save();
     await sendVerificationEmail(user);
-    res.json({ message: 'Verification email resent. Please check your inbox.' });
+    res.json({
+      message: "Verification email resent. Please check your inbox.",
+    });
   } catch (error) {
-    console.error('Error resending verification email:', error);
-    res.status(500).json({ error: 'Error resending verification email.' });
+    console.error("Error resending verification email:", error);
+    res.status(500).json({ error: "Error resending verification email." });
   }
 }
