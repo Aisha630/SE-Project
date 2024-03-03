@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { useLogout } from '../hooks/useLogout';
 import { useSelector } from 'react-redux';
 
-const Nav = ({Drawer, Search}) => {
+const Nav = ({ Drawer, Search }) => {
     const navigate = useNavigate();
     const handleLogoClick = () => {
         navigate("/");
@@ -19,7 +19,7 @@ const Nav = ({Drawer, Search}) => {
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
     }
-    
+
     const handleClose = () => {
         setAnchorEl(null);
     }
@@ -35,7 +35,7 @@ const Nav = ({Drawer, Search}) => {
         <AppBar position="static" sx={{ backgroundColor: "#e0e0e0" }} >
             <Toolbar>
                 <Drawer />
-                <Box onClick={handleLogoClick} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mr: 2, mt: 3, mb:3, ml: { xs: '3px', sm: "5px", md: "10px" }, cursor: 'pointer' }}>
+                <Box onClick={handleLogoClick} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mr: 2, mt: 3, mb: 3, ml: { xs: '3px', sm: "5px", md: "10px" }, cursor: 'pointer' }}>
                     <img src="/sta_logo.png" alt="Second Time Around Logo" style={{ height: "6vh" }} />
                     <Typography variant="h6" noWrap sx={{ fontWeight: 'bold', lineHeight: '1.25', textAlign: 'center' }}>
                         Second Time <br />
@@ -79,9 +79,9 @@ const Nav = ({Drawer, Search}) => {
                     onClose={handleClose}
                 >
                     <MenuItem onClick={handleClose} >Profile</MenuItem>
-                    <MenuItem onClick={handleClose} >My account</MenuItem>
-                    <MenuItem onClick={handleLogout} >Logout</MenuItem>
-                    
+                    <MenuItem onClick={handleClose} > My account</MenuItem>
+                    <MenuItem onClick={handleLogout} > Logout</MenuItem>
+
                 </Menu>
 
                 <Button
@@ -107,6 +107,7 @@ const Nav = ({Drawer, Search}) => {
                             color: "inherit",
                         },
                     }}
+                    onClick={() => navigate("/sell")}
                 >
                     Sell
                 </Button>
