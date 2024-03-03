@@ -6,9 +6,11 @@ const joiSchema = Joi.object({
   username: Joi.string().required(),
   email: Joi.string().email().required(),
   password: Joi.string().min(8).required(),
+  verified: Joi.boolean().default(false),
 });
 
 const userSchema = new mongoose.Schema(joigoose(mongoose).convert(joiSchema));
+userSchema.set("validateBeforeSave", false);
 userSchema.statics.validate = (user) => joiSchema.validate(user);
 
 export default mongoose.model("User", userSchema);

@@ -66,3 +66,4 @@ export async function signin(req, res) {
 
   res.status(200).json({ username, token });
 }
+

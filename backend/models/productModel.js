@@ -1,5 +1,5 @@
 import Joi from "joi";
-import config from "../config.js"
+import config from "../config.js";
 import joigoose from "joigoose";
 import mongoose from "mongoose";
 
@@ -7,7 +7,7 @@ function isValidCategory(category, helpers) {
   const validCategories = Object.keys(config.categories);
 
   if (!validCategories.includes(category)) {
-    return helpers.error('any.invalid');
+    return helpers.error("any.invalid");
   }
 
   return category;
@@ -18,7 +18,7 @@ function isValidTags(tags, helpers) {
 
   for (const tag of tags) {
     if (!validTags.includes(tag)) {
-      return helpers.error('any.invalid');
+      return helpers.error("any.invalid");
     }
   }
 
@@ -27,14 +27,33 @@ function isValidTags(tags, helpers) {
 
 const joiSchema = Joi.object({
   name: Joi.string().max(64).required(),
+  price: Joi.number().min(0).required(),
+
   category: Joi.string().custom(isValidCategory).required(),
   tags: Joi.array().items(Joi.string()).custom(isValidTags).default([]),
-  price: Joi.number().min(0).required(),
+  size: Joi.when("category", {
+    is: "Clothing",
+    then: Joi.string()
+      .valid(...config.sizes)
+      .required(),
+    otherwise: Joi.forbidden(),
+  }),
+  color: Joi.when("category", {
+    is: "Clothing",
+    then: Joi.string()
+      .valid(...config.colors)
+      .required(),
+    otherwise: Joi.forbidden(),
+  }),
+
   seller: Joi.string().required(),
-  isHold: Joi.boolean().default(false)
+  isHold: Joi.boolean().default(false),
 });
 
-const productSchema = new mongoose.Schema(joigoose(mongoose).convert(joiSchema));
+const productSchema = new mongoose.Schema(
+  joigoose(mongoose).convert(joiSchema)
+);
+productSchema.set("validateBeforeSave", false);
 productSchema.statics.validate = (product) => joiSchema.validate(product);
 
-export default mongoose.model('Product', productSchema);
+export default mongoose.model("Product", productSchema);
