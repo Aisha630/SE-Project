@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-// Token for user verification via email with 1 hour expiry limit
 const verificationTokenSchema = mongoose.Schema({
   username: String,
   verificationToken: String,

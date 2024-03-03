@@ -15,18 +15,105 @@ input:-webkit-autofill:active {
   text-align: center;
 }
 
-.image-gallery-style {
-  box-shadow: none !important;
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
 }
 
-.slick-prev:before,
-.slick-next:before {
-  color: grey !important;
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
 }
 
-.image-gallery-left-nav,
-.image-gallery-right-nav {
-  transform: scale(0.75);
-  width: 20px;
-  height: 10px;
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* .signup-form
+{
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+
+.input-group
+{
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.login-form
+{
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+} */
+
+
+.signup-form {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+input {
+  width: 100%;
+  max-width: 300px; /* Added maximum width */
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin: 0 auto; /* Center the input element */
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+

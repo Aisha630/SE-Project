@@ -8,7 +8,6 @@ import {
 
 const router = express.Router();
 
-// user Authentication routes user signup, login, email verification and resending verification
 router.post("/register", signup);
 router.get("/verify", verifyEmail);
 router.post("/login", signin);
