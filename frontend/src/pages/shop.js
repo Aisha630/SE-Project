@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { Drawer, Typography, Box, ListItemButton, ListItemIcon, ThemeProvider } from '@mui/material'
 import { Link as RouterLink } from "react-router-dom";
 import NavBar from '../components/navbarshop.js';
@@ -6,6 +6,7 @@ import theme from '../themes/homeTheme.js';
 import ProductList from '../components/productlisting.js';
 import TuneIcon from '@mui/icons-material/Tune';
 import FilterMenu from '../components/filtermenu.js';
+import MainCategoryToolbar from '../components/maincategoriestoolbar.js';
 
 
 const ShopItems = () => {
@@ -23,6 +24,7 @@ const ShopItems = () => {
         { name: 'Product 11', image: 'https://via.placeholder.com/300', price: 800 },
         { name: 'Product 12', image: 'https://via.placeholder.com/300', price: 800 },
     ]
+
 
     const ListItemLink = ({ text, Icon, to }) => {
         const commonStyles = {
@@ -59,12 +61,17 @@ const ShopItems = () => {
         setIsFilterMenuOpen(false);
     };
 
+    
 
     return (
         <ThemeProvider theme={theme}>
             <Box>
                 <NavBar />
             </Box>
+
+            
+            <MainCategoryToolbar />
+
             <Box display="flex" justifyContent="left" mt={2} ml={2} sx={{ width: "15%", fontWeight: "normal", }} >
                 <ListItemLink text={"Filter and Order"} Icon={TuneIcon} to={"#"} sx={{
                     '&:hover': {
@@ -75,15 +82,14 @@ const ShopItems = () => {
                     },
                 }} />
             </Box>
-            
 
             <Drawer
                 anchor='top'
                 open={isFilterMenuOpen}
                 onClose={handleDrawerClose}
-                style={{ opacity: 0.95}}
+                style={{ opacity: 0.95 }}
             >
-                <FilterMenu closeFilterMenu={handleDrawerClose}/>
+                <FilterMenu closeFilterMenu={handleDrawerClose} />
             </Drawer>
 
             <Box sx={{ padding: '30px' }}>
