@@ -24,7 +24,6 @@ const Nav = ({Drawer, Search}) => {
         setAnchorEl(null);
     }
 
-    const user = useSelector((state) => state.auth.user);
     const { logout } = useLogout();
 
     const handleLogout = () => {
@@ -37,7 +36,7 @@ const Nav = ({Drawer, Search}) => {
             <Toolbar>
                 <Drawer />
                 <Box onClick={handleLogoClick} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mr: 2, mt: 3, mb:3, ml: { xs: '3px', sm: "5px", md: "10px" }, cursor: 'pointer' }}>
-                    <img src="sta_logo.png" alt="Second Time Around Logo" style={{ height: "6vh" }} />
+                    <img src="/sta_logo.png" alt="Second Time Around Logo" style={{ height: "6vh" }} />
                     <Typography variant="h6" noWrap sx={{ fontWeight: 'bold', lineHeight: '1.25', textAlign: 'center' }}>
                         Second Time <br />
                         <span style={{ display: 'block' }}>Around</span>
