@@ -32,6 +32,17 @@ This project is a multi-vendor e-commerce platform designed to be minamalistic a
 - `middleware/` - Contains middleware functions such as authentication and file upload middleware, that are run for every request to our application.
 
 #### Frontend
+-  `index.js` - The main entry point of the application. This file includes the root component and renders it to the DOM.
+-  `App.js` - Acts as the root component from which all other page components are rendered.
+-  `public/` - This directory contains static assets such as HTML files, images, and any other files that should be served directly by the web server. 
+-  `src/` - The source directory where most of the application's code resides. It's the root for all the JavaScript and component files that make up the application.
+-  `src/components/` - Contains reusable UI components. 
+-  `src/pages/` - Stores the components that represent entire pages in the application. These components often use many of the smaller components defined in src/components/
+-  `src/context/` - Contains context definitions. Context provides a way to pass data through the component tree without having to pass props down manually at every level.
+-  `src/themes/` - This folder contains theming information, such as color schemes, font settings, and any other design tokens that help maintain visual consistency across the app.
+-  `src/css/` - Contains Cascading Style Sheets (CSS) files for styling the application. 
+-  `src/hooks/` - This directory includes custom React hooks that encapsulate reusable logic.
+-  `src/stores/` - Files for Redux store configuration for global state management.
 
 ## Authors
 
