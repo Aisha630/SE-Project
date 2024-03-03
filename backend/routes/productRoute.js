@@ -1,4 +1,5 @@
 import express from "express";
+import upload from "../middleware/multerConfig.js";
 import {
   getAllProducts,
   addProduct,
@@ -12,7 +13,7 @@ const router = express.Router();
 router.get("/shop", getAllProducts);
 router.get("/shop/:id", getProduct);
 router.delete("/shop/:id", deleteProduct);
-router.post("/sell", addProduct);
+router.post("/sell", upload, addProduct);
 
 router.get("/filter", filterProducts);
 

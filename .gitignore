@@ -2,3 +2,4 @@
 .vscode/
 /database/
 node_modules/
+uploads/

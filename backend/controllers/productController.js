@@ -1,4 +1,5 @@
 import Product from "../models/productModel.js";
+import upload from "../middleware/multerConfig.js"
 
 export async function getAllProducts(_, res) {
   const products = await Product.find({ isHold: false });
@@ -19,6 +20,11 @@ export async function getProduct(req, res) {
 export async function addProduct(req, res) {
   const { name, price, category, tags, size, color } = req.body;
   const seller = req.user.username;
+  const images = req.files.map(file => file.path);
+
+  if (images.length < 1) {
+    return res.status(400).send("No files were uploaded.");
+  }
 
   const { value, error } = Product.validate({
     name,
@@ -28,6 +34,7 @@ export async function addProduct(req, res) {
     size,
     color,
     seller,
+    images,
   });
   if (error) {
     return res.status(400).json({ error: error.details[0].message });

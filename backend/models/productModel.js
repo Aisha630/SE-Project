@@ -48,6 +48,7 @@ const joiSchema = Joi.object({
 
   seller: Joi.string().required(),
   isHold: Joi.boolean().default(false),
+  images: Joi.array().items(Joi.string().required()).min(1).max(5).required()
 });
 
 const productSchema = new mongoose.Schema(
