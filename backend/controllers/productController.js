@@ -17,14 +17,16 @@ export async function getProduct(req, res) {
 }
 
 export async function addProduct(req, res) {
-  const { name, category, tags, price } = req.body;
+  const { name, price, category, tags, size, color } = req.body;
   const seller = req.user.username;
 
   const { value, error } = Product.validate({
     name,
+    price,
     category,
     tags,
-    price,
+    size,
+    color,
     seller,
   });
   if (error) {
@@ -60,15 +62,17 @@ export async function deleteProduct(req, res) {
   }
 }
 
-export async function filterProducts({ category, tag, sizes, colors }) {
+export async function filterProducts(req, res) {
+  const { category, tags, sizes, colors } = req.body;
   const query = { isHold: false };
 
   if (category) {
     query.category = category;
   }
 
-  if (tag) {
-    query.tags = tag;
+  // AND semantics
+  if (tags) {
+    query.tags = tags;
   }
 
   if (sizes && sizes.length > 0 && category === "Clothing") {
@@ -79,5 +83,6 @@ export async function filterProducts({ category, tag, sizes, colors }) {
     query.color = { $in: Array.isArray(colors) ? colors : [colors] };
   }
 
-  return await Product.find(query);
+  const products = await Product.find(query);
+  res.json(products);
 }

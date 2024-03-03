@@ -10,6 +10,7 @@ const joiSchema = Joi.object({
 });
 
 const userSchema = new mongoose.Schema(joigoose(mongoose).convert(joiSchema));
+userSchema.set("validateBeforeSave", false);
 userSchema.statics.validate = (user) => joiSchema.validate(user);
 
 export default mongoose.model("User", userSchema);

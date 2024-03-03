@@ -53,6 +53,7 @@ const joiSchema = Joi.object({
 const productSchema = new mongoose.Schema(
   joigoose(mongoose).convert(joiSchema)
 );
+productSchema.set("validateBeforeSave", false);
 productSchema.statics.validate = (product) => joiSchema.validate(product);
 
 export default mongoose.model("Product", productSchema);
