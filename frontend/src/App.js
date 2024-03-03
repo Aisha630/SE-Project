@@ -4,6 +4,7 @@ import SignUp from './pages/signUp';
 import Home from './pages/home';
 import ShopItems from './pages/shop';
 import ErrorPage from './pages/errorpage';
+import ProductDetails from './pages/productDetails';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
@@ -46,6 +47,8 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/shop" element={<ShopItems />} />
+              <Route path="/shop" element={<ShopItems />} />
+              <Route path="/shop/:id" element={<ProductDetails/>} />
               <Route path="*" element={<ErrorPage />} />
             </Routes>
           </BrowserRouter>

@@ -5,6 +5,8 @@ import '@fontsource/poppins';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useLogout } from '../hooks/useLogout';
+import { useSelector } from 'react-redux';
 
 const Nav = ({Drawer, Search}) => {
     const navigate = useNavigate();
@@ -17,10 +19,18 @@ const Nav = ({Drawer, Search}) => {
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
     }
-
+    
     const handleClose = () => {
         setAnchorEl(null);
     }
+
+    const user = useSelector((state) => state.auth.user);
+    const { logout } = useLogout();
+
+    const handleLogout = () => {
+        logout();
+        handleClose();
+    };
 
     return (
         <AppBar position="static" sx={{ backgroundColor: "#e0e0e0" }} >
@@ -71,6 +81,8 @@ const Nav = ({Drawer, Search}) => {
                 >
                     <MenuItem onClick={handleClose} >Profile</MenuItem>
                     <MenuItem onClick={handleClose} >My account</MenuItem>
+                    <MenuItem onClick={handleLogout} >Logout</MenuItem>
+                    
                 </Menu>
 
                 <Button
