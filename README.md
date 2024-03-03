@@ -8,8 +8,6 @@ This project is a multi-vendor e-commerce platform designed to be minamalistic a
 
 ### Prerequisites
 
-What things you need to install the software and how to install them:
-
 - [Node.js](https://nodejs.org/) (v14 or later)
 - [MongoDB](https://www.mongodb.com/) (v4 or later)
 
