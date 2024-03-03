@@ -22,8 +22,27 @@
       "Samsung",
       "Lenovo"
     ],
-    "Miscellaneous": ["Watch", "Jewelry", "Shoes", "Bags"]
+    "Miscellaneous": [
+      "Watch",
+      "Jewelry",
+      "Shoes",
+      "Bags"
+    ]
   },
-  "sizes": ["xs", "s", "m", "l", "xl"],
-  "colors": ["purple", "pink", "red", "orange", "blue", "black", "white"]
+  "sizes": [
+    "xs",
+    "s",
+    "m",
+    "l",
+    "xl"
+  ],
+  "colors": [
+    "purple",
+    "pink",
+    "red",
+    "orange",
+    "blue",
+    "black",
+    "white"
+  ]
 }

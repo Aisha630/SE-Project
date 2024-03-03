@@ -3,6 +3,9 @@ import Login from './pages/login';
 import SignUp from './pages/signUp';
 import Home from './pages/home';
 import PostAd from './pages/PostAd';
+import ShopItems from './pages/shop';
+import ErrorPage from './pages/errorpage';
+import ProductDetails from './pages/productDetails';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
@@ -11,23 +14,17 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const theme = createTheme({
-
   palette: {
     background: {
-      default: '#58a75b'
+      default: 'rgb(243, 244, 246)'
     },
     primary: {
-      main: '#58a75b',
-
-    },
-    secondary: {
-      main: '#ffffff',
-      opacity: 0.7,
+      main: 'rgb(243, 244, 246)',
     },
   },
   typography: {
     fontFamily: [
-      'Poppins', // Replace with your font name
+      'Poppins',
       'Arial',
       'sans-serif'
     ].join(','),
@@ -37,12 +34,12 @@ const theme = createTheme({
 function App() {
 
   return (
-    <ThemeProvider theme={theme} >
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
       <ToastContainer position="top-center" autoClose={2000} toastStyle={{
         backgroundColor: "white",
         color: "black",
       }} />
-      <CssBaseline />
       <AuthProvider>
         <div className="App">
           <BrowserRouter>
@@ -51,6 +48,10 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/PostAd" element={<PostAd />} />
+              <Route path="/shop" element={<ShopItems />} />
+              <Route path="/shop" element={<ShopItems />} />
+              <Route path="/shop/:id" element={<ProductDetails/>} />
+              <Route path="*" element={<ErrorPage />} />
             </Routes>
           </BrowserRouter>
         </div>
