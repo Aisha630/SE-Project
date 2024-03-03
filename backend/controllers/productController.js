@@ -18,7 +18,7 @@ export async function getProduct(req, res) {
 }
 
 export async function addProduct(req, res) {
-  const { name, price, category, tags, size, color } = req.body;
+  const { name, price, description, category, tags, size, color, condition } = req.body;
   const seller = req.user.username;
   const images = req.files.map(file => file.path);
 
@@ -29,11 +29,13 @@ export async function addProduct(req, res) {
   const { value, error } = Product.validate({
     name,
     price,
+    description,
     category,
     tags,
     size,
     color,
     seller,
+    condition,
     images,
   });
   if (error) {

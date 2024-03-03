@@ -28,6 +28,7 @@ function isValidTags(tags, helpers) {
 const joiSchema = Joi.object({
   name: Joi.string().max(64).required(),
   price: Joi.number().min(0).required(),
+  description: Joi.string().max(100),
 
   category: Joi.string().custom(isValidCategory).required(),
   tags: Joi.array().items(Joi.string()).custom(isValidTags).default([]),
@@ -46,9 +47,11 @@ const joiSchema = Joi.object({
     otherwise: Joi.forbidden(),
   }),
 
+  condition: Joi.string().valid('new', 'old').required(),
+  images: Joi.array().items(Joi.string().required()).min(1).max(5).required(),
+
   seller: Joi.string().required(),
-  isHold: Joi.boolean().default(false),
-  images: Joi.array().items(Joi.string().required()).min(1).max(5).required()
+  isHold: Joi.boolean().default(false)
 });
 
 const productSchema = new mongoose.Schema(
