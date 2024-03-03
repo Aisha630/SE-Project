@@ -13,9 +13,9 @@ export async function signup(req, res) {
     return res.status(400).json({ error: error.details[0].message });
   }
 
-  //if (!validator.isStrongPassword(password)) {
-  //  return res.status(400).json({ error: "Password not strong enough" });
-  //}
+  if (!validator.isStrongPassword(password)) {
+    return res.status(400).json({ error: "Password not strong enough" });
+  }
 
   if (!email.endsWith("@lums.edu.pk")) {
     return res
