@@ -1,8 +1,8 @@
 import "dotenv/config";
 import cors from "cors";
 import express from "express";
-import path from "path"
-import { fileURLToPath } from 'url';
+import path from "path";
+import { fileURLToPath } from "url";
 import mongoose from "mongoose";
 import authRoutes from "./routes/authRoute.js";
 import productRoutes from "./routes/productRoute.js";
@@ -18,8 +18,7 @@ app.use(
   })
 );
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use("/uploads", express.static("../uploads"));
 
 app.use(authRoutes);
 app.use(authorizeUser);

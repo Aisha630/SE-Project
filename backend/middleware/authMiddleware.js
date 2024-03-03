@@ -15,7 +15,6 @@ export default function authorize(req, res, next) {
 
   jwt.verify(token, process.env.JWT_PRIVATE_KEY, async (err, decoded) => {
     if (err) {
-      console.log(err);
       return res.sendStatus(401);
     }
 
