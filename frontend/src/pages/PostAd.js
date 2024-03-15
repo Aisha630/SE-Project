@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import {
   Box,
   Button,
@@ -10,13 +12,10 @@ import {
   FormControlLabel,
   FormControl,
   FormLabel,
-  Select,
-  MenuItem,
-  InputLabel,
   IconButton,
   InputAdornment,
   ThemeProvider,
-  CssBaseline,
+  Checkbox,
 } from "@mui/material";
 import { PhotoCamera } from "@mui/icons-material";
 import theme from "../themes/authThemes.js";
@@ -47,17 +46,23 @@ const categories = {
   Miscellaneous: ["Watch", "Jewelry", "Shoes", "Bags"],
 };
 
-const sizes = ["XS", "Small", "Medium", "Large", "XL"];
+const sizes = [
+  "xs",
+  "s",
+  "m",
+  "l",
+  "xl"
+]
 const colors = ["purple", "pink", "red", "orange", "blue", "black", "white"];
 
 const PostAd = () => {
   const [adData, setAdData] = useState({
     category: "",
-    subcategory: "",
+    tags: [],
     size: "",
     color: "",
-    title: "",
-    adDetails: "",
+    name: "",
+    description: "",
     brand: "",
     condition: "",
     quantity: 1,
@@ -66,22 +71,117 @@ const PostAd = () => {
     modeOfAd: "",
   });
 
+  const [files, setFiles] = useState([]);
+  const user = useSelector((state) => state.auth.user);
+  const token = useSelector((state) => state.auth.token);
+  const [errors, setErrors] = useState({});
+  // console.log("The token is ", token);
+  // console.log("The seller is ", user);
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setAdData({ ...adData, [name]: value });
+    if (name === 'price') {
+      if (value >= 0) {
+        setAdData({ ...adData, [name]: value });
+      }
+    } else {
+      setAdData({ ...adData, [name]: value });
+    }
+    if (errors[name]) {
+      setErrors({ ...errors, [name]: false });
+    }
   };
 
-  const handleSubmit = (event) => {
+  const handleFileChange = (event, index) => {
+    const newFiles = [...files];
+    newFiles[index] = event.target.files[0];
+    setFiles(newFiles);
+  };
+
+  const handleTagChange = (event) => {
+    const { value, checked } = event.target;
+    setAdData(prevAdData => {
+      const newTags = checked
+        ? [...prevAdData.tags, value]
+        : prevAdData.tags.filter(tag => tag !== value);
+      return { ...prevAdData, tags: newTags };
+    });
+  };
+
+  const validateForm = () => {
+    let newErrors = {};
+    let isValid = true;
+
+    if (!adData.name) {
+      isValid = false;
+      newErrors.name = 'Ad title is required';
+    }
+
+    if (!adData.price) {
+      isValid = false;
+      newErrors.price = 'Price is required';
+    }
+
+    if (!adData.condition) {
+      isValid = false;
+      newErrors.condition = 'Please select new or used as condition';
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // submission logic
+
+    if (!validateForm()) {
+      return; 
+    }
+
+    const formData = new FormData();
+    Object.keys(adData).forEach(key => {
+      if (Array.isArray(adData[key])) {
+        adData[key].forEach(value => formData.append(key, value));
+      } else {
+        formData.append(key, adData[key]);
+      }
+    });
+    formData.append('seller', user);
+    files.forEach((file) => {
+      if (file) {
+        formData.append('images', file);
+      }
+    });
+
+    try {
+      const response = await fetch('http://localhost:5003/sell', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        method: 'POST',
+        body: formData,
+      });
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Submission Success:', result);
+        navigate('/shop');
+      } else {
+        console.error('Submission Failed:', response.statusText);
+        // console.error('Response:', response);
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
   };
 
-  // get subcategories based on the selected category
+
   const subcategories = adData.category ? categories[adData.category] : [];
 
   return (
     <ThemeProvider theme={theme}>
-      
+
       <Container
         component="main"
         maxWidth="md"
@@ -147,11 +247,11 @@ const PostAd = () => {
             </RadioGroup>
           </Box>
 
-          {/* Subcategory Section */}
+          {/* tags Section */}
           {adData.category && (
             <>
               <Typography variant="h6" sx={{ mb: 2, alignSelf: "flex-start", color: "slategrey" }}>
-                Subcategory
+                Subcategories
               </Typography>
               <Box
                 sx={{
@@ -164,31 +264,37 @@ const PostAd = () => {
                   alignItems: "center",
                 }}
               >
-                <RadioGroup
-                  row
-                  name="subcategory"
-                  value={adData.subcategory}
-                  onChange={handleInputChange}
+                <Box
                   sx={{
                     justifyContent: "center",
+                    display: 'flex',
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
                   }}
                 >
-                  {subcategories.map((subcategory) => (
+                  {subcategories.map((tag) => (
                     <FormControlLabel
-                      key={subcategory}
-                      value={subcategory}
-                      control={<Radio />}
-                      label={subcategory}
+                      key={tag}
+                      control={
+                        <Checkbox
+                          checked={adData.tags.includes(tag)}
+                          onChange={handleTagChange}
+                          value={tag}
+                          name="tags"
+                        />
+                      }
+                      label={tag}
                     />
                   ))}
-                </RadioGroup>
+                </Box>
+
               </Box>
             </>
           )}
 
-        <Typography variant="h6" sx={{ mb: 2, alignSelf: "flex-start", color: "slategrey" }}>
+          <Typography variant="h6" sx={{ mb: 2, alignSelf: "flex-start", color: "slategrey" }}>
             Specifications
-        </Typography>
+          </Typography>
 
           {/* Specifications Section inside the green box */}
           <Box
@@ -236,7 +342,7 @@ const PostAd = () => {
                       control={<Radio size="small" />}
                       label={
                         <Typography
-                          sx={{ color: "black", textTransform: "capitalize", justifyContent: "center" }}
+                          sx={{ color: "black", textTransform: "uppercase", justifyContent: "center" }}
                         >
                           {size}
                         </Typography>
@@ -245,13 +351,13 @@ const PostAd = () => {
                   ))}
                 </RadioGroup>
               </Box>
-                <Box>
-                    <Typography
-                        variant="body1"
-                        sx={{ color: "black", textAlign: "left", fontWeight: "bold"}}
-                    >
-                        Color
-                    </Typography>
+              <Box>
+                <Typography
+                  variant="body1"
+                  sx={{ color: "black", textAlign: "left", fontWeight: "bold" }}
+                >
+                  Color
+                </Typography>
                 <RadioGroup
                   row
                   name="color"
@@ -334,27 +440,28 @@ const PostAd = () => {
           <TextField
             required
             fullWidth
-            id="title"
+            error={Boolean(errors.name)}
+            id="name"
             label="Ad Title"
-            name="title"
-            value={adData.title}
+            name="name"
+            value={adData.name}
             onChange={handleInputChange}
             margin="normal"
-            helperText="Please restrict your answer to this field to 50 characters."
-            inputProps={{ maxLength: 50 }}
+            helperText={errors.name || 'Please restrict your answer to this field to 100 characters.'}
+            inputProps={{ maxLength: 100 }}
           />
 
           <TextField
             fullWidth
-            id="adDetails"
+            id="description"
             label="Ad Details"
-            name="adDetails"
+            name="description"
             multiline
             rows={4}
-            value={adData.adDetails}
+            value={adData.description}
             onChange={handleInputChange}
             margin="normal"
-            helperText="Include condition, features, space for negotiation, reasons for selling (0/1000)"
+            helperText="Please include condition, features, space for negotiation, reasons for selling (max 1000 characters)."
             inputProps={{ maxLength: 1000 }}
           />
 
@@ -378,21 +485,29 @@ const PostAd = () => {
               onChange={handleInputChange}
             >
               <FormControlLabel value="new" control={<Radio />} label="New" />
-              <FormControlLabel value="used" control={<Radio />} label="Used" />
+              <FormControlLabel value="old" control={<Radio />} label="Used" />
             </RadioGroup>
+            {errors.condition && (
+              <Typography color="error" variant="caption">
+                {errors.condition}
+              </Typography>
+            )}
           </FormControl>
 
           {/* Price, Date, and Photo Upload Section */}
 
           <TextField
+            type="number"
             required
             fullWidth
+            error={Boolean(errors.price)}
             id="price"
             label="Price"
             name="price"
             value={adData.price}
             onChange={handleInputChange}
             margin="normal"
+            helperText={errors.price || ''}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">Rs.</InputAdornment>
@@ -410,7 +525,7 @@ const PostAd = () => {
                 component="label"
                 key={index}
               >
-                <input hidden accept="image/*" type="file" />
+                <input hidden accept="image/*" type="file" onChange={(event) => handleFileChange(event, index)} />
                 <PhotoCamera />
               </IconButton>
             ))}
@@ -427,6 +542,7 @@ const PostAd = () => {
               bgcolor: "primary.main",
               color: "white",
             }}
+            onClick={handleSubmit}
           >
             Post Now
           </Button>

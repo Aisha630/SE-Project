@@ -2,7 +2,6 @@ import "dotenv/config";
 import cors from "cors";
 import express from "express";
 import path from "path";
-import { fileURLToPath } from "url";
 import mongoose from "mongoose";
 import authRoutes from "./routes/authRoute.js";
 import productRoutes from "./routes/productRoute.js";

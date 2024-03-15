@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Drawer, Typography, Box, ListItemButton, ListItemIcon, ThemeProvider } from '@mui/material'
 import { Link as RouterLink } from "react-router-dom";
 import NavBar from '../components/navbarshop.js';
@@ -7,23 +7,44 @@ import ProductList from '../components/productlisting.js';
 import TuneIcon from '@mui/icons-material/Tune';
 import FilterMenu from '../components/filtermenu.js';
 import MainCategoryToolbar from '../components/maincategoriestoolbar.js';
+import { useNavigate } from 'react-router-dom';
+
+// import Product from '../components/product.js';
 
 
 const ShopItems = () => {
-    const products = [
-        { name: 'Plain black sweatshirt', image: '/img1.png', price: 900 },
-        { name: 'Silk pleated midi skirt', image: '/img2.png', price: 2100 },
-        { name: 'Regular cotton blend t-shirt', image: '/img3.png', price: 2400 },
-        { name: 'Halter top with slit detail', image: '/img4.png', price: 1200 },
-        { name: 'Product 5', image: 'https://via.placeholder.com/300', price: 500 },
-        { name: 'Product 6', image: 'https://via.placeholder.com/300', price: 600 },
-        { name: 'Product 7', image: 'https://via.placeholder.com/300', price: 700 },
-        { name: 'Product 8', image: 'https://via.placeholder.com/300', price: 800 },
-        { name: 'Product 9', image: 'https://via.placeholder.com/300', price: 800 },
-        { name: 'Product 10', image: 'https://via.placeholder.com/300', price: 800 },
-        { name: 'Product 11', image: 'https://via.placeholder.com/300', price: 800 },
-        { name: 'Product 12', image: 'https://via.placeholder.com/300', price: 800 },
-    ]
+
+    const stored_Session = localStorage.getItem('persist:root');
+    const session = JSON.parse(stored_Session);
+    const token = JSON.parse(session.auth).token;
+    const navigate = useNavigate();
+
+
+    const [products, setProducts] = useState([]);
+    
+    useEffect(() => {
+        if (!token) {
+            navigate('/login');
+        }
+        fetch('http://localhost:5003/shop', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const formattedProducts = data.map(product => ({
+                name: product.name,
+                image: 'http://localhost:5003'.concat(product.images[0]), // Assuming the first image in the array is the main image
+                price: product.price
+            }));
+            setProducts(formattedProducts);
+            // console.log(formattedProducts);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }, [token, navigate]);
 
 
     const ListItemLink = ({ text, Icon, to }) => {

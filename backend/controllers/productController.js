@@ -22,12 +22,11 @@ export async function getProduct(req, res) {
 export async function addProduct(req, res) {
   const { name, price, description, brand, category, tags, size, color, condition } = req.body;
   const seller = req.user.username;
-  // Map uploaded file paths to an array
-  const images = req.files.map(file => file.path);
 
-  // Validate that at least one file was uploaded
-  if (images.length < 1) {
-    return res.status(400).send("No files were uploaded.");
+  // Map uploaded file paths to an array
+  let images = undefined;
+  if (req.files) {
+    images = req.files.map(file => file.path.replace(/\\/g, '/').replace(/^\.\./, ''));
   }
 
   // Validate the product details against the Product model
@@ -37,7 +36,7 @@ export async function addProduct(req, res) {
     description,
     brand,
     category,
-    tags,
+    tags: Array.isArray(tags) ? tags : [tags],
     size,
     color,
     seller,

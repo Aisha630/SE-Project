@@ -47,9 +47,10 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
+              <Route path="/sell" element={<PostAd />} />
+              <Route path="/shop" element={<ShopItems />} />
+              <Route path="/shop" element={<ShopItems />} />
               <Route path="/PostAd" element={<PostAd />} />
-              <Route path="/shop" element={<ShopItems />} />
-              <Route path="/shop" element={<ShopItems />} />
               <Route path="/shop/:id" element={<ProductDetails/>} />
               <Route path="*" element={<ErrorPage />} />
             </Routes>
