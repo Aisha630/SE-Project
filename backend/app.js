@@ -1,11 +1,10 @@
 import "dotenv/config";
+import authRoutes from "./routes/authRoute.js";
+import authorizeUser from "./middleware/authMiddleware.js";
 import cors from "cors";
 import express from "express";
-import path from "path";
 import mongoose from "mongoose";
-import authRoutes from "./routes/authRoute.js";
 import productRoutes from "./routes/productRoute.js";
-import authorizeUser from "./middleware/authMiddleware.js";
 
 const app = express();
 
@@ -26,6 +25,11 @@ app.use(authRoutes);
 app.use(authorizeUser);
 app.use(productRoutes);
 
+if (!["PROD", "DEV"].includes(process.env.BUILD_MODE)) {
+  console.error(`Invalid build mode ${process.env.BUILD_MODE}`);
+  process.exit(1);
+}
+
 // Connect to MongoDB
 mongoose
   .connect(process.env.MONGO_URI)
@@ -33,7 +37,12 @@ mongoose
     const PORT = process.env.PORT;
 
     app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
+      console.log(
+        `Server running in ${process.env.BUILD_MODE} mode, on port ${PORT}.`
+      );
     });
   })
-  .catch((err) => console.error(err));
+  .catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
