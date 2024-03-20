@@ -16,7 +16,10 @@ export async function signup(req, res) {
   }
 
   // Check for password strength
-  if (!validator.isStrongPassword(password)) {
+  if (
+    process.env.BUILD_MODE == "PROD" &&
+    !validator.isStrongPassword(password)
+  ) {
     return res.status(400).json({ error: "Password not strong enough" });
   }
 
@@ -44,6 +47,10 @@ export async function signup(req, res) {
     password: hash,
   });
 
+  if (process.env.BUILD_MODE == "DEV") {
+    user.verified = true;
+  }
+
   // Generate a verification token to ensure email ID is valid
   const token = crypto.randomBytes(20).toString("hex");
   const verificationToken = new VerificationToken({
@@ -54,13 +61,21 @@ export async function signup(req, res) {
   // Save user and token to database
   try {
     await user.save();
-    await verificationToken.save();
 
-    await sendVerificationEmail(user, token);
+    if (process.env.BUILD_MODE == "PROD") {
+      await verificationToken.save();
+      await sendVerificationEmail(user, token);
 
-    res
-      .status(200)
-      .json({ message: "Please check your email to verify your account." });
+      res
+        .status(200)
+        .json({ message: "Please check your email to verify your account." });
+    } else {
+      const token = jwt.sign({ username }, process.env.JWT_PRIVATE_KEY, {
+        expiresIn: "1h",
+      });
+
+      res.status(200).json({ username, token });
+    }
   } catch (err) {
     console.log(err.message);
     res.status(500).json({ error: "Server error" });
@@ -156,7 +171,6 @@ export async function resendVerification(req, res) {
     res.json({
       message: "Verification email resent. Please check your inbox.",
     });
-
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Server error" });
