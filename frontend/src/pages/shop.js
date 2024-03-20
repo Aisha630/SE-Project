@@ -8,42 +8,34 @@ import TuneIcon from '@mui/icons-material/Tune';
 import FilterMenu from '../components/filtermenu.js';
 import MainCategoryToolbar from '../components/maincategoriestoolbar.js';
 import { useNavigate } from 'react-router-dom';
-
-// import Product from '../components/product.js';
-
+import { useSelector } from 'react-redux';
 
 const ShopItems = () => {
 
-    const stored_Session = localStorage.getItem('persist:root');
-    const session = JSON.parse(stored_Session);
-    const token = JSON.parse(session.auth).token;
     const navigate = useNavigate();
-
+    const token = useSelector((state) => state.auth.token);
 
     const [products, setProducts] = useState([]);
-    
+
     useEffect(() => {
-        if (!token) {
-            navigate('/login');
-        }
         fetch('http://localhost:5003/shop', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         })
-        .then(response => response.json())
-        .then(data => {
-            const formattedProducts = data.map(product => ({
-                name: product.name,
-                image: 'http://localhost:5003'.concat(product.images[0]), // Assuming the first image in the array is the main image
-                price: product.price
-            }));
-            setProducts(formattedProducts);
-            // console.log(formattedProducts);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                const formattedProducts = data.map(product => ({
+                    name: product.name,
+                    image: 'http://localhost:5003'.concat(product.images[0]), // Assuming the first image in the array is the main image
+                    price: product.price
+                }));
+                setProducts(formattedProducts);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                navigate('/login');
+            });
     }, [token, navigate]);
 
 
@@ -82,15 +74,11 @@ const ShopItems = () => {
         setIsFilterMenuOpen(false);
     };
 
-    
-
     return (
         <ThemeProvider theme={theme}>
             <Box>
                 <NavBar />
             </Box>
-
-            
             <MainCategoryToolbar />
 
             <Box display="flex" justifyContent="left" mt={2} ml={2} sx={{ width: "15%", fontWeight: "normal", }} >
