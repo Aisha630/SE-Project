@@ -45,24 +45,21 @@ export async function signup(req, res) {
     username,
     email,
     password: hash,
+    verified: process.env.BUILD_MODE == "DEV",
   });
 
-  if (process.env.BUILD_MODE == "DEV") {
-    user.verified = true;
-  }
-
-  // Generate a verification token to ensure email ID is valid
-  const token = crypto.randomBytes(20).toString("hex");
-  const verificationToken = new VerificationToken({
-    username,
-    verificationToken: token,
-  });
-
-  // Save user and token to database
+  // Save user to database
   try {
     await user.save();
 
     if (process.env.BUILD_MODE == "PROD") {
+      // Generate a verification token to ensure email ID is valid
+      const token = crypto.randomBytes(20).toString("hex");
+      const verificationToken = new VerificationToken({
+        username,
+        verificationToken: token,
+      });
+
       await verificationToken.save();
       await sendVerificationEmail(user, token);
 

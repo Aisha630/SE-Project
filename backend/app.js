@@ -1,4 +1,5 @@
 import "dotenv/config";
+import Image from "./models/imageModel.js";
 import authRoutes from "./routes/authRoute.js";
 import authorizeUser from "./middleware/authMiddleware.js";
 import cors from "cors";
@@ -17,8 +18,16 @@ app.use(
   })
 );
 
-// Serve static files from uploads directory
-app.use("/uploads", express.static("../uploads"));
+// TODO: Move this elsewhere
+app.use("/images/:filename", async (req, res) => {
+  const image = await Image.findOne({ filename: req.params.filename });
+  if (!image) {
+    return res.sendStatus(404);
+  }
+
+  // res.set("Content-Type", image.mimeType);
+  res.send(image.data);
+});
 
 // Route handling
 app.use(authRoutes);
