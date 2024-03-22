@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { loginUser } from '../stores/authSlice';
-import { Box, Button, Container, TextField, Typography, ThemeProvider, IconButton, InputAdornment, Link } from '@mui/material';
+import { Box, Button, Container, TextField, Typography, ThemeProvider, IconButton, InputAdornment, Link, ListItem, List, ListItemIcon, ListItemText, FormControlLabel, FormControl, FormGroup, CheckBox, Checkbox } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import theme from '../themes/authThemes.js';
 
@@ -24,7 +24,7 @@ const Login = () => {
       navigate("/");
     } catch (error) {
       console.error('Failed to login:', error);
-      toast.error("Invalid credentials");
+      toast.error(error);
     }
   };
 
@@ -34,11 +34,11 @@ const Login = () => {
         display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh',
       }}>
         <Box sx={{
-          backgroundColor: theme.palette.secondary.main, padding: theme.spacing(10), borderRadius: theme.shape.borderRadius,
-          display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: theme.shadows[1],
+          backgroundColor: theme.palette.secondary.main, padding: theme.spacing(9), borderRadius: theme.shape.borderRadius,
+          boxShadow: theme.shadows[1],
         }}>
           <Box component="img" src="sta_logo.png" alt="STA Logo" sx={{ width: "60%", height: 'auto' }} />
-          <Typography component="h6" variant="h6" sx={{ fontWeight: "bold" }}>Second Time Around</Typography>
+          <Typography component="h6" variant="h6" sx={{ fontWeight: "bold", mt: 1 }}>Second Time Around</Typography>
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1, width: '100%' }}>
             <TextField margin="normal" required fullWidth id="username" label="Username" name="username"
               value={credentials.username} onChange={handleChange} variant="filled" sx={{ input: "green" }} />
@@ -53,6 +53,7 @@ const Login = () => {
                   </InputAdornment>
                 ),
               }} />
+
             <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, backgroundColor: "primary.main", color: "black", '&:hover': { backgroundColor: "primary.dark" }, width: "50%" }}>
               Log In
             </Button>

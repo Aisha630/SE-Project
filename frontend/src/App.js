@@ -6,6 +6,7 @@ import PostAd from './pages/PostAd';
 import ShopItems from './pages/shop';
 import ErrorPage from './pages/errorpage';
 import ProductDetails from './pages/productDetails';
+import VerificationPage from './pages/verificationPage';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
@@ -51,7 +52,7 @@ function App() {
               <Route path="/shop" element={<ShopItems />} />
               <Route path="/shop" element={<ShopItems />} />
               <Route path="/PostAd" element={<PostAd />} />
-              <Route path="/shop/:id" element={<ProductDetails/>} />
+              <Route path="/shop/:id" element={<ProductDetails />} />
               <Route path="*" element={<ErrorPage />} />
             </Routes>
           </BrowserRouter>

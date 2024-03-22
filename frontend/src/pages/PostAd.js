@@ -20,40 +20,11 @@ import {
 import { PhotoCamera } from "@mui/icons-material";
 import theme from "../themes/authThemes.js";
 
-const categories = {
-  Clothing: [
-    "Eastern",
-    "Trousers",
-    "Jeans",
-    "Dresses",
-    "Jumpsuits",
-    "Skirts",
-    "Shorts",
-    "T-shirts",
-    "Formal",
-  ],
-  Technology: [
-    "Phone",
-    "Laptop",
-    "Headphones",
-    "Accessories",
-    "Sony",
-    "Apple",
-    "HP",
-    "Samsung",
-    "Lenovo",
-  ],
-  Miscellaneous: ["Watch", "Jewelry", "Shoes", "Bags"],
-};
+import details from "../config.json";
 
-const sizes = [
-  "xs",
-  "s",
-  "m",
-  "l",
-  "xl"
-]
-const colors = ["purple", "pink", "red", "orange", "blue", "black", "white"];
+const categories = details.categories;
+const sizes = details.sizes
+const colors = details.colors
 
 const PostAd = () => {
   const [adData, setAdData] = useState({
@@ -70,13 +41,12 @@ const PostAd = () => {
     endDate: "",
     modeOfAd: "",
   });
-
+  
   const [files, setFiles] = useState([]);
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
   const [errors, setErrors] = useState({});
-  // console.log("The token is ", token);
-  // console.log("The seller is ", user);
+  const navigate = useNavigate();
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -131,13 +101,12 @@ const PostAd = () => {
     return isValid;
   };
 
-  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!validateForm()) {
-      return; 
+      return;
     }
 
     const formData = new FormData();
@@ -169,18 +138,21 @@ const PostAd = () => {
         navigate('/shop');
       } else {
         console.error('Submission Failed:', response.statusText);
-        // console.error('Response:', response);
       }
     } catch (error) {
       console.error('Error submitting form:', error);
     }
   };
 
-
   const subcategories = adData.category ? categories[adData.category] : [];
 
   return (
     <ThemeProvider theme={theme}>
+      <Box style={{ display: 'flex', alignItems: 'flex-start',  justifyContent: 'flex-start' }}>
+        <IconButton onClick={() => navigate('/')} edge="start" sx={{ margin: "10px" }}>
+          <img src="backIcon.png" alt="Back Icon" style={{ width: 65, height: 50, display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }} />
+        </IconButton>
+      
 
       <Container
         component="main"
@@ -195,6 +167,7 @@ const PostAd = () => {
           backgroundColor: theme.palette.secondary.main,
         }}
       >
+
         <Box
           component="form"
           onSubmit={handleSubmit}
@@ -548,7 +521,10 @@ const PostAd = () => {
           </Button>
         </Box>
       </Container>
+      {/* </div> */}
+      </Box>
     </ThemeProvider>
+
   );
 };
 
