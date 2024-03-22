@@ -53,13 +53,13 @@ const joiSchema = Joi.object({
     otherwise: Joi.forbidden(),
   }),
 
-  condition: Joi.string().valid('new', 'old').required(),
-  images: Joi.array().items(Joi.string().required()).min(1).max(5).required(),
+  condition: Joi.string().valid("new", "old").required(),
+  images: Joi.array().items(Joi.string().required()).min(1).max(5),
 
   // Seller's unique username
   seller: Joi.string().required(),
   // Set True when customer checkout with product, can be reset by seller
-  isHold: Joi.boolean().default(false)
+  isHold: Joi.boolean().default(false),
 });
 
 // Convert Joi schema to Mongoose schema and validate
