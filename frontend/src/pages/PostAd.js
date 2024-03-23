@@ -63,16 +63,9 @@ const PostAd = () => {
   };
 
   const handleFileChange = (event, index) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const newFiles = [...files];
-        newFiles[index] = reader.result;
-        setFiles(newFiles);
-      };
-      reader.readAsDataURL(file);
-    }
+    const newFiles = [...files];
+    newFiles[index] = event.target.files[0];
+    setFiles(newFiles);
   };
 
   const handleTagChange = (event) => {
@@ -584,7 +577,7 @@ const PostAd = () => {
                     {files[index] && (
                       <Box sx={{ mt: 2 }}>
                         <img
-                          src={files[index]}
+                          src={URL.createObjectURL(files[index])}
                           alt={`upload-preview-${index}`}
                           style={{ width: "100%", height: 80 }} // size of displayed uploaded image
                         />

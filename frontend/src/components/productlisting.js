@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Grid, Pagination } from '@mui/material';
-import Product from './product'; 
-import {Box} from '@mui/material';
+import Product from './product';
+import { Box } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 
@@ -21,14 +21,14 @@ const ProductList = ({ products }) => {
         <Box>
             <Grid container spacing={1}>
                 {displayedProducts.map((product, index) => (
-                    <Link 
-                    key={index} 
-                    to={`/shop/${product.id}`} 
-                    style={{ 
-                        textDecoration: 'none',
-                        color: 'inherit',
-                        display: 'contents', 
-                    }}
+                    <Link
+                        key={index}
+                        to={`/shop/${product.id}`}
+                        style={{
+                            textDecoration: 'none',
+                            color: 'inherit',
+                            display: 'contents',
+                        }}
                     >
                         <Product {...product} />
                     </Link>
