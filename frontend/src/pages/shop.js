@@ -28,7 +28,8 @@ const ShopItems = () => {
                 const formattedProducts = data.map(product => ({
                     name: product.name,
                     image: 'http://localhost:5003'.concat(product.images[0]), // Assuming the first image in the array is the main image
-                    price: product.price
+                    price: product.price,
+                    id: product._id
                 }));
                 setProducts(formattedProducts);
             })
