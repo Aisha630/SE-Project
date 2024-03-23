@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer'
-import authEmail from './authEmail.js'
-import checkoutEmail from './checkoutEmail'
+import authEmail from '../util/authEmail.js'
+import checkoutEmail from '../util/checkoutEmail.js'
 
 const transporter = nodemailer.createTransport({
     service: "gmail",

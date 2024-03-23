@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, CardMedia, Box } from '@mui/material';
+import { Link } from 'react-router-dom'
 
 function ImageCard({ imageUrl, style }) {
   return (
@@ -20,10 +21,11 @@ function ImageCard({ imageUrl, style }) {
   );
 }
 
-function OverlayImageCards({ bottomCardProps, topCardProps }) {
+function OverlayImageCards({ bottomCardProps, topCardProps, link }) {
 
   return (
     <Box sx={{ position: 'relative', width: 420, height: 520, margin: 'auto' }}>
+      <Link to={link}>
       <ImageCard {...bottomCardProps} style={{
         mt: 5, width: 'calc(100% - 100px)',
         height: 'calc(100% - 100px)', opacity: 0.7
@@ -38,6 +40,7 @@ function OverlayImageCards({ bottomCardProps, topCardProps }) {
           height: 'calc(100% - 100px)',
         }}
       />
+      </Link>
     </Box>
   );
 }
