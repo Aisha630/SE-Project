@@ -43,7 +43,7 @@ export async function addProduct(req, res) {
     description,
     brand,
     category,
-    tags: Array.isArray(tags) ? tags : [tags],
+    tags: tags ? (Array.isArray(tags) ? tags : [tags]) : [],
     size,
     color,
     seller,

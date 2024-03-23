@@ -2,19 +2,19 @@ import juice from "juice";
 import fs from "fs";
 
 export default function checkoutEmail(seller, buyer, product) {
-  const css = fs.readFileSync("./emailStyles.css");
+  const css = fs.readFileSync("./util/emailStyles.css").toString();
   let html = `
         <div class="email-container">
             <div class="email-header">
                 <h2>Congratulations on Your Sale!</h2>
             </div>
             <div class="email-body">
-                <p>Hello ${seller.name},</p>
+                <p>Hello ${seller.username},</p>
                 <p>Your product has just been purchased! Here are the details of the sale:</p>
                 <ul>
                     <li>Product name: <strong>${product.name}</strong></li>
                     <li>Price: <strong>${product.price}</strong></li>
-                    <li>Buyer's Name: <strong>${buyer.name}</strong></li>
+                    <li>Buyer's Name: <strong>${buyer.username}</strong></li>
                 </ul>
                 <p>The buyer has been CC-ed in this email so that you two may coordinate the payment and delivery.</p>
                 <p>Please make sure to change the status of this product to "Sold" in your Dashboard once the payment is complete.<p/>

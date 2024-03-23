@@ -2,14 +2,13 @@ import juice from "juice";
 import fs from "fs";
 
 export default function authEmail(user, verificationLink) {
-  const css = fs.readFileSync("./emailStyles.css");
+  const css = fs.readFileSync("./util/emailStyles.css").toString();
   let html = `
         <div class="email-container">
             <div class="email-header">
-                <h2>Congratulations on Your Sale!</h2>
+                <h2>Welcome to Second Time Around!</h2>
             </div>
             <div class="email-body">
-                <h2>Welcome to Second Time Around!</h2>
                 <p>Thank you for signing up. Please click the button below to verify your email address and activate your account.</p>
                 <a href="${verificationLink}" class="verify-button">Verify Email</a>
                 <p>If you did not request this, please ignore this email.</p>

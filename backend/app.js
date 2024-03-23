@@ -18,7 +18,6 @@ app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(multer().none());
 
 // TODO: Move this elsewhere
 app.get("/images/:filename", async (req, res) => {
