@@ -1,10 +1,11 @@
-import User from "../models/userModel.js";
-import VerificationToken from "../models/verificationTokenModel.js";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
-import { sendVerificationEmail } from "../services/emailService.js";
 import validator from "validator";
+
+import User from "../models/userModel.js";
+import VerificationToken from "../models/verificationTokenModel.js";
+import { sendVerificationEmail } from "../services/emailService.js";
 
 export async function signup(req, res) {
   const { username, email, password } = req.body;

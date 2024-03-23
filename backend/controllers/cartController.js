@@ -51,12 +51,10 @@ export async function checkout(req, res) {
 
     await Promise.all(itemCheckouts);
     res.sendStatus(200);
-
   } catch (error) {
-    res.status(500).json({ error: 'An error occurred during checkout' });
+    res.status(500).json({ error: "An error occurred during checkout" });
   }
 }
-
 
 function getIDs(req, _) {
   return (req.cookies && req.cookies.cart) || [];
@@ -64,8 +62,7 @@ function getIDs(req, _) {
 
 async function fetchCartItems(cartIDs) {
   const cartItems = await Promise.all(
-    cartIDs.map(id => Product.findOne({ _id: id, isHold: false }))
+    cartIDs.map((id) => Product.findOne({ _id: id, isHold: false }))
   );
-  return cartItems.filter(item => item !== null);
-
+  return cartItems.filter((item) => item !== null);
 }

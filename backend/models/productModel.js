@@ -1,7 +1,8 @@
 import Joi from "joi";
-import config from "../config.js";
 import joigoose from "joigoose";
 import mongoose from "mongoose";
+
+import config from "../config.js";
 
 // Checks if valid category from config exists
 function isValidCategory(category, helpers) {

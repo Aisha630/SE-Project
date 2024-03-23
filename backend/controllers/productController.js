@@ -1,6 +1,7 @@
+import path from "path";
+
 import Image from "../models/imageModel.js";
 import Product from "../models/productModel.js";
-import path from "path";
 
 // Retrieve all products that are not currently on hold
 export async function getAllProducts(_, res) {

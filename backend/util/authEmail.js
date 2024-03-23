@@ -1,9 +1,9 @@
-import juice from 'juice';
-import fs from 'fs';
+import juice from "juice";
+import fs from "fs";
 
 export default function authEmail(user, verificationLink) {
-    const css = fs.readFileSync('./emailStyles.css');
-    let html = `
+  const css = fs.readFileSync("./emailStyles.css");
+  let html = `
         <div class="email-container">
             <div class="email-header">
                 <h2>Congratulations on Your Sale!</h2>
@@ -21,12 +21,12 @@ export default function authEmail(user, verificationLink) {
             </div>
         </div>
     `;
-    html = juice.inlineContent(html, css);
+  html = juice.inlineContent(html, css);
 
-    return {
-        from: '"Second Time Around" <secondtimearound.gp2@gmail.com>',
-        to: user.email,
-        subject: "Verify Your Email",
-        html: html,
-    };
+  return {
+    from: '"Second Time Around" <secondtimearound.gp2@gmail.com>',
+    to: user.email,
+    subject: "Verify Your Email",
+    html: html,
+  };
 }

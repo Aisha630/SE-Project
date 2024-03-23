@@ -1,40 +1,40 @@
 .email-container {
-    font-family: Arial, sans-serif;
-    color: #333;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border: 1px solid #ddd;
-    margin: 20px;
-    text-align: center;
+  font-family: Arial, sans-serif;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+  margin: 20px;
+  text-align: center;
 }
 
 .email-header {
-    background-color: #58A75B;
-    color: white;
-    padding: 10px;
-    border-radius: 5px 5px 0 0;
+  background-color: #58a75b;
+  color: white;
+  padding: 10px;
+  border-radius: 5px 5px 0 0;
 }
 
 .email-body {
-    padding: 20px;
+  padding: 20px;
 }
 
 .email-footer {
-    padding-top: 20px;
-    border-top: 1px solid #ddd;
-    margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #ddd;
+  margin-top: 20px;
 }
 
 .verify-button {
-    background-color: #58A75B;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    border-radius: 5px;
-    font-size: 16px;
-    margin: 10px 0;
+  background-color: #58a75b;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 5px;
+  font-size: 16px;
+  margin: 10px 0;
 }

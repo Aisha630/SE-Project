@@ -1,25 +1,24 @@
 import "dotenv/config";
-import Image from "./models/imageModel.js";
-import authRoutes from "./routes/authRoute.js";
-import authorizeUser from "./middleware/authMiddleware.js";
-import cartRoutes from "./routes/cartRoute.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import mongoose from "mongoose";
+import multer from "multer";
+
+import Image from "./models/imageModel.js";
+import authRoutes from "./routes/authRoute.js";
+import authorizeUser from "./middleware/authMiddleware.js";
+import cartRoutes from "./routes/cartRoute.js";
 import productRoutes from "./routes/productRoute.js";
 
 const app = express();
 
 // Middleware setup
+app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
-app.use(cookieParser());
-app.use(
-  express.urlencoded({
-    extended: true,
-  })
-);
+app.use(express.urlencoded({ extended: true }));
+app.use(multer().none());
 
 // TODO: Move this elsewhere
 app.get("/images/:filename", async (req, res) => {
