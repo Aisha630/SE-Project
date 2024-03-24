@@ -15,13 +15,21 @@ const ShopItems = () => {
     const navigate = useNavigate();
     const token = useSelector((state) => state.auth.token);
 
+    const [category, setCategory] = useState('Clothing')
     const [products, setProducts] = useState([]);
-
+  
+    const filterCriteria = {
+        category: category,
+    };
+    
     useEffect(() => {
-        fetch('http://localhost:5003/shop', {
+        fetch('http://localhost:5003/filter', {
+            method : 'POST',
             headers: {
-                'Authorization': `Bearer ${token}`
-            }
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body : JSON.stringify(filterCriteria)
         })
             .then(response => response.json())
             .then(data => {
@@ -32,12 +40,14 @@ const ShopItems = () => {
                     id: product._id
                 }));
                 setProducts(formattedProducts);
+                console.log("Clothing related: ",formattedProducts)
+                console.log(data)
             })
             .catch(error => {
                 console.error('Error:', error);
                 navigate('/login');
             });
-    }, [token, navigate]);
+    }, [token, navigate, category]);
 
 
     const ListItemLink = ({ text, Icon, to }) => {
@@ -80,7 +90,7 @@ const ShopItems = () => {
             <Box>
                 <NavBar />
             </Box>
-            <MainCategoryToolbar />
+            <MainCategoryToolbar setCategory={setCategory}/>
 
             <Box display="flex" justifyContent="left" mt={2} ml={2} sx={{ width: "15%", fontWeight: "normal", }} >
                 <ListItemLink text={"Filter and Order"} Icon={TuneIcon} to={"#"} sx={{
@@ -99,7 +109,7 @@ const ShopItems = () => {
                 onClose={handleDrawerClose}
                 style={{ opacity: 0.95 }}
             >
-                <FilterMenu closeFilterMenu={handleDrawerClose} />
+                <FilterMenu closeFilterMenu={handleDrawerClose} setProducts={setProducts} maincategory={category}/>
             </Drawer>
 
             <Box sx={{ padding: '30px' }}>

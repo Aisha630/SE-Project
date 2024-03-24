@@ -1,12 +1,13 @@
 import React from 'react'
 import { Button, AppBar, Toolbar, Box, Typography } from '@mui/material'
 
-const MainCategoryToolbar = () => {
+const MainCategoryToolbar = ({setCategory}) => {
 
     const navItems = ['Clothing', 'Technology', 'Miscellaneous']
 
     const handleMainCategory = (event) => {
         console.log(event);
+        setCategory(event);
     }
   return (
     <AppBar component={'nav'} position="static" color="default" sx={{ backgroundColor:"#e0e0e0", boxShadow: "none", borderBottom: "1px solid #e0e0e0" }}>

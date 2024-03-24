@@ -5,7 +5,6 @@ const PriceRangeSlider = ({value, handleChange, valuetext}) => {
     
     const [minValue, maxValue] = value;
     
-    
 
   return (
     <Box sx={{color:'inherit', paddingLeft:'20px'}}>
