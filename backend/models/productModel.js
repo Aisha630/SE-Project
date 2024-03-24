@@ -30,10 +30,10 @@ function isValidTags(tags, helpers) {
 
 // Define joi schema for product validation
 const joiSchema = Joi.object({
-  name: Joi.string().max(64).required(),
+  name: Joi.string().max(100).required(),
   price: Joi.number().min(0).required(),
-  description: Joi.string().max(100),
-  brand: Joi.string().max(64).required(),
+  description: Joi.string().max(300),
+  brand: Joi.string().max(100).required(),
 
   category: Joi.string().custom(isValidCategory).required(),
   tags: Joi.array().items(Joi.string()).custom(isValidTags).default([]),

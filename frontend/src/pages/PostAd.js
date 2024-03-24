@@ -106,6 +106,16 @@ const PostAd = () => {
       newErrors.modeOfAd = "Please select a mode of ad";
     }
 
+    if (!adData.brand) {
+      isValid = false;
+      newErrors.brand = "Brand is required";
+    }
+
+    if (!adData.description) {
+      isValid = false;
+      newErrors.description = "Description must be non-empty";
+    }
+
     setErrors(newErrors);
     return isValid;
   };
