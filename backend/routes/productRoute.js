@@ -8,6 +8,7 @@ import {
   getProduct,
   deleteProduct,
   filterProducts,
+  fetchLatest,
 } from "../controllers/productController.js";
 
 const router = express.Router();
@@ -36,5 +37,6 @@ router.delete("/shop/:id", deleteProduct);
 
 router.post("/sell", upload, addProduct);
 router.get("/filter", filterProducts);
+router.get("/latest", fetchLatest);
 
 export default router;

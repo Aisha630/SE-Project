@@ -9,6 +9,7 @@ const joiSchema = Joi.object({
   password: Joi.string().min(8).required(),
   // Check for users with complete email verification
   verified: Joi.boolean().default(false),
+  avatar: Joi.string().required(),
 });
 
 // Convert Joi schema to Mongoose schema and validate

@@ -1,5 +1,4 @@
 import path from "path";
-
 import Image from "../models/imageModel.js";
 import Product from "../models/productModel.js";
 
@@ -130,4 +129,18 @@ export async function filterProducts(req, res) {
   // Query the database with the built query
   const products = await Product.find(query);
   res.json(products);
+}
+
+export async function fetchLatest(req, res) {
+  const { limit } = req.query;
+
+  try {
+    const products = await Product.find({})
+      .sort({ createdAt: -1 })
+      .limit(limit);
+    res.json(products);
+
+  } catch (error) {
+    res.status(500).json({ error: "Server error." });
+  }
 }

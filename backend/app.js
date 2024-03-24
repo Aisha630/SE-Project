@@ -3,13 +3,13 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import mongoose from "mongoose";
-import multer from "multer";
 
 import Image from "./models/imageModel.js";
 import authRoutes from "./routes/authRoute.js";
 import authorizeUser from "./middleware/authMiddleware.js";
 import cartRoutes from "./routes/cartRoute.js";
 import productRoutes from "./routes/productRoute.js";
+import userRoutes from "./routes/userRoute.js";
 
 const app = express();
 
@@ -35,6 +35,7 @@ app.use(authRoutes);
 app.use(authorizeUser);
 app.use(productRoutes);
 app.use(cartRoutes);
+app.use(userRoutes);
 
 if (!["PROD", "DEV"].includes(process.env.BUILD_MODE)) {
   console.error(`Invalid build mode ${process.env.BUILD_MODE}`);

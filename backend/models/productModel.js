@@ -65,7 +65,7 @@ const joiSchema = Joi.object({
 
 // Convert Joi schema to Mongoose schema and validate
 const productSchema = new mongoose.Schema(
-  joigoose(mongoose).convert(joiSchema)
+  joigoose(mongoose).convert(joiSchema), { timestamps: true }
 );
 productSchema.set("validateBeforeSave", false);
 productSchema.statics.validate = (product) => joiSchema.validate(product);

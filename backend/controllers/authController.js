@@ -9,20 +9,21 @@ import { sendVerificationEmail } from "../services/emailService.js";
 
 export async function signup(req, res) {
   const { username, email, password } = req.body;
+  const avatar = `https://api.dicebear.com/8.x/thumbs/svg?backgroundColor=F97171&radius=30&seed=${username}`;
 
   // Validate user input against the user model
-  const error = User.validate({ username, email, password }).error;
+  const error = User.validate({ username, email, password, avatar }).error;
   if (error) {
     return res.status(400).json({ error: error.details[0].message });
   }
 
   // Check for password strength
-  if (
-    process.env.BUILD_MODE == "PROD" &&
-    !validator.isStrongPassword(password)
-  ) {
-    return res.status(400).json({ error: "Password not strong enough" });
-  }
+  //if (
+  //  process.env.BUILD_MODE == "PROD" &&
+  //  !validator.isStrongPassword(password)
+  //) {
+  //  return res.status(400).json({ error: "Password not strong enough" });
+  //}
 
   // Ensure only lums domains are authorized
   if (!email.endsWith("@lums.edu.pk")) {
@@ -46,6 +47,7 @@ export async function signup(req, res) {
     username,
     email,
     password: hash,
+    avatar,
     verified: process.env.BUILD_MODE == "DEV",
   });
 
