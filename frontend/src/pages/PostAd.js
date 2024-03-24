@@ -5,22 +5,21 @@ import {
   Box,
   Button,
   Container,
-  TextField,
   Typography,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  FormControl,
-  FormLabel,
   IconButton,
-  InputAdornment,
   ThemeProvider,
-  Checkbox,
 } from "@mui/material";
-import { PhotoCamera } from "@mui/icons-material";
 import theme from "../themes/authThemes.js";
-
+import { toast } from "react-toastify";
 import details from "../config.json";
+import AdDetails from "../components/adDetails";
+import CategorySelection from "../components/categorySelection";
+import ModeOfAdSelection from "../components/adModeSelection";
+import Specifications from "../components/specifications";
+import ConditionSelection from "../components/conditionSelection";
+import PriceSelection from "../components/priceSelection.js";
+import ImageUpload from "../components/imageUpload.js";
+import TagSelection from "../components/tagSelection.js";
 
 const categories = details.categories;
 const sizes = details.sizes;
@@ -78,7 +77,7 @@ const PostAd = () => {
     });
   };
 
-  const validateForm = () => {
+  const validateAd = () => {
     let newErrors = {};
     let isValid = true;
 
@@ -102,6 +101,11 @@ const PostAd = () => {
       newErrors.category = "Category is required";
     }
 
+    if (!adData.modeOfAd) {
+      isValid = false;
+      newErrors.modeOfAd = "Please select a mode of ad";
+    }
+
     setErrors(newErrors);
     return isValid;
   };
@@ -109,9 +113,10 @@ const PostAd = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-
-
-    if (!validateForm()) {
+    if (!validateAd()) {
+      Object.values(errors).forEach((error) => {
+        toast.error(error);
+      });
       return;
     }
     console.log("Ad data is ", adData);
@@ -146,11 +151,17 @@ const PostAd = () => {
         const result = await response.json();
         console.log("Submission Success:", result);
         navigate("/shop");
+      } else if (response.status === 401) {
+        toast.error("You need to log in to post an ad.");
+        navigate("/login");
       } else {
-        console.error("Submission Failed:", response.statusText);
+        const errorData = await response.json();
+        console.error("Submission Failed:", errorData.error);
+        toast.error(`Submission Failed: ${errorData.error}`);
       }
     } catch (error) {
       console.error("Error submitting form:", error);
+      toast.error("Network error occurred. Please try again later.");
     }
   };
 
@@ -214,385 +225,64 @@ const PostAd = () => {
             </Typography>
 
             {/* Category Section */}
-            <Typography
-              variant="h6"
-              sx={{ mb: 2, alignSelf: "flex-start", color: "slategrey" }}
-            >
-              Category
-            </Typography>
-            <Box
-              sx={{
-                bgcolor: theme.palette.secondary.main,
-                p: 2,
-                borderRadius: 2,
-                mb: 3,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <RadioGroup
-                row
-                name="category"
-                value={adData.category}
-                onChange={handleInputChange}
-                sx={{
-                  justifyContent: "center",
-                }}
-              >
-                {Object.keys(categories).map((category) => (
-                  <FormControlLabel
-                    key={category}
-                    value={category}
-                    control={<Radio />}
-                    label={category}
-                  />
-                ))}
-              </RadioGroup>
-              {errors.category && (
-                <Typography color="error" variant="caption">
-                  {errors.category}
-                </Typography>
-              )}
-            </Box>
+            <CategorySelection
+              categories={categories}
+              adData={adData}
+              handleInputChange={handleInputChange}
+              errors={errors}
+            />
 
             {/* tags Section */}
             {adData.category && (
+              <TagSelection
+                subcategories={subcategories}
+                adData={adData}
+                handleTagChange={handleTagChange}
+                theme={theme}
+              />
+            )}
+
+            {adData.category === "Clothing" && (
               <>
-                <Typography
-                  variant="h6"
-                  sx={{ mb: 2, alignSelf: "flex-start", color: "slategrey" }}
-                >
-                  Subcategories
-                </Typography>
-                <Box
-                  sx={{
-                    bgcolor: theme.palette.secondary.main,
-                    p: 2,
-                    borderRadius: 2,
-                    mb: 3,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      justifyContent: "center",
-                      display: "flex",
-                      flexDirection: "row",
-                      flexWrap: "wrap",
-                    }}
-                  >
-                    {subcategories.map((tag) => (
-                      <FormControlLabel
-                        key={tag}
-                        control={
-                          <Checkbox
-                            checked={adData.tags.includes(tag)}
-                            onChange={handleTagChange}
-                            value={tag}
-                            name="tags"
-                          />
-                        }
-                        label={tag}
-                      />
-                    ))}
-                  </Box>
-                </Box>
+                {/* Specifications Section inside the green box */}
+                <Specifications
+                  adData={adData}
+                  handleInputChange={handleInputChange}
+                  sizes={sizes}
+                  colors={colors}
+                />
               </>
             )}
 
-            <Typography
-              variant="h6"
-              sx={{ mb: 2, alignSelf: "flex-start", color: "slategrey" }}
-            >
-              Specifications
-            </Typography>
-
-            {/* Specifications Section inside the green box */}
-            <Box
-              sx={{
-                bgcolor: theme.palette.secondary.main,
-                p: 2,
-                borderRadius: 2,
-                mb: 3,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              {/* Size and Color Options */}
-              <Box
-                sx={{
-                  pl: 2,
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 2,
-                  justifyContent: "center",
-                }}
-              >
-                {/* Size Options */}
-                <Box>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      color: "black",
-                      textAlign: "left",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Size
-                  </Typography>
-                  <RadioGroup
-                    row
-                    name="size"
-                    value={adData.size}
-                    onChange={handleInputChange}
-                    sx={{
-                      justifyContent: "center",
-                    }}
-                  >
-                    {sizes.map((size) => (
-                      <FormControlLabel
-                        key={size}
-                        value={size}
-                        control={<Radio size="small" />}
-                        label={
-                          <Typography
-                            sx={{
-                              color: "black",
-                              textTransform: "uppercase",
-                              justifyContent: "center",
-                            }}
-                          >
-                            {size}
-                          </Typography>
-                        }
-                      />
-                    ))}
-                  </RadioGroup>
-                </Box>
-                <Box>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      color: "black",
-                      textAlign: "left",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Color
-                  </Typography>
-                  <RadioGroup
-                    row
-                    name="color"
-                    value={adData.color}
-                    onChange={handleInputChange}
-                    sx={{
-                      justifyContent: "center",
-                    }}
-                  >
-                    {colors.map((color) => (
-                      <FormControlLabel
-                        key={color}
-                        value={color}
-                        control={<Radio size="small" />}
-                        label={
-                          <Typography
-                            sx={{
-                              color: "black",
-                              textTransform: "capitalize",
-                              justifyContent: "center",
-                            }}
-                          >
-                            {color}
-                          </Typography>
-                        }
-                      />
-                    ))}
-                  </RadioGroup>
-                </Box>
-              </Box>
-            </Box>
-
             {/* Mode of Ad Section */}
-            <Typography variant="h6" sx={{ mb: 2, alignSelf: "flex-start" }}>
-              Mode of Ad
-            </Typography>
-            <RadioGroup
-              row
-              name="modeOfAd"
-              value={adData.modeOfAd}
-              onChange={handleInputChange}
-              sx={{
-                justifyContent: "center",
-                mb: 3,
-              }}
-            >
-              <FormControlLabel
-                value="Auction"
-                control={<Radio />}
-                label="Auction"
-              />
-              <FormControlLabel value="Sale" control={<Radio />} label="Sale" />
-              <FormControlLabel
-                value="Donation"
-                control={<Radio />}
-                label="Donation"
-              />
-            </RadioGroup>
-
-            {adData.modeOfAd === "Auction" && (
-              <TextField
-                fullWidth
-                id="endDate"
-                label="End Bidding On:"
-                type="date"
-                name="endDate"
-                value={adData.endDate}
-                onChange={handleInputChange}
-                margin="normal"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            )}
+            <ModeOfAdSelection
+              adData={adData}
+              handleInputChange={handleInputChange}
+            />
 
             {/* Ad Details Section */}
-            <Typography variant="h5" align="center" gutterBottom sx={{ mb: 4 }}>
-              Ad Details
-            </Typography>
-            <TextField
-              required
-              fullWidth
-              error={Boolean(errors.name)}
-              id="name"
-              label="Ad Title"
-              name="name"
-              value={adData.name}
-              onChange={handleInputChange}
-              margin="normal"
-              helperText={
-                errors.name ||
-                "Please restrict your answer to this field to 100 characters."
-              }
-              inputProps={{ maxLength: 100 }}
-            />
-
-            <TextField
-              fullWidth
-              id="description"
-              label="Ad Details"
-              name="description"
-              multiline
-              rows={4}
-              value={adData.description}
-              onChange={handleInputChange}
-              margin="normal"
-              helperText="Please include condition, features, space for negotiation, reasons for selling (max 1000 characters)."
-              inputProps={{ maxLength: 1000 }}
-            />
-
-            <TextField
-              fullWidth
-              id="brand"
-              label="Brand"
-              name="brand"
-              value={adData.brand}
-              onChange={handleInputChange}
-              margin="normal"
+            <AdDetails
+              adData={adData}
+              handleInputChange={handleInputChange}
+              errors={errors}
             />
 
             {/* Condition Section */}
-            <FormControl component="fieldset" margin="normal">
-              <FormLabel component="legend">Condition</FormLabel>
-              <RadioGroup
-                row
-                name="condition"
-                value={adData.condition}
-                onChange={handleInputChange}
-              >
-                <FormControlLabel value="new" control={<Radio />} label="New" />
-                <FormControlLabel
-                  value="old"
-                  control={<Radio />}
-                  label="Used"
-                />
-              </RadioGroup>
-              {errors.condition && (
-                <Typography color="error" variant="caption">
-                  {errors.condition}
-                </Typography>
-              )}
-            </FormControl>
-
-            {/* Price, Date, and Photo Upload Section */}
-
-            <TextField
-              type="number"
-              required
-              fullWidth
-              error={Boolean(errors.price)}
-              id="price"
-              label="Price"
-              name="price"
-              value={adData.price}
-              onChange={handleInputChange}
-              margin="normal"
-              helperText={errors.price || ""}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">Rs.</InputAdornment>
-                ),
-              }}
+            <ConditionSelection
+              adData={adData}
+              handleInputChange={handleInputChange}
+              errors={errors}
             />
 
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                gap: 2,
-                my: 2,
-                flexDirection: "column",
-              }}
-            >
-              <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
-                {[...Array(5)].map((_, index) => (
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
-                    key={index}
-                  >
-                    <IconButton
-                      color={files[index] ? "default" : "primary"}
-                      aria-label="upload picture"
-                      component="label"
-                    >
-                      <input
-                        hidden
-                        accept="image/*"
-                        type="file"
-                        onChange={(event) => handleFileChange(event, index)}
-                      />
-                      <PhotoCamera />
-                    </IconButton>
-                    {files[index] && (
-                      <Box sx={{ mt: 2 }}>
-                        <img
-                          src={URL.createObjectURL(files[index])}
-                          alt={`upload-preview-${index}`}
-                          style={{ width: "100%", height: 80 }} // size of displayed uploaded image
-                        />
-                      </Box>
-                    )}
-                  </Box>
-                ))}
-              </Box>
-            </Box>
+            {/* Price Section */}
+            <PriceSelection
+              adData={adData}
+              handleInputChange={handleInputChange}
+              errors={errors}
+            />
+
+            {/* Image Upload Section */}
+            <ImageUpload files={files} handleFileChange={handleFileChange} />
 
             <Button
               type="submit"
@@ -611,7 +301,6 @@ const PostAd = () => {
             </Button>
           </Box>
         </Container>
-        {/* </div> */}
       </Box>
     </ThemeProvider>
   );
