@@ -3,11 +3,13 @@ import ImageGallery from 'react-image-gallery';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import RenderItem from './render.js';
 
-export const CustomImageGallery = (props) => {
+export const CustomImageGallery = ({ items, ...props }) => {
+
     const renderLeftNav = (onClick, disabled) => {
         return (
-            <IconButton onClick={onClick} disabled={disabled} style={{ color: 'black', position: 'absolute', left: 0, zIndex: 1, top: "50%" }}>
+            <IconButton onClick={onClick} disabled={disabled} style={{ color: 'black', position: 'absolute', left: "5%", zIndex: 1, top: "50%" }}>
                 <ArrowBackIosIcon />
             </IconButton>
         );
@@ -15,7 +17,7 @@ export const CustomImageGallery = (props) => {
 
     const renderRightNav = (onClick, disabled) => {
         return (
-            <IconButton onClick={onClick} disabled={disabled} style={{ color: 'black', position: 'absolute', right: 0, zIndex: 4, top: "50%", transform: "translateX(-50%)" }}>
+            <IconButton onClick={onClick} disabled={disabled} style={{ color: 'black', position: 'absolute', right: "5%", zIndex: 1, top: "50%" }}>
                 <ArrowForwardIosIcon />
             </IconButton>
         );
@@ -23,9 +25,18 @@ export const CustomImageGallery = (props) => {
 
     return (
         <ImageGallery
+            items={items.map(item => ({
+                ...item,
+                renderItem: () => <RenderItem item={item} />,
+            }))}
             {...props}
             renderLeftNav={renderLeftNav}
             renderRightNav={renderRightNav}
+            showPlayButton={false}
+            showThumbnails={false}
+            showBullets={true}
+            showNav={true}
+            showFullscreenButton={false}
         />
     );
 }

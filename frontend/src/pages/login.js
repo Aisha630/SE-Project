@@ -6,7 +6,6 @@ import { loginUser } from '../stores/authSlice';
 import { Box, Button, Container, TextField, Typography, ThemeProvider, IconButton, InputAdornment, Link, ListItem, List, ListItemIcon, ListItemText, FormControlLabel, FormControl, FormGroup, CheckBox, Checkbox } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import theme from '../themes/authThemes.js';
-
 import '../css/login.css';
 
 const Login = () => {

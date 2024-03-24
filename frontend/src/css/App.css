@@ -15,18 +15,35 @@ input:-webkit-autofill:active {
   text-align: center;
 }
 
-.image-gallery-style {
+/* .image-gallery-style {
   box-shadow: none !important;
-}
+} */
 
 .slick-prev:before,
 .slick-next:before {
   color: grey !important;
 }
 
-.image-gallery-left-nav,
+/* .image-gallery-left-nav,
 .image-gallery-right-nav {
   transform: scale(0.75);
   width: 20px;
   height: 10px;
+} */
+
+
+/* In your CSS file */
+.image-gallery-play-button {
+  color: #fff;
+  /* Change the color */
+  background: #000;
+  /* Change the background */
+  border-radius: 50%;
+  /* Make it round */
+  /* Add other styles as needed */
+}
+
+.image-gallery-play-button:hover {
+  background: #555;
+  /* Change the hover background */
 }

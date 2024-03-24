@@ -25,9 +25,9 @@ function Drawer() {
       style={{ width: 250 }}
     >
       <IconButton onClick={handleBack} sx={{ margin: "10px" }}>
-        <img src="backIcon.png" alt="Custom Icon" style={{ width: 65, height: 50 }} />
+        <img src="/backIcon.png" alt="Back" style={{ width: 65, height: 50 }} />
       </IconButton>
-      <SidePanel ListStyles={{ ml: { xs: '3px', sm: "5px", md: "10px" } }} ListItemStyles={{ fontWeight: "bold", mt: "5px" }} ListButtonStyles={{margin:"15px"}} />
+      <SidePanel ListStyles={{ ml: { xs: '3px', sm: "5px", md: "10px" } }} ListItemStyles={{ fontWeight: "bold", mt: "5px" }} ListButtonStyles={{ margin: "15px" }} />
     </div>
   );
 

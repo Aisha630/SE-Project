@@ -4,7 +4,7 @@ import Search from "./search.js"
 
 const NavBar = () => {
     return (
-        <Nav Drawer={Drawer} Search={Search}/>
+        <Nav Drawer={Drawer} Search={Search} />
     );
 }
 

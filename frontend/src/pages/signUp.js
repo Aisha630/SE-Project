@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { signupUser } from '../stores/authSlice';
 import { Box, Button, Container, TextField, Typography, ThemeProvider, IconButton, InputAdornment, Link, FormControlLabel, FormGroup, Checkbox } from '@mui/material';
@@ -19,7 +18,6 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const passwordGuidelines = usePasswordValidation(password);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,7 +34,6 @@ const SignUp = () => {
       .then((response) => {
         console.log("Signed up successfully", response);
         toast.success("Please verify your email address to complete the registration process.");
-        // navigate("/");
       })
       .catch((error) => {
         console.error('Failed to sign up:', error);

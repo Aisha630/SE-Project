@@ -109,16 +109,22 @@ const PostAd = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+
+
     if (!validateForm()) {
       return;
     }
+    console.log("Ad data is ", adData);
 
     const formData = new FormData();
     Object.keys(adData).forEach((key) => {
       if (Array.isArray(adData[key])) {
         adData[key].forEach((value) => formData.append(key, value));
-      } else {
-        formData.append(key, adData[key]);
+      } 
+      
+      else {
+        if (!((key==="size" || key==="color") && adData.category === "Technology" ))
+          formData.append(key, adData[key]);
       }
     });
     formData.append("seller", user);
