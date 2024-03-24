@@ -15,7 +15,9 @@ export async function addToCart(req, res) {
     return;
   }
 
-  const cartIDs = getIDs(req).push(req.body.id);
+  const cartItems = getIDs(req);
+  cartItems.push(req.body.id);
+
   res.cookie("cart", cartItems);
   res.sendStatus(200);
 }
@@ -34,6 +36,8 @@ export async function deleteFromCart(req, res) {
 
 export async function checkout(req, res) {
   try {
+    const buyer = req.user;
+
     const cartIDs = getIDs(req);
     const cart = await fetchCartItems(cartIDs);
 
@@ -41,7 +45,6 @@ export async function checkout(req, res) {
       item.isHold = true;
       const save = item.save();
 
-      const buyer = await User.findOne({ username: req.body.username });
       const seller = await User.findOne({ username: item.seller });
       const productDetails = { name: item.name, price: item.price };
       const email = sendCheckoutEmail(seller, buyer, productDetails);
@@ -51,12 +54,11 @@ export async function checkout(req, res) {
 
     await Promise.all(itemCheckouts);
     res.sendStatus(200);
-
   } catch (error) {
-    res.status(500).json({ error: 'An error occurred during checkout' });
+    console.log(error);
+    res.status(500).json({ error: "An error occurred during checkout" });
   }
 }
-
 
 function getIDs(req, _) {
   return (req.cookies && req.cookies.cart) || [];
@@ -64,8 +66,7 @@ function getIDs(req, _) {
 
 async function fetchCartItems(cartIDs) {
   const cartItems = await Promise.all(
-    cartIDs.map(id => Product.findOne({ _id: id, isHold: false }))
+    cartIDs.map((id) => Product.findOne({ _id: id, isHold: false }))
   );
-  return cartItems.filter(item => item !== null);
-
+  return cartItems.filter((item) => item !== null);
 }

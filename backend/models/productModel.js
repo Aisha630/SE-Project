@@ -1,7 +1,8 @@
 import Joi from "joi";
-import config from "../config.js";
 import joigoose from "joigoose";
 import mongoose from "mongoose";
+
+import config from "../config.js";
 
 // Checks if valid category from config exists
 function isValidCategory(category, helpers) {
@@ -64,7 +65,7 @@ const joiSchema = Joi.object({
 
 // Convert Joi schema to Mongoose schema and validate
 const productSchema = new mongoose.Schema(
-  joigoose(mongoose).convert(joiSchema)
+  joigoose(mongoose).convert(joiSchema), { timestamps: true }
 );
 productSchema.set("validateBeforeSave", false);
 productSchema.statics.validate = (product) => joiSchema.validate(product);

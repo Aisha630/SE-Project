@@ -1,6 +1,6 @@
+import path from "path";
 import Image from "../models/imageModel.js";
 import Product from "../models/productModel.js";
-import path from "path";
 
 // Retrieve all products that are not currently on hold
 export async function getAllProducts(_, res) {
@@ -42,7 +42,7 @@ export async function addProduct(req, res) {
     description,
     brand,
     category,
-    tags: Array.isArray(tags) ? tags : [tags],
+    tags: tags ? (Array.isArray(tags) ? tags : [tags]) : [],
     size,
     color,
     seller,
@@ -104,7 +104,7 @@ export async function deleteProduct(req, res) {
 
 // Filter products based on criteria like category, tags, sizes, and colors
 export async function filterProducts(req, res) {
-  const { category, tags, sizes, colors } = req.body;
+  const { category, tags, sizes, colors } = req.query;
   const query = { isHold: false };
 
   // Build the query based on provided filter criteria
@@ -129,4 +129,18 @@ export async function filterProducts(req, res) {
   // Query the database with the built query
   const products = await Product.find(query);
   res.json(products);
+}
+
+export async function fetchLatest(req, res) {
+  const { limit } = req.query;
+
+  try {
+    const products = await Product.find({})
+      .sort({ createdAt: -1 })
+      .limit(limit);
+    res.json(products);
+
+  } catch (error) {
+    res.status(500).json({ error: "Server error." });
+  }
 }
