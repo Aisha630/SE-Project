@@ -81,6 +81,11 @@ const PostAd = () => {
     let newErrors = {};
     let isValid = true;
 
+    if (!adData.category) {
+      isValid = false;
+      newErrors.category = "Category is required";
+    }
+
     if (!adData.name) {
       isValid = false;
       newErrors.name = "Ad title is required";
@@ -114,6 +119,11 @@ const PostAd = () => {
     if (!adData.description) {
       isValid = false;
       newErrors.description = "Description must be non-empty";
+    }
+
+    if (files.length === 0) {
+      isValid = false;
+      newErrors.images = "At least one image must be uploaded.";
     }
 
     setErrors(newErrors);
