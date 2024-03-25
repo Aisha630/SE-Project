@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { CustomImageGallery } from '../components/imageGallery.js';
 import { ThemeProvider } from '@mui/system';
 import theme from '../themes/homeTheme.js';
+import { toast } from 'react-toastify';
 
 const DetailItem = ({ label, value }) => (
   <Grid container columnSpacing={2} alignItems="center">
@@ -40,7 +41,7 @@ const ProductDetails = () => {
       }));
       setProduct({ ...data, images: formattedImages })
     }).catch(error => { console.log(error) })
-  }, []);
+  }, [token, id]);
 
   const productDetails = product ? [
     { label: 'Condition', value: product.condition },
@@ -49,16 +50,40 @@ const ProductDetails = () => {
     { label: 'Size', value: product.size },
   ] : [];
 
+  const addToCart = (product) => {
+    fetch(`http://localhost:5003/cart`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id: product._id }),
+      credentials: 'include'
+    }).then(response => {
+      if (response.ok)
+        toast.success(`${product.name} added to cart`);
+      else if (response.status === 400)
+        toast.error("Product already in cart");
+      else if (response.status === 404) {
+        toast.error("Product not found");
+      }
+    }).catch(error => {
+      console.log(error)
+      toast.error("Error adding to cart")
+    }
+    )
+  }
+
   return (
     <ThemeProvider theme={theme}>
-      <Box>
+      <Box maxHeight="100vh">
         <NavBar />
-        <Container maxWidth="80%" disableGutters sx={{ m: 0, p: 0 }}>
+        <Container maxWidth="80%" disableGutters maxHeight="100vh" sx={{ m: 0, p: 0 }}>
           <Box display="flex" flexDirection="row" alignItems="stretch">
             <Box width="60vw">
               <CustomImageGallery items={product ? product.images : []} sx={{ boxShadow: "none" }} />
             </Box>
-            <Paper  sx={{ padding: 7, flex: 1 }}>
+            <Paper sx={{ padding: 7, flex: 1, borderRadius: 0 }}>
               <Typography variant="h5" color="black" textAlign="left" sx={{ fontWeight: 500, mb: 0 }}>
                 {product?.name}
               </Typography>
@@ -68,7 +93,7 @@ const ProductDetails = () => {
               {productDetails.map((detail, index) => (
                 <DetailItem key={index} label={detail.label} value={detail.value} />
               ))}
-              <SiteButton text="Add to Cart" styles={{ width: '100%', mt: 3, mb: 3, fontSize: "1rem", padding: 1.5 }} />
+              <SiteButton text="Add to Cart" onClick={() => addToCart(product)} styles={{ width: '100%', mt: 3, mb: 3, fontSize: "1rem", padding: 1.5 }} />
               <Typography variant="h6" textAlign="left" sx={{ mt: 3, color: "gray" }}>
                 Description
               </Typography>

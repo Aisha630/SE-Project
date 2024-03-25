@@ -9,7 +9,7 @@ export const CustomImageGallery = ({ items, ...props }) => {
 
     const renderLeftNav = (onClick, disabled) => {
         return (
-            <IconButton onClick={onClick} disabled={disabled} style={{ color: 'black', position: 'absolute', left: "5%", zIndex: 1, top: "50%" }}>
+            <IconButton onClick={onClick} disabled={disabled} style={{ color: 'black', position: 'absolute', left: "5%", zIndex: 5, top: "50%" }}>
                 <ArrowBackIosIcon />
             </IconButton>
         );
@@ -17,7 +17,7 @@ export const CustomImageGallery = ({ items, ...props }) => {
 
     const renderRightNav = (onClick, disabled) => {
         return (
-            <IconButton onClick={onClick} disabled={disabled} style={{ color: 'black', position: 'absolute', right: "5%", zIndex: 1, top: "50%" }}>
+            <IconButton onClick={onClick} disabled={disabled} style={{ color: 'black', position: 'absolute', right: "5%", zIndex: 5, top: "50%" }}>
                 <ArrowForwardIosIcon />
             </IconButton>
         );
@@ -30,12 +30,13 @@ export const CustomImageGallery = ({ items, ...props }) => {
                 renderItem: () => <RenderItem item={item} />,
             }))}
             {...props}
+            maxHeight="100vh"
             renderLeftNav={renderLeftNav}
             renderRightNav={renderRightNav}
             showPlayButton={false}
             showThumbnails={false}
             showBullets={true}
-            showNav={true}
+            // showNav={true}
             showFullscreenButton={false}
         />
     );

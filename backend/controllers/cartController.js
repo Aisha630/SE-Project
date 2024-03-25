@@ -16,6 +16,12 @@ export async function addToCart(req, res) {
   }
 
   const cartItems = getIDs(req);
+
+  if (cartItems.includes(req.body.id)) {
+    res.status(400).json({ error: "Product already in cart" });
+    return;
+  }
+
   cartItems.push(req.body.id);
 
   res.cookie("cart", cartItems);
@@ -23,7 +29,8 @@ export async function addToCart(req, res) {
 }
 
 export async function deleteFromCart(req, res) {
-  const toDelete = req.body.id;
+
+  const toDelete = req.query.id;
   const cartIDs = getIDs(req);
 
   res.cookie(
