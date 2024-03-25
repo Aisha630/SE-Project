@@ -2,14 +2,9 @@ import React from 'react';
 import { Typography, FormControl, FormGroup, FormControlLabel, Checkbox } from '@mui/material';
 import sizesData from '../config.json'; 
 
-const SizesCategories = ({ state, handleChange }) => {
+const SizesCategories = ({ checkedSizes, handleSizeChange }) => {
   const { sizes } = sizesData;
-
-  const handleSizeChange = (size) => {
-    // Handle size change
-    // You can pass this function down to the Checkbox onClick event
-    console.log('Size clicked:', size);
-  };
+  const clothingSizes = sizes['Clothing'];
 
   return (
     <FormControl sx={{ color: 'inherit' }}>
@@ -20,7 +15,9 @@ const SizesCategories = ({ state, handleChange }) => {
         {sizes.map((size) => (
           <FormControlLabel
             key={size}
-            control={<Checkbox onClick={() => handleSizeChange(size)} sx={{ '&.Mui-checked': { color: '#58a75b' } }} />}
+            // control={<Checkbox onClick={() => setCheckedSizes(size)} sx={{ '&.Mui-checked': { color: '#58a75b' } }} />}
+            control = {<Checkbox checked={checkedSizes.includes(size)} onChange={() => handleSizeChange(size)} sx={{ '&.Mui-checked': { color: '#58a75b' } }} />}
+
             label={size.toUpperCase()}
           />
         ))}

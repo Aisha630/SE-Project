@@ -17,19 +17,106 @@ const ShopItems = () => {
 
     const [category, setCategory] = useState('Clothing')
     const [products, setProducts] = useState([]);
-  
-    const filterCriteria = {
-        category: category,
-    };
     
+    const [checkedSubcategories, setCheckedSubcategories] = useState([]);
+
+    const handleSubcategoryChange = (subcategory) => {
+        const isChecked = checkedSubcategories.includes(subcategory);
+        if (isChecked) {
+            setCheckedSubcategories(checkedSubcategories.filter((item) => item !== subcategory));
+        } else {
+            setCheckedSubcategories([...checkedSubcategories, subcategory]);
+        }
+        console.log("SHOP: checked subcategories: ", checkedSubcategories);
+    }
+
+    const [checkedSizes, setCheckedSizes] = useState([]);
+    const handleSizeChange = (size) => {
+        const isChecked = checkedSizes.includes(size);
+        if (isChecked) {
+            setCheckedSizes(checkedSizes.filter((item) => item !== size));
+        } else {
+            setCheckedSizes([...checkedSizes, size]);
+        }
+        console.log("SHOP: checked sizes: ", checkedSizes);
+    }
+
+    const handleApplyFilters = () => {
+        console.log('Checked subcategories:', checkedSubcategories);
+
+        let filterCriteria = {
+            category: category,
+        }
+        if (checkedSubcategories.length > 0) {
+            filterCriteria = {...filterCriteria, tags: checkedSubcategories};
+        }
+        if (checkedSizes.length > 0) {
+            filterCriteria = {...filterCriteria, sizes: checkedSizes};
+        }
+
+        
+        fetch('http://localhost:5003/filter', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body : JSON.stringify(filterCriteria)
+        })
+        .then(response => response.json())
+        .then(data => {
+            const formattedProducts = data.map(product => ({
+                name: product.name,
+                image: 'http://localhost:5003'.concat(product.images[0]), // Assuming the first image in the array is the main image
+                price: product.price,
+                id: product._id
+            }));
+            setProducts(formattedProducts);
+            console.log("pinged the filter api",data)
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+        handleDrawerClose();
+    };
+
+    const handleResetFilters = () => {
+        setCheckedSubcategories([]);
+        setCheckedSizes([]);
+        fetch('http://localhost:5003/filter', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body : JSON.stringify({category: category})
+        })
+        .then(response => response.json())
+        .then(data => {
+            const formattedProducts = data.map(product => ({
+                name: product.name,
+                image: 'http://localhost:5003'.concat(product.images[0]), // Assuming the first image in the array is the main image
+                price: product.price,
+                id: product._id
+            }));
+            setProducts(formattedProducts);
+            console.log("pinged the filter api",data)
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+        handleDrawerClose();
+
+    };
+
     useEffect(() => {
         fetch('http://localhost:5003/filter', {
-            method : 'POST',
+            method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
-            body : JSON.stringify(filterCriteria)
+            body: JSON.stringify({category: category})
         })
             .then(response => response.json())
             .then(data => {
@@ -40,7 +127,7 @@ const ShopItems = () => {
                     id: product._id
                 }));
                 setProducts(formattedProducts);
-                console.log("Clothing related: ",formattedProducts)
+                console.log("Clothing related: ", formattedProducts)
                 console.log(data)
             })
             .catch(error => {
@@ -90,7 +177,7 @@ const ShopItems = () => {
             <Box>
                 <NavBar />
             </Box>
-            <MainCategoryToolbar setCategory={setCategory}/>
+            <MainCategoryToolbar setCategory={setCategory} />
 
             <Box display="flex" justifyContent="left" mt={2} ml={2} sx={{ width: "15%", fontWeight: "normal", }} >
                 <ListItemLink text={"Filter and Order"} Icon={TuneIcon} to={"#"} sx={{
@@ -109,7 +196,7 @@ const ShopItems = () => {
                 onClose={handleDrawerClose}
                 style={{ opacity: 0.95 }}
             >
-                <FilterMenu closeFilterMenu={handleDrawerClose} setProducts={setProducts} maincategory={category}/>
+                <FilterMenu closeFilterMenu={handleDrawerClose} checkedSubcategories={checkedSubcategories} handleSubcategoryChange={handleSubcategoryChange} checkedSizes={checkedSizes} handleSizeChange={handleSizeChange} handleApplyFilters={handleApplyFilters} handleResetFilters={handleResetFilters}/>
             </Drawer>
 
             <Box sx={{ padding: '30px' }}>

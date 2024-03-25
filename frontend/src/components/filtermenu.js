@@ -8,12 +8,10 @@ import SizesCategories from './sizes.js';
 import CloseIcon from '@mui/icons-material/Close';
 import { useSelector } from 'react-redux';
 
-const FilterMenu = ({closeFilterMenu, setProducts, maincategory}) => {
-    
+const FilterMenu = ({closeFilterMenu, checkedSubcategories, handleSubcategoryChange, checkedSizes, handleSizeChange, handleApplyFilters, handleResetFilters}) => {
     const token = useSelector((state) => state.auth.token);
-
-
     const [value, setValue] = useState([0, 200000]);    
+
     const handlePriceSlider = (event, newValue) => {
         setValue(newValue);
     };
@@ -23,64 +21,6 @@ const FilterMenu = ({closeFilterMenu, setProducts, maincategory}) => {
         setSortBy(event.target.value);
     };
 
-    const [category, setCategory] = useState(null);
-    const handleCategory = (event) => {
-        setCategory(event.target.value);
-    }
-
-    const [sizes, setSizes] = useState([]);
-    const handleSizes = (event) => {
-        setSizes(event.target.value);
-    }
-
-    const handleResetFilters = () => {
-        setValue([2000, 6000]);
-        setSortBy('new2used');
-        setCategory(null);
-        setSizes([]);
-
-        closeFilterMenu();
-    };
-    
-
-    const handleApplyFilters = () => {
-        // i think here i will just call the backend api with the filters??
-        console.log('Price range:', value);
-        console.log('Sort by:', sortBy);
-        console.log('Category:', category);
-        console.log('Sizes:', sizes);
-        // setProducts([]);
-
-        // const filterCriteria = {
-
-        // }
-
-        // fetch('http://localhost:5003/filter', {
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'Authorization': `Bearer ${token}`
-        //     },
-        //     body : JSON.stringify(filterCriteria)
-        // })
-        // .then(response => response.json())
-        // .then(data => {
-        //     const formattedProducts = data.map(product => ({
-        //         name: product.name,
-        //         image: 'http://localhost:5003'.concat(product.images[0]), // Assuming the first image in the array is the main image
-        //         price: product.price,
-        //         id: product._id
-        //     }));
-        //     setProducts(formattedProducts);
-        //     console.log("pinged the filter api",data)
-
-        // })
-        // .catch(error => {
-        //     console.error('Error:', error);
-        // });
-        
-
-        closeFilterMenu();
-    };
 
     const ListItemLink = ({ text, Icon, to }) => {
         const commonStyles = {
@@ -106,6 +46,8 @@ const FilterMenu = ({closeFilterMenu, setProducts, maincategory}) => {
             </ListItemButton>
         );
     };
+
+
 
 
     return (
@@ -138,10 +80,10 @@ const FilterMenu = ({closeFilterMenu, setProducts, maincategory}) => {
                 </Grid>
 
                 <Grid item xs={12} sm={3}> {/*Sub-categories*/}
-                    <CategoryFilter state={category} handleChange={handleCategory} />
+                    <CategoryFilter checkedSubcategories={checkedSubcategories} handleChange={handleSubcategoryChange} />
                 </Grid>
                 <Grid item xs={12} sm={3}> {/* sizes */}
-                    <SizesCategories state={sizes} handleChange={handleSizes} />
+                    <SizesCategories checkedSizes={checkedSizes} handleSizeChange={handleSizeChange} />
                 </Grid>
             </Grid>
             <Grid container spacing={2} justifyContent="flex-end" alignItems={'bottom'} padding={'20px'} paddingRight={'40px'}>

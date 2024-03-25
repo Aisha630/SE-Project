@@ -36,7 +36,7 @@ router.get("/shop/:id", getProduct);
 router.delete("/shop/:id", deleteProduct);
 
 router.post("/sell", upload, addProduct);
-router.get("/filter", filterProducts);
+router.post("/filter", filterProducts);
 router.get("/latest", fetchLatest);
 
 export default router;
