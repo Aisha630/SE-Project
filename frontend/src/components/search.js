@@ -24,7 +24,7 @@ const Search = () => {
                 />
             ) : (
                 <IconButton
-                    color="inherit"
+                    color="gray"
                     aria-label="search"
                     onClick={toggleSearch}
                     sx={{
