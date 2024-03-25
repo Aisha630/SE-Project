@@ -83,13 +83,13 @@ const ShopItems = () => {
         console.log("In handleResetFilters")
         setCheckedSubcategories([]);
         setCheckedSizes([]);
-        fetch('http://localhost:5003/filter', {
-            method: 'POST',
+
+        const queryString = new URLSearchParams({category: category});
+        fetch(`http://localhost:5003/filter?${queryString}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body : JSON.stringify({category: category})
         })
         .then(response => response.json())
         .then(data => {
