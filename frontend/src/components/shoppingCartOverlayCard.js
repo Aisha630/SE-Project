@@ -3,9 +3,11 @@ import { Backdrop, Paper, List, ListItem, ListItemText, IconButton, Fade, Typogr
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Link as RouterLink } from 'react-router-dom';
 import SiteButton from './button';
+import {useCart} from '../context/cartContext';
 
-const ShoppingCartOverlayCard = ({ cartItems, totalPrice, styles, cartVisibility, cartVisibilityToggle, deleteFromCart }) => {
+const ShoppingCartOverlayCard = ({  styles, cartVisibility, cartVisibilityToggle, deleteFromCart }) => {
     const [isOpen, setIsOpen] = useState(true);
+    const { cartItems, totalPrice, fetchCartItems } = useCart();
     const handleClose = () => {
         setIsOpen(false);
     }

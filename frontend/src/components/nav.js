@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, IconButton, Typography, Box, Button, Menu, MenuItem } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Typography, Box, Button, Menu, MenuItem, Badge } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import '@fontsource/poppins';
@@ -9,33 +9,37 @@ import { useLogout } from '../hooks/useLogout';
 import { useSelector } from 'react-redux';
 import ShoppingCartOverlayCard from './shoppingCartOverlayCard';
 import { toast } from 'react-toastify';
+import { useCart } from '../context/cartContext';
+
 
 const Nav = ({ Drawer, Search, ShowLogo = true, styles }) => {
     const navigate = useNavigate();
     const [isCartVisible, setIsCartVisible] = useState(false);
     const token = useSelector((state) => state.auth.token);
-    const [cartItems, setCartItems] = useState([])
-    const [totalPrice, setTotalPrice] = useState(0)
+    const { cartItems, totalPrice, fetchCartItems } = useCart();
 
-    useEffect(() => {
-        fetchCartItems();
-    }, [token]);
+    // const [cartItems, setCartItems] = useState([])
+    // const [totalPrice, setTotalPrice] = useState(0)
 
-    const fetchCartItems = () => {
-        fetch(`http://localhost:5003/cart`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-            },
-            credentials: 'include',
-        })
-            .then(response => response.json())
-            .then(data => {
-                setCartItems(data);
-                setTotalPrice(data.map(item => item.price).reduce((a, b) => a + b, 0));
-            })
-            .catch(error => console.log(error));
-    };
+    // useEffect(() => {
+    //     fetchCartItems();
+    // }, [token]);
+
+    // const fetchCartItems = () => {
+    //     fetch(`http://localhost:5003/cart`, {
+    //         method: 'GET',
+    //         headers: {
+    //             'Authorization': `Bearer ${token}`,
+    //         },
+    //         credentials: 'include',
+    //     })
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             setCartItems(data);
+    //             setTotalPrice(data.map(item => item.price).reduce((a, b) => a + b, 0));
+    //         })
+    //         .catch(error => console.log(error));
+    // };
 
     const deleteFromCart = (product) => {
         fetch(`http://localhost:5003/cart?id=${product._id}`, {
@@ -62,7 +66,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles }) => {
     const toggleCart = () => {
         setIsCartVisible(!isCartVisible);
     }
-    
+
     const handleLogoClick = () => {
         navigate("/");
     }
@@ -97,17 +101,19 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles }) => {
                 </Box>}
                 <Box sx={{ flexGrow: 1, flexDirection: "row" }} />
                 <Search />
-                <IconButton edge="start" color="gray" aria-label="menu" aria-haspopup="true" onClick={()=>{toggleCart(); fetchCartItems()}} sx={{
+                <IconButton edge="start" color="gray" aria-label="menu" aria-haspopup="true" onClick={() => { toggleCart(); fetchCartItems() }} sx={{
                     '&:hover': {
                         backgroundColor: "primary.dark"
                     },
                     margin: 1
                 }}>
-                    <ShoppingCartIcon />
+                    <Badge badgeContent={cartItems.length} color="secondary">
+                        <ShoppingCartIcon />
+                    </Badge>
                 </IconButton>
 
                 {
-                    isCartVisible && <ShoppingCartOverlayCard cartVisibility={isCartVisible} cartVisibilityToggle={setIsCartVisible} cartItems={cartItems} totalPrice={totalPrice} deleteFromCart={deleteFromCart}/>
+                    isCartVisible && <ShoppingCartOverlayCard cartVisibility={isCartVisible} cartVisibilityToggle={setIsCartVisible} deleteFromCart={deleteFromCart} />
                 }
 
                 <IconButton edge="end" color="gray" aria-label="account" aria-haspopup="true" aria-controls="menu-account" onClick={handleMenu} sx={{

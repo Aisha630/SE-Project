@@ -12,6 +12,7 @@ import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import "@fontsource/poppins";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { CartProvider } from './context/cartContext';
 
 const theme = createTheme({
   palette: {
@@ -35,12 +36,14 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
+
       <CssBaseline />
       <ToastContainer position="top-center" autoClose={2000} toastStyle={{
         backgroundColor: "white",
         color: "black",
       }} />
       <AuthProvider>
+      <CartProvider>
         <div className="App">
           <BrowserRouter>
             <Routes>
@@ -54,6 +57,7 @@ function App() {
             </Routes>
           </BrowserRouter>
         </div>
+        </CartProvider>
       </AuthProvider>
     </ThemeProvider>
   );

@@ -10,6 +10,7 @@ import { CustomImageGallery } from '../components/imageGallery.js';
 import { ThemeProvider } from '@mui/system';
 import theme from '../themes/homeTheme.js';
 import { toast } from 'react-toastify';
+import {useCart} from '../context/cartContext';
 
 const DetailItem = ({ label, value }) => (
   <Grid container columnSpacing={2} alignItems="center">
@@ -50,6 +51,8 @@ const ProductDetails = () => {
     { label: 'Size', value: product.size },
   ] : [];
 
+  const { cartItems, fetchCartItems, totalPrice } = useCart();
+
   const addToCart = (product) => {
     fetch(`http://localhost:5003/cart`, {
       method: 'POST',
@@ -60,6 +63,7 @@ const ProductDetails = () => {
       body: JSON.stringify({ id: product._id }),
       credentials: 'include'
     }).then(response => {
+      fetchCartItems();
       if (response.ok)
         toast.success(`${product.name} added to cart`);
       else if (response.status === 400)
