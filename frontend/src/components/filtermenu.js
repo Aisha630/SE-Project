@@ -7,8 +7,9 @@ import SortBy from './sortby.js';
 import SizesCategories from './sizes.js';
 import CloseIcon from '@mui/icons-material/Close';
 import { useSelector } from 'react-redux';
+import SiteButton from './button.js';
 
-const FilterMenu = ({closeFilterMenu, checkedSubcategories, handleSubcategoryChange, checkedSizes, handleSizeChange, handleApplyFilters, handleResetFilters}) => {
+const FilterMenu = ({category, closeFilterMenu, checkedSubcategories, handleSubcategoryChange, checkedSizes, handleSizeChange, handleApplyFilters, handleResetFilters}) => {
     const token = useSelector((state) => state.auth.token);
     const [value, setValue] = useState([0, 200000]);    
 
@@ -20,7 +21,6 @@ const FilterMenu = ({closeFilterMenu, checkedSubcategories, handleSubcategoryCha
     const handleSortBy = (event) => {
         setSortBy(event.target.value);
     };
-
 
     const ListItemLink = ({ text, Icon, to }) => {
         const commonStyles = {
@@ -46,9 +46,6 @@ const FilterMenu = ({closeFilterMenu, checkedSubcategories, handleSubcategoryCha
             </ListItemButton>
         );
     };
-
-
-
 
     return (
         <Box sx={{backgroundColor:'#e0e0e0'}}>
@@ -80,7 +77,7 @@ const FilterMenu = ({closeFilterMenu, checkedSubcategories, handleSubcategoryCha
                 </Grid>
 
                 <Grid item xs={12} sm={3}> {/*Sub-categories*/}
-                    <CategoryFilter checkedSubcategories={checkedSubcategories} handleChange={handleSubcategoryChange} />
+                    <CategoryFilter category={category} checkedSubcategories={checkedSubcategories} handleChange={handleSubcategoryChange} />
                 </Grid>
                 <Grid item xs={12} sm={3}> {/* sizes */}
                     <SizesCategories checkedSizes={checkedSizes} handleSizeChange={handleSizeChange} />
@@ -90,10 +87,10 @@ const FilterMenu = ({closeFilterMenu, checkedSubcategories, handleSubcategoryCha
                 <Grid item xs={12} sm={4}>
                     <Grid container spacing={2} justifyContent="flex-end" alignItems={'bottom'}>
                         <Grid item>
-                            <button variant="outlined" onClick={handleApplyFilters}>Apply Filters</button> 
+                            <SiteButton text={"Apply Filters"} styles={{backgroundColor: "#58a75b", color: "white"}} onClick={handleApplyFilters} />
                         </Grid>
                         <Grid item>
-                            <button variant="outlined" onClick={handleResetFilters}>Reset Filters</button>
+                            <SiteButton text={"Reset Filters"} styles={{backgroundColor: "#58a75b", color: "white"}} onClick={handleResetFilters} />
                         </Grid>
                     </Grid>
                 </Grid>

@@ -2,10 +2,9 @@ import React from 'react';
 import { Typography, FormControl, FormGroup, FormControlLabel, Checkbox } from '@mui/material';
 import categoriesData from '../config.json'; 
 
-const CategoryFilter = ({ checkedSubcategories, handleChange }) => {
+const CategoryFilter = ({category, checkedSubcategories, handleChange }) => {
   const { categories } = categoriesData;
-  const clothingSubcategories = categories['Clothing'];
-
+  const clothingSubcategories = categories[category];
 
   return (
     <FormControl sx={{ color: 'inherit' }}>
@@ -16,7 +15,6 @@ const CategoryFilter = ({ checkedSubcategories, handleChange }) => {
         {clothingSubcategories.map((subcategory) => (
           <FormControlLabel
             key={subcategory}
-            // control={<Checkbox onClick={() => handleChange(subcategory)} sx={{ '&.Mui-checked': { color: '#58a75b' } }} />}
             control = {<Checkbox checked={checkedSubcategories.includes(subcategory)} onChange={() => handleChange(subcategory)} sx={{ '&.Mui-checked': { color: '#58a75b' } }} />}
             label={subcategory}
           />

@@ -42,6 +42,7 @@ const ShopItems = () => {
     }
 
     const handleApplyFilters = () => {
+        console.log("In handleApplyFilters")
         console.log('Checked subcategories:', checkedSubcategories);
 
         let filterCriteria = {
@@ -53,7 +54,6 @@ const ShopItems = () => {
         if (checkedSizes.length > 0) {
             filterCriteria = {...filterCriteria, sizes: checkedSizes};
         }
-
         
         fetch('http://localhost:5003/filter', {
             method: 'POST',
@@ -81,6 +81,7 @@ const ShopItems = () => {
     };
 
     const handleResetFilters = () => {
+        console.log("In handleResetFilters")
         setCheckedSubcategories([]);
         setCheckedSizes([]);
         fetch('http://localhost:5003/filter', {
@@ -126,9 +127,9 @@ const ShopItems = () => {
                     price: product.price,
                     id: product._id
                 }));
+                setCheckedSubcategories([]);
+                setCheckedSizes([]);
                 setProducts(formattedProducts);
-                console.log("Clothing related: ", formattedProducts)
-                console.log(data)
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -196,7 +197,7 @@ const ShopItems = () => {
                 onClose={handleDrawerClose}
                 style={{ opacity: 0.95 }}
             >
-                <FilterMenu closeFilterMenu={handleDrawerClose} checkedSubcategories={checkedSubcategories} handleSubcategoryChange={handleSubcategoryChange} checkedSizes={checkedSizes} handleSizeChange={handleSizeChange} handleApplyFilters={handleApplyFilters} handleResetFilters={handleResetFilters}/>
+                <FilterMenu category={category} closeFilterMenu={handleDrawerClose} checkedSubcategories={checkedSubcategories} handleSubcategoryChange={handleSubcategoryChange} checkedSizes={checkedSizes} handleSizeChange={handleSizeChange} handleApplyFilters={handleApplyFilters} handleResetFilters={handleResetFilters}/>
             </Drawer>
 
             <Box sx={{ padding: '30px' }}>
