@@ -53,8 +53,8 @@ export async function addProduct(req, res) {
     return res.status(400).json({ error: error.details[0].message });
   }
 
-  if (!req.files) {
-    res.status(400).json({ error: "No images uploaded" });
+  if (!req.files || req.files.length === 0) {
+    return res.status(400).json({ error: "No images uploaded" });
   }
 
   const images = await Promise.all(

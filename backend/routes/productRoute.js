@@ -16,7 +16,7 @@ const router = express.Router();
 const upload = multer({
   limits: { fileSize: 2000000 },
   fileFilter: (_, file, cb) => {
-    const filetypes = /jpeg|jpg|png/;
+    const filetypes = /jpeg|jpg|png|webp/;
 
     const extname = filetypes.test(
       path.extname(file.originalname).toLowerCase()
