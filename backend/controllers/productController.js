@@ -104,10 +104,10 @@ export async function deleteProduct(req, res) {
 
 // Filter products based on criteria like category, tags, sizes, and colors
 export async function filterProducts(req, res) {
-  const { category, tags, sizes, colors } = req.body;
+  const { category, tags, sizes, colors } = req.query;
   const query = { isHold: false };
 
-  console.log(req.body)
+  console.log(req.query)
 
   // Build the query based on provided filter criteria
   if (category) {

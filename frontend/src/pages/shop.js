@@ -55,13 +55,12 @@ const ShopItems = () => {
             filterCriteria = {...filterCriteria, sizes: checkedSizes};
         }
         
-        fetch('http://localhost:5003/filter', {
-            method: 'POST',
+        const queryString = new URLSearchParams(filterCriteria);
+        fetch(`http://localhost:5003/filter?${queryString}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body : JSON.stringify(filterCriteria)
         })
         .then(response => response.json())
         .then(data => {
@@ -111,13 +110,12 @@ const ShopItems = () => {
     };
 
     useEffect(() => {
-        fetch('http://localhost:5003/filter', {
-            method: 'POST',
+        const queryString = new URLSearchParams({category: category});
+        fetch(`http://localhost:5003/filter?${queryString}`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({category: category})
         })
             .then(response => response.json())
             .then(data => {
@@ -136,6 +134,7 @@ const ShopItems = () => {
                 navigate('/login');
             });
     }, [token, navigate, category]);
+    
 
 
     const ListItemLink = ({ text, Icon, to }) => {
