@@ -32,7 +32,6 @@ const theme = createTheme({
         },
     },
     shape: { borderRadius: 5 },
-    // shadows: ["none", "0px 2px 4px rgba(0, 0, 0, 0.1)"],
 });
 
 export default theme;

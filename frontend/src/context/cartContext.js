@@ -27,7 +27,6 @@ export const CartProvider = ({ children }) => {
         setCartItems(data || []);
         setTotalPrice(data.map(item => item.price).reduce((a, b) => a + b, 0));
         const sellersTemp = data.map((item) => item.seller);
-        console.log("Sellers temp are " + sellersTemp);
         return Promise.all(sellersTemp.map(fetchSellers));
       }).then((data) => { setSellers(data) })
       .catch(error => {
@@ -47,7 +46,6 @@ export const CartProvider = ({ children }) => {
       }).then(response => response.json()).then(data => {
         resolve(data)
       }).catch(error => {
-        console.log('Error:', error);
         reject(error)
       })
 
@@ -56,7 +54,7 @@ export const CartProvider = ({ children }) => {
 
   useEffect(() => {
     fetchCartItems();
-  }, []);
+  }, [token]);
 
   return (
     <CartContext.Provider value={{ cartItems, fetchCartItems, totalPrice, sellers, fetchSellers }}>

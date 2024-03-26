@@ -1,25 +1,20 @@
 import React from 'react';
-import { Grid, Card, CardContent, Typography, Avatar, List, ListItem, Button, Divider, Box, ListItemText } from '@mui/material';
+import { Grid, Box } from '@mui/material';
 import { useCart } from '../context/cartContext';
-import { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { Link as RouterLink } from 'react-router-dom';
 import theme from '../themes/homeTheme';
 import { ThemeProvider } from '@mui/material/styles';
-import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import { toast } from 'react-toastify';
 import SiteButton from '../components/button';
 import { useNavigate } from 'react-router-dom';
 import InfoCard from '../components/infoCard';
 
-
-
 const OrderSummaryPage = () => {
 
     const navigate = useNavigate();
     const token = useSelector((state) => state.auth.token);
-    const { cartItems, fetchCartItems, totalPrice, sellers } = useCart();
+    const { cartItems, fetchCartItems, sellers } = useCart();
 
     const checkout = () => {
         fetch(`http://localhost:5003/checkout`, {
@@ -29,14 +24,13 @@ const OrderSummaryPage = () => {
                 "Content-Type": "application/json",
             },
             credentials: "include",
-
-
         }).then(response => {
             if (response.ok) {
                 toast.success("Checkout successful");
                 fetchCartItems();
                 navigate("/");
             } else {
+                toast.error("Error checking out");
                 throw new Error('Failed to checkout');
             }
         })

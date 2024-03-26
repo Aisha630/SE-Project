@@ -1,14 +1,13 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { Backdrop, Paper, List, ListItem, ListItemText, IconButton, Fade, Typography, Avatar, Box, Divider } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import SiteButton from './button';
-import {useCart} from '../context/cartContext';
-import { useNavigate } from 'react-router-dom';
+import { useCart } from '../context/cartContext';
 
-const ShoppingCartOverlayCard = ({  styles, cartVisibility, cartVisibilityToggle, deleteFromCart }) => {
+const ShoppingCartOverlayCard = ({ styles, cartVisibility, cartVisibilityToggle, deleteFromCart }) => {
     const [isOpen, setIsOpen] = useState(true);
-    const { cartItems, totalPrice, fetchCartItems } = useCart();
+    const { cartItems, totalPrice } = useCart();
     const navigate = useNavigate();
     const handleClose = () => {
         setIsOpen(false);
@@ -32,15 +31,15 @@ const ShoppingCartOverlayCard = ({  styles, cartVisibility, cartVisibilityToggle
                     <List >
                         {cartItems.map(item => (
                             <ListItem key={item._id} display="flex" flexGrow="1" component={RouterLink} to={`/shop/${item._id}`} sx={{
-                                borderRadius: 2, margin: 1, mb: 2, boxShadow: '0 0 4px rgba(0, 0, 0, 0.25)',  
+                                borderRadius: 2, margin: 1, mb: 2, boxShadow: '0 0 4px rgba(0, 0, 0, 0.25)',
                                 '&:visited': {
-                                    color: 'inherit', 
+                                    color: 'inherit',
                                 },
                                 '&:hover': {
-                                    backgroundColor: 'rgba(0, 0, 0, 0.04)', 
-                                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)', 
-                                    transform: 'translateY(-4px)', 
-                                  }
+                                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
+                                    transform: 'translateY(-4px)',
+                                }
                             }}>
                                 {<Avatar src={`http://localhost:5003${item.images[0]}`} variant="square" sx={{ width: "10%", height: "auto", borderRadius: 2, margin: 2, padding: 0 }} />}
 
@@ -55,7 +54,7 @@ const ShoppingCartOverlayCard = ({  styles, cartVisibility, cartVisibilityToggle
                         <Divider variant="fullWidth" sx={{ m: 2 }} />
                         <Typography variant="subtitle1" gutterBottom textAlign="left" sx={{ m: 1 }}>Total: Rs. {totalPrice}</Typography>
                         <Box display="flex" justifyContent="flex-end" alignItems="center" sx={{ mt: 3 }}>
-                            <SiteButton align="right" styles={{ width: "30%", padding: 1 }} text="Checkout" onClick={()=>{navigate("/checkout")}} />
+                            <SiteButton align="right" styles={{ width: "30%", padding: 1 }} text="Checkout" onClick={() => { navigate("/checkout") }} />
                         </Box>
                     </List>
                 </Paper>

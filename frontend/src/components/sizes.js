@@ -15,7 +15,6 @@ const SizesCategories = ({ checkedSizes, handleSizeChange }) => {
         {sizes.map((size) => (
           <FormControlLabel
             key={size}
-            // control={<Checkbox onClick={() => setCheckedSizes(size)} sx={{ '&.Mui-checked': { color: '#58a75b' } }} />}
             control = {<Checkbox checked={checkedSizes.includes(size)} onChange={() => handleSizeChange(size)} sx={{ '&.Mui-checked': { color: '#58a75b' } }} />}
 
             label={size.toUpperCase()}

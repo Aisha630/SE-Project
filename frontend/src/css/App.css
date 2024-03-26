@@ -15,7 +15,6 @@ input:-webkit-autofill:active {
   text-align: center;
 }
 
-
 .slick-prev:before,
 .slick-next:before {
   color: grey !important;
