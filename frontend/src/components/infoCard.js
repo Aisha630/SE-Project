@@ -35,8 +35,7 @@ const InfoCard = ({ title, items, isCart, deleteItem }) => {
                                 <Avatar src={isCart ? `http://localhost:5003${item.images[0]}` : item.avatar} variant="square" sx={{ width: "13%", height: "auto", borderRadius: 2, margin: 2, padding: 0 }} />
                                 <ListItemText sx={{ fontSize: "0.8rem", overflow: "wrap", textAlign: "left", textTransform: isCart ? "capitalize" : "" }} primary={isCart ? item.name : item.username} secondary={isCart ? `Size: ${item.size}` : item.email.toLowerCase()} />
                                 {isCart &&
-                                    <ListItemText sx={{ textTransform: "capitalize", marginRight: 2, textAlign: "right" }} primary={` Rs. ${item.price}`} />
-                                }
+                                    <ListItemText sx={{ textTransform: "capitalize", marginRight: 2, textAlign: "right" }} primary={` Rs. ${item.price}`} />}
                             </Box>
                             {isCart &&
                                 < IconButton edge="end" aria-label="delete" onClick={(event) => {
@@ -44,8 +43,7 @@ const InfoCard = ({ title, items, isCart, deleteItem }) => {
                                     deleteItem(item);
                                 }} sx={{ mr: 1, zIndex: 2 }}>
                                     <DeleteIcon />
-                                </IconButton>
-                            }
+                                </IconButton>}
                         </ListItem>
                     ))}
                 </List>
