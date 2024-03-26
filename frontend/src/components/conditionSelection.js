@@ -11,7 +11,7 @@ const ConditionSelection = ({ adData, handleInputChange, errors }) => (
       onChange={handleInputChange}
     >
       <FormControlLabel value="new" control={<Radio />} label="New" />
-      <FormControlLabel value="used" control={<Radio />} label="Used" />
+      <FormControlLabel value="old" control={<Radio />} label="Used" />
     </RadioGroup>
     {errors.condition && (
       <Typography color="error" variant="caption">
