@@ -51,7 +51,7 @@ const ProductDetails = () => {
     { label: 'Size', value: product.size },
   ] : [];
 
-  const { cartItems, fetchCartItems, totalPrice } = useCart();
+  const { fetchCartItems} = useCart();
 
   const addToCart = (product) => {
     fetch(`http://localhost:5003/cart`, {

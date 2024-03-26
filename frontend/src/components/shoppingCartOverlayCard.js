@@ -4,10 +4,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Link as RouterLink } from 'react-router-dom';
 import SiteButton from './button';
 import {useCart} from '../context/cartContext';
+import { useNavigate } from 'react-router-dom';
 
 const ShoppingCartOverlayCard = ({  styles, cartVisibility, cartVisibilityToggle, deleteFromCart }) => {
     const [isOpen, setIsOpen] = useState(true);
     const { cartItems, totalPrice, fetchCartItems } = useCart();
+    const navigate = useNavigate();
     const handleClose = () => {
         setIsOpen(false);
     }
@@ -53,7 +55,7 @@ const ShoppingCartOverlayCard = ({  styles, cartVisibility, cartVisibilityToggle
                         <Divider variant="fullWidth" sx={{ m: 2 }} />
                         <Typography variant="subtitle1" gutterBottom textAlign="left" sx={{ m: 1 }}>Total: Rs. {totalPrice}</Typography>
                         <Box display="flex" justifyContent="flex-end" alignItems="center" sx={{ mt: 3 }}>
-                            <SiteButton align="right" styles={{ width: "30%", padding: 1 }} text="Checkout" onClick={() => console.log('Proceed to checkout')} />
+                            <SiteButton align="right" styles={{ width: "30%", padding: 1 }} text="Checkout" onClick={()=>{navigate("/checkout")}} />
                         </Box>
                     </List>
                 </Paper>

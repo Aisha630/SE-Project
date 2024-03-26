@@ -2,6 +2,7 @@ import Product from "../models/productModel.js";
 import User from "../models/userModel.js";
 
 export async function getUser(req, res) {
+    
     const { username } = req.query;
     const user = await User.findOne({ username });
     if (!user) {

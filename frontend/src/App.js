@@ -13,7 +13,7 @@ import "@fontsource/poppins";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CartProvider } from './context/cartContext';
-
+import OrderSummaryPage from './pages/orderSummary';
 const theme = createTheme({
   palette: {
     background: {
@@ -53,7 +53,9 @@ function App() {
               <Route path="/sell" element={<PostAd />} />
               <Route path="/shop" element={<ShopItems />} />
               <Route path="/shop/:id" element={<ProductDetails />} />
+              <Route path="/checkout" element={<OrderSummaryPage/>} />
               <Route path="*" element={<ErrorPage />} />
+
             </Routes>
           </BrowserRouter>
         </div>

@@ -60,6 +60,7 @@ export async function checkout(req, res) {
     });
 
     await Promise.all(itemCheckouts);
+    res.cookie("cart", []);
     res.sendStatus(200);
   } catch (error) {
     console.log(error);

@@ -1,10 +1,10 @@
 import { AppBar, Toolbar, IconButton, Typography, Box, Button, Menu, MenuItem, Badge } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import '@fontsource/poppins';
+
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState} from 'react';
 import { useLogout } from '../hooks/useLogout';
 import { useSelector } from 'react-redux';
 import ShoppingCartOverlayCard from './shoppingCartOverlayCard';
@@ -16,30 +16,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles }) => {
     const navigate = useNavigate();
     const [isCartVisible, setIsCartVisible] = useState(false);
     const token = useSelector((state) => state.auth.token);
-    const { cartItems, totalPrice, fetchCartItems } = useCart();
-
-    // const [cartItems, setCartItems] = useState([])
-    // const [totalPrice, setTotalPrice] = useState(0)
-
-    // useEffect(() => {
-    //     fetchCartItems();
-    // }, [token]);
-
-    // const fetchCartItems = () => {
-    //     fetch(`http://localhost:5003/cart`, {
-    //         method: 'GET',
-    //         headers: {
-    //             'Authorization': `Bearer ${token}`,
-    //         },
-    //         credentials: 'include',
-    //     })
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             setCartItems(data);
-    //             setTotalPrice(data.map(item => item.price).reduce((a, b) => a + b, 0));
-    //         })
-    //         .catch(error => console.log(error));
-    // };
+    const { cartItems, fetchCartItems } = useCart();
 
     const deleteFromCart = (product) => {
         fetch(`http://localhost:5003/cart?id=${product._id}`, {
@@ -107,7 +84,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles }) => {
                     },
                     margin: 1
                 }}>
-                    <Badge badgeContent={cartItems.length} color="secondary">
+                    <Badge badgeContent={cartItems.length} max={99} color="secondary">
                         <ShoppingCartIcon />
                     </Badge>
                 </IconButton>
