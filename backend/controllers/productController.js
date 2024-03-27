@@ -1,10 +1,10 @@
-import path from "path";
 import Image from "../models/imageModel.js";
-import Product from "../models/productModel.js";
+import path from "path";
+import { SaleProduct } from "../models/productModels.js";
 
 // Retrieve all products that are not currently on hold
 export async function getAllProducts(_, res) {
-  const products = await Product.find({ isHold: false });
+  const products = await SaleProduct.find({ isHold: false });
   res.json(products);
 }
 
@@ -12,7 +12,7 @@ export async function getAllProducts(_, res) {
 export async function getProduct(req, res) {
   const { id } = req.params;
 
-  const product = await Product.findOne({ _id: id, isHold: false });
+  const product = await SaleProduct.findOne({ _id: id, isHold: false });
   if (!product) {
     return res.status(404).json({ error: "Product not found" });
   }
@@ -36,7 +36,7 @@ export async function addProduct(req, res) {
   const seller = req.user.username;
 
   // Validate the product details against the Product model
-  const { value, error } = Product.validate({
+  const { value, error } = SaleProduct.validate({
     name,
     price,
     description,
@@ -71,7 +71,7 @@ export async function addProduct(req, res) {
   );
   value.images = images;
 
-  const product = new Product(value);
+  const product = new SaleProduct(value);
   try {
     const newProduct = await product.save();
     res.status(201).json(newProduct);
@@ -88,13 +88,13 @@ export async function deleteProduct(req, res) {
 
   try {
     // Ensure that the product exists and belongs to the seller
-    const product = await Product.findOne({ _id: productId, seller });
+    const product = await SaleProduct.findOne({ _id: productId, seller });
 
     if (!product) {
       return res.status(404).json({ error: "Unable to delete." });
     }
 
-    await Product.deleteOne({ _id: productId });
+    await SaleProduct.deleteOne({ _id: productId });
     res.status(200).json({ message: "Product successfully deleted" });
   } catch (err) {
     console.error(err.message);
@@ -127,7 +127,7 @@ export async function filterProducts(req, res) {
   }
 
   // Query the database with the built query
-  const products = await Product.find(query);
+  const products = await SaleProduct.find(query);
   res.json(products);
 }
 
@@ -135,11 +135,10 @@ export async function fetchLatest(req, res) {
   const { limit } = req.query;
 
   try {
-    const products = await Product.find({})
+    const products = await SaleProduct.find({})
       .sort({ createdAt: -1 })
       .limit(limit);
     res.json(products);
-
   } catch (error) {
     res.status(500).json({ error: "Server error." });
   }
