@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Drawer, Typography, Box, ListItemButton, ListItemIcon, ThemeProvider } from '@mui/material'
-import { Link as RouterLink } from "react-router-dom";
+import { Drawer,  Box, ThemeProvider } from '@mui/material'
 import NavBar from '../components/navbarshop.js';
 import theme from '../themes/homeTheme.js';
 import ProductList from '../components/productlisting.js';
@@ -9,6 +8,7 @@ import FilterMenu from '../components/filtermenu.js';
 import MainCategoryToolbar from '../components/maincategoriestoolbar.js';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import ListItemLink from '../components/ListItemLink.js';
 
 const ShopItems = () => {
 
@@ -135,33 +135,6 @@ const ShopItems = () => {
             });
     }, [token, navigate, category]);
     
-
-
-    const ListItemLink = ({ text, Icon, to }) => {
-        const commonStyles = {
-            minWidth: { xs: '30px', sm: '40px', md: '50px' },
-            fontSize: { xs: '0.7rem', sm: '0.875rem', md: '1rem' },
-        };
-
-        return (
-            <ListItemButton component={RouterLink} to={to} onClick={toggleFilterMenu} sx={{
-                '& .MuiListItemIcon-root, & .MuiTypography-root': commonStyles, '&:hover': {
-                    backgroundColor: "transparent",
-                    textDecoration: 'underline',
-                    textDecorationColor: '#58a75b',
-                    '& .MuiListItemIcon-root, & .MuiTypography-root': {
-                        color: "#58a75b",
-                    }
-                },
-            }}>
-                <ListItemIcon sx={{ mr: 0, padding: 0 }}><Icon /></ListItemIcon>
-                <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: "normal", mt: "5px", ml: 0, ...commonStyles, }}>
-                    {text}
-                </Typography>
-            </ListItemButton>
-        );
-    };
-
     const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
 
     const toggleFilterMenu = () => {
@@ -177,19 +150,21 @@ const ShopItems = () => {
             <Box>
                 <NavBar />
             </Box>
-            <MainCategoryToolbar setCategory={setCategory} />
+            <MainCategoryToolbar setCategory={setCategory} category={category} /> {/*This is the main toolbar that represents clothing, technology, and miscellaneous categories*/}
 
+            {/* This box followed by a drawer represents the filters menu. The box contains the clickable button that opens and closes the filters menu drawer */}
             <Box display="flex" justifyContent="left" mt={2} ml={2} sx={{ width: "15%", fontWeight: "normal", }} >
-                <ListItemLink text={"Filter and Order"} Icon={TuneIcon} to={"#"} sx={{
+                <ListItemLink text={"Filter and Order"} Icon={TuneIcon} to={"#"} onClick={toggleFilterMenu} ButtonStyles={{
                     '&:hover': {
-                        backgroundColor: "#e0e0e0",
+                        backgroundColor: "transparent",
+                        textDecoration: 'underline',
+                        textDecorationColor: '#58a75b',
                         '& .MuiListItemIcon-root, & .MuiTypography-root': {
-                            color: "#ffffff",
+                            color: "#58a75b",
                         }
                     },
-                }} />
+                }}/>
             </Box>
-
             <Drawer
                 anchor='top'
                 open={isFilterMenuOpen}
@@ -199,6 +174,7 @@ const ShopItems = () => {
                 <FilterMenu category={category} closeFilterMenu={handleDrawerClose} checkedSubcategories={checkedSubcategories} handleSubcategoryChange={handleSubcategoryChange} checkedSizes={checkedSizes} handleSizeChange={handleSizeChange} handleApplyFilters={handleApplyFilters} handleResetFilters={handleResetFilters}/>
             </Drawer>
 
+            {/* This section represents the actual products */}
             <Box sx={{ padding: '30px' }}>
                 <ProductList products={products} />
             </Box>

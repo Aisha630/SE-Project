@@ -107,8 +107,6 @@ export async function filterProducts(req, res) {
   const { category, tags, sizes, colors } = req.query;
   const query = { isHold: false };
 
-  console.log(req.query)
-
   // Build the query based on provided filter criteria
   if (category) {
     query.category = category;
