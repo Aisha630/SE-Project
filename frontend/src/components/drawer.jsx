@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import { SwipeableDrawer, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import SidePanel from './sidePanel.js';
+import SidePanel from './sidePanel.jsx';
+import { useMediaQuery } from '@mui/material';
+import theme from '../themes/homeTheme.js';
 
 function Drawer() {
   const [isOpen, setIsOpen] = useState(false);
+  const lg = useMediaQuery(theme.breakpoints.between('md', 'xl'));
+  const md = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+
 
   const toggleDrawer = (open) => (event) => {
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -22,12 +27,12 @@ function Drawer() {
       role="presentation"
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
-      style={{ width: 250 }}
+      style={{ width: lg ? 240 : md ? 200 : 180 }}
     >
       <IconButton onClick={handleBack} sx={{ margin: "10px" }}>
-        <img src="/backIcon.png" alt="Back" style={{ width: 65, height: 50 }} />
+        <img src="/backIcon.png" alt="Back" style={{ width: lg ? 65 : 0.7 * 65, height: lg ? 50 : 0.7 * 50 }} />
       </IconButton>
-      <SidePanel ListStyles={{ ml: { xs: '3px', sm: "5px", md: "10px" } }} ListItemStyles={{ fontWeight: "bold", mt: "5px" }} ListButtonStyles={{ margin: "15px" }} />
+      <SidePanel ListStyles={{ ml: { xs: '3px', sm: "5px", md: "10px" } }} ListItemStyles={{ fontWeight: "bold", mt: "5px" }} ListButtonStyles={{ margin: "10px" }} />
     </div>
   );
 

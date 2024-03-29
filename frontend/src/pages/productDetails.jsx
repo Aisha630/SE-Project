@@ -1,16 +1,16 @@
 import React from 'react';
 import { Grid, Box, Typography, Container, Paper } from '@mui/material';
 import "react-image-gallery/styles/css/image-gallery.css";
-import NavBar from '../components/navbarshop.js';
-import SiteButton from '../components/button.js';
+import NavBar from '../components/navbarshop.jsx';
+import SiteButton from '../components/button.jsx';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { CustomImageGallery } from '../components/imageGallery.js';
+import { CustomImageGallery } from '../components/imageGallery.jsx';
 import { ThemeProvider } from '@mui/system';
 import theme from '../themes/homeTheme.js';
 import { toast } from 'react-toastify';
-import {useCart} from '../context/cartContext';
+import { useCart } from '../context/cartContext.jsx';
 
 const DetailItem = ({ label, value }) => (
   <Grid container columnSpacing={2} alignItems="center">
@@ -51,7 +51,7 @@ const ProductDetails = () => {
     { label: 'Size', value: product.size },
   ] : [];
 
-  const { fetchCartItems} = useCart();
+  const { fetchCartItems } = useCart();
 
   const addToCart = (product) => {
     fetch(`http://localhost:5003/cart`, {
@@ -80,9 +80,9 @@ const ProductDetails = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box maxHeight="100vh">
+      <Box >
         <NavBar />
-        <Container maxWidth="80%" disableGutters maxHeight="100vh" sx={{ m: 0, p: 0 }}>
+        <Container maxWidth="80%" disableGutters sx={{ m: 0, p: 0 }}>
           <Box display="flex" flexDirection="row" alignItems="stretch">
             <Box width="60vw">
               <CustomImageGallery items={product ? product.images : []} sx={{ boxShadow: "none" }} />

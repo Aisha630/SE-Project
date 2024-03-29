@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-import { signupUser } from '../stores/authSlice';
+import { signupUser } from '../stores/authSlice.js';
 import { Box, Button, Container, TextField, Typography, ThemeProvider, IconButton, InputAdornment, Link, FormControlLabel, FormGroup, Checkbox } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import '../css/login.css';
 import theme from '../themes/authThemes.js';
-import { usePasswordValidation } from '../hooks/usePasswordValidation';
+import { usePasswordValidation } from '../hooks/usePasswordValidation.js';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({

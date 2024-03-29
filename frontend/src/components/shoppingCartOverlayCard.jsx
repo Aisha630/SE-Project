@@ -31,7 +31,7 @@ const ShoppingCartOverlayCard = ({ styles, cartVisibility, cartVisibilityToggle,
                     <List >
                         {cartItems.map(item => (
                             <ListItem key={item._id} display="flex" flexGrow="1" component={RouterLink} to={`/shop/${item._id}`} sx={{
-                                borderRadius: 2, margin: 1, mb: 2, boxShadow: '0 0 4px rgba(0, 0, 0, 0.25)',
+                                borderRadius: 2, margin: 1, mb: 2, boxShadow: '0 0 4px rgba(0, 0, 0, 0.25)', height: "15vh",
                                 '&:visited': {
                                     color: 'inherit',
                                 },

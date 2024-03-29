@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { Grid, Box } from '@mui/material'
-import CategoryFilter from './categoryfilter.js';
-import PriceRangeSlider from './pricerangeslider.js';
-import SortBy from './sortby.js';
-import SizesCategories from './sizes.js';
+import CategoryFilter from './categoryfilter.jsx';
+import PriceRangeSlider from './pricerangeslider.jsx';
+import SortBy from './sortby.jsx';
+import SizesCategories from './sizes.jsx';
 import CloseIcon from '@mui/icons-material/Close';
-import SiteButton from './button.js';
-import ListItemLink from './ListItemLink.js';
+import SiteButton from './button.jsx';
+import ListItemLink from './ListItemLink.jsx';
 
 const FilterMenu = ({category, closeFilterMenu, checkedSubcategories, handleSubcategoryChange, checkedSizes, handleSizeChange, handleApplyFilters, handleResetFilters}) => {
     const [value, setValue] = useState([0, 200000]);    

@@ -12,14 +12,14 @@ import {
 import theme from "../themes/authThemes.js";
 import { toast } from "react-toastify";
 import details from "../config.json";
-import AdDetails from "../components/adDetails";
-import CategorySelection from "../components/categorySelection";
-import ModeOfAdSelection from "../components/adModeSelection";
-import Specifications from "../components/specifications";
-import ConditionSelection from "../components/conditionSelection";
-import PriceSelection from "../components/priceSelection.js";
-import ImageUpload from "../components/imageUpload.js";
-import TagSelection from "../components/tagSelection.js";
+import AdDetails from "../components/adDetails.jsx";
+import CategorySelection from "../components/categorySelection.jsx";
+import ModeOfAdSelection from "../components/adModeSelection.jsx";
+import Specifications from "../components/specifications.jsx";
+import ConditionSelection from "../components/conditionSelection.jsx";
+import PriceSelection from "../components/priceSelection.jsx";
+import ImageUpload from "../components/imageUpload.jsx";
+import TagSelection from "../components/tagSelection.jsx";
 
 const categories = details.categories;
 const sizes = details.sizes;

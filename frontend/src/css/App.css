@@ -13,10 +13,32 @@ input:-webkit-autofill:active {
 
 .App {
   text-align: center;
+  
 }
 
-.slick-prev:before,
-.slick-next:before {
-  color: grey !important;
+
+/* Custom styles for Swiper navigation arrows */
+.swiper-button-prev,
+.swiper-button-next {
+  /* background-color: #000; Arrow background color */
+  color: black !important; 
+
+  /* Makes the arrows circular */
+  /* width: 10px !important;
+
+  height: 10px !important;
+margin: 0px 0px !important; */
+  /* Arrow height */
+
+  /* opacity: 0.75; */
+  /* top: 50% !important; */
+  /* margin-left: -10px !important; */
+  /* Arrow opacity */
+  /* transition: opacity 0.3s; */
+  /* Smooth transition for hover effect */
 }
 
+/* 
+/* z */
+
+/* Example of changing the arrow icons */

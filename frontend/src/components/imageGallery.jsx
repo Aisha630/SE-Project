@@ -3,7 +3,7 @@ import ImageGallery from 'react-image-gallery';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import RenderItem from './render.js';
+import RenderItem from './render.jsx';
 
 export const CustomImageGallery = ({ items, ...props }) => {
 

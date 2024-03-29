@@ -1,6 +1,6 @@
-import Drawer from "./drawer.js"
-import Nav from "./nav.js"
-import Search from "./search.js"
+import Drawer from "./drawer.jsx"
+import Nav from "./nav.jsx"
+import Search from "./search.jsx"
 
 const NavBar = () => {
     return (

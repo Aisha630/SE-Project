@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { Drawer,  Box, ThemeProvider } from '@mui/material'
-import NavBar from '../components/navbarshop.js';
+import NavBar from '../components/navbarshop.jsx';
 import theme from '../themes/homeTheme.js';
-import ProductList from '../components/productlisting.js';
+import ProductList from '../components/productlisting.jsx';
 import TuneIcon from '@mui/icons-material/Tune';
-import FilterMenu from '../components/filtermenu.js';
-import MainCategoryToolbar from '../components/maincategoriestoolbar.js';
+import FilterMenu from '../components/filtermenu.jsx';
+import MainCategoryToolbar from '../components/maincategoriestoolbar.jsx';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import ListItemLink from '../components/ListItemLink.js';
+import ListItemLink from '../components/ListItemLink.jsx';
 
 const ShopItems = () => {
 
