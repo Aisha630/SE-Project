@@ -1,5 +1,6 @@
-import Product from "../models/productModel.js";
 import User from "../models/userModel.js";
+import { SaleProduct } from "../models/productModels.js";
+
 import { sendCheckoutEmail } from "../services/emailService.js";
 
 export async function getCart(req, res) {
@@ -9,7 +10,7 @@ export async function getCart(req, res) {
 }
 
 export async function addToCart(req, res) {
-  const exists = await Product.exists({ _id: req.body.id, isHold: false });
+  const exists = await SaleProduct.exists({ _id: req.body.id, isHold: false });
   if (!exists) {
     res.status(404).json({ error: "Product not found" });
     return;
@@ -74,7 +75,7 @@ function getIDs(req, _) {
 
 async function fetchCartItems(cartIDs) {
   const cartItems = await Promise.all(
-    cartIDs.map((id) => Product.findOne({ _id: id, isHold: false }))
+    cartIDs.map((id) => SaleProduct.findOne({ _id: id, isHold: false }))
   );
   return cartItems.filter((item) => item !== null);
 }
