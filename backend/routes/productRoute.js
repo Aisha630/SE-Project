@@ -8,9 +8,15 @@ import {
   deleteProduct,
   filterProducts,
   fetchLatest,
-  bidOnProduct,
-  reopenAuction,
+  reopen,
 } from "../controllers/productController.js";
+
+import {
+  createDonationRequest,
+  closeDonation,
+} from "../controllers/donateController.js";
+
+import { bidOnProduct } from "../controllers/auctionController.js";
 
 const router = express.Router();
 
@@ -21,8 +27,10 @@ router.delete("/shop/:id", deleteProduct);
 router.post("/sell", uploadImage, addProduct);
 router.get("/filter", filterProducts);
 router.get("/latest", fetchLatest);
+router.patch("/shop/:id/reopen", reopen);
 
 router.post("/shop/:id/bid", bidOnProduct);
-router.post("/shop/:id/reopen", reopenAuction);
+router.post("/shop/:id/request", createDonationRequest);
+router.post("/shop/:id/close", closeDonation);
 
 export default router;

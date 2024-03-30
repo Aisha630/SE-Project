@@ -4,11 +4,8 @@ import schedule from "node-schedule";
 
 import Image from "../models/imageModel.js";
 import { Product } from "../models/productBase.js";
-import {
-  sendBidEmail,
-  sendNotSoldEmail,
-  sendSoldEmail,
-} from "../services/emailService.js";
+import { closeAuction } from "./auctionController.js";
+
 import {
   SaleProduct,
   DonationProduct,
@@ -124,7 +121,7 @@ export async function deleteProduct(req, res) {
     }
     res.status(200).json({ message: "Product successfully deleted" });
   } catch (err) {
-    console.error(err.message);
+    console.log(err.message);
     res.status(500).json({ error: "Server error" });
   }
 }
@@ -168,53 +165,12 @@ export async function fetchLatest(req, res) {
       .limit(limit);
     res.json(products);
   } catch (error) {
-    res.status(500).json({ error: "Server error." });
-  }
-}
-
-export async function bidOnProduct(req, res) {
-  const { id } = req.params;
-
-  const product = await Product.findOne({ _id: id, isHold: false });
-  if (!product) {
-    return res.status(404).json({ error: "Product not found" });
-  }
-
-  if (product.__t != "AuctionProduct") {
-    return res
-      .status(400)
-      .json({ error: "Product is not an auction product." });
-  }
-
-  const {
-    value: { bid },
-    error,
-  } = Joi.object({ bid: Joi.number().min(0) }).validate(req.body);
-  if (error) {
-    return res.status(400).json({ error: error.details[0].message });
-  }
-
-  if (bid <= product.currentBid) {
-    return res
-      .status(400)
-      .json({ error: "Bid needs to be higher than current bid" });
-  }
-
-  product.currentBid = bid;
-  product.buyerUsername = req.user.username;
-
-  try {
-    await product.save();
-    sendBidEmail(product);
-
-    res.json(product);
-  } catch (error) {
-    console.log(error);
+    console.log(err.message);
     res.status(500).json({ error: "Server error" });
   }
 }
 
-export async function reopenAuction(req, res) {
+export async function reopen(req, res) {
   const { id } = req.params;
 
   const product = await Product.findOne({
@@ -226,6 +182,19 @@ export async function reopenAuction(req, res) {
     return res.status(404).json({ error: "Product not found" });
   }
 
+  const productType = product.__t;
+  switch (productType) {
+    case "SaleProduct":
+      await reopenSale(req, product);
+    case "AuctionProduct":
+      await reopenAuction(req, product);
+    case "DonationProduct":
+      await reopenDonation(product);
+  }
+  res.status(201).json(product);
+}
+
+async function reopenAuction(req, product) {
   const { value, error } = Joi.object({
     startingBid: Joi.number().min(0).required(),
     endTime: Joi.date().required(),
@@ -245,22 +214,24 @@ export async function reopenAuction(req, res) {
   });
 
   await product.save();
-  res.status(201).json(product);
 }
 
-async function closeAuction(id) {
-  const product = await Product.findOne({ _id: id, isHold: false });
-  if (!product) {
-    return;
+async function reopenSale(req, product) {
+  const { value, error } = Joi.object({
+    price: Joi.number().min(0).required(),
+  }).validate(req.body);
+  if (error) {
+    return res.status(400).json({ error: error.details[0].message });
   }
 
-  product.isHold = true;
-  console.log(`Auction for product: ${id} closed`);
+  product.price = value.startingBid;
+  product.isHold = false;
   await product.save();
+}
 
-  if (product.buyerUsername) {
-    sendSoldEmail(product);
-  } else {
-    sendNotSoldEmail(product);
-  }
+async function reopenDonation(product) {
+  product.requestList = [];
+  product.isHold = false;
+  delete product.buyerUsername;
+  await product.save();
 }
