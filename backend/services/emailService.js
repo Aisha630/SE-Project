@@ -35,7 +35,7 @@ export async function sendCheckoutEmail(seller, buyer, product) {
 }
 export async function sendApprovalEmail(product) {
   const donar = await User.findOne({ username: product.seller });
-  const acceptedDonee = await User.findOne({ username: product.buyerUsername });
+  const acceptedDonee = await User.findOne({ username: product.buyer });
 
   let email = donationApproval(donar, acceptedDonee, product);
 

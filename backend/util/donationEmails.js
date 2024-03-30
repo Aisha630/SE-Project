@@ -12,7 +12,8 @@ export function donationApproval(donar, acceptedDonee, product) {
                 <p>Here's the details of the donation:</p>
                 <ul>
                     <li>Product Name: ${product.name}</li>
-                    <li>Donar: ${donar}</li>
+                    <li>Donar: ${donar.username}</li>
+                    <li>Donar email: ${donar.email}</li>
                 </ul>
                 <p>Please coordinate the delivery amongst yourself. The donar has been CCed in this email for your convenience.</p>
             </div>

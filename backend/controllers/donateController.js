@@ -1,5 +1,7 @@
+import Joi from "joi";
+
 import User from "../models/userModel.js";
-import { DonationProduct } from "../models/productModels";
+import { DonationProduct } from "../models/productModels.js";
 import {
   sendRejectionEmail,
   sendApprovalEmail,
@@ -8,7 +10,15 @@ import {
 export async function createDonationRequest(req, res) {
   const donee = req.user;
   const productId = req.params.id;
-  const { requestDescription } = req.body;
+  const {
+    value: { requestDescription },
+    error,
+  } = Joi.object({ requestDescription: Joi.string().required() }).validate(
+    req.body
+  );
+  if (error) {
+    return res.status(400).json({ error: error.details[0].message });
+  }
 
   try {
     const product = await DonationProduct.findOne({
@@ -19,16 +29,22 @@ export async function createDonationRequest(req, res) {
       return res.status(404).json({ error: "Product not found" });
     }
 
-    await DonationProduct.updateOne(
-      { _id: productId },
-      { $push: { requestList: [donee.username, requestDescription] } }
+    const existingIndex = product.requestList.findIndex(
+      (entry) => entry[0] === donee.username
     );
 
-    await User.updateOne(
-      { _id: donee._id },
-      { $push: { donationHistory: product.name } }
-    );
+    if (existingIndex !== -1) {
+      product.requestList[existingIndex][1] = requestDescription;
+    } else {
+      product.requestList.push([donee.username, requestDescription]);
 
+      await User.updateOne(
+        { _id: donee._id },
+        { $push: { donationHistory: product.name } }
+      );
+    }
+
+    await product.save();
     res.sendStatus(200);
   } catch (err) {
     console.log(err.message);
@@ -38,7 +54,13 @@ export async function createDonationRequest(req, res) {
 
 export async function closeDonation(req, res) {
   const productId = req.params.id;
-  const { doneeUsername } = req.body;
+  const {
+    value: { doneeUsername },
+    error,
+  } = Joi.object({ doneeUsername: Joi.string().required() }).validate(req.body);
+  if (error) {
+    return res.status(400).json({ error: error.details[0].message });
+  }
 
   try {
     const product = await DonationProduct.findOne({ _id: productId });
@@ -46,31 +68,35 @@ export async function closeDonation(req, res) {
       return res.status(404).json({ error: "Product not found" });
     }
 
-    product.isHold = true;
-    product.buyerUsername = doneeUsername;
-    await product.save();
-
     const acceptedDonee = await User.findOne({ username: doneeUsername });
-    const otherDonees = product.requestList
-      .filter((request) => request[0] !== doneeUsername)
-      .map((request) => request[0]);
-
-    if (acceptedDonee) {
+    if (
+      acceptedDonee &&
+      product.requestList.map((x) => x[0]).includes(acceptedDonee.username)
+    ) {
       const productDetails = {
         name: product.name,
-        buyer: product.buyerUsername,
+        buyer: doneeUsername,
         seller: product.seller,
       };
+
+      product.isHold = true;
+      product.buyerUsername = doneeUsername;
+      await product.save();
+
       sendApprovalEmail(productDetails);
     } else {
-      return res.status(500).json({ error: "Accepted donee is not found" });
+      return res.status(400).json({ error: "Accepted donee is not found" });
     }
+
+    const otherDonees = product.requestList
+      .map((request) => request[0])
+      .filter((username) => username !== doneeUsername);
 
     await Promise.all(
       otherDonees.map(async (doneeUsername) => {
         const donee = await User.findOne({ username: doneeUsername });
         if (donee) {
-          sendRejectionEmail(donee.email, product.name);
+          await sendRejectionEmail(donee.email, product);
         }
       })
     );
