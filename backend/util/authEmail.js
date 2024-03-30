@@ -24,8 +24,7 @@ export default function authEmail(user, verificationLink) {
 
   return {
     from: '"Second Time Around" <secondtimearound.gp2@gmail.com>',
-    to: seller.email,
-    cc: buyer.email,
+    to: user.email,
     subject: "Verify Your Email",
     html: html,
   };
