@@ -13,32 +13,22 @@ input:-webkit-autofill:active {
 
 .App {
   text-align: center;
-  
+
 }
 
 
 /* Custom styles for Swiper navigation arrows */
-.swiper-button-prev,
-.swiper-button-next {
-  /* background-color: #000; Arrow background color */
-  color: black !important; 
 
-  /* Makes the arrows circular */
-  /* width: 10px !important;
 
-  height: 10px !important;
-margin: 0px 0px !important; */
-  /* Arrow height */
+:root {
+  --swiper-pagination-color: rgb(88, 167, 91, 0.7);
+  --swiper-pagination-size: 10px;
+  --swiper-pagination-top-offset: 0px;
+  --swiper-pagination-margin: 0px;
+  --swiper-pagination-padding: 0px;
 
-  /* opacity: 0.75; */
-  /* top: 50% !important; */
-  /* margin-left: -10px !important; */
-  /* Arrow opacity */
-  /* transition: opacity 0.3s; */
-  /* Smooth transition for hover effect */
+  --swiper-navigation-size: 10px;
+  --swiper-navigation-top-offset: 45%;
+  --swiper-navigation-sides-offset: 0px;
+  --swiper-navigation-color: rgb(88, 167, 91, 0.7);
 }
-
-/* 
-/* z */
-
-/* Example of changing the arrow icons */

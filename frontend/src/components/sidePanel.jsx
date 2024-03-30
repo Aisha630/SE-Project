@@ -16,12 +16,12 @@ const menuItems = [
     { text: 'About', Icon: InfoIcon, to: '/help' },
 ];
 
-function sidePanel({ ListStyles, ListItemStyles, ListButtonStyles }) {
+function sidePanel({ ListStyles, ListItemStyles, ListButtonStyles, pageOn }) {
     return (
-        <List sx={{ mr: "0px", ...ListStyles, m: 0, p: 0 }}>
+        <List sx={{ mr: "0px", ...ListStyles }}>
             
             {menuItems.map(({ text, Icon, to }, index) => (
-                <ListItemLink key={index} text={text} Icon={Icon} to={to} TypoStyles={{ ...ListItemStyles }} ButtonStyles={{ ...ListButtonStyles }} />
+                <ListItemLink key={index} text={text} Icon={Icon} to={to} TypoStyles={{ ...ListItemStyles }} ButtonStyles={{ ...ListButtonStyles }} pageOn={pageOn} />
             ))}
         </List>
     );

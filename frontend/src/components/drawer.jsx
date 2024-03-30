@@ -5,7 +5,7 @@ import SidePanel from './sidePanel.jsx';
 import { useMediaQuery } from '@mui/material';
 import theme from '../themes/homeTheme.js';
 
-function Drawer() {
+function Drawer({pageOn}) {
   const [isOpen, setIsOpen] = useState(false);
   const lg = useMediaQuery(theme.breakpoints.between('md', 'xl'));
   const md = useMediaQuery(theme.breakpoints.between('sm', 'md'));
@@ -32,7 +32,7 @@ function Drawer() {
       <IconButton onClick={handleBack} sx={{ margin: "10px" }}>
         <img src="/backIcon.png" alt="Back" style={{ width: lg ? 65 : 0.7 * 65, height: lg ? 50 : 0.7 * 50 }} />
       </IconButton>
-      <SidePanel ListStyles={{ ml: { xs: '3px', sm: "5px", md: "10px" } }} ListItemStyles={{ fontWeight: "bold", mt: "5px" }} ListButtonStyles={{ margin: "10px" }} />
+      <SidePanel ListStyles={{ ml: { xs: '3px', sm: "5px", md: "10px" } }} ListItemStyles={{ fontWeight: "bold", mt: "5px" }} ListButtonStyles={{ margin: "15px" }} pageOn={pageOn} />
     </div>
   );
 

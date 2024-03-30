@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, IconButton, Typography, Box, Button, Menu, MenuItem, Badge } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Typography, Box, Button, Menu, MenuItem, Grid, Badge } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
@@ -14,7 +14,7 @@ import { useMediaQuery } from '@mui/material';
 import theme from '../themes/homeTheme';
 
 
-const Nav = ({ Drawer, Search, ShowLogo = true, styles }) => {
+const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn="Home" }) => {
     const navigate = useNavigate();
     const [isCartVisible, setIsCartVisible] = useState(false);
     const token = useSelector((state) => state.auth.token);
@@ -75,20 +75,25 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles }) => {
 
     return (
         <AppBar position="static" sx={{ backgroundColor: "#e0e0e0", ...styles, boxShadow: "none" }} >
-            <Toolbar sx={{}}>
-                <Drawer />
-                {ShowLogo && <Box onClick={handleLogoClick} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mr: 1, mt: 3, mb: 1, ml: { xs: '3px', sm: "5px", md: "8px" }, cursor: 'pointer' }}>
+            <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                <Drawer pageOn={pageOn}/>
+                {ShowLogo && <Box onClick={handleLogoClick} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center',  justifyContent:"flex-start",mr: 1, mt: 3, mb: 1, ml: { xs: '3px', sm: "5px", md: "15px" }, cursor: 'pointer' }}>
                     <img src="/sta_logo.png" alt="Second Time Around Logo" style={{ height: height }} />
                     <Typography variant={lg ? "subtitle2" : "caption"} noWrap sx={{ fontWeight: 'bold', lineHeight: '1.25', textAlign: 'center' }}>
                         Second Time <br />
                         <span style={{ display: 'block' }}>Around</span>
                     </Typography>
                 </Box>}
-                <Box sx={{ flexGrow: 1, flexDirection: "row" }} />
+                <Box sx={{ flexGrow: 1, }} />
+                {/* This is to push the search bar to the right */}
+
                 <Search />
-                <IconButton edge="start" color="gray" aria-label="menu" aria-haspopup="true" onClick={() => { toggleCart(); fetchCartItems() }} sx={{
+                <IconButton edge="end" color="gray" aria-label="cart" onClick={() => { fetchCartItems(); toggleCart(); }} sx={{
                     '&:hover': {
                         backgroundColor: "primary.dark"
+                    },
+                    '&.visited': {
+                        backgroundColor: "primary.dark",
                     },
                     margin: 1
                 }}>
@@ -124,11 +129,34 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles }) => {
                     }}
                     open={open}
                     onClose={handleClose}
+                    sx={{ borderRadius: 2, boxShadow: 2 }}
 
                 >
-                    <MenuItem onClick={handleClose} style={{ fontSize: lg ? '0.9rem' : "0.8rem", margin: 0, paddingBottom: 0, paddingTop: 0, }}> Profile </MenuItem>
-                    <MenuItem onClick={handleClose} style={{ fontSize: lg ? '0.9rem' : "0.8rem", paddingBottom: 0, paddingTop: 0, margin: 0, }}> My account </MenuItem>
-                    <MenuItem onClick={handleLogout} style={{ fontSize: lg ? '0.9rem' : "0.8rem", paddingBottom: 0, paddingTop: 0 }}> Logout </MenuItem>
+                    <MenuItem onClick={handleClose} sx={{
+                        fontSize: lg ? '0.95rem' : "0.8rem",
+                        '&:hover': {
+                            backgroundColor: "#58a75b",
+                            borderRadius: '20px',
+                            opacity: 0.8,
+
+                        }, m: 1, p: 1, paddingLeft: 2, paddingRight: 2
+                    }}> Profile </MenuItem>
+                    <MenuItem onClick={handleClose} sx={{
+                        fontSize: lg ? '0.95rem' : "0.8rem", '&:hover': {
+                            backgroundColor: "#58a75b",
+                            borderRadius: '20px',
+                            opacity: 0.8,
+
+
+                        }, m: 1, p: 1, paddingLeft: 2, paddingRight: 2
+                    }}> My account </MenuItem>
+                    <MenuItem onClick={handleLogout} sx={{
+                        fontSize: lg ? '0.95rem' : "0.8rem", '&:hover': {
+                            backgroundColor: "#58a75b",
+                            borderRadius: '20px',
+                            opacity: 0.8,
+                        }, m: 1, p: 1, paddingLeft: 2, paddingRight: 2
+                    }}> Logout </MenuItem>
 
                 </Menu>
 
@@ -158,6 +186,9 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles }) => {
                 >
                     Sell
                 </Button>
+                {/* </Grid> */}
+                {/* </Grid> */}
+                {/* </Box> */}
             </Toolbar>
         </AppBar >
     );

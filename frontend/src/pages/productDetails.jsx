@@ -11,16 +11,20 @@ import { ThemeProvider } from '@mui/system';
 import theme from '../themes/homeTheme.js';
 import { toast } from 'react-toastify';
 import { useCart } from '../context/cartContext.jsx';
+import { useMediaQuery } from '@mui/material';
 
-const DetailItem = ({ label, value }) => (
+
+
+const DetailItem = ({ label, value, lg }) => (
+
   <Grid container columnSpacing={2} alignItems="center">
     <Grid item xs={6}>
-      <Typography variant="subtitle1" gutterBottom textAlign="left" sx={{ color: "gray", mt: 1, mb: 1 }}>
+      <Typography variant={lg ? "subtitle1" : "subtitle2"} gutterBottom textAlign="left" sx={{ color: "gray", mt: 1, mb: 1, fontWeight: 400 }}>
         {label}
       </Typography>
     </Grid>
     <Grid item xs={6}>
-      <Typography variant="subtitle1" gutterBottom textAlign="right" sx={{ textTransform: "capitalize", mt: 2, mb: 2 }}>
+      <Typography variant={lg ? "subtitle1" : "subtitle2"} gutterBottom textAlign="right" sx={{ textTransform: "capitalize", mt: 2, mb: 2, fontWeight: 400 }}>
         {value}
       </Typography>
     </Grid>
@@ -77,37 +81,37 @@ const ProductDetails = () => {
     }
     )
   }
+  const lg = useMediaQuery(theme.breakpoints.up('sm'));
+
 
   return (
     <ThemeProvider theme={theme}>
-      <Box >
+      <Grid container spacing={0} sx={{ m: 0, p: 0, width: "100%" }}>
         <NavBar />
-        <Container maxWidth="80%" disableGutters sx={{ m: 0, p: 0 }}>
-          <Box display="flex" flexDirection="row" alignItems="stretch">
-            <Box width="60vw">
-              <CustomImageGallery items={product ? product.images : []} sx={{ boxShadow: "none" }} />
-            </Box>
-            <Paper sx={{ padding: 7, flex: 1, borderRadius: 0 }}>
-              <Typography variant="h5" color="black" textAlign="left" sx={{ fontWeight: 500, mb: 0 }}>
-                {product?.name}
-              </Typography>
-              <Typography variant="h6" color="black" textAlign="left" sx={{ fontWeight: 500, mb: 4 }}>
-                {product && `PKR ${product.price}`}
-              </Typography>
-              {productDetails.map((detail, index) => (
-                <DetailItem key={index} label={detail.label} value={detail.value} />
-              ))}
-              <SiteButton text="Add to Cart" onClick={() => addToCart(product)} styles={{ width: '100%', mt: 3, mb: 3, fontSize: "1rem", padding: 1.5 }} />
-              <Typography variant="h6" textAlign="left" sx={{ mt: 3, color: "gray" }}>
-                Description
-              </Typography>
-              <Typography variant="subtitle1" textAlign="left" sx={{ mt: 2 }}>
-                {product?.description}
-              </Typography>
-            </Paper>
-          </Box>
-        </Container>
-      </Box>
+        <Grid item xs={12} sm={12} md={12} lg={6} sx={{ display: "flex", flexDirection: "row", alignItems: "stretch", m: 0, p: 0 }}>
+          <CustomImageGallery items={product ? product.images : []} sx={{ boxShadow: "none" }} />
+        </Grid>
+        <Grid item xs={12} sm={12} md={12} lg={6} sx={{ display: "flex", flexDirection: "row", alignItems: "stretch", m: 0, p: 0 }}>
+          <Paper sx={{ padding: 7, flex: 1, borderRadius: 0 }}>
+            <Typography variant="h5" color="black" textAlign="left" sx={{ fontWeight: 500, mb: 0 }}>
+              {product?.name}
+            </Typography>
+            <Typography variant={lg ? "h6" : "subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 500, mb: 4 }}>
+              {product && `PKR ${product.price}`}
+            </Typography>
+            {productDetails.map((detail, index) => (
+              <DetailItem key={index} label={detail.label} value={detail.value} lg={lg} />
+            ))}
+            <SiteButton text="Add to Cart" onClick={() => addToCart(product)} styles={{ width: '100%', mt: 3, mb: 3, fontSize: lg ? "1rem" : "0.8rem", padding: 1.5, }} />
+            <Typography variant="h6" textAlign="left" sx={{ mt: 3, color: "gray" }}>
+              Description
+            </Typography>
+            <Typography variant={lg ? "subtitle1" : "subtitle2"} textAlign="left" sx={{ mt: 2, fontWeight: 400 }}>
+              {product?.description}
+            </Typography>
+          </Paper>
+        </Grid>
+      </Grid>
     </ThemeProvider>
   );
 };

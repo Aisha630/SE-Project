@@ -15,6 +15,12 @@ const theme = createTheme({
         MuiListItemButton: {
             styleOverrides: {
                 root: {
+                    '&.Mui-selected, &.Mui-selected:hover': {
+                        backgroundColor: "#58a75b",
+                        '& .MuiListItemIcon-root, & .MuiTypography-root': {
+                            color: "#ffffff",
+                        }
+                    },
                     '&:hover': {
                         backgroundColor: "#58a75b",
                         '& .MuiListItemIcon-root, & .MuiTypography-root': {

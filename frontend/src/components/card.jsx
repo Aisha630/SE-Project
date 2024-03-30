@@ -28,10 +28,10 @@ function OverlayImageCards({ bottomCardProps, topCardProps, link }) {
   const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'md'));
 
   return (
-    <Box sx={{ position: 'relative', width: 380, height: 490, margin: 'auto' }}>
+    <Box sx={{ position: 'relative', width: 380, height: 490, margin: 0, p:0 }}>
       <ImageCard {...bottomCardProps} style={{
         mt: 5, width: 'calc(100% - 100px)',
-        height: 'calc(100% - 100px)', opacity: 0.7,
+        height: 'calc(100% - 100px)', opacity: 0.7, ml:0, p:0, mr:0
       }} />
       <Link to={link}>
         <ImageCard
@@ -42,7 +42,9 @@ function OverlayImageCards({ bottomCardProps, topCardProps, link }) {
             left: 20,
             width: 'calc(100% - 100px)',
             height: 'calc(100% - 100px)',
-            '&:hover': { filter: 'brightness(0.9)' }
+            '&:hover': { filter: 'brightness(0.9)' },
+            p:0, m:0
+
 
           }}
         />

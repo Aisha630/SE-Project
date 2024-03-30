@@ -9,10 +9,14 @@ import { toast } from 'react-toastify';
 import SiteButton from '../components/button';
 import { useNavigate } from 'react-router-dom';
 import InfoCard from '../components/infoCard';
+import { useMediaQuery } from '@mui/material';
 
 const OrderSummaryPage = () => {
+    const lg = useMediaQuery(theme.breakpoints.up('sm'));
 
     const navigate = useNavigate();
+    const sm = useMediaQuery(theme.breakpoints.down('sm'));
+    // const xs 
     const token = useSelector((state) => state.auth.token);
     const { cartItems, fetchCartItems, sellers } = useCart();
 
@@ -60,13 +64,15 @@ const OrderSummaryPage = () => {
 
     return (
         <ThemeProvider theme={theme}>
-            <Box style={{ display: "flex", alignItems: "flex-start", justifyContent: "flex-start", m: 0, paddingLeft: 68 }}>
-                <IconButton onClick={() => navigate("/shop")} edge="start" sx={{ marginTop: "10px", mb: "10px" }} >
-                    <img src="backIcon.png" alt="Back Icon" style={{ width: 65, height: 50, display: "flex", flexDirection: "column", alignItems: "flex-start", }} />
-                </IconButton>
-            </Box>
-            <Grid container spacing={3} sx={{ paddingRight: 8, paddingLeft: 8, }}>
-                <Grid item xs={12} sm={6}>
+            <Grid container spacing={5} sx={{ paddingRight: sm ? 2 : 8, paddingLeft: sm ? 2 : 8 }}>
+                <Grid item xs={12} sm={12} md={12} lg={12}>
+                    <Box style={{ display: "flex", alignItems: "flex-start", justifyContent: "flex-start", m: 0, paddingLeft: 8 }}>
+                        <IconButton onClick={() => navigate("/shop")} edge="start" sx={{ marginTop: "20px", mb: 0 }} >
+                            <img src="backIcon.png" alt="Back Icon" style={{ width: lg ? 65 : 45, height: lg ? 50 : 35, display: "flex", flexDirection: "column", alignItems: "flex-start", }} />
+                        </IconButton>
+                    </Box>
+                </Grid>
+                <Grid item xs={12} sm={12} md={6} lg={6}>
                     <InfoCard
                         title="Order Summary"
                         items={cartItems}
@@ -74,17 +80,19 @@ const OrderSummaryPage = () => {
                         deleteItem={deleteFromCart}
                     />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={12} md={6} lg={6}>
                     <InfoCard
                         title="Seller's Details"
                         items={sellers}
                         isCart={false}
                     />
                 </Grid>
-            </Grid>
-            <Box sx={{ textAlign: "right", mr: 0, mt: 0, mb: 3, paddingRight: 8, paddingTop: 3 }}>
-                <SiteButton text={'Confirm Purchase'} styles={{ padding: 2, paddingLeft: 8, paddingRight: 8, fontSize: "0.95rem" }} onClick={checkout} />
+            <Grid item xs={12} sm={12} md={12} lg={12}>
+            <Box sx={{ textAlign: "right", mr: 0, mt: 0, mb: 3, paddingRight: 0, paddingTop: 1 }}>
+                <SiteButton text={'Confirm Purchase'} styles={{ padding: 2, paddingLeft: lg? 8:4, paddingRight: lg?8:4, fontSize: "0.95rem" }} onClick={checkout} />
             </Box>
+            </Grid>
+            </Grid>
         </ThemeProvider>
     );
 };

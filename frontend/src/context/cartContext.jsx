@@ -36,7 +36,7 @@ export const CartProvider = ({ children }) => {
 
   const fetchSellers = (username) => {
     return new Promise((resolve, reject) => {
-      console.log("Fetching seller: ", username);
+      // console.log("Fetching seller: ", username);
       fetch(`http://localhost:5003/profile?username=${username}`, {
         method: 'GET',
         headers: {

@@ -148,7 +148,7 @@ const ShopItems = () => {
     return (
         <ThemeProvider theme={theme}>
             <Box>
-                <NavBar />
+                <NavBar pageOn={"Shop"}/>
             </Box>
             <MainCategoryToolbar setCategory={setCategory} category={category} /> {/*This is the main toolbar that represents clothing, technology, and miscellaneous categories*/}
 
