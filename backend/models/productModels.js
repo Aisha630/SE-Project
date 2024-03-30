@@ -28,7 +28,7 @@ const auctionProductJoi = productBaseJoi.concat(
   Joi.object({
     startingBid: Joi.number().min(0).required(),
     endTime: Joi.date().required(),
-    currentBid: Joi.number().default(0),
+    currentBid: Joi.number().default(Joi.ref("startingBid")).forbidden(),
     buyerUsername: Joi.string().optional(),
   })
 );

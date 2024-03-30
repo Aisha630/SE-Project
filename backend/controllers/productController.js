@@ -1,6 +1,10 @@
-import Image from "../models/imageModel.js";
+import Joi from "joi";
 import path from "path";
+import schedule from "node-schedule";
+
+import Image from "../models/imageModel.js";
 import { Product } from "../models/productBase.js";
+import { sendBidEmail } from "../services/emailService.js";
 import {
   SaleProduct,
   DonationProduct,
@@ -78,8 +82,15 @@ export async function addProduct(req, res) {
 
   const product = new productModel(value);
   try {
-    const newProduct = await product.save();
-    res.status(201).json(newProduct);
+    await product.save();
+
+    if (product.__t == "AuctionProduct") {
+      schedule.scheduleJob(new Date(product.endtime), async () => {
+        await closeAuction(product._id);
+      });
+    }
+
+    res.status(201).json(product);
   } catch (err) {
     console.log(err.message);
     res.status(500).json({ error: "Server error" });
@@ -154,5 +165,98 @@ export async function fetchLatest(req, res) {
     res.json(products);
   } catch (error) {
     res.status(500).json({ error: "Server error." });
+  }
+}
+
+export async function bidOnProduct(req, res) {
+  const { id } = req.params;
+
+  const product = await Product.findOne({ _id: id, isHold: false });
+  if (!product) {
+    return res.status(404).json({ error: "Product not found" });
+  }
+
+  if (product.__t != "AuctionProduct") {
+    return res
+      .status(400)
+      .json({ error: "Product is not an auction product." });
+  }
+
+  const {
+    value: { bid },
+    error,
+  } = Joi.object({ bid: Joi.number().min(0) }).validate(req.body);
+  if (error) {
+    return res.status(400).json({ error: error.details[0].message });
+  }
+
+  if (bid <= product.currentBid) {
+    return res
+      .status(400)
+      .json({ error: "Bid needs to be higher than current bid" });
+  }
+
+  product.currentBid = bid;
+  product.buyerUsername = req.user.username;
+
+  try {
+    await product.save();
+    sendBidEmail(product);
+
+    res.json(product);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Server error" });
+  }
+}
+
+export async function reopenAuction(req, res) {
+  const { id } = req.params;
+
+  const product = await Product.findOne({
+    _id: id,
+    isHold: true,
+    seller: req.user.username,
+  });
+  if (!product) {
+    return res.status(404).json({ error: "Product not found" });
+  }
+
+  const { value, error } = Joi.object({
+    startingBid: Joi.number().min(0).required(),
+    endTime: Joi.date().required(),
+  }).validate(req.body);
+  if (error) {
+    return res.status(400).json({ error: error.details[0].message });
+  }
+
+  product.startingBid = value.startingBid;
+  product.endTime = value.endtime;
+  product.currentBid = value.startingBid;
+  product.isHold = false;
+  delete product.buyerUsername;
+
+  schedule.scheduleJob(new Date(product.endtime), async () => {
+    await closeAuction(product._id);
+  });
+
+  await product.save();
+  res.status(201).json(product);
+}
+
+async function closeAuction(id) {
+  const product = await Product.findOne({ _id: id, isHold: false });
+  if (!product) {
+    return;
+  }
+
+  product.isHold = true;
+  console.log(`Auction for product: ${id} closed`);
+  await product.save();
+
+  if (product.buyerUsername) {
+    // TODO: Send email to both with price
+  } else {
+    // TODO: Send email to seller that not sold
   }
 }
