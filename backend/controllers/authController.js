@@ -33,7 +33,7 @@ export async function signup(req, res) {
   }
 
   // Ensure usernames are unique
-  const exists = await User.findOne({ $or: [{ username }, { email }] });
+  const exists = await User.findOne({ $or: [{ username }] });
   if (exists) {
     return res.status(400).json({ error: "Username or email already exists" });
   }

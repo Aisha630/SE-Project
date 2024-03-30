@@ -1,7 +1,7 @@
 import juice from "juice";
 import fs from "fs";
 
-export function bidEmail(seller, product) {
+export function bidEmail(seller, buyer, product) {
   const css = fs.readFileSync("./util/emailStyles.css").toString();
   let html = `
         <div class="email-container">
@@ -11,9 +11,9 @@ export function bidEmail(seller, product) {
             <div class="email-body">
                 <p>A bid has been placed on your product with the following details:</p>
                 <ul>
-                    <li>Name: ${product.name}</li>
-                    <li>Bidder: ${product.buyerUsername}</li>
-                    <li>Bid: ${product.currentBid}</li>
+                    <li>Product Name: ${product.name}</li>
+                    <li>Bidder: ${buyer}</li>
+                    <li>Bid: Rs. ${product.currentBid}</li>
                 </ul>
             </div>
             <div class="email-footer">
@@ -44,9 +44,9 @@ export function soldEmail(seller, buyer, product) {
                 <p>A Sale has occured via auction!</p>
                 <ul>
                     <li>Product name: ${product.name}</li>
-                    <li>Seller: ${product.seller}</li>
-                    <li>Buyer: ${product.buyerUsername}</li>
-                    <li>Price: ${product.currentBid}</li>
+                    <li>Seller: ${seller.username}</li>
+                    <li>Buyer: ${buyer.username}</li>
+                    <li>Sold at: Rs. ${product.currentBid}</li>
                 </ul>
             </div>
             <div class="email-footer">
@@ -60,8 +60,9 @@ export function soldEmail(seller, buyer, product) {
 
   return {
     from: '"Second Time Around" <secondtimearound.gp2@gmail.com>',
-    to: [seller.email, buyer.email],
-    subject: "Sale occured",
+    to: buyer.email,
+    subject: "You won the Auction!",
+    cc: seller.email,
     html: html,
   };
 }

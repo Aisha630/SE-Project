@@ -1,6 +1,5 @@
 import User from "../models/userModel.js";
 import { SaleProduct } from "../models/productModels.js";
-
 import { sendCheckoutEmail } from "../services/emailService.js";
 
 export async function getCart(req, res) {
