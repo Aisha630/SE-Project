@@ -7,13 +7,20 @@ import { productBaseJoi, Product } from "./productBase.js";
 const saleProductJoi = productBaseJoi.concat(
   Joi.object({
     price: Joi.number().min(0).required(),
-    isHold: Joi.boolean().default(false),
   })
 );
 
 const donationProductJoi = productBaseJoi.concat(
   Joi.object({
-    buyerUsername: Joi.string().required(),
+    buyerUsername: Joi.string().optional(),
+    requestList: Joi.array()
+      .items(
+        Joi.array().ordered(
+          Joi.string().label("DonneName"),
+          Joi.string().label("DoneeRequest")
+        )
+      )
+      .default([]),
   })
 );
 
@@ -21,6 +28,8 @@ const auctionProductJoi = productBaseJoi.concat(
   Joi.object({
     startingBid: Joi.number().min(0).required(),
     endTime: Joi.date().required(),
+    currentBid: Joi.number().default(0),
+    buyerUsername: Joi.string().optional(),
   })
 );
 

@@ -43,7 +43,7 @@ export const productBaseJoi = Joi.object({
 
   condition: Joi.string().valid("new", "old").required(),
   images: Joi.array().items(Joi.string().required()).min(1).max(5),
-
+  isHold: Joi.boolean().default(false),
   seller: Joi.string().required(),
 });
 
