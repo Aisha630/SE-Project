@@ -4,7 +4,11 @@ import schedule from "node-schedule";
 
 import Image from "../models/imageModel.js";
 import { Product } from "../models/productBase.js";
-import { sendBidEmail } from "../services/emailService.js";
+import {
+  sendBidEmail,
+  sendNotSoldEmail,
+  sendSoldEmail,
+} from "../services/emailService.js";
 import {
   SaleProduct,
   DonationProduct,
@@ -255,8 +259,8 @@ async function closeAuction(id) {
   await product.save();
 
   if (product.buyerUsername) {
-    // TODO: Send email to both with price
+    sendSoldEmail(product);
   } else {
-    // TODO: Send email to seller that not sold
+    sendNotSoldEmail(product);
   }
 }
