@@ -19,7 +19,13 @@ export const CartProvider = ({ children }) => {
       },
       credentials: 'include',
     })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          return [];
+        }
+        
+        
+        return response.json()})
       .then(data => {
         setSellers([]);
         return data;
@@ -53,6 +59,9 @@ export const CartProvider = ({ children }) => {
   }
 
   useEffect(() => {
+    if (!token) {
+      return;
+    }
     fetchCartItems();
   }, [token]);
 

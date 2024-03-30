@@ -35,10 +35,10 @@ const PostAd = () => {
     description: "",
     brand: "",
     condition: "",
-    quantity: 1,
+    // quantity: 1,
     price: "",
-    endDate: "",
-    modeOfAd: "",
+    // endDate: "",
+    productType: "",
   });
 
   const [files, setFiles] = useState([]);
@@ -106,9 +106,9 @@ const PostAd = () => {
       newErrors.category = "Category is required";
     }
 
-    if (!adData.modeOfAd) {
+    if (!adData.productType) {
       isValid = false;
-      newErrors.modeOfAd = "Please select a mode of ad";
+      newErrors.productType = "Please select a mode of ad";
     }
 
     if (!adData.brand) {

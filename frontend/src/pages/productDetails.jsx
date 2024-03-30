@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Box, Typography, Container, Paper } from '@mui/material';
+import { Grid, Typography, Paper } from '@mui/material';
 import "react-image-gallery/styles/css/image-gallery.css";
 import NavBar from '../components/navbarshop.jsx';
 import SiteButton from '../components/button.jsx';
@@ -12,8 +12,7 @@ import theme from '../themes/homeTheme.js';
 import { toast } from 'react-toastify';
 import { useCart } from '../context/cartContext.jsx';
 import { useMediaQuery } from '@mui/material';
-
-
+import { useNavigate } from 'react-router-dom';
 
 const DetailItem = ({ label, value, lg }) => (
 
@@ -35,18 +34,23 @@ const ProductDetails = () => {
   const [product, setProduct] = useState();
   const { id } = useParams();
   const token = useSelector((state) => state.auth.token)
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(`http://localhost:5003/shop/${id}`, {
       headers: { 'Authorization': `Bearer ${token}` }
-    }).then(response => response.json()).then(data => {
+    }).then(response => {
+      if (!response.ok)
+        navigate("/login")
+      return response.json()
+    }).then(data => {
       const formattedImages = data.images.map((imageUrl, index) => ({
         original: `http://localhost:5003${imageUrl}`,
         thumbnail: `http://localhost:5003${imageUrl}`,
       }));
       setProduct({ ...data, images: formattedImages })
     }).catch(error => { console.log(error) })
-  }, [token, id]);
+  }, [token, id, navigate]);
 
   const productDetails = product ? [
     { label: 'Condition', value: product.condition },

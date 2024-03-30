@@ -15,7 +15,7 @@ const ModeOfAdSelection = ({ adData, handleInputChange }) => (
     </Typography>
     <RadioGroup
       row
-      name="modeOfAd"
+      name="productType"
       value={adData.modeOfAd}
       onChange={handleInputChange}
       sx={{
@@ -23,8 +23,8 @@ const ModeOfAdSelection = ({ adData, handleInputChange }) => (
         mb: 3,
       }}
     >
-      <FormControlLabel value="Auction" control={<Radio />} label="Auction" />
-      {adData.modeOfAd === "Auction" && (
+      <FormControlLabel value="auction" control={<Radio />} label="Auction" />
+      {adData.productType === "Auction" && (
         <TextField
           fullWidth
           id="endDate"
@@ -39,8 +39,8 @@ const ModeOfAdSelection = ({ adData, handleInputChange }) => (
           }}
         />
       )}
-      <FormControlLabel value="Sale" control={<Radio />} label="Sale" />
-      <FormControlLabel value="Donation" control={<Radio />} label="Donation" />
+      <FormControlLabel value="sale" control={<Radio />} label="Sale" />
+      <FormControlLabel value="donation" control={<Radio />} label="Donation" />
     </RadioGroup>
   </Box>
 );

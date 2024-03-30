@@ -19,7 +19,6 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn="Home" }) => {
     const [isCartVisible, setIsCartVisible] = useState(false);
     const token = useSelector((state) => state.auth.token);
     const { cartItems, fetchCartItems } = useCart();
-    const xs = useMediaQuery(theme.breakpoints.up('xs'));
     const sm = useMediaQuery(theme.breakpoints.up('sm'));
     const md = useMediaQuery(theme.breakpoints.up('md'));
     const lg = useMediaQuery(theme.breakpoints.up('lg'));
@@ -132,7 +131,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn="Home" }) => {
                     sx={{ borderRadius: 2, boxShadow: 2 }}
 
                 >
-                    <MenuItem onClick={handleClose} sx={{
+                    <MenuItem onClick={()=>{navigate("/profile")}} sx={{
                         fontSize: lg ? '0.95rem' : "0.8rem",
                         '&:hover': {
                             backgroundColor: "#58a75b",
@@ -141,7 +140,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn="Home" }) => {
 
                         }, m: 1, p: 1, paddingLeft: 2, paddingRight: 2
                     }}> Profile </MenuItem>
-                    <MenuItem onClick={handleClose} sx={{
+                    {/* <MenuItem onClick={handleClose} sx={{
                         fontSize: lg ? '0.95rem' : "0.8rem", '&:hover': {
                             backgroundColor: "#58a75b",
                             borderRadius: '20px',
@@ -149,7 +148,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn="Home" }) => {
 
 
                         }, m: 1, p: 1, paddingLeft: 2, paddingRight: 2
-                    }}> My account </MenuItem>
+                    }}> My account </MenuItem> */}
                     <MenuItem onClick={handleLogout} sx={{
                         fontSize: lg ? '0.95rem' : "0.8rem", '&:hover': {
                             backgroundColor: "#58a75b",

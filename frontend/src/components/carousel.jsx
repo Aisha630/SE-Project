@@ -22,12 +22,12 @@ function CarouselComponent() {
     const lg = useMediaQuery(theme.breakpoints.between('md', 'lg'));
 
     useEffect(() => {
-        fetch('http://localhost:5003/shop', {
+        fetch('http://localhost:5003/latest?limit=10', {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         }).then(response => response.json()).then(data => {
-            const formattedProducts = data.slice(0, 4).map(product => ({
+            const formattedProducts = data.map(product => ({
                 name: product.name,
                 image: `http://localhost:5003${product.images[0]}`, // Assuming the first image in the array is the main image
                 id: product._id
