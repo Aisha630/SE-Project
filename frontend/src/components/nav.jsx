@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, IconButton, Typography, Box, Button, Menu, MenuItem, Grid, Badge } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Typography, Box, Button, Menu, MenuItem,Badge } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
@@ -140,15 +140,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn="Home" }) => {
 
                         }, m: 1, p: 1, paddingLeft: 2, paddingRight: 2
                     }}> Profile </MenuItem>
-                    {/* <MenuItem onClick={handleClose} sx={{
-                        fontSize: lg ? '0.95rem' : "0.8rem", '&:hover': {
-                            backgroundColor: "#58a75b",
-                            borderRadius: '20px',
-                            opacity: 0.8,
-
-
-                        }, m: 1, p: 1, paddingLeft: 2, paddingRight: 2
-                    }}> My account </MenuItem> */}
+      
                     <MenuItem onClick={handleLogout} sx={{
                         fontSize: lg ? '0.95rem' : "0.8rem", '&:hover': {
                             backgroundColor: "#58a75b",
@@ -185,14 +177,11 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn="Home" }) => {
                 >
                     Sell
                 </Button>
-                {/* </Grid> */}
-                {/* </Grid> */}
-                {/* </Box> */}
+
             </Toolbar>
         </AppBar >
     );
 }
 
 export default Nav;
-
 

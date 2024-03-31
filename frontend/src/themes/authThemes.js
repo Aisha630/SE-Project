@@ -3,7 +3,7 @@ import { createTheme } from '@mui/material';
 const theme = createTheme({
     palette: {
         primary: { main: '#58a75b' },
-        secondary: { main: "#D1E4D0" },
+        secondary: { main: "#D1E4D0", dark: 'rgba(209, 228, 208, 0.8)' },
     },
     typography: {
         fontFamily: 'Poppins, Arial, sans-serif',
@@ -13,10 +13,10 @@ const theme = createTheme({
             styleOverrides: {
                 root: {
                     '& .MuiOutlinedInput-root': {
-                        '&.Mui-focused fieldset': { borderColor: '#58a75b' },
+                        '&.Mui-focused fieldset': { borderColor: '#084a08' },
                     },
-                    '& label.Mui-focused': { color: 'green' },
-                    '& label': { color: '#58a75b' },
+                    '& label.Mui-focused': { color: '#084a08' },
+                    '& label': { color: '#3e7840' },
                 },
             },
         },
