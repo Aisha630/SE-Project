@@ -24,6 +24,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" }) => {
     const lg = useMediaQuery(theme.breakpoints.up('lg'));
     const username = useSelector((state) => state.auth.user);
     const [user, setUser] = useState();
+    console.log("The user name is ", username)
 
 
     const height = lg ? '5vh' : md ? '3vh' : sm ? '40px' : '30px';
@@ -90,6 +91,8 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" }) => {
         handleClose();
     };
 
+    console.log("the user is ", user)
+
     return (
         <AppBar position="static" sx={{ backgroundColor: "#e0e0e0", ...styles, boxShadow: "none" }} >
             <Container maxWidth="xl">
@@ -134,7 +137,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" }) => {
                             },
                             margin: 1,
                         }}>
-                            <Avatar src={user.avatar} />
+                            {user && <Avatar src={user.avatar} />}
                         </IconButton>
 
                         <Menu
