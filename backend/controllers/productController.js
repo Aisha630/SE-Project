@@ -18,11 +18,10 @@ const productModels = {
   auction: AuctionProduct,
 };
 
-// FRONTEND: now requires productType in query
 export async function getAllProducts(req, res) {
   let productModel = Product;
 
-  const { productType } = req.query;
+  const { productType, q } = req.query;
   if (productType) {
     productModel = productModels[productType];
   }
@@ -31,7 +30,8 @@ export async function getAllProducts(req, res) {
     return res.status(400).json({ error: "Invalid mode of sale" });
   }
 
-  const products = await productModel.find({ isHold: false });
+  const regex = new RegExp(q ? q : ".*", "i");
+  const products = await productModel.find({ name: regex, isHold: false });
   res.json(products);
 }
 
