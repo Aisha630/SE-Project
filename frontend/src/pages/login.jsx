@@ -32,26 +32,27 @@ const Login = () => {
   return (
     <ThemeProvider theme={theme}>
       <div style={{
-        minHeight: '100vh', // Ensure at least full viewport height
+        minHeight: '100vh',
+        width: '100vw',
         backgroundImage: "url('back1.webp')",
         backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
         backgroundAttachment: "fixed",
-        overflowY: 'auto', // Enable vertical scrolling
+        overflowY: 'auto',
       }}>
         <Box sx={{
           display: 'flex',
-          flexDirection: 'column',
+          flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
-          padding: 4, // Adjust padding as needed, based on your design
-          minHeight: '100vh', // Ensure Box takes at least full viewport height for centering
-          backgroundColor: 'rgba(0, 0, 0, 0.7)', // Add a semi-transparent background
+          minHeight: '100vh',
+
+          width: '100%',
+          backgroundColor: 'rgba(0, 0, 0, 0.7)', // I am just adding this to darken BG since its very bright
         }}>
           <Grid container spacing={1} sx={{ position: 'relative', zIndex: 2, width: '100%', height: '100%', }}>
             {!md ?
-              <Grid item xs={12} md={7} lg={7} sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", }}>
+              <Grid item md={6} lg={6} sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", }}>
                 {/* <Typography variant="h3" color="white" gutterBottom>
               Welcome to Second Time Around!
             </Typography> */}
@@ -60,7 +61,7 @@ const Login = () => {
                 </Typography>
               </Grid> : <></>}
 
-            <Grid item xs={12} sm={12} md={5} lg={4} sx={{ display: "flex", justifyContent: "center", alignItems: "center", }}>
+            <Grid item xs={12} sm={11} md={5} lg={4} sx={{ display: "flex", justifyContent: "center", alignItems: "center", }}>
               <Box sx={{
                 backgroundColor: theme.palette.secondary.dark,
                 padding: 7, borderRadius: theme.shape.borderRadius,
