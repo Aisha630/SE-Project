@@ -47,6 +47,23 @@ export async function getProduct(req, res) {
   res.json(product);
 }
 
+export async function getProductRecs(req, res) {
+  const { id } = req.params;
+
+  const product = await Product.findOne({ _id: id, isHold: false });
+  if (!product) {
+    return res.status(404).json({ error: "Product not found" });
+  }
+
+  const products = await Product.find({
+    _id: { $ne: id },
+    tags: { $in: product.tags },
+    isHold: false,
+  });
+
+  res.json(products);
+}
+
 export async function updateProduct(req, res) {
   const { id } = req.params;
 
