@@ -220,7 +220,7 @@ export async function fetchLatest(req, res) {
   const { limit } = req.query;
 
   try {
-    const products = await SaleProduct.find({})
+    const products = await SaleProduct.find({ isHold: false })
       .sort({ createdAt: -1 })
       .limit(limit);
     res.json(products);
