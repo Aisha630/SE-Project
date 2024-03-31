@@ -3,7 +3,8 @@ import path from "path";
 import schedule from "node-schedule";
 
 import Image from "../models/imageModel.js";
-import { Product } from "../models/productBase.js";
+import config from "../config.js";
+import { isValidTags, Product } from "../models/productBase.js";
 import { closeAuction } from "./auctionController.js";
 
 import {
@@ -44,6 +45,48 @@ export async function getProduct(req, res) {
   }
 
   res.json(product);
+}
+
+export async function updateProduct(req, res) {
+  const { id } = req.params;
+
+  const product = await Product.findOne({ _id: id, seller: req.user.username });
+  if (!product) {
+    return res.status(404).json({ error: "Product not found" });
+  }
+
+  const { value, error } = Joi.object({
+    name: Joi.string().max(100),
+    description: Joi.string().max(300),
+    brand: Joi.string().max(100),
+
+    category: Joi.string().valid(...Object.keys(config.categories)),
+    tags: Joi.array().items(Joi.string()).custom(isValidTags),
+
+    size: Joi.when("category", {
+      is: "Clothing",
+      then: Joi.string().valid(...config.sizes),
+      otherwise: Joi.forbidden(),
+    }),
+    color: Joi.when("category", {
+      is: "Clothing",
+      then: Joi.string().valid(...config.colors),
+      otherwise: Joi.forbidden(),
+    }),
+
+    condition: Joi.string().valid("new", "old"),
+  }).validate(req.body);
+  if (error) {
+    return res.status(400).json({ error: error.details[0].message });
+  }
+
+  const newProduct = await Product.findOneAndUpdate(
+    { _id: id },
+    { $set: value },
+    { new: true }
+  );
+
+  res.status(200).json(newProduct);
 }
 
 // FRONTEND: now requires productType in req.body
