@@ -16,7 +16,7 @@ const ModeOfAdSelection = ({ adData, handleInputChange }) => (
     <RadioGroup
       row
       name="productType"
-      value={adData.modeOfAd}
+      value={adData.productType}
       onChange={handleInputChange}
       sx={{
         justifyContent: "center",
@@ -24,7 +24,7 @@ const ModeOfAdSelection = ({ adData, handleInputChange }) => (
       }}
     >
       <FormControlLabel value="auction" control={<Radio />} label="Auction" />
-      {adData.productType === "Auction" && (
+      {adData.productType === "auction" && (
         <TextField
           fullWidth
           id="endDate"
