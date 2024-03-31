@@ -63,7 +63,7 @@ const ShoppingCartOverlayCard = ({ styles, cartVisibility, cartVisibilityToggle,
                                 <ListItemText sx={{ textAlign: "right", textTransform: "capitalize", m: "0 10px 0 2px", '& .MuiListItemText-primary': md ? "" : { fontSize: '0.85rem' } }} primary={`Rs. ${item.price}`} />
                                 </Box>
 
-                                < IconButton edge="end" aria-label="delete" onClick={(event) => { deleteFromCart(item) }} sx={{ padding: 2, zIndex: 20 }}>
+                                < IconButton edge="end" aria-label="delete" onClick={() => { deleteFromCart(item) }} sx={{ padding: 2, zIndex: 20 }}>
                                     <DeleteIcon />
                                 </IconButton>
                             </ListItem>

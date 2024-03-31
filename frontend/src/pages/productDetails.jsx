@@ -91,7 +91,7 @@ const ProductDetails = () => {
   return (
     <ThemeProvider theme={theme}>
       <Grid container spacing={0} sx={{ m: 0, p: 0, width: "100%" }}>
-        <NavBar />
+        <NavBar pageOn={""}/>
         <Grid item xs={12} sm={12} md={12} lg={6} sx={{ display: "flex", flexDirection: "row", alignItems: "stretch", m: 0, p: 0 }}>
           <CustomImageGallery items={product ? product.images : []} sx={{ boxShadow: "none" }} />
         </Grid>
