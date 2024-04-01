@@ -9,6 +9,10 @@ const joiSchema = Joi.object({
   verified: Joi.boolean().default(false),
   avatar: Joi.string().required(),
   donationHistory: Joi.array().items(Joi.string()).default([]),
+  rating: Joi.object({
+    rating: Joi.number().min(0).max(5).default(0),
+    numOfRatings: Joi.number().default(0),
+  }),
 });
 
 const userSchema = new mongoose.Schema(joigoose(mongoose).convert(joiSchema));
