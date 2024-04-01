@@ -160,12 +160,31 @@ export async function addProduct(req, res) {
 
 export async function deleteProduct(req, res) {
   const productId = req.params.id;
-  const seller = req.user.username;
+  const seller = req.user;
 
   try {
-    const product = await Product.findOne({ _id: productId, seller });
+    const product = await Product.findOne({
+      _id: productId,
+      seller: seller.username,
+    });
     if (!product) {
       return res.status(404).json({ error: "Product not found." });
+    }
+
+    // if product was onHold, then this deletion is "selling"
+    if (product.isHold && product.__t !== "DonationProduct") {
+      const saleRecord = {
+        saleDate: new Date(),
+      };
+
+      if (product.__t === "SaleProduct") {
+        saleRecord.price = product.price;
+      } else if (product.__t === "AuctionProduct") {
+        saleRecord.price = product.currentBid;
+      }
+
+      seller.salesHistory.push(saleRecord);
+      await seller.save();
     }
 
     await Product.deleteOne({ _id: productId });
@@ -179,7 +198,12 @@ export async function deleteProduct(req, res) {
         await Image.deleteMany({ filename: filename });
       }
     }
-    res.status(200).json({ message: "Product successfully deleted" });
+    res
+      .status(200)
+      .json({
+        message: "Product successfully deleted",
+        salesHistory: seller.salesHistory,
+      });
   } catch (err) {
     console.log(err.message);
     res.status(500).json({ error: "Server error" });

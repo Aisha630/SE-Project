@@ -13,6 +13,14 @@ const joiSchema = Joi.object({
     rating: Joi.number().min(0).max(5).default(0),
     numOfRatings: Joi.number().default(0),
   }),
+  salesHistory: Joi.array()
+    .items(
+      Joi.object({
+        saleDate: Joi.date().required(),
+        price: Joi.number().required(),
+      })
+    )
+    .default([]),
 });
 
 const userSchema = new mongoose.Schema(joigoose(mongoose).convert(joiSchema));
