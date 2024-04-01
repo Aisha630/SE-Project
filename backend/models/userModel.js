@@ -9,10 +9,15 @@ const joiSchema = Joi.object({
   verified: Joi.boolean().default(false),
   avatar: Joi.string().required(),
   donationHistory: Joi.array().items(Joi.string()).default([]),
+
   rating: Joi.object({
     rating: Joi.number().min(0).max(5).default(0),
     numOfRatings: Joi.number().default(0),
   }),
+  ratedBy: Joi.array()
+    .items(Joi.string().regex(/^[0-9a-fA-F]{24}$/))
+    .default([]),
+
   salesHistory: Joi.array()
     .items(
       Joi.object({
