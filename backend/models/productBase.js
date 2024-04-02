@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 import config from "../config.js";
 
-function isValidTags(tags, helpers) {
+export function isValidTags(tags, helpers) {
   const validTags = config.categories[helpers.state.ancestors[0].category];
 
   for (const tag of tags) {

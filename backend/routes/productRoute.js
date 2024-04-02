@@ -3,8 +3,10 @@ import uploadImage from "../middleware/imageMiddleware.js";
 
 import {
   getAllProducts,
-  addProduct,
   getProduct,
+  getProductRecs,
+  updateProduct,
+  addProduct,
   deleteProduct,
   filterProducts,
   fetchLatest,
@@ -22,6 +24,8 @@ const router = express.Router();
 
 router.get("/shop", getAllProducts);
 router.get("/shop/:id", getProduct);
+router.get("/shop/:id/recs", getProductRecs);
+router.patch("/shop/:id", updateProduct);
 router.delete("/shop/:id", deleteProduct);
 
 router.post("/sell", uploadImage, addProduct);

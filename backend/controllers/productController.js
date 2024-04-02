@@ -3,7 +3,8 @@ import path from "path";
 import schedule from "node-schedule";
 
 import Image from "../models/imageModel.js";
-import { Product } from "../models/productBase.js";
+import config from "../config.js";
+import { isValidTags, Product } from "../models/productBase.js";
 import { closeAuction } from "./auctionController.js";
 
 import {
@@ -44,6 +45,65 @@ export async function getProduct(req, res) {
   }
 
   res.json(product);
+}
+
+export async function getProductRecs(req, res) {
+  const { id } = req.params;
+
+  const product = await Product.findOne({ _id: id, isHold: false });
+  if (!product) {
+    return res.status(404).json({ error: "Product not found" });
+  }
+
+  const products = await Product.find({
+    _id: { $ne: id },
+    tags: { $in: product.tags },
+    isHold: false,
+  });
+
+  res.json(products);
+}
+
+export async function updateProduct(req, res) {
+  const { id } = req.params;
+
+  const product = await Product.findOne({ _id: id, seller: req.user.username });
+  if (!product) {
+    return res.status(404).json({ error: "Product not found" });
+  }
+
+  const { value, error } = Joi.object({
+    name: Joi.string().max(100),
+    description: Joi.string().max(300),
+    brand: Joi.string().max(100),
+
+    category: Joi.string().valid(...Object.keys(config.categories)),
+    tags: Joi.array().items(Joi.string()).custom(isValidTags),
+
+    size: Joi.when("category", {
+      is: "Clothing",
+      then: Joi.string().valid(...config.sizes),
+      otherwise: Joi.forbidden(),
+    }),
+    color: Joi.when("category", {
+      is: "Clothing",
+      then: Joi.string().valid(...config.colors),
+      otherwise: Joi.forbidden(),
+    }),
+
+    condition: Joi.string().valid("new", "old"),
+  }).validate(req.body);
+  if (error) {
+    return res.status(400).json({ error: error.details[0].message });
+  }
+
+  const newProduct = await Product.findOneAndUpdate(
+    { _id: id },
+    { $set: value },
+    { new: true }
+  );
+
+  res.status(200).json(newProduct);
 }
 
 // FRONTEND: now requires productType in req.body
@@ -100,12 +160,31 @@ export async function addProduct(req, res) {
 
 export async function deleteProduct(req, res) {
   const productId = req.params.id;
-  const seller = req.user.username;
+  const seller = req.user;
 
   try {
-    const product = await Product.findOne({ _id: productId, seller });
+    const product = await Product.findOne({
+      _id: productId,
+      seller: seller.username,
+    });
     if (!product) {
       return res.status(404).json({ error: "Product not found." });
+    }
+
+    // if product was onHold, then this deletion is "selling"
+    if (product.isHold && product.__t !== "DonationProduct") {
+      const saleRecord = {
+        saleDate: new Date(),
+      };
+
+      if (product.__t === "SaleProduct") {
+        saleRecord.price = product.price;
+      } else if (product.__t === "AuctionProduct") {
+        saleRecord.price = product.currentBid;
+      }
+
+      seller.salesHistory.push(saleRecord);
+      await seller.save();
     }
 
     await Product.deleteOne({ _id: productId });
@@ -119,7 +198,12 @@ export async function deleteProduct(req, res) {
         await Image.deleteMany({ filename: filename });
       }
     }
-    res.status(200).json({ message: "Product successfully deleted" });
+    res
+      .status(200)
+      .json({
+        message: "Product successfully deleted",
+        salesHistory: seller.salesHistory,
+      });
   } catch (err) {
     console.log(err.message);
     res.status(500).json({ error: "Server error" });
@@ -160,7 +244,7 @@ export async function fetchLatest(req, res) {
   const { limit } = req.query;
 
   try {
-    const products = await SaleProduct.find({})
+    const products = await SaleProduct.find({ isHold: false })
       .sort({ createdAt: -1 })
       .limit(limit);
     res.json(products);
