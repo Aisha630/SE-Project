@@ -8,6 +8,7 @@ import '../css/login.css';
 import theme from '../themes/authThemes.js';
 import { usePasswordValidation } from '../hooks/usePasswordValidation.js';
 import { useMediaQuery } from '@mui/material';
+import TypingEffect from '../components/typing.jsx';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({ email: '', username: '', password: '' });
@@ -46,7 +47,7 @@ const SignUp = () => {
       <div style={{
         minHeight: '100vh',
         width: '100vw',
-        backgroundImage: "url('back1.webp')",
+        backgroundImage: "url('Group 6.svg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundAttachment: "fixed",
@@ -68,9 +69,7 @@ const SignUp = () => {
                 {/* <Typography variant="h3" color="white" gutterBottom>
               Welcome to Second Time Around!
             </Typography> */}
-                <Typography variant="h4" color="white" gutterBottom sx={{ maxWidth: "50%" }}>
-                  Rediscover Hidden Gems on Campus!
-                </Typography>
+                <TypingEffect text="Rediscover Hidden Gems on Campus!" speed={80} />
               </Grid> : <></>}
 
             <Grid item xs={12} sm={11} md={5} lg={4} sx={{ display: "flex", justifyContent: "center", alignItems: "center", }}>
@@ -82,6 +81,8 @@ const SignUp = () => {
                 <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1, width: '100%', }}>
                   <TextField margin="normal" required fullWidth id="username" label="Username" name="username"
                     value={formData.username} onChange={handleChange} variant="filled" sx={{ input: "#084a08", }} />
+                  <TextField margin="normal" required fullWidth id="email" label="LUMS Email" name="email"
+                    value={formData.email} onChange={handleChange} variant="filled" sx={{ input: "#084a08", }} />
                   <TextField margin="normal" required fullWidth id="password" label="Password" name="password" type={showPassword ? 'text' : 'password'}
                     value={formData.password} onChange={handleChange} autoComplete="current-password" variant="filled"
                     InputProps={{

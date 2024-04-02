@@ -8,6 +8,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import theme from '../themes/authThemes.js';
 import '../css/login.css';
 import { useMediaQuery } from '@mui/material';
+import TypingEffect from '../components/typing.jsx';
 
 const Login = () => {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
@@ -29,12 +30,13 @@ const Login = () => {
     }
   };
 
+
   return (
     <ThemeProvider theme={theme}>
       <div style={{
         minHeight: '100vh',
         width: '100vw',
-        backgroundImage: "url('back1.webp')",
+        backgroundImage: "url('Group 6.svg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundAttachment: "fixed",
@@ -56,9 +58,11 @@ const Login = () => {
                 {/* <Typography variant="h3" color="white" gutterBottom>
               Welcome to Second Time Around!
             </Typography> */}
-                <Typography variant="h4" color="white" gutterBottom sx={{ maxWidth: "50%" }}>
+                {/* <Typography variant="h4" color="white" gutterBottom className='typing-effect'>
                   Rediscover Hidden Gems on Campus!
-                </Typography>
+                </Typography> */}
+
+                <TypingEffect text="Rediscover Hidden Gems on Campus!" speed={80} />
               </Grid> : <></>}
 
             <Grid item xs={12} sm={11} md={5} lg={4} sx={{ display: "flex", justifyContent: "center", alignItems: "center", }}>

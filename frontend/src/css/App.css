@@ -17,6 +17,37 @@ input:-webkit-autofill:active {
 
 }
 
+@keyframes typing {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blinkCursor {
+  from {
+    border-right-color: transparent;
+  }
+
+  to {
+    border-right-color: black;
+  }
+}
+
+.typing-effect {
+  /* font-family: monospace; */
+  white-space: pre-wrap;
+  overflow: visible;
+  border-right: 1em solid black;
+  /* width: 0; */
+  animation: typing 3s steps(40, end), forwards blinkCursor .75s step-end infinite alternate;
+  max-width: 50% !important;
+}
+
+
 
 
 :root {
