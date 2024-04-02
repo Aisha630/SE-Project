@@ -5,7 +5,7 @@ import { Box } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 
-const ProductList = ({ products }) => {
+const ProductList = ({ products, mode }) => {
     const [page, setPage] = useState(1);
     const productsPerPage = 8;
     const totalPages = Math.ceil(products.length / productsPerPage);
@@ -30,9 +30,8 @@ const ProductList = ({ products }) => {
                             display: 'contents',
                         }}
                     >
-                        <Product {...product} />
+                        <Product product={product} mode={mode} />
                     </Link>
-                    // <Product key={index} {...product} />
                 ))}
             </Grid>
             <Box display="flex" justifyContent="center" mt={2}>

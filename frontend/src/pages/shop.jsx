@@ -10,8 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ListItemLink from '../components/ListItemLink.jsx';
 
-const ShopItems = () => {
-
+const ShopItems = ({mode}) => {
     const navigate = useNavigate();
     const token = useSelector((state) => state.auth.token);
 
@@ -46,6 +45,7 @@ const ShopItems = () => {
         console.log('Checked subcategories:', checkedSubcategories);
 
         let filterCriteria = {
+            productType : mode,
             category: category,
         }
         if (checkedSubcategories.length > 0) {
@@ -84,7 +84,7 @@ const ShopItems = () => {
         setCheckedSubcategories([]);
         setCheckedSizes([]);
 
-        const queryString = new URLSearchParams({category: category});
+        const queryString = new URLSearchParams({category: category, productType: mode});
         fetch(`http://localhost:5003/filter?${queryString}`, {
             headers: {
                 'Content-Type': 'application/json',
@@ -110,7 +110,7 @@ const ShopItems = () => {
     };
 
     useEffect(() => {
-        const queryString = new URLSearchParams({category: category});
+        const queryString = new URLSearchParams({category: category, productType: mode});
         fetch(`http://localhost:5003/filter?${queryString}`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -145,10 +145,18 @@ const ShopItems = () => {
         setIsFilterMenuOpen(false);
     };
 
+    let pageOn = "Shop";
+    if (mode === "auction") {
+        pageOn = "Auction";
+    }
+    else if (mode === "donate") {
+        pageOn = "Donations";
+    }
+    
     return (
         <ThemeProvider theme={theme}>
             <Box>
-                <NavBar pageOn={"Shop"}/>
+                <NavBar pageOn={pageOn}/>
             </Box>
             <MainCategoryToolbar setCategory={setCategory} category={category} /> {/*This is the main toolbar that represents clothing, technology, and miscellaneous categories*/}
 
@@ -176,7 +184,7 @@ const ShopItems = () => {
 
             {/* This section represents the actual products */}
             <Box sx={{ padding: '30px' }}>
-                <ProductList products={products} />
+                <ProductList products={products} mode={mode} />
             </Box>
         </ThemeProvider>
     )

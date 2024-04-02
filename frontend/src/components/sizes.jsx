@@ -4,7 +4,6 @@ import sizesData from '../config.json';
 
 const SizesCategories = ({ checkedSizes, handleSizeChange }) => {
   const { sizes } = sizesData;
-  const clothingSizes = sizes['Clothing'];
 
   return (
     <FormControl sx={{ color: 'inherit' }}>

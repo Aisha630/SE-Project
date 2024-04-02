@@ -11,8 +11,8 @@ import {
 const menuItems = [
     { text: 'Home', Icon: HomeIcon, to: '/' },
     { text: 'Shop', Icon: ShopIcon, to: '/shop' },
-    { text: 'Donations', Icon: VolunteerActivismIcon, to: '/auction' },
-    { text: 'Auction', Icon: AttachMoneyIcon, to: '/donation' },
+    { text: 'Donations', Icon: VolunteerActivismIcon, to: '/donation' },
+    { text: 'Auction', Icon: AttachMoneyIcon, to: '/auction' },
     { text: 'About', Icon: InfoIcon, to: '/help' },
 ];
 
