@@ -96,7 +96,7 @@ const PostAd = () => {
       newErrors.name = "Ad title is required";
     }
 
-    if (adData.productType=='sale' && !adData.price) {
+    if (adData.productType==='sale' && !adData.price) {
       isValid = false;
       newErrors.price = "Price is required";
     }

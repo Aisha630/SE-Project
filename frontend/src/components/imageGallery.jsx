@@ -31,6 +31,7 @@ export const CustomImageGallery = ({ items, ...props }) => {
             }))}
             {...props}
             maxHeight="100vh"
+            // fillParent={true}
             renderLeftNav={renderLeftNav}
             renderRightNav={renderRightNav}
             showPlayButton={false}

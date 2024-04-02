@@ -48,7 +48,7 @@ const UserProfile = () => {
                     <Typography variant="subtitle1" sx={{ textAlign: "center", mt: 2, color: "#585c61" }}>{user.email}</Typography>
 
                 </Grid>
-                <Grid item xs={12} sm={12} md={12} lg={12} sx={{ backgroundColor: "", paddingTop: 2, paddingBottom: 10, display: "flex", alignItems: "center", ustifyContent: "center", flexDirection: "column" }}>
+                <Grid item xs={12} sm={12} md={12} lg={12} sx={{ backgroundColor: "", paddingTop: 2, paddingBottom: 10, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
                     <TabContext value={selectedTab}>
 
                         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

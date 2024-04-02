@@ -7,7 +7,7 @@ import theme from '../themes/homeTheme.js';
 
 function Drawer({pageOn}) {
   const [isOpen, setIsOpen] = useState(false);
-  const lg = useMediaQuery(theme.breakpoints.between('md', 'xl'));
+  const lg = useMediaQuery(theme.breakpoints.up('md'));
   const md = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
 

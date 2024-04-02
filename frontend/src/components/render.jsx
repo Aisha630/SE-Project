@@ -19,12 +19,15 @@ const RenderItem = ({ item }) => {
     const lg = useMediaQuery(theme.breakpoints.up('sm'));
 
     return (
-        <div style={{ position: 'relative' }}>
+        <div style={{ position: "relative", width: '100%', height: '100%' }}>
             <ReactImageMagnify {...{
                 smallImage: {
                     alt: item.originalAlt,
                     isFluidWidth: true,
                     src: item.original,
+                    // objectFit: 'cover',
+                    // height: 1000,
+
                 },
                 largeImage: {
                     src: item.original,

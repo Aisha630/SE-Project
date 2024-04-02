@@ -2,14 +2,12 @@ import React from 'react';
 import { Card, CardContent, Typography, List, ListItem, Avatar, ListItemText, Divider, Box, IconButton } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
-import SiteButton from './button';
 import { useMediaQuery } from '@mui/material';
 import theme from '../themes/homeTheme';
 // import { useNavigate } from 'react-router-dom';
 
 const InfoCard = ({ title, items, isCart, deleteItem }) => {
     const md = useMediaQuery(theme.breakpoints.up('md'));
-    const sm = useMediaQuery(theme.breakpoints.down('sm'));
     const xs = useMediaQuery(theme.breakpoints.down('xs'));
 
     return (

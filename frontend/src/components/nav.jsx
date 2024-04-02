@@ -1,5 +1,4 @@
 import { AppBar, Toolbar, IconButton, Typography, Box, Button, Menu, MenuItem, Badge, Container, Avatar } from '@mui/material';
-import AccountCircle from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 import AddIcon from '@mui/icons-material/Add';
@@ -18,13 +17,13 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" }) => {
     const navigate = useNavigate();
     const [isCartVisible, setIsCartVisible] = useState(false);
     const token = useSelector((state) => state.auth.token);
+    const username = useSelector((state) => state.auth.user);
     const { cartItems, fetchCartItems } = useCart();
     const sm = useMediaQuery(theme.breakpoints.up('sm'));
     const md = useMediaQuery(theme.breakpoints.up('md'));
     const lg = useMediaQuery(theme.breakpoints.up('lg'));
-    const username = useSelector((state) => state.auth.user);
     const [user, setUser] = useState();
-    console.log("The user name is ", username)
+    // console.log("The user name is ", username)
 
 
     const height = lg ? '5vh' : md ? '3vh' : sm ? '40px' : '30px';
@@ -91,11 +90,11 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" }) => {
         handleClose();
     };
 
-    console.log("the user is ", user)
+    // console.log("the user is ", user)
 
     return (
         <AppBar position="static" sx={{ backgroundColor: "#e0e0e0", ...styles, boxShadow: "none" }} >
-            <Container maxWidth="xl">
+            <Container maxWidth="100vw">
                 <Toolbar disableGutters>
                     <Drawer pageOn={pageOn} />
                     {ShowLogo && <Box onClick={handleLogoClick} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: "flex-start", mr: 1, mt: 3, mb: 1, ml: { xs: '3px', sm: "5px", md: "15px" }, cursor: 'pointer', }}>
@@ -110,20 +109,24 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" }) => {
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
                         <Search />
-                        <IconButton edge="end" color="gray"  disableRipple aria-label="cart" onClick={() => { fetchCartItems(); toggleCart(); }} sx={{
+                        <IconButton edge="end" color="gray" disableRipple aria-label="cart" onClick={() => { fetchCartItems(); toggleCart(); }} sx={{
                             '&:hover': {
                                 backgroundColor: "primary.dark"
                             },
                             '&.visited': {
                                 backgroundColor: "primary.dark",
                             },
-                            margin: 1, 
+                            margin: 1,
                             '&:focus': {
-                                outline: 'none',}
+                                outline: 'none',
+                            }
                         }}>
                             <Badge badgeContent={cartItems.length} max={99} color="secondary">
-                                <ShoppingCartIcon sx={{ fontSize: lg ? 25 : md ? 20 : 17 , '&:focus': {
-                                outline: 'none',}}} />
+                                <ShoppingCartIcon sx={{
+                                    fontSize: lg ? 25 : md ? 20 : 17, '&:focus': {
+                                        outline: 'none',
+                                    }
+                                }} />
                             </Badge>
                         </IconButton>
 
