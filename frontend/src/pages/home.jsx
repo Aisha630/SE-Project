@@ -29,10 +29,11 @@ function Home() {
         'Authorization': `Bearer ${token}`,
       }
     })
-      .then((res) => { console.log("Res is ", res); if (!res.ok)
-    {
-      navigate("/login");
-    }})
+      .then((res) => {
+        console.log("Res is ", res); if (!res.ok) {
+          navigate("/login");
+        }
+      })
       .catch((error) => { console.log(error) });
   }, [token, username, navigate])
 
@@ -68,7 +69,7 @@ function Home() {
               <span style={{ color: '#E57373', fontWeight: 'bold' }}>NEW</span><br />
               <span style={{ display: 'block' }}>
                 <span style={{ color: '#58a75b', fontSize: "20px" }}>in </span>
-                <span style={{ color: '#58a75b' }}>Clothing</span>
+                <span style={{ color: '#58a75b' }}>Store</span>
               </span>
             </Typography>
             <Box sx={{ width: md ? "100%" : "90%", mb: 0, paddingBottom: 0, ml: lg ? 10 : 5, mr: "auto", maxWidth: "100%", boxSizing: "border-box", display: "flex", justifyContent: "center" }}>

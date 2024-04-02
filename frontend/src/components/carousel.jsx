@@ -1,17 +1,63 @@
-import OverlayImageCards from './card.jsx';
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { useMediaQuery } from '@mui/material';
-import theme from '../themes/homeTheme.js';
 import React from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate, Link  } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import theme from '../themes/homeTheme.js';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Autoplay, A11y } from 'swiper/modules';
+import { Card, CardMedia, Box,useMediaQuery } from '@mui/material';
+import "../css/App.css"
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/swiper-bundle.css';
-import { Navigation, Pagination, Autoplay, A11y } from 'swiper/modules';
-import "../css/App.css"
+
+function ImageCard({ imageUrl, style }) {
+
+  return (
+    <Card sx={{ ...style, borderRadius: '16px', overflow: 'hidden', boxShadow: 3, }}>
+      <CardMedia
+        component="img"
+        height="auto"
+        image={imageUrl}
+        alt="New item"
+        sx={{
+          height: '100%',
+          width: '100%',
+          objectFit: 'cover',
+          objectPosition: 'center',
+        }}
+      />
+    </Card>
+  );
+}
+
+function OverlayImageCards({ bottomCardProps, topCardProps, link }) {
+
+  return (
+    <Box sx={{ position: 'relative', width: 380, height: 490, margin: 0, p:0 }}>
+      <ImageCard {...bottomCardProps} style={{
+        mt: 5, width: 'calc(100% - 100px)',
+        height: 'calc(100% - 100px)', opacity: 0.7, ml:0, p:0, mr:0
+      }} />
+      <Link to={link}>
+        <ImageCard
+          {...topCardProps}
+          style={{
+            position: 'absolute',
+            top: -20,
+            left: 20,
+            width: 'calc(100% - 100px)',
+            height: 'calc(100% - 100px)',
+            '&:hover': { filter: 'brightness(0.9)' },
+            p:0, m:0
+
+          }}
+        />
+      </Link>
+    </Box>
+  );
+}
 
 function CarouselComponent() {
     const token = useSelector((state) => state.auth.token);
@@ -19,7 +65,6 @@ function CarouselComponent() {
     const [products, setProducts] = useState([])
     const sm = useMediaQuery(theme.breakpoints.up('sm'));
     const md = useMediaQuery(theme.breakpoints.up('md'));
-    const lg = useMediaQuery(theme.breakpoints.between('md', 'lg'));
 
     useEffect(() => {
         fetch('http://localhost:5003/latest?limit=10', {
@@ -29,7 +74,7 @@ function CarouselComponent() {
         }).then(response => response.json()).then(data => {
             const formattedProducts = data.map(product => ({
                 name: product.name,
-                image: `http://localhost:5003${product.images[0]}`, // Assuming the first image in the array is the main image
+                image: `http://localhost:5003${product.images[0]}`, 
                 id: product._id
             }));
 
@@ -45,22 +90,16 @@ function CarouselComponent() {
     }, [token]);
 
     return (
-        <>
             <Swiper
                 modules={[Navigation, Pagination, Autoplay, A11y]}
                 spaceBetween={10}
-                slidesPerView={lg || md ? 3 : sm ? 2 : 1}
-                // slidesPerGroup={1}
-                // navigation={false}
+                slidesPerView={md ? 3 : sm ? 2 : 1}
                 pagination={{ clickable: true, dynamicBullets: true }}
                 autoplay={{
                     delay: 1500,
                     disableOnInteraction: false,
                 }}
-                // loop={true}
-                sx={{m:0, p:0}}
-                 
-            >
+                sx={{m:0, p:0}}>
                 {products.map((product, index) => (
                     <SwiperSlide key={index} sx={{m:0, p:0}}>
                         <OverlayImageCards
@@ -71,9 +110,6 @@ function CarouselComponent() {
                     </SwiperSlide>
                 ))}
             </Swiper>
-
-
-        </>
     );
 }
 

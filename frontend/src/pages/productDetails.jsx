@@ -1,18 +1,16 @@
-import React from 'react';
-import { Grid, Typography, Paper } from '@mui/material';
-import "react-image-gallery/styles/css/image-gallery.css";
-import NavBar from '../components/navbarshop.jsx';
-import SiteButton from '../components/button.jsx';
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { React, useState, useEffect } from 'react';
+import { Grid, Typography, Paper, ThemeProvider, useMediaQuery } from '@mui/material';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { CustomImageGallery } from '../components/imageGallery.jsx';
-import { ThemeProvider } from '@mui/system';
-import theme from '../themes/homeTheme.js';
 import { toast } from 'react-toastify';
+import NavBar from '../components/navbarshop.jsx';
+import SiteButton from '../components/button.jsx';
 import { useCart } from '../context/cartContext.jsx';
-import { useMediaQuery } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import theme from '../themes/homeTheme.js';
+// import "react-image-gallery/styles/css/image-gallery.css";
+import "../css/image-gallery.css";
+
 
 const DetailItem = ({ label, value, lg }) => (
 

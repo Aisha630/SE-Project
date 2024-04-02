@@ -4,6 +4,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SidePanel from './sidePanel.jsx';
 import { useMediaQuery } from '@mui/material';
 import theme from '../themes/homeTheme.js';
+import BackHanger from './backHanger.jsx';
 
 function Drawer({pageOn}) {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,9 +30,7 @@ function Drawer({pageOn}) {
       onKeyDown={toggleDrawer(false)}
       style={{ width: lg ? 240 : md ? 200 : 180 }}
     >
-      <IconButton onClick={handleBack} sx={{ margin: "10px" }}>
-        <img src="/backIcon.png" alt="Back" style={{ width: lg ? 65 : 0.7 * 65, height: lg ? 50 : 0.7 * 50 }} />
-      </IconButton>
+      <BackHanger />
       <SidePanel ListStyles={{ ml: { xs: '3px', sm: "5px", md: "10px" } }} ListItemStyles={{ fontWeight: "bold", mt: "5px" }} ListButtonStyles={{ margin: "15px" }} pageOn={pageOn} />
     </div>
   );

@@ -1,6 +1,6 @@
 import { AppBar, Toolbar, IconButton, Typography, Box, Button, Menu, MenuItem, Badge, Container, Avatar } from '@mui/material';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
@@ -16,13 +16,11 @@ import theme from '../themes/homeTheme';
 const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" }) => {
     const navigate = useNavigate();
     const [isCartVisible, setIsCartVisible] = useState(false);
-    const token = useSelector((state) => state.auth.token);
-    const username = useSelector((state) => state.auth.user);
     const { cartItems, fetchCartItems } = useCart();
+    const token = useSelector((state) => state.auth.token);
     const sm = useMediaQuery(theme.breakpoints.up('sm'));
     const md = useMediaQuery(theme.breakpoints.up('md'));
     const lg = useMediaQuery(theme.breakpoints.up('lg'));
-    const [user, setUser] = useState();
     // console.log("The user name is ", username)
 
 
@@ -50,20 +48,6 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" }) => {
                 toast.error("Error removing item from cart");
             });
     };
-
-    useEffect(() => {
-        fetch(`http://localhost:5003/profile?username=${username}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-            },
-
-        }).then((res) => {
-            if (!res.ok) {
-                navigate("/login");
-            }
-            return res.json()
-        }).then((data) => { setUser(data) }).catch((error) => { console.log(error) })
-    }, [cartItems, navigate, token, username]);
 
     const toggleCart = () => {
         setIsCartVisible(!isCartVisible);
@@ -140,7 +124,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" }) => {
                             },
                             margin: 1,
                         }}>
-                            {user && <Avatar src={user.avatar} />}
+                            <AccountCircleIcon sx={{}}/>
                         </IconButton>
 
                         <Menu

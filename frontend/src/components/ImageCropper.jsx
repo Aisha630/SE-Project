@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import ReactCrop, {makeAspectCrop} from 'react-image-crop';
+import ReactCrop, { makeAspectCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import theme from '../themes/authThemes';
 
@@ -10,7 +10,7 @@ const ImageCropper = ({ src, onComplete, onCancel }) => {
 
   const onImageLoad = useCallback((e) => {
     const img = e.currentTarget;
-    const {width, height} = img;
+    const { width, height } = img;
     imgRef.current = img;
     const crop = makeAspectCrop(
       {
@@ -19,7 +19,7 @@ const ImageCropper = ({ src, onComplete, onCancel }) => {
         x: 10,
         y: 10,
       },
-      11/16,
+      10 / 16,
       width,
       height
     );
@@ -44,17 +44,17 @@ const ImageCropper = ({ src, onComplete, onCancel }) => {
     const image = imgRef.current;
     const canvas = previewCanvasRef.current;
     const ctx = canvas.getContext('2d');
-  
+
     if (!image || !canvas) {
       return;
     }
-  
+
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
-  
+
     canvas.width = crop.width * scaleX;
     canvas.height = crop.height * scaleY;
-  
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(
       image,
@@ -68,7 +68,7 @@ const ImageCropper = ({ src, onComplete, onCancel }) => {
       canvas.height
     );
   };
-  
+
 
   const getCroppedImg = (image, crop) => {
     const canvas = previewCanvasRef.current;
@@ -86,8 +86,8 @@ const ImageCropper = ({ src, onComplete, onCancel }) => {
           ruleOfThirds
           keepSelection
           style={{ maxWidth: '800px', maxHeight: '600px' }}
-          ><img src={src} alt="Crop" style={{ maxWidth: '70vh' }} onLoad = {onImageLoad}/></ReactCrop>
-          
+        ><img src={src} alt="Crop" style={{ maxWidth: '70vh' }} onLoad={onImageLoad} /></ReactCrop>
+
       )}
       <button
         onClick={() => makeClientCrop(crop)}
@@ -107,7 +107,7 @@ const ImageCropper = ({ src, onComplete, onCancel }) => {
       >
         Crop
       </button>
-      <canvas ref={previewCanvasRef} style={{ display: 'none',width: '20%', height: 'auto' }} />
+      <canvas ref={previewCanvasRef} style={{ display: 'none', width: '20%', height: 'auto' }} />
     </div>
   );
 };
