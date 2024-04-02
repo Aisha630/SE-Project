@@ -157,6 +157,9 @@ const ProductDetails = () => {
             <Typography variant="h5" color="black" textAlign="left" sx={{ fontWeight: 500, mb: 0, textTransform:'capitalize' }}>
               {product?.name}
             </Typography>
+            {productDetails.map((detail, index) => (
+              detail.value ? <DetailItem key={index} label={detail.label} value={detail.value} lg={lg} /> : <DetailItem key={index} label={detail.label} value={"Undefined"} lg={lg} />
+            ))}
             {product?.__t === 'AuctionProduct' && (
                   <>
                     <Typography variant={"subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 300, mb: 2 }}>
@@ -184,9 +187,7 @@ const ProductDetails = () => {
               {product && `PKR ${product.price}`}
             </Typography>
             )}
-            {productDetails.map((detail, index) => (
-              detail.value ? <DetailItem key={index} label={detail.label} value={detail.value} lg={lg} /> : null
-            ))}
+
              {product?.__t === 'DonationProduct' && (
               <>
                 <TextField
