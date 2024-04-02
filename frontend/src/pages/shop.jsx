@@ -123,7 +123,9 @@ const ShopItems = ({mode}) => {
                     name: product.name,
                     image: 'http://localhost:5003'.concat(product.images[0]), // Assuming the first image in the array is the main image
                     price: product.price,
-                    id: product._id
+                    id: product._id,
+                    currentBid : product.currentBid,
+                    endTime : product.endTime
                 }));
                 setCheckedSubcategories([]);
                 setCheckedSizes([]);
