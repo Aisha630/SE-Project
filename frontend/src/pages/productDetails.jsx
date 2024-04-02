@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from 'react';
-import { Grid, Typography, Paper, ThemeProvider, useMediaQuery } from '@mui/material';
+import { Grid, Typography, Paper, ThemeProvider, useMediaQuery, TextField } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { CustomImageGallery } from '../components/imageGallery.jsx';
@@ -8,7 +8,6 @@ import NavBar from '../components/navbarshop.jsx';
 import SiteButton from '../components/button.jsx';
 import { useCart } from '../context/cartContext.jsx';
 import theme from '../themes/homeTheme.js';
-// import "react-image-gallery/styles/css/image-gallery.css";
 import "../css/image-gallery.css";
 
 
@@ -85,6 +84,35 @@ const ProductDetails = () => {
   }
   const lg = useMediaQuery(theme.breakpoints.up('sm'));
 
+const [bid, setBid] = useState('');
+
+  const placeBid = () => {
+    fetch(`http://localhost:5003/shop/${id}/bid`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ bid }),
+      credentials: 'include',
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.error) {
+        toast.error(data.error);
+      } else {
+        toast.success(`Bid placed: PKR ${bid}`);
+        setProduct({ ...product, currentBid: bid });
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      toast.error("Error placing bid");
+    });
+  };
+
+  const buttonAction = product?.__t === 'AuctionProduct' ? placeBid : () => addToCart(product);
+  const buttonText = product?.__t === 'AuctionProduct' ? 'Place Bid' : 'Add to Cart';
 
   return (
     <ThemeProvider theme={theme}>
@@ -95,16 +123,39 @@ const ProductDetails = () => {
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={6} sx={{ display: "flex", flexDirection: "row", alignItems: "stretch", m: 0, p: 0 }}>
           <Paper sx={{ padding: 7, flex: 1, borderRadius: 0 }}>
-            <Typography variant="h5" color="black" textAlign="left" sx={{ fontWeight: 500, mb: 0 }}>
+            <Typography variant="h5" color="black" textAlign="left" sx={{ fontWeight: 500, mb: 0, textTransform:'capitalize' }}>
               {product?.name}
             </Typography>
+            {product?.__t === 'AuctionProduct' && (
+                  <>
+                    <Typography variant={"subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 300, mb: 2 }}>
+                         Starting Bid: PKR {product.startingBid}
+                       </Typography>
+                       <Typography variant={"subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 300, mb: 2 }}>
+                         Current Bid: PKR {product.currentBid}
+                       </Typography>
+                       <Typography variant={"subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 300, mb: 2 }}>
+                         End Time: {new Date(product.endTime).toLocaleString()}
+                       </Typography>
+                       <TextField
+                      label="Your Bid"
+                      type="number"
+                      fullWidth
+                      value={bid}
+                      onChange={(e) => setBid(e.target.value)}
+                      margin="normal"
+                    />
+                  </>
+                )}
+            {product?.__t === 'SaleProduct' && (
             <Typography variant={lg ? "h6" : "subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 500, mb: 4 }}>
               {product && `PKR ${product.price}`}
             </Typography>
+            )}
             {productDetails.map((detail, index) => (
-              <DetailItem key={index} label={detail.label} value={detail.value} lg={lg} />
+              detail.value ? <DetailItem key={index} label={detail.label} value={detail.value} lg={lg} /> : null
             ))}
-            <SiteButton text="Add to Cart" onClick={() => addToCart(product)} styles={{ width: '100%', mt: 3, mb: 3, fontSize: lg ? "1rem" : "0.8rem", padding: 1.5, }} />
+            <SiteButton text={buttonText} onClick={buttonAction} styles={{ width: '100%', mt: 3, mb: 3, fontSize: lg ? "1rem" : "0.8rem", padding: 1.5, }} />
             <Typography variant="h6" textAlign="left" sx={{ mt: 3, color: "gray" }}>
               Description
             </Typography>
