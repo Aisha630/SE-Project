@@ -20,6 +20,7 @@ import ConditionSelection from "../components/conditionSelection.jsx";
 import PriceSelection from "../components/priceSelection.jsx";
 import ImageUpload from "../components/imageUpload.jsx";
 import TagSelection from "../components/tagSelection.jsx";
+import 'react-image-crop/dist/ReactCrop.css';
 
 const categories = details.categories;
 const sizes = details.sizes;
@@ -63,8 +64,10 @@ const PostAd = () => {
 
   const handleFileChange = (event, index) => {
     const newFiles = [...files];
-    newFiles[index] = event.target.files[0];
-    setFiles(newFiles);
+    if (event.target.files && event.target.files[0]) {
+      newFiles[index] = event.target.files[0];
+      setFiles(newFiles);
+    }
   };
 
   const handleTagChange = (event) => {
@@ -153,13 +156,17 @@ const PostAd = () => {
       }
     });
     formData.append("seller", user);
+    console.log("Files are ", files)
     files.forEach((file) => {
       if (file) {
         formData.append("images", file);
+        console.log("added image to request")
       }
     });
+    console.log("posting ad with form data", formData)
 
     try {
+      
       const response = await fetch("http://localhost:5003/sell", {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -176,6 +183,7 @@ const PostAd = () => {
         navigate("/login");
       } else {
         const errorData = await response.json();
+        console.log(formData)
         console.error("Submission Failed:", errorData.error);
         toast.error(`Submission Failed: ${errorData.error}`);
       }
