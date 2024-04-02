@@ -4,6 +4,7 @@ import {
   sendSoldEmail,
 } from "../services/emailService.js";
 import { Product } from "../models/productBase.js";
+import Joi from "joi";
 
 export async function bidOnProduct(req, res) {
   const { id } = req.params;
