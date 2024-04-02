@@ -4,7 +4,7 @@ import 'react-image-crop/dist/ReactCrop.css';
 import theme from '../themes/authThemes';
 
 const ImageCropper = ({ src, onComplete, onCancel }) => {
-  const [crop, setCrop] = useState({ unit: '%', width: 80, aspect: 9 / 16 });
+  const [crop, setCrop] = useState({ unit: '%', width: 80, aspect: 11 / 16 });
   const imgRef = useRef(null);
   const previewCanvasRef = useRef(null);
 
@@ -19,7 +19,7 @@ const ImageCropper = ({ src, onComplete, onCancel }) => {
         x: 10,
         y: 10,
       },
-      9/16,
+      11/16,
       width,
       height
     );
@@ -52,11 +52,9 @@ const ImageCropper = ({ src, onComplete, onCancel }) => {
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
   
-    // Set the canvas size to the cropped area's dimensions
     canvas.width = crop.width * scaleX;
     canvas.height = crop.height * scaleY;
   
-    // Clear the canvas and draw the cropped portion of the image
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(
       image,
@@ -84,7 +82,7 @@ const ImageCropper = ({ src, onComplete, onCancel }) => {
           src={src}
           crop={crop}
           onChange={(newCrop) => setCrop(newCrop)}
-          aspect={9 / 16}
+          aspect={11 / 16}
           ruleOfThirds
           keepSelection
           style={{ maxWidth: '800px', maxHeight: '600px' }}
