@@ -29,6 +29,8 @@ const DetailItem = ({ label, value, lg }) => (
 
 const ProductDetails = () => {
   const [product, setProduct] = useState();
+  const [bid, setBid] = useState('');
+  const [requestDescription, setRequestDescription] = useState('');
   const { id } = useParams();
   const token = useSelector((state) => state.auth.token)
   const navigate = useNavigate();
@@ -84,8 +86,6 @@ const ProductDetails = () => {
   }
   const lg = useMediaQuery(theme.breakpoints.up('sm'));
 
-const [bid, setBid] = useState('');
-
   const placeBid = () => {
     fetch(`http://localhost:5003/shop/${id}/bid`, {
       method: 'POST',
@@ -111,8 +111,39 @@ const [bid, setBid] = useState('');
     });
   };
 
-  const buttonAction = product?.__t === 'AuctionProduct' ? placeBid : () => addToCart(product);
-  const buttonText = product?.__t === 'AuctionProduct' ? 'Place Bid' : 'Add to Cart';
+  const sendDonationRequest = () => {
+    if (!requestDescription.trim()) {
+      toast.error("Request description cannot be empty.");
+      return;
+    }
+  
+    fetch(`http://localhost:5003/shop/${id}/request`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ requestDescription }),
+      credentials: 'include',
+    })
+    .then(response => {
+      if (response.ok) {
+        toast.success("Donation request sent successfully.");
+        setRequestDescription('');
+      } else {
+        response.json().then(data => {
+          toast.error(data.error || "An error occurred while sending the request.");
+        });
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      toast.error("An error occurred while sending the request.");
+    });
+  };
+  
+  const buttonAction = product?.__t === 'AuctionProduct' ? placeBid : (product?.__t === 'DonationProduct' ? sendDonationRequest : () => addToCart(product));
+  const buttonText = product?.__t === 'AuctionProduct' ? 'Place Bid' : (product?.__t === 'DonationProduct' ? 'Send Request' : 'Add to Cart');  
 
   return (
     <ThemeProvider theme={theme}>
@@ -147,6 +178,7 @@ const [bid, setBid] = useState('');
                     />
                   </>
                 )}
+
             {product?.__t === 'SaleProduct' && (
             <Typography variant={lg ? "h6" : "subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 500, mb: 4 }}>
               {product && `PKR ${product.price}`}
@@ -155,6 +187,19 @@ const [bid, setBid] = useState('');
             {productDetails.map((detail, index) => (
               detail.value ? <DetailItem key={index} label={detail.label} value={detail.value} lg={lg} /> : null
             ))}
+             {product?.__t === 'DonationProduct' && (
+              <>
+                <TextField
+                  label="Donation Request Description"
+                  multiline
+                  rows={4}
+                  fullWidth
+                  value={requestDescription}
+                  onChange={(e) => setRequestDescription(e.target.value)}
+                  margin="normal"
+                />
+              </>
+            )}
             <SiteButton text={buttonText} onClick={buttonAction} styles={{ width: '100%', mt: 3, mb: 3, fontSize: lg ? "1rem" : "0.8rem", padding: 1.5, }} />
             <Typography variant="h6" textAlign="left" sx={{ mt: 3, color: "gray" }}>
               Description
