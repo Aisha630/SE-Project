@@ -10,7 +10,7 @@ const Product = ({ product, mode }) => {
   const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
 
   return (
-    <Grid item xs={12} sm={6} md={3} lg={3} style={{ padding: '5px' }}>
+    <Grid item xs={12} sm={6} md={3} lg={2} style={{ padding: '5px' }}>
       <img src={product.image} alt={product.name} style={{ width: '100%' }} />
       <Typography variant="h6" align="left">{product.name}</Typography>
       {mode === 'sale' &&

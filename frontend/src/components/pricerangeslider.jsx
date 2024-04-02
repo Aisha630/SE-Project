@@ -20,7 +20,7 @@ const PriceRangeSlider = ({value, handleChange, valuetext}) => {
             width="100%"
             step={10}
             min={0}
-            max={10000}
+            max={200000}
             sx={{color:'inherit'}}
             valueLabelDisplay="off"
         />

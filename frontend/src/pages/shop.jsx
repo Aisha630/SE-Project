@@ -9,6 +9,8 @@ import MainCategoryToolbar from '../components/maincategoriestoolbar.jsx';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ListItemLink from '../components/ListItemLink.jsx';
+import NoProducts from '../components/noProducts.jsx';
+
 
 const ShopItems = ({mode}) => {
     const navigate = useNavigate();
@@ -16,6 +18,8 @@ const ShopItems = ({mode}) => {
 
     const [category, setCategory] = useState('Clothing')
     const [products, setProducts] = useState([]);
+
+    const [isEmpty, setIsEmpty] = useState(false);
     
     const [checkedSubcategories, setCheckedSubcategories] = useState([]);
 
@@ -71,7 +75,8 @@ const ShopItems = ({mode}) => {
                 id: product._id
             }));
             setProducts(formattedProducts);
-            console.log("pinged the filter api",data)
+            setIsEmpty(formattedProducts.length === 0);
+
         })
         .catch(error => {
             console.error('Error:', error);
@@ -100,7 +105,7 @@ const ShopItems = ({mode}) => {
                 id: product._id
             }));
             setProducts(formattedProducts);
-            console.log("pinged the filter api",data)
+            setIsEmpty(formattedProducts.length === 0);
         })
         .catch(error => {
             console.error('Error:', error);
@@ -129,11 +134,14 @@ const ShopItems = ({mode}) => {
                 }));
                 setCheckedSubcategories([]);
                 setCheckedSizes([]);
+                console.log(data)
                 setProducts(formattedProducts);
+
+                setIsEmpty(formattedProducts.length === 0);
             })
             .catch(error => {
                 console.error('Error:', error);
-                // navigate('/login');
+                navigate('/login');
             });
     }, [token, navigate, category]);
     
@@ -186,7 +194,9 @@ const ShopItems = ({mode}) => {
 
             {/* This section represents the actual products */}
             <Box sx={{ padding: '30px' }}>
-                <ProductList products={products} mode={mode} />
+                {isEmpty && <NoProducts />}
+                {!isEmpty && <ProductList products={products} mode={mode}/>}
+                
             </Box>
         </ThemeProvider>
     )

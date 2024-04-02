@@ -25,7 +25,7 @@ const ModeOfAdSelection = ({ adData, handleInputChange }) => (
     >
       <FormControlLabel value="auction" control={<Radio />} label="Auction" />
       <FormControlLabel value="sale" control={<Radio />} label="Sale" />
-      <FormControlLabel value="donation" control={<Radio />} label="Donation" />
+      <FormControlLabel value="donate" control={<Radio />} label="Donation" />
     </RadioGroup>
     {adData.productType === "auction" && (
       <>

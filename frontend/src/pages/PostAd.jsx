@@ -146,7 +146,7 @@ const PostAd = () => {
     }
     const formData = new FormData();
     Object.keys(adData).forEach((key) => {
-        if (key === "price" && (adData.productType === "auction" || adData.productType === "donation")) {
+        if (key === "price" && (adData.productType === "auction" || adData.productType === "donate")) {
             return;
         }
 
@@ -305,7 +305,7 @@ const PostAd = () => {
             />
 
             {/* Price Section */}
-            {adData.productType !== "auction" && adData.productType !== "donation" && (
+            {adData.productType !== "auction" && adData.productType !== "donate" && (
               <PriceSelection
                 adData={adData}
                 handleInputChange={handleInputChange}
