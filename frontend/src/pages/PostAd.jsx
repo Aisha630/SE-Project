@@ -40,6 +40,8 @@ const PostAd = () => {
     price: "",
     // endDate: "",
     productType: "",
+    startingBid: "",
+    endTime: "", 
   });
 
   const [files, setFiles] = useState([]);
@@ -50,7 +52,7 @@ const PostAd = () => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    if (name === "price") {
+    if (name === "price" || name === "startingBid") {
       if (value >= 0) {
         setAdData({ ...adData, [name]: value });
       }
@@ -94,7 +96,7 @@ const PostAd = () => {
       newErrors.name = "Ad title is required";
     }
 
-    if (!adData.price) {
+    if (adData.productType=='sale' && !adData.price) {
       isValid = false;
       newErrors.price = "Price is required";
     }
@@ -137,61 +139,61 @@ const PostAd = () => {
     event.preventDefault();
 
     if (!validateAd()) {
-      Object.values(errors).forEach((error) => {
-        toast.error(error);
-      });
-      return;
+        Object.values(errors).forEach((error) => {
+            toast.error(error);
+        });
+        return;
     }
-    console.log("Ad data is ", adData);
-
     const formData = new FormData();
     Object.keys(adData).forEach((key) => {
-      if (Array.isArray(adData[key])) {
-        adData[key].forEach((value) => formData.append(key, value));
-      } 
-      
-      else {
-        if (!((key==="size" || key==="color") && adData.category === "Technology" ))
-          formData.append(key, adData[key]);
-      }
+        if (key === "price" && (adData.productType === "auction" || adData.productType === "donation")) {
+            return;
+        }
+
+        if ((key === "size" || key === "color") && adData.category !== "Clothing") {
+            return;
+        }
+
+        if ((key === "startingBid" || key === "endTime") && adData.productType !== "auction") {
+            return;
+        }
+        if (Array.isArray(adData[key])) {
+            adData[key].forEach((value) => formData.append(key, value));
+        } else {
+            formData.append(key, adData[key]);
+        }
     });
+
     formData.append("seller", user);
-    console.log("Files are ", files)
+
     files.forEach((file) => {
-      if (file) {
-        formData.append("images", file);
-        console.log("added image to request")
-      }
+        if (file) {
+            formData.append("images", file);
+        }
     });
-    console.log("posting ad with form data", formData)
 
     try {
-      
-      const response = await fetch("http://localhost:5003/sell", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        method: "POST",
-        body: formData,
-      });
-      if (response.ok) {
-        const result = await response.json();
-        console.log("Submission Success:", result);
-        navigate("/shop");
-      } else if (response.status === 401) {
-        toast.error("You need to log in to post an ad.");
-        navigate("/login");
-      } else {
-        const errorData = await response.json();
-        console.log(formData)
-        console.error("Submission Failed:", errorData.error);
-        toast.error(`Submission Failed: ${errorData.error}`);
-      }
+        const response = await fetch("http://localhost:5003/sell", {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            body: formData,
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            console.log("Submission Success:", result);
+            navigate("/shop");
+        } else {
+            const errorData = await response.json();
+            toast.error(`Submission Failed: ${errorData.error}`);
+        }
     } catch (error) {
-      console.error("Error submitting form:", error);
-      toast.error("Network error occurred. Please try again later.");
+        console.error("Error submitting form:", error);
+        toast.error("Network error occurred. Please try again later.");
     }
-  };
+};
 
   const subcategories = adData.category ? categories[adData.category] : [];
 
@@ -303,11 +305,14 @@ const PostAd = () => {
             />
 
             {/* Price Section */}
-            <PriceSelection
-              adData={adData}
-              handleInputChange={handleInputChange}
-              errors={errors}
-            />
+            {adData.productType !== "auction" && adData.productType !== "donation" && (
+              <PriceSelection
+                adData={adData}
+                handleInputChange={handleInputChange}
+                errors={errors}
+              />
+            )}
+
 
             {/* Image Upload Section */}
             <ImageUpload files={files} handleFileChange={handleFileChange} />

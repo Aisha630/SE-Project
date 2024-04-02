@@ -5,7 +5,7 @@ import {
   FormControlLabel,
   Radio,
   Typography,
-  TextField
+  TextField,
 } from "@mui/material";
 
 const ModeOfAdSelection = ({ adData, handleInputChange }) => (
@@ -24,24 +24,36 @@ const ModeOfAdSelection = ({ adData, handleInputChange }) => (
       }}
     >
       <FormControlLabel value="auction" control={<Radio />} label="Auction" />
-      {adData.productType === "auction" && (
+      <FormControlLabel value="sale" control={<Radio />} label="Sale" />
+      <FormControlLabel value="donation" control={<Radio />} label="Donation" />
+    </RadioGroup>
+    {adData.productType === "auction" && (
+      <>
         <TextField
           fullWidth
-          id="endDate"
-          label="End Bidding On:"
-          type="date"
-          name="endDate"
-          value={adData.endDate}
+          id="startingBid"
+          label="Starting Bid:"
+          type="number"
+          name="startingBid"
+          value={adData.startingBid}
+          onChange={handleInputChange}
+          margin="normal"
+        />
+        <TextField
+          fullWidth
+          id="endTime"
+          label="End Time:"
+          type="datetime-local"
+          name="endTime"
+          value={adData.endTime}
           onChange={handleInputChange}
           margin="normal"
           InputLabelProps={{
             shrink: true,
           }}
         />
-      )}
-      <FormControlLabel value="sale" control={<Radio />} label="Sale" />
-      <FormControlLabel value="donation" control={<Radio />} label="Donation" />
-    </RadioGroup>
+      </>
+    )}
   </Box>
 );
 
