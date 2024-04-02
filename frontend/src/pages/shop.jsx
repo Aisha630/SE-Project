@@ -131,7 +131,7 @@ const ShopItems = ({mode}) => {
             })
             .catch(error => {
                 console.error('Error:', error);
-                navigate('/login');
+                // navigate('/login');
             });
     }, [token, navigate, category]);
     
