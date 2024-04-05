@@ -12,6 +12,7 @@ import { profileStyles, profileAvatarStyles, graphStyles } from '../components/p
 import MainCategoryToolbar from '../components/maincategoriestoolbar.jsx';
 import UserProducts from '../components/userProducts.jsx';
 import { LineChart } from '@mui/x-charts/LineChart'
+import NoProducts from '../components/noProducts.jsx';
 
 
 
@@ -25,6 +26,7 @@ const UserProfile = () => {
     const [page, setPage] = useState(1);
     const [productsPerPage] = useState(2); // Number of products per page
     const [graph, setGraph] = useState('Monthly');
+    const [noItems, setNoItems] = useState(false);
 
     const username = useSelector((state) => state.auth.user);
     const token = useSelector((state) => state.auth.token);
@@ -65,6 +67,10 @@ const UserProfile = () => {
                 setProducts(data.filter((product) => product.__t === 'DonationProduct'));
             }
             // setProducts(data);
+            if (products.length === 0) {
+                setNoItems(true);
+            }
+
         })
             .catch((error) => { console.log("The error is:", error) });
 
@@ -76,12 +82,6 @@ const UserProfile = () => {
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
     const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
     console.log("The current products are ", currentProducts, "The products are ", products, "The page is ", page, "The products per page are ", productsPerPage);
-
-
-
-
-
-
 
     // Handle page change
     const handlePageChange = (event, value) => {
@@ -132,10 +132,30 @@ const UserProfile = () => {
         setGraph(event.target.value);
     }
 
+    const handleDeleteItem = (id) => {
+        fetch(`http://localhost:5003/shop/${id}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }).then((res) => {
+            if (!res.ok) {
+                // navigate("/login");
+                console.log("Error deleting item")
+            }; return res.json()
+        }).then((data) => {
+            console.log("The data is ", data);
+            // setUser(data);
+        })
+            .catch((error) => { console.log("The error is:", error) });
+        console.log("Delete item with id ", id);
+    }
+
+
 
     return (
         <ThemeProvider theme={theme}>
-            <Nav Drawer={Drawer} Search={Box} ShowLogo={true} styles={{
+            <Nav Drawer={Drawer} Search={Box} ShowLogo={false} styles={{
                 // backgroundImage: "url('userprofilebg.svg')",
             }} />
             <Grid style={{
@@ -222,9 +242,15 @@ const UserProfile = () => {
                         width: '100vw',
                         position: 'absolute',
                     }}>
-
-                        <UserProducts products={currentProducts} />
+                        {currentProducts.length>0 &&<UserProducts products={currentProducts} handleDeleteItem={handleDeleteItem} />}
                     </Grid>
+                        {currentProducts.length === 0 && <NoProducts styles={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            position: 'absolute',
+                            width: '100vw',
+                            bottom: 0,
+                        }}/>}
                 </Box>
                 <Box sx={{
                     position: 'absolute',
