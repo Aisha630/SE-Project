@@ -242,7 +242,7 @@ const UserProfile = () => {
                         width: '100vw',
                         position: 'absolute',
                     }}>
-                        {currentProducts.length>0 &&<UserProducts products={currentProducts} handleDeleteItem={handleDeleteItem} />}
+                        {currentProducts.length>0 && <UserProducts products={currentProducts} handleDeleteItem={handleDeleteItem} />}
                     </Grid>
                         {currentProducts.length === 0 && <NoProducts styles={{
                             justifyContent: 'center',
