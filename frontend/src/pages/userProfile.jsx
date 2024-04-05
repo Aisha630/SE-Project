@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { ThemeProvider } from '@mui/material';
-import { Tab, Paper, Typography, Box, Grid, Avatar, Stack, Rating, Card, Pagination, Link, CardMedia, CardContent, CardActions, Button } from '@mui/material';
+import { Typography, Box, Grid, Avatar, Stack, Rating, Card, Pagination, FormControl,Select, MenuItem} from '@mui/material';
 import theme from '../themes/homeTheme';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { profileStyles, profileAvatarStyles, graphStyles } from '../components/profilestyles.jsx';
 import MainCategoryToolbar from '../components/maincategoriestoolbar.jsx';
 import UserProducts from '../components/userProducts.jsx';
-import SalesGraph from '../components/salesGraph.jsx';
+import { LineChart } from '@mui/x-charts/LineChart'
 
 
 
@@ -24,6 +24,7 @@ const UserProfile = () => {
     // State for pagination
     const [page, setPage] = useState(1);
     const [productsPerPage] = useState(2); // Number of products per page
+    const [graph, setGraph] = useState('Monthly');
 
     const username = useSelector((state) => state.auth.user);
     const token = useSelector((state) => state.auth.token);
@@ -78,18 +79,59 @@ const UserProfile = () => {
 
 
 
+
+
+
+
     // Handle page change
     const handlePageChange = (event, value) => {
         setPage(value);
     };
-
+    // data for one month
     const dataArray = [
-        { saleDate: '2021-01-01', price: 800 },
-        { saleDate: '2021-01-02', price: 1000 },
-        { saleDate: '2021-01-03', price: 930 },
-        { saleDate: '2021-01-04', price: 1050 }
+        { saleDate: '01', price: 8000 },
+        { saleDate: '02', price: 10000 },
+        { saleDate: '03', price: 9300 },
+        { saleDate: '04', price: 30500 },
+        { saleDate: '05', price: 12000 },
+        { saleDate: '06', price: 23000 },
+        { saleDate: '07', price: 14000 },
+        { saleDate: '08', price: 8000 },
+        { saleDate: '09', price: 26000 },
+        { saleDate: '10', price: 17000 },
+        { saleDate: '11', price: 28000 },
+        { saleDate: '12', price: 39000 },
+        { saleDate: '13', price: 10000 },
+        { saleDate: '14', price: 31000 },
+        { saleDate: '15', price: 12000 },
+        { saleDate: '16', price: 32000 },
+        { saleDate: '17', price: 24000 },
+        { saleDate: '18', price: 25000 },
+        { saleDate: '19', price: 16000 },
+        { saleDate: '20', price: 27000 },
+        { saleDate: '21', price: 28000 },
+        { saleDate: '22', price: 9000 },
+        { saleDate: '23', price: 30000 },
+        { saleDate: '24', price: 11000 },
+        { saleDate: '25', price: 32000 },
+        { saleDate: '26', price: 23000 },
+        { saleDate: '27', price: 23000 },
+        { saleDate: '28', price: 32000 },
+        { saleDate: '29', price: 16000 },
+        { saleDate: '30', price: 27000 },
+        { saleDate: '31', price: 18000 },
+
     ];
-    const sumOfSales = dataArray.reduce((acc, item) => acc + item.value, 0);
+    const sumOfSales = dataArray.reduce((acc, item) => acc + item.price, 0);
+
+    const xdata = dataArray.map((item) => item.saleDate);
+    const ydata = dataArray.map((item) => item.price);
+
+    const handleGraphChange = (event) => {
+        console.log(event.target.value);
+        setGraph(event.target.value);
+    }
+
 
     return (
         <ThemeProvider theme={theme}>
@@ -108,9 +150,39 @@ const UserProfile = () => {
                 <Grid container style={{ height: '30%', width: '100vw', paddingTop: 5 }}>
                     <Grid item xs={6} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                         <Card sx={graphStyles}>
-                            <Typography variant="h6" sx={{ position: 'absolute', top: 20, left: 20 }}>
-                            <SalesGraph data2={dataArray} />
+                            <Box sx={{ display: 'flex', justifyContent: 'right', alignItems: 'right', width: '100%', height: '1%' }}>
+                                <FormControl size="small" sx={{ minWidth: 120, color: '#517652' }}>
+                                    <Select
+                                        labelId=""
+                                        id="graph-select"
+                                        value={graph}
+                                        onChange={handleGraphChange}
+                                        
+                                    >
+                                        <MenuItem value={"Monthly"}>Monthly</MenuItem>
+                                        <MenuItem value={"Yearly"}>Yearly</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Box>
+                            <Typography variant="subtitle1" sx={{ display: 'flex', position: 'absolute', top: 20, left: 20 }}>
+                            Overall Sales
                             </Typography>
+                            <Typography variant="h6" sx={{ display: 'flex', position: 'absolute', top: 40, left: 20, }}>
+                            {sumOfSales} PKR
+                            </Typography>
+
+                            
+                            <Box sx={{ width: '100%', height: '110%', paddingTop:2 }}>
+                                
+                            <LineChart
+                                xAxis={[{ data: xdata }]}
+                                series={[
+                                    {
+                                        data: ydata,
+                                    },
+                                ]}
+                            />
+                                </Box>
 
                         </Card>
                     </Grid>
