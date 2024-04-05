@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 const ProductList = ({ products, mode }) => {
     const [page, setPage] = useState(1);
-    const productsPerPage = 8;
+    const productsPerPage = 12;
     const totalPages = Math.ceil(products.length / productsPerPage);
 
     const handlePageChange = (event, value) => {
