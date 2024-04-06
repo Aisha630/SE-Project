@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from 'react';
-import { Grid, Typography, Paper, ThemeProvider, useMediaQuery, TextField } from '@mui/material';
+import { Grid, Typography, Paper, ThemeProvider, useMediaQuery, TextField, Divider } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { CustomImageGallery } from '../components/imageGallery.jsx';
@@ -9,6 +9,7 @@ import SiteButton from '../components/button.jsx';
 import { useCart } from '../context/cartContext.jsx';
 import theme from '../themes/homeTheme.js';
 import "../css/image-gallery.css";
+import Recs from '../components/recs.jsx';
 
 
 const DetailItem = ({ label, value, lg }) => (
@@ -43,7 +44,7 @@ const ProductDetails = () => {
         navigate("/login")
       return response.json()
     }).then(data => {
-      const formattedImages = data.images.map((imageUrl, index) => ({
+      const formattedImages = data.images.map((imageUrl) => ({
         original: `http://localhost:5003${imageUrl}`,
         thumbnail: `http://localhost:5003${imageUrl}`,
       }));
@@ -96,19 +97,19 @@ const ProductDetails = () => {
       body: JSON.stringify({ bid }),
       credentials: 'include',
     })
-    .then(response => response.json())
-    .then(data => {
-      if (data.error) {
-        toast.error(data.error);
-      } else {
-        toast.success(`Bid placed: PKR ${bid}`);
-        setProduct({ ...product, currentBid: bid });
-      }
-    })
-    .catch(error => {
-      console.error(error);
-      toast.error("Error placing bid");
-    });
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          toast.error(data.error);
+        } else {
+          toast.success(`Bid placed: PKR ${bid}`);
+          setProduct({ ...product, currentBid: bid });
+        }
+      })
+      .catch(error => {
+        console.error(error);
+        toast.error("Error placing bid");
+      });
   };
 
   const sendDonationRequest = () => {
@@ -116,7 +117,7 @@ const ProductDetails = () => {
       toast.error("Request description cannot be empty.");
       return;
     }
-  
+
     fetch(`http://localhost:5003/shop/${id}/request`, {
       method: 'POST',
       headers: {
@@ -126,24 +127,24 @@ const ProductDetails = () => {
       body: JSON.stringify({ requestDescription }),
       credentials: 'include',
     })
-    .then(response => {
-      if (response.ok) {
-        toast.success("Donation request sent successfully.");
-        setRequestDescription('');
-      } else {
-        response.json().then(data => {
-          toast.error(data.error || "An error occurred while sending the request.");
-        });
-      }
-    })
-    .catch(error => {
-      console.error(error);
-      toast.error("An error occurred while sending the request.");
-    });
+      .then(response => {
+        if (response.ok) {
+          toast.success("Donation request sent successfully.");
+          setRequestDescription('');
+        } else {
+          response.json().then(data => {
+            toast.error(data.error || "An error occurred while sending the request.");
+          });
+        }
+      })
+      .catch(error => {
+        console.error(error);
+        toast.error("An error occurred while sending the request.");
+      });
   };
-  
+
   const buttonAction = product?.__t === 'AuctionProduct' ? placeBid : (product?.__t === 'DonationProduct' ? sendDonationRequest : () => addToCart(product));
-  const buttonText = product?.__t === 'AuctionProduct' ? 'Place Bid' : (product?.__t === 'DonationProduct' ? 'Send Request' : 'Add to Cart');  
+  const buttonText = product?.__t === 'AuctionProduct' ? 'Place Bid' : (product?.__t === 'DonationProduct' ? 'Send Request' : 'Add to Cart');
 
   return (
     <ThemeProvider theme={theme}>
@@ -154,41 +155,42 @@ const ProductDetails = () => {
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={6} sx={{ display: "flex", flexDirection: "row", alignItems: "stretch", m: 0, p: 0 }}>
           <Paper sx={{ padding: 7, flex: 1, borderRadius: 0 }}>
-            <Typography variant="h5" color="black" textAlign="left" sx={{ fontWeight: 500, mb: 0, textTransform:'capitalize' }}>
+            <Typography variant="h5" color="black" textAlign="left" sx={{ fontWeight: 500, mb: 0, textTransform: 'capitalize' }}>
               {product?.name}
             </Typography>
+            {product?.__t === 'SaleProduct' && (
+              <Typography variant={lg ? "h6" : "subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 500, mb: 4 }}>
+                {product && `PKR ${product.price}`}
+              </Typography>
+            )}
             {productDetails.map((detail, index) => (
               detail.value ? <DetailItem key={index} label={detail.label} value={detail.value} lg={lg} /> : <DetailItem key={index} label={detail.label} value={"Undefined"} lg={lg} />
             ))}
             {product?.__t === 'AuctionProduct' && (
-                  <>
-                    <Typography variant={"subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 300, mb: 2 }}>
-                         Starting Bid: PKR {product.startingBid}
-                       </Typography>
-                       <Typography variant={"subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 300, mb: 2 }}>
-                         Current Bid: PKR {product.currentBid}
-                       </Typography>
-                       <Typography variant={"subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 300, mb: 2 }}>
-                         End Time: {new Date(product.endTime).toLocaleString()}
-                       </Typography>
-                       <TextField
-                      label="Your Bid"
-                      type="number"
-                      fullWidth
-                      value={bid}
-                      onChange={(e) => setBid(e.target.value)}
-                      margin="normal"
-                    />
-                  </>
-                )}
-
-            {product?.__t === 'SaleProduct' && (
-            <Typography variant={lg ? "h6" : "subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 500, mb: 4 }}>
-              {product && `PKR ${product.price}`}
-            </Typography>
+              <>
+                <Typography variant={"subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 300, mb: 2 }}>
+                  Starting Bid: PKR {product.startingBid}
+                </Typography>
+                <Typography variant={"subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 300, mb: 2 }}>
+                  Current Bid: PKR {product.currentBid}
+                </Typography>
+                <Typography variant={"subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 300, mb: 2 }}>
+                  End Time: {new Date(product.endTime).toLocaleString()}
+                </Typography>
+                <TextField
+                  label="Your Bid"
+                  type="number"
+                  fullWidth
+                  value={bid}
+                  onChange={(e) => setBid(e.target.value)}
+                  margin="normal"
+                />
+              </>
             )}
 
-             {product?.__t === 'DonationProduct' && (
+
+
+            {product?.__t === 'DonationProduct' && (
               <>
                 <TextField
                   label="Donation Request Description"
@@ -210,6 +212,18 @@ const ProductDetails = () => {
             </Typography>
           </Paper>
         </Grid>
+      <Grid container spacing={0} sx={{ padding: 3.5, backgroundColor: "#ffffff" }}>
+        <Grid item xs={12} sm={12} md={12} lg={12} sx={{ maxWidth: "100%" }}>
+        <Divider fullWidth sx={{ width: "100%", mt: 5, mb: 5 }} />
+        <Typography variant="h5" textAlign="left" sx={{ mb: 3, color: "#58a45b" }}>
+          More like this
+        </Typography>
+        </Grid>
+        <Grid item xs={12} sm={12} md={12} lg={12} sx={{  maxWidth: "100%" }}>
+          <Recs />
+          {/* <CarouselComponent /> */}
+        </Grid>
+      </Grid>
       </Grid>
     </ThemeProvider>
   );

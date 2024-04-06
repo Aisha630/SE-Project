@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { loginUser } from '../stores/authSlice.js';
-import { Box, Button, TextField, Typography, ThemeProvider, IconButton, InputAdornment, Link, Grid } from '@mui/material';
+import { Box, Button, TextField, ThemeProvider, IconButton, InputAdornment, Link, Grid } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import theme from '../themes/authThemes.js';
 import '../css/login.css';
@@ -48,7 +48,6 @@ const Login = () => {
           justifyContent: 'center',
           alignItems: 'center',
           minHeight: '100vh',
-
           width: '100%',
           backgroundColor: 'rgba(0, 0, 0, 0.7)', // I am just adding this to darken BG since its very bright
         }}>

@@ -3,8 +3,8 @@ import ReactCrop, { makeAspectCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import theme from '../themes/authThemes';
 
-const ImageCropper = ({ src, onComplete, onCancel }) => {
-  const [crop, setCrop] = useState({ unit: '%', width: 80, aspect: 11 / 16 });
+const ImageCropper = ({ src, onComplete }) => {
+  const [crop, setCrop] = useState({ unit: '%', width: 80, aspect: 10 / 14 });
   const imgRef = useRef(null);
   const previewCanvasRef = useRef(null);
 
@@ -19,7 +19,7 @@ const ImageCropper = ({ src, onComplete, onCancel }) => {
         x: 10,
         y: 10,
       },
-      10 / 16,
+      10 / 14,
       width,
       height
     );
@@ -70,7 +70,7 @@ const ImageCropper = ({ src, onComplete, onCancel }) => {
   };
 
 
-  const getCroppedImg = (image, crop) => {
+  const getCroppedImg = () => {
     const canvas = previewCanvasRef.current;
     return canvas.toDataURL('image/jpeg', 0.8);
   };
@@ -82,10 +82,10 @@ const ImageCropper = ({ src, onComplete, onCancel }) => {
           src={src}
           crop={crop}
           onChange={(newCrop) => setCrop(newCrop)}
-          aspect={11 / 16}
+          aspect={10 / 14}
           ruleOfThirds
           keepSelection
-          style={{ maxWidth: '800px', maxHeight: '600px' }}
+          style={{ maxWidth: '600px', maxHeight: '300px' }}
         ><img src={src} alt="Crop" style={{ maxWidth: '70vh' }} onLoad={onImageLoad} /></ReactCrop>
 
       )}

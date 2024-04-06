@@ -30,7 +30,7 @@ function Home() {
       }
     })
       .then((res) => {
-        console.log("Res is ", res); if (!res.ok) {
+        if (!res.ok) {
           navigate("/login");
         }
       })
