@@ -24,9 +24,7 @@ const UserProfile = () => {
     const [products, setProducts] = useState([]);
     const navigate = useNavigate();
     const [graph, setGraph] = useState('Monthly');
-    const [noItems, setNoItems] = useState(false);
     const lg = useMediaQuery(theme.breakpoints.up('lg'));
-    const xlg = useMediaQuery(theme.breakpoints.up('xl'));
 
     const username = useSelector((state) => state.auth.user);
     const token = useSelector((state) => state.auth.token);
@@ -65,10 +63,6 @@ const UserProfile = () => {
             else if (selectedTab === 'Donations') {
                 // Filter the products that are for sale
                 setProducts(data.filter((product) => product.__t === 'DonationProduct'));
-            }
-            // setProducts(data);
-            if (products.length === 0) {
-                setNoItems(true);
             }
 
         })

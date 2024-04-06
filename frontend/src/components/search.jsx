@@ -2,17 +2,13 @@ import React, { useState } from 'react';
 import { IconButton, InputBase, Box } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 
 const Search = ({ setIsEmpty, setSearchProducts }) => {
     const [isSearchActive, setIsSearchActive] = useState(false);
     const token = useSelector((state) => state.auth.token);
-    const navigate = useNavigate();
-
 
     const toggleSearch = () => {
         setIsSearchActive(!isSearchActive);
-
     };
 
     const getSearchResults = (event) => {

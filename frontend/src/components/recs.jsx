@@ -36,7 +36,6 @@ const Recs = () => {
                 image: `http://localhost:5003${product.images[0]}`,
                 id: product._id
             }));
-
             setRecs(formattedProducts)
         }).catch(error => { console.log(error) })
     }, [navigate, token, id, window.innerWidth]);

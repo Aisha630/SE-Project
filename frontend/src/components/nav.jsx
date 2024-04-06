@@ -13,7 +13,6 @@ import { useMediaQuery } from '@mui/material';
 import theme from '../themes/homeTheme';
 import React from 'react';
 
-
 const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" , setSearchProducts, setIsEmpty}) => {
     const navigate = useNavigate();
     const [isCartVisible, setIsCartVisible] = useState(false);
@@ -22,11 +21,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" , setSea
     const sm = useMediaQuery(theme.breakpoints.up('sm'));
     const md = useMediaQuery(theme.breakpoints.up('md'));
     const lg = useMediaQuery(theme.breakpoints.up('lg'));
-    // console.log("The user name is ", username)
-
-
     const height = lg ? '5vh' : md ? '3vh' : sm ? '40px' : '30px';
-
 
     const deleteFromCart = (product) => {
         fetch(`http://localhost:5003/cart?id=${product._id}`, {
@@ -74,8 +69,6 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" , setSea
         logout();
         handleClose();
     };
-
-    // console.log("the user is ", user)
 
     return (
         <AppBar position="static" sx={{ backgroundColor: "#e0e0e0", ...styles, boxShadow: "none" }} >

@@ -12,7 +12,6 @@ const RenderItem = ({ item }) => {
     return (
         <div style={{ position: "relative", width: '100%', height: '100%' }}>
             <InnerImageZoom src={item.original} zoomSrc={item.original} zoomScale={3} zoomType="hover" hasSpacer={true} hideHint={true} imgAttributes={{ width: '100%', height: '100%', }} fullscreenOnMobile={true} />
-            {/* <img src={item.original} alt={item.originalAlt} style={{ width: '100%', height: '100%', objectFit: 'contain' }} /> */}
             <BackHanger style={{ margin: "10px", position: 'absolute', top: '10px', left: '10px', zIndex: 2 }} />
 
         </div>

@@ -9,7 +9,6 @@ const TypingEffect = ({ text, speed = 80 }) => {
             const timer = setTimeout(() => {
                 setVisibleText(text.substr(0, visibleText.length + 1));
             }, speed);
-
             return () => clearTimeout(timer);
         }
     }, [visibleText, text, speed]);

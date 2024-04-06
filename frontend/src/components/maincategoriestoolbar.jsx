@@ -2,7 +2,6 @@ import React from 'react';
 import { Button, AppBar, Toolbar, Box, Typography } from '@mui/material';
 
 const MainCategoryToolbar = ({ setCategory, category, navItems=['Clothing', 'Technology', 'Miscellaneous'], styles }) => {
-    // const navItems = ['Clothing', 'Technology', 'Miscellaneous'];
 
     const handleMainCategory = (selectedCategory) => {
         setCategory(selectedCategory);
