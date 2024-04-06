@@ -2,6 +2,7 @@ import nodemailer from "nodemailer";
 import User from "../models/userModel.js";
 import authEmail from "../util/authEmail.js";
 import checkoutEmail from "../util/checkoutEmail.js";
+import passwordResetEmail from "../util/passwordResetEmail.js";
 import { bidEmail, notSoldEmail, soldEmail } from "../util/auctionEmails.js";
 import { donationApproval, donationRejection } from "../util/donationEmails.js";
 
@@ -33,6 +34,17 @@ export async function sendCheckoutEmail(seller, buyer, product) {
     console.error(error);
   }
 }
+
+export async function sendPasswordResetEmail(user, resetToken) {
+  let email = passwordResetEmail(user, resetToken);
+
+  try {
+    await transporter.sendMail(email);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export async function sendApprovalEmail(product) {
   const donar = await User.findOne({ username: product.seller });
   const acceptedDonee = await User.findOne({ username: product.buyer });

@@ -1,11 +1,12 @@
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
-import validator from "validator";
 
 import User from "../models/userModel.js";
 import VerificationToken from "../models/verificationTokenModel.js";
+import PasswordReset from "../models/passwordResetModel.js";
 import { sendVerificationEmail } from "../services/emailService.js";
+import { sendPasswordResetEmail } from "../services/emailService.js";
 
 export async function signup(req, res) {
   const { username, email, password } = req.body;
@@ -175,4 +176,55 @@ export async function resendVerification(req, res) {
     console.error(error);
     res.status(500).json({ error: "Server error" });
   }
+}
+
+function generateNumericToken() {
+  const token = Math.floor(100000 + Math.random() * 900000);
+  return token.toString();
+}
+
+export async function requestPasswordReset(req, res) {
+  const { email } = req.body;
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(404).json({ error: "User not found." });
+  }
+
+  const resetToken = generateNumericToken();
+
+  const passwordReset = new PasswordReset({
+    username: user.username,
+    resetToken,
+  });
+
+  await passwordReset.save();
+  await sendPasswordResetEmail(user, resetToken);
+
+  res.json({ message: "Please check your email to reset your password." });
+}
+
+export async function resetPassword(req, res) {
+  const { resetToken, newPassword } = req.body;
+
+  const passwordResetDoc = await PasswordReset.findOne({ resetToken });
+  if (!passwordResetDoc) {
+    return res.status(400).json({ error: "Token is invalid or has expired." });
+  }
+
+  const user = await User.findOne({
+    username: passwordResetDoc.username,
+  });
+
+  if (!user) {
+    return res.status(404).json({ error: "User not found." });
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(newPassword, salt);
+  await user.save();
+
+  await PasswordReset.deleteOne({ resetToken });
+
+  res.json({ message: "Password has been reset successfully." });
 }

@@ -38,3 +38,18 @@
   font-size: 16px;
   margin: 10px 0;
 }
+
+.reset-token {
+  background-color: #e0e0e0; 
+  color: #333; 
+  padding: 15px 20px;
+  text-align: center;
+  display: inline-block;
+  border-radius: 5px;
+  font-size: 18px; 
+  letter-spacing: 1.5px; 
+  font-family: 'Courier New', Courier, monospace;
+  margin: 20px 0; 
+  word-break: break-all;
+}
+
