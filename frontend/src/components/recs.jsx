@@ -43,12 +43,12 @@ const Recs = () => {
 
             setRecs(formattedProducts)
         }).catch(error => { console.log(error) })
-    }, );
+    }, [navigate, token, id]);
 
     useEffect(() => {
         const pageWidth = window.innerWidth;
         setSlidesToShow(Math.floor(pageWidth / 280))
-    }, )
+    }, [navigate, token, id])
 
     const settings = {
         dots: emptySlidesCount === 0 ? true : false,
