@@ -1,15 +1,16 @@
 import { React, useState, useEffect } from 'react';
-import { Grid, Typography, Paper, ThemeProvider, useMediaQuery, TextField, Divider, Rating, Box } from '@mui/material';
+import { Grid, Typography, Paper, ThemeProvider, useMediaQuery, TextField, Divider, Rating,Box} from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { CustomImageGallery } from '../components/imageGallery.jsx';
 import { toast } from 'react-toastify';
-import NavBar from '../components/navbarshop.jsx';
+import Nav from '../components/nav.jsx';
 import SiteButton from '../components/button.jsx';
 import { useCart } from '../context/cartContext.jsx';
 import theme from '../themes/homeTheme.js';
 import "../css/image-gallery.css";
 import Recs from '../components/recs.jsx';
+import MyDrawer from '../components/drawer.jsx';
 
 
 const DetailItem = ({ label, value, lg }) => (
@@ -37,6 +38,7 @@ const ProductDetails = () => {
   const { id } = useParams();
   const token = useSelector((state) => state.auth.token)
   const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.user);
   const { fetchCartItems } = useCart();
   const lg = useMediaQuery(theme.breakpoints.up('sm'));
 
@@ -95,8 +97,15 @@ const ProductDetails = () => {
 
       return response.json()
     }).then(data => {
-      setSeller(data);
-      setRating(data.rating.rating);
+      if (!data.error) {
+        setSeller(data);
+        setRating(data.rating.rating);
+      }
+      else
+      {
+        console.log(data.error)
+        throw new Error(data.error);
+      }
     }
     ).catch(error => console.log(error))
 
@@ -107,9 +116,6 @@ const ProductDetails = () => {
     { label: 'Brand', value: product.brand },
     { label: 'Size', value: product.size },
   ] : [];
-
-  console.log("The seller is ", seller)
-
 
   const addToCart = (product) => {
     fetch(`http://localhost:5003/cart`, {
@@ -135,7 +141,6 @@ const ProductDetails = () => {
     }
     )
   }
-
 
   const placeBid = () => {
     fetch(`http://localhost:5003/shop/${id}/bid`, {
@@ -199,7 +204,7 @@ const ProductDetails = () => {
   return (
     <ThemeProvider theme={theme}>
       <Grid container spacing={0} sx={{ m: 0, p: 0, width: "100%" }}>
-        <NavBar pageOn={""} />
+        <Nav Drawer={MyDrawer} Search={Box} pageOn={""}/>
         <Grid item xs={12} sm={12} md={12} lg={6} >
           <CustomImageGallery items={product ? product.images : []} sx={{ boxShadow: "none" }} />
         </Grid>
@@ -224,12 +229,12 @@ const ProductDetails = () => {
                 <Typography variant={lg ? "subtitle1" : "subtitle2"} gutterBottom textAlign="left" sx={{ color: "gray", mt: 1, mb: 1, fontWeight: 400 }} > Seller Rating: </Typography>
               </Grid>
               <Grid item xs={6} sx={{ textAlign: 'right', mt: 1, mb: 1 }}>
-                <Rating name="half-rating-read" value={rating} precision={0.5} size={lg ? 'large' : 'medium'} onChange={handleRatingChange} sx={{
+                <Rating name="half-rating-read" value={rating} precision={0.25} size={lg ? 'large' : 'medium'} onChange={handleRatingChange} sx={{
                   '& .MuiRating-iconFilled': {
-                    color: '#58a75b',
+                    color: '#e87975',
                   },
                   '& .MuiRating-iconHover': {
-                    color: '#58a75b',
+                    color: '#e87975',
                   },
 
                 }} />
@@ -253,6 +258,7 @@ const ProductDetails = () => {
                   value={bid}
                   onChange={(e) => setBid(e.target.value)}
                   margin="normal"
+                  theme={theme}
                 />
               </>
             )}
@@ -269,7 +275,7 @@ const ProductDetails = () => {
                 />
               </>
             )}
-            <SiteButton text={buttonText} onClick={buttonAction} styles={{ width: '100%', mt: 3, mb: 3, fontSize: lg ? "1rem" : "0.8rem", padding: 1.5, }} />
+            <SiteButton disabled={seller.username === user} text={buttonText} onClick={buttonAction} styles={{ width: '100%', mt: 3, mb: 3, fontSize: lg ? "1rem" : "0.8rem", padding: 1.5, }} />
             <Typography variant="h6" textAlign="left" sx={{ mt: 3, color: "gray" }}>
               Description
             </Typography>
@@ -281,12 +287,12 @@ const ProductDetails = () => {
         <Grid container spacing={0} sx={{ padding: 3.5, backgroundColor: "#ffffff" }}>
           <Grid item xs={12} sm={12} md={12} lg={12} sx={{ maxWidth: "100%" }}>
             <Divider fullWidth sx={{ width: "100%", mt: 5, mb: 5 }} />
-            <Typography variant="h5" textAlign="left" sx={{ mb: 3, color: "#58a45b", ml: 5 }}>
+            <Typography variant="h5" textAlign="left" sx={{ mb: 3, color: "#58a45b", ml: 5, fontWeight:450 }}>
               More like this
             </Typography>
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={12} sx={{ p: 3 }}>
-              <Recs />
+            <Recs />
           </Grid>
         </Grid>
       </Grid>

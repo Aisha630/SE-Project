@@ -1,9 +1,9 @@
-import { AppBar, Toolbar, IconButton, Typography, Box, Button, Menu, MenuItem, Badge, Container, Avatar } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Typography, Box, Button, Menu, MenuItem, Badge, Container } from '@mui/material';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useLogout } from '../hooks/useLogout';
 import { useSelector } from 'react-redux';
 import ShoppingCartOverlayCard from './shoppingCartOverlayCard';
@@ -11,9 +11,10 @@ import { toast } from 'react-toastify';
 import { useCart } from '../context/cartContext';
 import { useMediaQuery } from '@mui/material';
 import theme from '../themes/homeTheme';
+import React from 'react';
 
 
-const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" }) => {
+const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" , setSearchProducts, setIsEmpty}) => {
     const navigate = useNavigate();
     const [isCartVisible, setIsCartVisible] = useState(false);
     const { cartItems, fetchCartItems } = useCart();
@@ -92,7 +93,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" }) => {
                     {/* This is to push the search bar to the right */}
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-                        <Search />
+                        <Search setIsEmpty={setIsEmpty} setSearchProducts={setSearchProducts}/>
                         <IconButton edge="end" color="gray" disableRipple aria-label="cart" onClick={() => { fetchCartItems(); toggleCart(); }} sx={{
                             '&:hover': {
                                 backgroundColor: "primary.dark"

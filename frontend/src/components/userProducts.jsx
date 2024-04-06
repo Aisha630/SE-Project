@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 
 const UserProducts = ({ products, handleDeleteItem }) => {
 
-    const handleChange = (event) => {
+    const handleChange = () => {
         // Implement status change logic
         // call to backend to modify the status of the product
     }
@@ -31,14 +31,14 @@ const UserProducts = ({ products, handleDeleteItem }) => {
     }
 
     return (
-        <Grid container spacing={2} sx={{ backgroundColor: 'white' }}>
+        <Grid container spacing={1} sx={{ backgroundColor: 'white', p:7, m:2,  maxWidth:"100vw" }}>
             {products.map((product) => (
                 <Grid item xs={12} sm={12} md={6} key={product._id} sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <Card sx={{ display: 'flex', width: '90%', m: 2, borderRadius: 2, boxShadow: 3, backgroundColor: '#e0e0e0' }}> {/*could also change to #f5f5f5 */}
+                    <Card sx={{ display: 'flex', width: '90%', m: 2, borderRadius: 2, boxShadow: 3, backgroundColor: '#e0e0e0' , mb:5,  maxWidth:"100vw" }}> {/*could also change to #f5f5f5 */}
                         
                             <CardMedia
                                 component="img"
-                                sx={{ width: 200, padding: 2, objectFit: 'cover', borderRadius: 8 }}
+                                sx={{ width: 180, padding: 2, objectFit: 'cover', borderRadius: 8 }}
                                 image={'http://localhost:5003'.concat(product.images[0])}
                                 alt={product.name}
                             />
@@ -60,7 +60,7 @@ const UserProducts = ({ products, handleDeleteItem }) => {
                                             Created at: {new Date(product.createdAt).toLocaleDateString()}
                                         </Typography>
                                     </CardContent>
-                                    <IconButton onClick={() => handleClickOpen(product._id)} sx={{ alignSelf: 'start', padding: 3 }}>
+                                    <IconButton onClick={() => handleClickOpen(product._id)} sx={{ alignSelf: 'start', padding: 1, m:2 }}>
                                         <DeleteIcon />
                                     </IconButton>
                                 </Box>

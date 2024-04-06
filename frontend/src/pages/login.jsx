@@ -49,18 +49,11 @@ const Login = () => {
           alignItems: 'center',
           minHeight: '100vh',
           width: '100%',
-          backgroundColor: 'rgba(0, 0, 0, 0.7)', // I am just adding this to darken BG since its very bright
+          backgroundColor: 'rgba(0, 0, 0, 0.2)', // I am just adding this to darken BG since its very bright
         }}>
           <Grid container spacing={1} sx={{ position: 'relative', zIndex: 2, width: '100%', height: '100%', }}>
             {!md ?
               <Grid item md={6} lg={6} sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", }}>
-                {/* <Typography variant="h3" color="white" gutterBottom>
-              Welcome to Second Time Around!
-            </Typography> */}
-                {/* <Typography variant="h4" color="white" gutterBottom className='typing-effect'>
-                  Rediscover Hidden Gems on Campus!
-                </Typography> */}
-
                 <TypingEffect text="Rediscover Hidden Gems on Campus!" speed={80} />
               </Grid> : <></>}
 

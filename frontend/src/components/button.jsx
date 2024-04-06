@@ -1,8 +1,9 @@
 import { Button } from '@mui/material';
+import React from 'react';
 
-const SiteButton = ({ text, styles, onClick, align }) => {
+const SiteButton = ({ disabled, text, styles, onClick, align }) => {
     return (
-        <Button align={align} variant="contained" onClick={onClick} sx={{
+        <Button disabled={disabled} align={align} variant="contained" onClick={onClick} sx={{
             ...styles, '&:hover': {
                 backgroundColor: '#58a75b',
                 opacity: 0.9,

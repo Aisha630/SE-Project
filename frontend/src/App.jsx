@@ -15,6 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { CartProvider } from './context/cartContext';
 import OrderSummaryPage from './pages/orderSummary';
 import UserProfile from './pages/userProfile';
+import React from 'react';
 const theme = createTheme({
   palette: {
     background: {

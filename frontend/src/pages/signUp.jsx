@@ -68,9 +68,8 @@ const SignUp = () => {
           justifyContent: 'center',
           alignItems: 'center',
           minHeight: '100vh',
-
           width: '100%',
-          backgroundColor: 'rgba(0, 0, 0, 0.7)', // I am just adding this to darken BG since its very bright
+          backgroundColor: 'rgba(0, 0, 0, 0.2)', // I am just adding this to darken BG since its very bright
         }}>
           <Grid container spacing={1} sx={{ position: 'relative', zIndex: 2, width: '100%', height: '100%', }}>
             {!md ?

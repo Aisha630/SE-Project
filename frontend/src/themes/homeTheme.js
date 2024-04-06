@@ -37,6 +37,17 @@ const theme = createTheme({
                 },
             },
         },
+        MuiTextField: {
+            styleOverrides: {
+                root: {
+                    '& .MuiOutlinedInput-root': {
+                        '&.Mui-focused fieldset': { borderColor: '#3e7840' },
+                    },
+                    '& label.Mui-focused': { color: '#3e7840' },
+                    '& label': { color: '#3e7840' },
+                },
+            },
+        },
     },
     shape: { borderRadius: 5 },
 });

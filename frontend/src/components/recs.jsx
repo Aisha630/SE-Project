@@ -20,11 +20,7 @@ const Recs = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [slides, setSlidesToShow] = useState(1);
-
-
     const emptySlidesCount = slides - recs.length > 0 ? slides - recs.length : 0;
-
-
     const token = useSelector((state) => state.auth.token);
 
     useEffect(() => {
@@ -43,12 +39,17 @@ const Recs = () => {
 
             setRecs(formattedProducts)
         }).catch(error => { console.log(error) })
-    }, [navigate, token, id]);
+    }, [navigate, token, id, window.innerWidth]);
 
     useEffect(() => {
-        const pageWidth = window.innerWidth;
-        setSlidesToShow(Math.floor(pageWidth / 280))
-    }, [navigate, token, id])
+        const updateSlidesToShow = () => {
+            const pageWidth = window.innerWidth;
+            setSlidesToShow(Math.floor(pageWidth / 280));
+          };
+          updateSlidesToShow();
+          window.addEventListener('resize', updateSlidesToShow);
+          return () => window.removeEventListener('resize', updateSlidesToShow);
+    }, [])
 
     const settings = {
         dots: emptySlidesCount === 0 ? true : false,
@@ -57,7 +58,7 @@ const Recs = () => {
         slidesToShow: slides,
         slidesToScroll: 1,
         autoplay: emptySlidesCount === 0 ? true : false,
-        autoplaySpeed: 2000,
+        autoplaySpeed: 1500,
         swipe: true,
         adaptiveHeight: true,
         lazyLoad: true,

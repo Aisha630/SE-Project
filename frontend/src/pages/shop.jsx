@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Drawer,  Box, ThemeProvider } from '@mui/material'
-import NavBar from '../components/navbarshop.jsx';
+// import NavBar from '../components/navbarshop.jsx';
+import Nav from '../components/nav.jsx';
 import theme from '../themes/homeTheme.js';
 import ProductList from '../components/productlisting.jsx';
 import TuneIcon from '@mui/icons-material/Tune';
@@ -10,6 +11,8 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ListItemLink from '../components/ListItemLink.jsx';
 import NoProducts from '../components/noProducts.jsx';
+import Search from '../components/search.jsx';
+import MyDrawer from '../components/drawer.jsx';
 
 
 const ShopItems = ({mode}) => {
@@ -162,11 +165,13 @@ const ShopItems = ({mode}) => {
     else if (mode === "donate") {
         pageOn = "Donations";
     }
+
+    console.log("SHOP: products: ", products);
     
     return (
         <ThemeProvider theme={theme}>
             <Box>
-                <NavBar pageOn={pageOn}/>
+                <Nav Drawer={MyDrawer} Search={Search} pageOn={pageOn} setIsEmpty={setIsEmpty} setSearchProducts={setProducts}/>
             </Box>
             <MainCategoryToolbar setCategory={setCategory} category={category} /> {/*This is the main toolbar that represents clothing, technology, and miscellaneous categories*/}
 

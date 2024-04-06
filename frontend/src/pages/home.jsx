@@ -5,7 +5,7 @@ import theme from '../themes/homeTheme.js';
 import Nav from '../components/nav.jsx';
 import SidePanel from '../components/sidePanel.jsx';
 import { useMediaQuery } from '@mui/material';
-import Drawer from '../components/drawer.jsx';
+import MyDrawer from '../components/drawer.jsx';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -46,7 +46,7 @@ function Home() {
 
         {
           lgd || c ? <Box>
-            <Nav Drawer={Drawer} Search={Box} />
+            <Nav Drawer={MyDrawer} Search={Box} />
           </Box> : <Box>
             <Nav Drawer={Box} Search={Box} />
           </Box>
