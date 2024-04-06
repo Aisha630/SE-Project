@@ -35,7 +35,7 @@ const UserProducts = ({ products, handleDeleteItem }) => {
             {products.map((product) => (
                 <Grid item xs={12} sm={12} md={6} key={product._id} sx={{ display: 'flex', justifyContent: 'center' }}>
                     <Card sx={{ display: 'flex', width: '90%', m: 2, borderRadius: 2, boxShadow: 3, backgroundColor: '#e0e0e0' }}> {/*could also change to #f5f5f5 */}
-                        <Link to={`/shop/${product._id}`} style={{ textDecoration: 'none', display: 'flex', width: '100%', m: 2, borderRadius: 2, boxShadow: 3, backgroundColor: '#e0e0e0', color:'black' }} >
+                        
                             <CardMedia
                                 component="img"
                                 sx={{ width: 200, padding: 2, objectFit: 'cover', borderRadius: 8 }}
@@ -45,9 +45,11 @@ const UserProducts = ({ products, handleDeleteItem }) => {
                             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flexGrow: 1 }}>
                                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                                     <CardContent sx={{ padding: 2 }}>
+                                        <Link to={`/shop/${product._id}`} style={{ textDecoration: 'none', color: 'black' }}>
                                         <Typography component="div" variant="h5" sx={{ fontWeight: 'bold', paddingTop: 1 }}>
                                             {product.name}
                                         </Typography>
+                                        </Link>
                                         {product.__t !== 'DonationProduct' && <Typography variant="body1" color="text.secondary" sx={{ my: 1 }}>
                                             {product.__t === 'AuctionProduct' ? 'Current Bid: ' + product.currentBid : 'Price: ' + product.price}
                                         </Typography>}
@@ -88,7 +90,7 @@ const UserProducts = ({ products, handleDeleteItem }) => {
                             </Box>
 
 
-                        </Link>
+                        
 
 
                     </Card>
