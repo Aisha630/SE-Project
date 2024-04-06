@@ -22,10 +22,7 @@ const productModels = {
 export async function getAllProducts(req, res) {
   let productModel = Product;
 
-
   const { productType, q } = req.query;
-  console.log("q is", q)
-  console.log("Product type is ", productType)
   if (productType) {
     productModel = productModels[productType];
   }
