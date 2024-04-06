@@ -1,11 +1,10 @@
+import React, { useState } from "react";
+import { Box, IconButton, Modal, Typography } from "@mui/material";
+import { PhotoCamera } from "@mui/icons-material";
+import ImageCropper from "./ImageCropper";
+import theme from "../themes/authThemes";
 
-import React, { useState } from 'react';
-import { Box, IconButton, Modal, Typography} from '@mui/material';
-import { PhotoCamera } from '@mui/icons-material';
-import ImageCropper from './ImageCropper'; 
-import theme from '../themes/authThemes';
-
-const ImageUpload = ({ files, handleFileChange }) => {
+const ImageUpload = ({ files, handleFileChange, errors }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [cropModalOpen, setCropModalOpen] = useState(false);
   const [cropIndex, setCropIndex] = useState(null);
@@ -23,22 +22,47 @@ const ImageUpload = ({ files, handleFileChange }) => {
     fetch(croppedImageUrl)
       .then((res) => res.blob())
       .then((blob) => {
-        const file = new File([blob], "croppedImage.jpg", { type: 'image/jpeg' });
+        const file = new File([blob], "croppedImage.jpg", {
+          type: "image/jpeg",
+        });
         handleFileChange({ target: { files: [file] } }, cropIndex);
       });
-  
+
     setCropModalOpen(false);
     setSelectedFile(null);
   };
-  
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, my: 2, flexDirection: 'column' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        gap: 2,
+        my: 2,
+        flexDirection: "column",
+      }}
+    >
+      <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
         {[...Array(5)].map((_, index) => (
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} key={index}>
-            <IconButton color={files[index] ? 'default' : 'primary'} aria-label="upload picture" component="label">
-              <input hidden accept="image/*" type="file" onChange={(event) => handleFileSelect(event, index)} />
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+            key={index}
+          >
+            <IconButton
+              color={files[index] ? "default" : "primary"}
+              aria-label="upload picture"
+              component="label"
+            >
+              <input
+                hidden
+                accept="image/*"
+                type="file"
+                onChange={(event) => handleFileSelect(event, index)}
+              />
               <PhotoCamera />
             </IconButton>
             {files[index] && (
@@ -46,7 +70,7 @@ const ImageUpload = ({ files, handleFileChange }) => {
                 <img
                   src={URL.createObjectURL(files[index])}
                   alt={`upload-preview-${index}`}
-                  style={{ width: '100%', height: 80 }}
+                  style={{ width: "100%", height: 80 }}
                 />
               </Box>
             )}
@@ -54,37 +78,46 @@ const ImageUpload = ({ files, handleFileChange }) => {
         ))}
       </Box>
       <Modal
-  open={cropModalOpen}
-  onClose={() => setCropModalOpen(false)}
-  sx={{
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    margin: 'auto',
-    padding: '20px',
-    overflow: 'auto'
-  }}
->
-  <Box
-    sx={{
-      position: 'relative',
-      bgcolor: theme.palette.background.paper,
-      boxShadow: 24,
-      borderRadius: 5, 
-      p: 4,
-      maxHeight: '80vh' 
-    }}
-  >
-    <ImageCropper
-      src={selectedFile ? URL.createObjectURL(selectedFile) : ''}
-      onComplete={handleCropComplete}
-      onCancel={() => setCropModalOpen(false)}
-    />
-  </Box>
-</Modal>
-      <Typography variant="caption" sx={{ alignSelf: 'center' }}>
+        open={cropModalOpen}
+        onClose={() => setCropModalOpen(false)}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          margin: "auto",
+          padding: "20px",
+          overflow: "auto",
+        }}
+      >
+        <Box
+          sx={{
+            position: "relative",
+            bgcolor: theme.palette.background.paper,
+            boxShadow: 24,
+            borderRadius: 5,
+            p: 4,
+            maxHeight: "80vh",
+          }}
+        >
+          <ImageCropper
+            src={selectedFile ? URL.createObjectURL(selectedFile) : ""}
+            onComplete={handleCropComplete}
+            onCancel={() => setCropModalOpen(false)}
+          />
+        </Box>
+      </Modal>
+      {errors && errors.images && (
+        <Typography
+          color="error"
+          variant="caption"
+          sx={{ alignSelf: "center", mt: 1 }}
+        >
+          {errors.images}
+        </Typography>
+      )}
+      <Typography variant="caption" sx={{ alignSelf: "center" }}>
         Maximum file size: 2 MB
       </Typography>
     </Box>
