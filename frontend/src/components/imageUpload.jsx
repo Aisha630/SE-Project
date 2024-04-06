@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Box, IconButton, Modal, Grid } from '@mui/material';
+import { Box, IconButton, Modal, Typography} from '@mui/material';
 import { PhotoCamera } from '@mui/icons-material';
 import ImageCropper from './ImageCropper'; 
 import theme from '../themes/authThemes';
@@ -74,7 +74,6 @@ const ImageUpload = ({ files, handleFileChange }) => {
       boxShadow: 24,
       borderRadius: 5, 
       p: 4,
-      // overflowY: 'auto', 
       maxHeight: '80vh' 
     }}
   >
@@ -85,6 +84,9 @@ const ImageUpload = ({ files, handleFileChange }) => {
     />
   </Box>
 </Modal>
+      <Typography variant="caption" sx={{ alignSelf: 'center' }}>
+        Maximum file size: 2 MB
+      </Typography>
     </Box>
   );
 };
