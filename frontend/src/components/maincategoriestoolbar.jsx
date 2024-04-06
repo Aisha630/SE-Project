@@ -1,15 +1,15 @@
 import React from 'react';
 import { Button, AppBar, Toolbar, Box, Typography } from '@mui/material';
 
-const MainCategoryToolbar = ({ setCategory, category }) => {
-    const navItems = ['Clothing', 'Technology', 'Miscellaneous'];
+const MainCategoryToolbar = ({ setCategory, category, navItems=['Clothing', 'Technology', 'Miscellaneous'], styles }) => {
+    // const navItems = ['Clothing', 'Technology', 'Miscellaneous'];
 
     const handleMainCategory = (selectedCategory) => {
         setCategory(selectedCategory);
     };
 
     return (
-        <AppBar
+        <AppBar 
             component={'nav'}
             position="static"
             color="default"
@@ -17,6 +17,7 @@ const MainCategoryToolbar = ({ setCategory, category }) => {
                 backgroundColor: '#e0e0e0',
                 boxShadow: 'none',
                 borderBottom: '1px solid #e0e0e0',
+                ...styles
             }}
         >
             <Toolbar

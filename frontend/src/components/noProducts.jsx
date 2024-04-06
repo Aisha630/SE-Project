@@ -1,10 +1,13 @@
+import { Box } from '@mui/material';
 import React from 'react'
 
-const NoProducts = () => {
+const NoProducts = ({styles}) => {
   return (
-    <div>
+    <Box sx={{
+      ...styles
+    }}>
       Sorry, no products found.
-    </div>
+    </Box>
   )
 }
 
