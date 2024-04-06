@@ -17,6 +17,7 @@ const SignUp = () => {
   const dispatch = useDispatch();
   const [signUp, setSignUp] = useState(false);
   const md = useMediaQuery(theme.breakpoints.down('md'));
+  const allTrue = obj => Object.values(obj).every(value => value);
 
   const handleChange = ({ target: { name, value } }) => setFormData({ ...formData, [name]: value });
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
@@ -24,10 +25,18 @@ const SignUp = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    dispatch(signupUser(formData)).unwrap()
-      .then(() => toast.success("Please verify your email address."))
-      .catch((error) => toast.error(error))
-      .finally(() => setIsLoading(false));
+    if (allTrue(passwordGuidelines)) {
+      dispatch(signupUser(formData)).unwrap()
+        .then(() => toast.success("Please verify your email address."))
+        .catch((error) => { setSignUp(false); toast.error(error) })
+        .finally(() => setIsLoading(false));
+    }
+    else {
+      toast.error("Password does not meet the requirements");
+      setIsLoading(false);
+      setSignUp(false);
+
+    }
   };
 
   const resendVerificationEmail = () => {
@@ -36,7 +45,7 @@ const SignUp = () => {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: formData.email }),
     })
       .then((res) => res.ok ? toast.success("Email sent successfully") : toast.error("Error sending email"))
-      .catch((error) => toast.error("Error", error))
+      .catch((error) => { setSignUp(false); toast.error("Error", error) })
       .finally(() => setIsLoading(false));
   };
 
@@ -116,7 +125,7 @@ const SignUp = () => {
                         }}
                         variant="body2"
                       >
-                        {isLoading ? "Sending..." : "Didn't receive verification email? Click here to resend."}
+                        {isLoading ? "Verifying details..." : "Didn't receive verification email? Click here to resend."}
                       </Link>
                     )}
                   </Typography>

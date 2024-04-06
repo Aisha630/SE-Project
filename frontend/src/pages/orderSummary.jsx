@@ -4,7 +4,6 @@ import { useCart } from '../context/cartContext';
 import { useSelector } from 'react-redux';
 import theme from '../themes/homeTheme';
 import { ThemeProvider } from '@mui/material/styles';
-import IconButton from '@mui/material/IconButton';
 import { toast } from 'react-toastify';
 import SiteButton from '../components/button';
 import { useNavigate } from 'react-router-dom';

@@ -47,6 +47,18 @@ input:-webkit-autofill:active {
   max-width: 50% !important;
 }
 
+@keyframes moveWave {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.svg {
+  animation: moveWave 10s linear infinite alternate;
+}
 
 
 
@@ -61,4 +73,15 @@ input:-webkit-autofill:active {
   --swiper-navigation-top-offset: 45%;
   --swiper-navigation-sides-offset: 0px;
   --swiper-navigation-color: rgb(88, 167, 91, 0.7);
+}
+
+.product-image {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.product-image:hover {
+  filter: brightness(0.9);
+  cursor: pointer;
 }
