@@ -1,14 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import {
-  Box,
-  Button,
-  Container,
-  Typography,
-  IconButton,
-  ThemeProvider,
-} from "@mui/material";
+import {Box, Button, Container, Typography, IconButton, ThemeProvider,} from "@mui/material";
 import theme from "../themes/authThemes.js";
 import { toast } from "react-toastify";
 import details from "../config.json";
@@ -36,9 +29,7 @@ const PostAd = () => {
     description: "",
     brand: "",
     condition: "",
-    // quantity: 1,
     price: "",
-    // endDate: "",
     productType: "",
     startingBid: "",
     endTime: "", 
@@ -52,17 +43,51 @@ const PostAd = () => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    if (name === "price" || name === "startingBid") {
-      if (value >= 0) {
-        setAdData({ ...adData, [name]: value });
-      }
+  
+    if (name === "category") {
+      console.log("category changed");
+      setAdData({
+        category: value,
+        tags: [],
+        size: "",
+        color: "",
+        name: "",
+        description: "",
+        brand: "",
+        condition: "",
+        price: "",
+        productType: "",
+        startingBid: "",
+        endTime: "",
+      });
     } else {
-      setAdData({ ...adData, [name]: value });
+      setAdData((prevAdData) => {
+        if (name === "price" || name === "startingBid") {
+          if (value >= 0) {
+            return {
+              ...prevAdData,
+              [name]: value,
+            };
+          } else {
+            return {
+              ...prevAdData,
+              [name]: prevAdData[name],
+            };
+          }
+        } else {
+          return {
+            ...prevAdData,
+            [name]: value,
+          };
+        }
+      });
     }
+  
     if (errors[name]) {
-      setErrors({ ...errors, [name]: false });
+      setErrors((prevErrors) => ({ ...prevErrors, [name]: false }));
     }
   };
+  
 
   const handleFileChange = (event, index) => {
     const newFiles = [...files];
@@ -199,137 +224,42 @@ const PostAd = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box
-        style={{
-          display: "flex",
-          alignItems: "flex-start",
-          justifyContent: "flex-start",
-        }}
-      >
-        <IconButton
-          onClick={() => navigate("/")}
-          edge="start"
-          sx={{ margin: "10px" }}
-        >
-          <img
-            src="backIcon.png"
-            alt="Back Icon"
-            style={{
-              width: 65,
-              height: 50,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
-            }}
-          />
+      <Box style={{display: "flex", alignItems: "flex-start", justifyContent: "flex-start",}} >
+        <IconButton onClick={() => navigate("/")} edge="start" sx={{ margin: "10px" }}>
+          <img src="backIcon.png" alt="Back Icon" style={{width: 65, height: 50, display: "flex", flexDirection: "column", alignItems: "flex-start",}}/>
         </IconButton>
 
-        <Container
-          component="main"
-          maxWidth="md"
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "auto",
-            py: 4,
-            backgroundColor: theme.palette.secondary.main,
-          }}
-        >
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{
-              width: "100%",
-              maxWidth: 600,
-              bgcolor: "background.paper",
-              borderRadius: 2,
-              boxShadow: 1,
-              p: 3,
-            }}
-          >
+        <Container component="main" maxWidth="md" sx={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: "auto", py: 4, backgroundColor: theme.palette.secondary.main,}}>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{width: "100%", maxWidth: 600, bgcolor: "background.paper", borderRadius: 2, boxShadow: 1, p: 3,}}>
             <Typography variant="h4" align="center" gutterBottom sx={{ mb: 4 }}>
               Post Your Ad
             </Typography>
 
-            {/* Category Section */}
-            <CategorySelection
-              categories={categories}
-              adData={adData}
-              handleInputChange={handleInputChange}
-              errors={errors}
-            />
+            <CategorySelection categories={categories} adData={adData} handleInputChange={handleInputChange} errors={errors}/>
 
-            {/* tags Section */}
             {adData.category && (
-              <TagSelection
-                subcategories={subcategories}
-                adData={adData}
-                handleTagChange={handleTagChange}
-                theme={theme}
-              />
+              <TagSelection subcategories={subcategories} adData={adData} handleTagChange={handleTagChange} theme={theme}/>
             )}
 
             {adData.category === "Clothing" && (
               <>
-                {/* Specifications Section inside the green box */}
-                <Specifications
-                  adData={adData}
-                  handleInputChange={handleInputChange}
-                  sizes={sizes}
-                  colors={colors}
-                />
+                <Specifications adData={adData} handleInputChange={handleInputChange} sizes={sizes} colors={colors}/>
               </>
             )}
 
-            {/* Mode of Ad Section */}
-            <ModeOfAdSelection
-              adData={adData}
-              handleInputChange={handleInputChange}
-            />
+            <ModeOfAdSelection adData={adData} handleInputChange={handleInputChange}/>
 
-            {/* Ad Details Section */}
-            <AdDetails
-              adData={adData}
-              handleInputChange={handleInputChange}
-              errors={errors}
-            />
+            <AdDetails adData={adData} handleInputChange={handleInputChange} errors={errors} />
 
-            {/* Condition Section */}
-            <ConditionSelection
-              adData={adData}
-              handleInputChange={handleInputChange}
-              errors={errors}
-            />
+            <ConditionSelection adData={adData} handleInputChange={handleInputChange} errors={errors}/>
 
-            {/* Price Section */}
             {adData.productType !== "auction" && adData.productType !== "donate" && (
-              <PriceSelection
-                adData={adData}
-                handleInputChange={handleInputChange}
-                errors={errors}
-              />
+              <PriceSelection adData={adData} handleInputChange={handleInputChange} errors={errors}/>
             )}
 
+            <ImageUpload files={files} handleFileChange={handleFileChange} errors={errors} />
 
-            {/* Image Upload Section */}
-            <ImageUpload files={files} handleFileChange={handleFileChange} />
-
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{
-                mt: 3,
-                mb: 2,
-                py: 2,
-                bgcolor: "primary.main",
-                color: "white",
-              }}
-              onClick={handleSubmit}
-            >
+            <Button type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 2, py: 2, bgcolor: "primary.main", color: "white",}} onClick={handleSubmit}>
               Post Now
             </Button>
           </Box>

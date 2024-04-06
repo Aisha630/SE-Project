@@ -51,6 +51,9 @@ const ModeOfAdSelection = ({ adData, handleInputChange }) => (
           InputLabelProps={{
             shrink: true,
           }}
+          inputProps={{
+            max: "9999-12-31T23:59",
+          }}
         />
       </>
     )}
