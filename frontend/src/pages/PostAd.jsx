@@ -225,11 +225,10 @@ const PostAd = () => {
   return (
     <ThemeProvider theme={theme}>
       <Box style={{display: "flex", alignItems: "flex-start", justifyContent: "flex-start",}} >
-        <IconButton onClick={() => navigate("/")} edge="start" sx={{ margin: "10px" }}>
-          <img src="backIcon.png" alt="Back Icon" style={{width: 65, height: 50, display: "flex", flexDirection: "column", alignItems: "flex-start",}}/>
-        </IconButton>
-
-        <Container component="main" maxWidth="md" sx={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: "auto", py: 4, backgroundColor: theme.palette.secondary.main,}}>
+        <Container component="main" sx={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: "auto", py: 4, backgroundColor: theme.palette.secondary.main,}}>
+          <IconButton onClick={() => navigate("/")} edge="start" sx={{ margin: "10px", alignSelf: "flex-start" }}>
+            <img src="backIcon.png" alt="Back Icon" style={{width: 65, height: 50, display: "flex", flexDirection: "column", alignItems: "flex-start",}}/>
+          </IconButton>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{width: "100%", maxWidth: 600, bgcolor: "background.paper", borderRadius: 2, boxShadow: 1, p: 3,}}>
             <Typography variant="h4" align="center" gutterBottom sx={{ mb: 4 }}>
               Post Your Ad
