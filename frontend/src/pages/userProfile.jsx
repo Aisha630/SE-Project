@@ -39,7 +39,7 @@ const UserProfile = () => {
         }).then((res) => {
             if (!res.ok) {
                 navigate("/login");
-            }; return res.json()
+            } return res.json()
         }).then((data) => { console.log("The data is ", data); setUser(data) })
             .catch((error) => { console.log("The error is:", error) });
 
@@ -52,7 +52,7 @@ const UserProfile = () => {
         }).then((res) => {
             if (!res.ok) {
                 navigate("/login");
-            }; return res.json()
+            } return res.json()
         }).then((data) => {
             // console.log("The data is ", data);
             if (selectedTab === 'Auctioned') {
@@ -142,7 +142,7 @@ const UserProfile = () => {
             if (!res.ok) {
                 // navigate("/login");
                 console.log("Error deleting item")
-            }; return res.json()
+            } return res.json()
         }).then((data) => {
             console.log("The data is ", data);
             // setUser(data);

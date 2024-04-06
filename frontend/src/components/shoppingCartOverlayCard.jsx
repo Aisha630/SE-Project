@@ -7,7 +7,7 @@ import { useCart } from '../context/cartContext';
 import { useMediaQuery } from '@mui/material';
 import theme from '../themes/homeTheme';
 
-const ShoppingCartOverlayCard = ({ styles, cartVisibility, cartVisibilityToggle, deleteFromCart }) => {
+const ShoppingCartOverlayCard = ({ cartVisibility, cartVisibilityToggle, deleteFromCart }) => {
     const [isOpen, setIsOpen] = useState(true);
     const { cartItems, totalPrice } = useCart();
     const navigate = useNavigate();
@@ -26,7 +26,7 @@ const ShoppingCartOverlayCard = ({ styles, cartVisibility, cartVisibilityToggle,
                         <Paper style={{ position: 'relative', borderRadius: 10, padding: md ? 40 : 20, overflow: 'auto', maxHeight: '60vh', }} onClick={e => e.stopPropagation()} >
                             <Box display="flex" justifyContent="flex-start" alignItems="center">
                                 <IconButton onClick={() => { cartVisibilityToggle(); handleClose() }} sx={{ margin: "1px", position: 'relative', padding: 0 }}>
-                                    <img src="/backIcon.png" alt="Back" edge="start" style={{ width: 45, height: 35 }} />
+                                    <img src="/backIcon.png" alt="Back" style={{ width: 45, height: 35 }} />
                                 </IconButton>
                                 <Typography variant="subtitle1" gutterBottom sx={{ textAlign: "left", fontWeight: 600, m: 1 }}>Continue Shopping </Typography>
                             </Box>

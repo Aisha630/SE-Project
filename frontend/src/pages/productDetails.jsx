@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from 'react';
-import { Grid, Typography, Paper, ThemeProvider, useMediaQuery, TextField, Divider } from '@mui/material';
+import { Grid, Typography, Paper, ThemeProvider, useMediaQuery, TextField, Divider, Rating, Box } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { CustomImageGallery } from '../components/imageGallery.jsx';
@@ -31,10 +31,44 @@ const DetailItem = ({ label, value, lg }) => (
 const ProductDetails = () => {
   const [product, setProduct] = useState();
   const [bid, setBid] = useState('');
+  const [seller, setSeller] = useState({});
+  const [rating, setRating] = useState(0);
   const [requestDescription, setRequestDescription] = useState('');
   const { id } = useParams();
   const token = useSelector((state) => state.auth.token)
   const navigate = useNavigate();
+  const { fetchCartItems } = useCart();
+  const lg = useMediaQuery(theme.breakpoints.up('sm'));
+
+  const handleRatingChange = (event) => {
+    rateUser(event.target.value);
+  }
+
+  const rateUser = (rating) => {
+    fetch(`http://localhost:5003/rate/${seller._id}`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ newRating: rating }),
+    }).then(res => {
+      if (!res.ok) {
+        return res.json().then(data => {
+          throw new Error(data.error || 'Failed to rate the seller');
+        });
+      }
+      return res.json();
+    }).then(data => {
+      console.log(data);
+      setRating(data.averageRating);
+      toast.success("Successfully rated the seller");
+    }).catch(error => {
+      console.log("Rating error: ", error);
+      toast.error(error.message || "Error rating the seller");
+    });
+  }
+
 
   useEffect(() => {
     fetch(`http://localhost:5003/shop/${id}`, {
@@ -52,14 +86,30 @@ const ProductDetails = () => {
     }).catch(error => { console.log(error) })
   }, [token, id, navigate]);
 
+
+  useEffect(() => {
+    fetch(`http://localhost:5003/profile?username=${product?.seller}`, {
+      method: 'GET',
+      headers: { 'Authorization': `Bearer ${token}` },
+    }).then(response => {
+
+      return response.json()
+    }).then(data => {
+      setSeller(data);
+      setRating(data.rating.rating);
+    }
+    ).catch(error => console.log(error))
+
+  }, [product?.seller, token, navigate])
+
   const productDetails = product ? [
     { label: 'Condition', value: product.condition },
     { label: 'Brand', value: product.brand },
-    { label: 'Seller', value: product.seller },
     { label: 'Size', value: product.size },
   ] : [];
 
-  const { fetchCartItems } = useCart();
+  console.log("The seller is ", seller)
+
 
   const addToCart = (product) => {
     fetch(`http://localhost:5003/cart`, {
@@ -85,7 +135,7 @@ const ProductDetails = () => {
     }
     )
   }
-  const lg = useMediaQuery(theme.breakpoints.up('sm'));
+
 
   const placeBid = () => {
     fetch(`http://localhost:5003/shop/${id}/bid`, {
@@ -166,6 +216,25 @@ const ProductDetails = () => {
             {productDetails.map((detail, index) => (
               detail.value ? <DetailItem key={index} label={detail.label} value={detail.value} lg={lg} /> : <DetailItem key={index} label={detail.label} value={"Undefined"} lg={lg} />
             ))}
+
+            <DetailItem label="Seller" value={product?.seller} lg={lg} />
+
+            <Grid container columnSpacing={2} alignItems="center">
+              <Grid item xs={6}>
+                <Typography variant={lg ? "subtitle1" : "subtitle2"} gutterBottom textAlign="left" sx={{ color: "gray", mt: 1, mb: 1, fontWeight: 400 }} > Seller Rating: </Typography>
+              </Grid>
+              <Grid item xs={6} sx={{ textAlign: 'right', mt: 1, mb: 1 }}>
+                <Rating name="half-rating-read" value={rating} precision={0.5} size={lg ? 'large' : 'medium'} onChange={handleRatingChange} sx={{
+                  '& .MuiRating-iconFilled': {
+                    color: '#58a75b',
+                  },
+                  '& .MuiRating-iconHover': {
+                    color: '#58a75b',
+                  },
+
+                }} />
+              </Grid>
+            </Grid>
             {product?.__t === 'AuctionProduct' && (
               <>
                 <Typography variant={"subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 300, mb: 2 }}>
@@ -187,9 +256,6 @@ const ProductDetails = () => {
                 />
               </>
             )}
-
-
-
             {product?.__t === 'DonationProduct' && (
               <>
                 <TextField
@@ -212,18 +278,17 @@ const ProductDetails = () => {
             </Typography>
           </Paper>
         </Grid>
-      <Grid container spacing={0} sx={{ padding: 3.5, backgroundColor: "#ffffff" }}>
-        <Grid item xs={12} sm={12} md={12} lg={12} sx={{ maxWidth: "100%" }}>
-        <Divider fullWidth sx={{ width: "100%", mt: 5, mb: 5 }} />
-        <Typography variant="h5" textAlign="left" sx={{ mb: 3, color: "#58a45b" }}>
-          More like this
-        </Typography>
+        <Grid container spacing={0} sx={{ padding: 3.5, backgroundColor: "#ffffff" }}>
+          <Grid item xs={12} sm={12} md={12} lg={12} sx={{ maxWidth: "100%" }}>
+            <Divider fullWidth sx={{ width: "100%", mt: 5, mb: 5 }} />
+            <Typography variant="h5" textAlign="left" sx={{ mb: 3, color: "#58a45b", ml: 5 }}>
+              More like this
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={12} md={12} lg={12} sx={{ p: 3 }}>
+              <Recs />
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={12} sx={{  maxWidth: "100%" }}>
-          <Recs />
-          {/* <CarouselComponent /> */}
-        </Grid>
-      </Grid>
       </Grid>
     </ThemeProvider>
   );
