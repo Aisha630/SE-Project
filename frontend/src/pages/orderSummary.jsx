@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Box } from '@mui/material';
+import { Grid, Box, useMediaQuery } from '@mui/material';
 import { useCart } from '../context/cartContext';
 import { useSelector } from 'react-redux';
 import theme from '../themes/homeTheme';
@@ -8,15 +8,12 @@ import { toast } from 'react-toastify';
 import SiteButton from '../components/button';
 import { useNavigate } from 'react-router-dom';
 import InfoCard from '../components/infoCard';
-import { useMediaQuery } from '@mui/material';
 import BackHanger from '../components/backHanger';
 
 const OrderSummaryPage = () => {
     const lg = useMediaQuery(theme.breakpoints.up('sm'));
-
-    const navigate = useNavigate();
     const sm = useMediaQuery(theme.breakpoints.down('sm'));
-    // const xs 
+    const navigate = useNavigate();
     const token = useSelector((state) => state.auth.token);
     const { cartItems, fetchCartItems, sellers } = useCart();
 
@@ -65,11 +62,14 @@ const OrderSummaryPage = () => {
     return (
         <ThemeProvider theme={theme}>
             <Grid container spacing={5} sx={{ paddingRight: sm ? 2 : 8, paddingLeft: sm ? 2 : 8 }}>
+                {/* Back button */}
                 <Grid item xs={12} sm={12} md={12} lg={12}>
                     <Box style={{ display: "flex", alignItems: "flex-start", justifyContent: "flex-start", m: 0, paddingLeft: 8 }}>
-                        <BackHanger style={{ marginTop: "20px", mb: 0 }} imgStyle={{width: lg ? 65 : 45, height: lg ? 50 : 35, display: "flex", flexDirection: "column", alignItems: "flex-start"}}/>
+                        <BackHanger style={{ marginTop: "20px", mb: 0 }} imgStyle={{ width: lg ? 65 : 45, height: lg ? 50 : 35, display: "flex", flexDirection: "column", alignItems: "flex-start" }} />
                     </Box>
                 </Grid>
+
+                {/* Order Summary and Seller's Details cards */}
                 <Grid item xs={12} sm={12} md={6} lg={6}>
                     <InfoCard
                         title="Order Summary"
@@ -85,11 +85,13 @@ const OrderSummaryPage = () => {
                         isCart={false}
                     />
                 </Grid>
-            <Grid item xs={12} sm={12} md={12} lg={12}>
-            <Box sx={{ textAlign: "right", mr: 0, mt: 0, mb: 3, paddingRight: 0, paddingTop: 1 }}>
-                <SiteButton text={'Confirm Purchase'} styles={{ padding: 2, paddingLeft: lg? 8:4, paddingRight: lg?8:4, fontSize: "0.95rem" }} onClick={checkout} />
-            </Box>
-            </Grid>
+
+                {/* Confirm Purchase button */}
+                <Grid item xs={12} sm={12} md={12} lg={12}>
+                    <Box sx={{ textAlign: "right", mr: 0, mt: 0, mb: 3, paddingRight: 0, paddingTop: 1 }}>
+                        <SiteButton text={'Confirm Purchase'} styles={{ padding: 2, paddingLeft: lg ? 8 : 4, paddingRight: lg ? 8 : 4, fontSize: "0.95rem" }} onClick={checkout} />
+                    </Box>
+                </Grid>
             </Grid>
         </ThemeProvider>
     );
