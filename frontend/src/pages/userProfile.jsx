@@ -224,7 +224,8 @@ const UserProfile = () => {
 
                 <Box sx={{
                     position: 'absolute', // Position the toolbar absolutely
-                    bottom: lg? 200: 450, // Align it to the bottom of the parent container
+                    bottom: 200, // Align it to the bottom of the parent container
+                    // bottom: lg? 200: 450, // Align it to the bottom of the parent container
                     left: 0,
                     width: '100%', // Span the full width of the container
                     zIndex: 2, // Ensure it's above the other content

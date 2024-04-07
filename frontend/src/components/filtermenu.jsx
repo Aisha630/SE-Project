@@ -7,26 +7,23 @@ import SizesCategories from './sizes.jsx';
 import CloseIcon from '@mui/icons-material/Close';
 import SiteButton from './button.jsx';
 import ListItemLink from './ListItemLink.jsx';
+import ConditionFilter from './conditionfilter.jsx';
 
-const FilterMenu = ({category, closeFilterMenu, checkedSubcategories, handleSubcategoryChange, checkedSizes, handleSizeChange, handleApplyFilters, handleResetFilters}) => {
-    const [value, setValue] = useState([0, 200000]);    
+const FilterMenu = ({mode, category, closeFilterMenu, checkedSubcategories, handleSubcategoryChange, checkedSizes, handleSizeChange, handleApplyFilters, handleResetFilters, price, setPrice, sortBy, setSortBy, condition, setCondition }) => {
 
-    const handlePriceSlider = (event, newValue) => {
-        setValue(newValue);
-    };
-    
-    const [sortBy, setSortBy] = useState('new2used');
-    const handleSortBy = (event) => {
-        setSortBy(event.target.value);
-    };
+    // const [sortBy, setSortBy] = useState('new2used');
+
+    // const [condition, setCondition] = useState('new');
+
+
 
     return (
-        <Box sx={{backgroundColor:'#e0e0e0'}}>
-            <Grid container justifyContent="flex-start" alignItems={'top'}> 
+        <Box sx={{ backgroundColor: '#e0e0e0' }}>
+            <Grid container justifyContent="flex-start" alignItems={'top'}>
             </Grid>
-                <Grid item>
-                    {/* <CloseIcon */}
-                    <Box display="flex" justifyContent="left" mt={2} ml={2} sx={{ width: "15%", fontWeight: "normal", }} >
+            <Grid item>
+                {/* <CloseIcon */}
+                <Box display="flex" justifyContent="left" mt={2} ml={2} sx={{ width: "15%", fontWeight: "normal", }} >
                     <ListItemLink text={""} Icon={CloseIcon} to={"#"} onClick={closeFilterMenu} ButtonStyles={{
                         '&:hover': {
                             backgroundColor: "transparent",
@@ -35,16 +32,18 @@ const FilterMenu = ({category, closeFilterMenu, checkedSubcategories, handleSubc
                             }
                         },
                     }} />
-                    </Box>
-                </Grid>
+                </Box>
+            </Grid>
             <Grid container spacing={10} justifyItems={'flex-start'} padding={'20px'}>
                 <Grid item xs={12} sm={3}> {/* This is the first column with price range and sort by */}
                     <Grid container spacing={2} direction={'column'}>
-                        <Grid item xs={12} sm={3}> {/* Price range*/}
-                            <PriceRangeSlider value={value} handleChange={handlePriceSlider} />
-                        </Grid>
+                        {mode !== 'donate' && <Grid item xs={12} sm={3}> {/* Price range*/}
+                            <PriceRangeSlider mode={mode} value={price} handleChange={setPrice} />
+                        </Grid>}
+
                         <Grid item xs={12} sm={3} alignItems={'flex-start'}>  {/* sort by */}
-                            <SortBy sortBy={sortBy} handleSortBy={handleSortBy} />
+                            <SortBy sortBy={sortBy} handleSortBy={setSortBy} />
+                            <ConditionFilter condition={condition} handleCondition={setCondition} />
                         </Grid>
                     </Grid>
                 </Grid>
@@ -60,18 +59,18 @@ const FilterMenu = ({category, closeFilterMenu, checkedSubcategories, handleSubc
                 <Grid item xs={12} sm={4}>
                     <Grid container spacing={2} justifyContent="flex-end" alignItems={'bottom'}>
                         <Grid item>
-                            <SiteButton text={"Apply Filters"} styles={{backgroundColor: "#58a75b", color: "white"}} onClick={handleApplyFilters} />
+                            <SiteButton text={"Apply Filters"} styles={{ backgroundColor: "#58a75b", color: "white" }} onClick={handleApplyFilters} />
                         </Grid>
                         <Grid item>
-                            <SiteButton text={"Reset Filters"} styles={{backgroundColor: "#58a75b", color: "white"}} onClick={handleResetFilters} />
+                            <SiteButton text={"Reset Filters"} styles={{ backgroundColor: "#58a75b", color: "white" }} onClick={handleResetFilters} />
                         </Grid>
                     </Grid>
                 </Grid>
             </Grid>
-            
+
         </Box>
-        
-        
+
+
     );
 };
 

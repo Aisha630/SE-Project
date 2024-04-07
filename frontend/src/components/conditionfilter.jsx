@@ -1,32 +1,30 @@
 import { FormControl, RadioGroup, FormControlLabel, Radio, Typography } from '@mui/material'
 import React from 'react'
 
-const SortBy = ({sortBy, handleSortBy}) => {
+const ConditionFilter = ({condition, handleCondition}) => {
     return (
         <FormControl sx={{color:'inherit', paddingTop:'20px'}}>
             <Typography variant="subtitle1" gutterBottom textAlign={'left'} sx={{color:'inherit'}}>
-                Sort by
+                Condition
             </Typography>
             <RadioGroup
-                aria-labelledby="sort by options"
-                // defaultValue="new2used"
-                name="sortbyoptions"
-                value={sortBy}
-                onChange={handleSortBy}
+                aria-labelledby="condition options"
+                name="conditionoptions"
+                value={condition}
+                onChange={handleCondition}
             >
                 <FormControlLabel 
-                value="priceLowToHigh" 
+                value="new" 
                 control={<Radio sx={{ '&.Mui-checked': { color: '#58a75b' } }} />}
-                label="Lowest Price" 
+                label="New" 
                 />
                 <FormControlLabel 
-                value="priceHighToLow" 
+                value="old" 
                 control={<Radio sx={{ '&.Mui-checked': { color: '#58a75b' } }} />}
-                label="Highest Price" />
+                label="Used" />
             </RadioGroup>
-            
         </FormControl>
     )
 }
 
-export default SortBy
+export default ConditionFilter 
