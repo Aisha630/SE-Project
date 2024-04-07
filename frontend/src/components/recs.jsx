@@ -10,11 +10,7 @@ import "slick-carousel/slick/slick-theme.css";
 
 
 
-const Recs = ({productType}) => {
-
-    console.log("In recs");
-    console.log("Product type: ", productType);
-    console.log("id: ", useParams());
+const Recs = () => {
     const EmptySlide = () => (
         <Card sx={{ height: "auto", maxWidth: "240px", boxShadow: "none", opacity: 0, m: 2, borderRadius: 2 }}>
         </Card>
@@ -27,10 +23,8 @@ const Recs = ({productType}) => {
     const emptySlidesCount = slides - recs.length > 0 ? slides - recs.length : 0;
     const token = useSelector((state) => state.auth.token);
 
-    productType = (productType === "DonationProduct" ) ? "donate" : productType ===  "AuctionProduct"? "auction" : "sale";
-
     useEffect(() => {
-        fetch(`http://localhost:5003/shop/${id}/recs?productType=${productType}`, {
+        fetch(`http://localhost:5003/shop/${id}/recs`, {
             headers: { 'Authorization': `Bearer ${token}` }
         }).then(response => {
             if (!response.ok)
