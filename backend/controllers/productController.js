@@ -49,23 +49,13 @@ export async function getProduct(req, res) {
 
 export async function getProductRecs(req, res) {
   const { id } = req.params;
-  let productModel = Product;
 
-  const { productType } = req.query;
-  if (productType) {
-    productModel = productModels[productType];
-  }
-
-  if (!productModel) {
-    return res.status(400).json({ error: "Invalid mode of sale" });
-  }
-
-  const product = await productModel.findOne({ _id: id, isHold: false });
+  const product = await Product.findOne({ _id: id, isHold: false });
   if (!product) {
     return res.status(404).json({ error: "Product not found" });
   }
 
-  const products = await productModel.find({
+  const products = await Product.find({
     _id: { $ne: id },
     tags: { $in: product.tags },
     isHold: false,
@@ -208,30 +198,22 @@ export async function deleteProduct(req, res) {
         await Image.deleteMany({ filename: filename });
       }
     }
-    res.status(200).json({
-      message: "Product successfully deleted",
-      salesHistory: seller.salesHistory,
-    });
+    res
+      .status(200)
+      .json({
+        message: "Product successfully deleted",
+        salesHistory: seller.salesHistory,
+      });
   } catch (err) {
     console.log(err.message);
     res.status(500).json({ error: "Server error" });
   }
 }
 
+// FRONTEND: now required productType in req.query
 export async function filterProducts(req, res) {
-  const {
-    category,
-    tags,
-    sizes,
-    colors,
-    condition,
-    minPrice,
-    maxPrice,
-    sortBy,
-    productType,
-  } = req.query;
+  const { category, tags, sizes, colors, productType } = req.query;
   const query = { isHold: false };
-  let sortCriteria = {};
 
   const productModel = productModels[productType];
   if (!productModel) {
@@ -240,10 +222,6 @@ export async function filterProducts(req, res) {
 
   if (category) {
     query.category = category;
-  }
-
-  if (condition) {
-    query.condition = condition;
   }
 
   if (tags) {
@@ -258,35 +236,8 @@ export async function filterProducts(req, res) {
     query.color = { $in: Array.isArray(colors) ? colors : [colors] };
   }
 
-  if (productType !== "donation") {
-    const priceField = productType === "auction" ? "currentBid" : "price";
-
-    if (minPrice || maxPrice) {
-      query[priceField] = {};
-
-      if (minPrice) {
-        query[priceField].$gte = Number(minPrice);
-      }
-      if (maxPrice) {
-        query[priceField].$lte = Number(maxPrice);
-      }
-    }
-
-    if (sortBy) {
-      if (sortBy === "priceLowToHigh") {
-        sortCriteria[priceField] = 1;
-      } else if (sortBy === "priceHighToLow") {
-        sortCriteria[priceField] = -1;
-      }
-    }
-  }
-
-  try {
-    const products = await productModel.find(query).sort(sortCriteria);
-    res.json(products);
-  } catch (error) {
-    res.status(500).json({ error: "Server error", details: error.message });
-  }
+  const products = await productModel.find(query);
+  res.json(products);
 }
 
 export async function fetchLatest(req, res) {
