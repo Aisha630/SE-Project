@@ -211,7 +211,7 @@ const ShopItems = ({mode}) => {
     return (
         <ThemeProvider theme={theme}>
             <Box>
-                <Nav Drawer={MyDrawer} Search={Search} pageOn={pageOn} setIsEmpty={setIsEmpty} setSearchProducts={handleSetProducts}/>
+                <Nav Drawer={MyDrawer} Search={Search} pageOn={pageOn} setisempty={setIsEmpty} setsearchproducts={handleSetProducts}/>
             </Box>
             <MainCategoryToolbar setCategory={setCategory} category={category} /> {/*This is the main toolbar that represents clothing, technology, and miscellaneous categories*/}
 

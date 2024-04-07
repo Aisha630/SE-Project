@@ -3,7 +3,7 @@ import { IconButton, InputBase, Box } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useSelector } from 'react-redux';
 
-const Search = ({ setIsEmpty, setSearchProducts }) => {
+const Search = ({ setisempty, setsearchproducts }) => {
     const [isSearchActive, setIsSearchActive] = useState(false);
     const token = useSelector((state) => state.auth.token);
 
@@ -30,8 +30,8 @@ const Search = ({ setIsEmpty, setSearchProducts }) => {
                     price: product.price,
                     id: product._id
                 }));
-                setIsEmpty(formattedProducts.length === 0);
-                setSearchProducts(formattedProducts)
+                setisempty(formattedProducts.length === 0);
+                setsearchproducts(formattedProducts)
             }).catch(error => { console.log(error) })
         }
     };

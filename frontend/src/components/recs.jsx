@@ -2,26 +2,20 @@ import { React, useState, useEffect } from "react";
 import Slider from "react-slick";
 import { ThemeProvider, Typography, Card, CardMedia } from "@mui/material";
 import theme from "../themes/homeTheme.js";
-import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-
-
 const Recs = ({productType}) => {
-
-    console.log("In recs");
-    console.log("Product type: ", productType);
-    console.log("id: ", useParams());
+    // Empty slide component
     const EmptySlide = () => (
         <Card sx={{ height: "auto", maxWidth: "240px", boxShadow: "none", opacity: 0, m: 2, borderRadius: 2 }}>
         </Card>
     );
 
     const [recs, setRecs] = useState([]);
-    const { id } = useParams();
+    const { id } = useParams(); // Get the product id from the URL
     const navigate = useNavigate();
     const [slides, setSlidesToShow] = useState(1);
     const emptySlidesCount = slides - recs.length > 0 ? slides - recs.length : 0;
@@ -44,8 +38,10 @@ const Recs = ({productType}) => {
             }));
             setRecs(formattedProducts)
         }).catch(error => { console.log(error) })
-    }, [navigate, token, id, window.innerWidth]);
+    }, [navigate, token, id]);
 
+
+    // This useEffect hook is used to update the number of slides to show based on the window width
     useEffect(() => {
         const updateSlidesToShow = () => {
             const pageWidth = window.innerWidth;
@@ -56,6 +52,7 @@ const Recs = ({productType}) => {
           return () => window.removeEventListener('resize', updateSlidesToShow);
     }, [])
 
+    // Slick settings
     const settings = {
         dots: emptySlidesCount === 0 ? true : false,
         infinite: emptySlidesCount === 0 ? true : false,
@@ -122,6 +119,7 @@ const Recs = ({productType}) => {
                         </Link>
                     </Card>
                 ))}
+                {/* Add empty slides to fill the slider */}
                 {[...Array(emptySlidesCount)].map((_, index) => (
                     <EmptySlide key={`empty-${index}`} />
                 ))}

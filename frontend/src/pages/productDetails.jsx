@@ -90,26 +90,29 @@ const ProductDetails = () => {
 				thumbnail: `http://localhost:5003${imageUrl}`,
 			}));
 			setProduct({ ...data, images: formattedImages })
+
 		}).catch(error => { console.log(error) })
 	}, [token, id, navigate]);
 
 	// Fetches the seller details from the server using the seller username from the product details
 	useEffect(() => {
-		fetch(`http://localhost:5003/profile?username=${product?.seller}`, {
-			method: 'GET',
-			headers: { 'Authorization': `Bearer ${token}` },
-		}).then(response => {
-			return response.json()
-		}).then(data => {
-			if (!data.error) {
-				setSeller(data);
-				setRating(data.rating.rating);
+		const getSeller = () => {
+			fetch(`http://localhost:5003/profile?username=${product?.seller}`, {
+				method: 'GET',
+				headers: { 'Authorization': `Bearer ${token}` },
+			}).then(response => {
+				return response.json()
+			}).then(data => {
+				if (!data.error) {
+					setSeller(data);
+					setRating(data.rating.rating);
+				}
+				else
+					throw new Error(data.error);
 			}
-			else
-				throw new Error(data.error);
+			).catch(error => { console.log(error); toast.error(error || "Error fetching seller details")})
 		}
-		).catch(error => { console.log(error); toast.error(error.message || "Error fetching seller details") })
-
+		if (product?.seller) { getSeller() }
 	}, [product?.seller, token, navigate])
 
 	const addToCart = (product) => {
@@ -132,8 +135,7 @@ const ProductDetails = () => {
 		}).catch(error => {
 			console.log(error)
 			toast.error("Error adding to cart")
-		}
-		)
+		})
 	}
 
 	const placeBid = () => {
@@ -292,11 +294,11 @@ const ProductDetails = () => {
 						</Typography>
 					</Paper>
 				</Grid>
-				
+
 				{/* Recommendations */}
 				<Grid container spacing={0} sx={{ padding: 3.5, backgroundColor: "#ffffff" }}>
 					<Grid item xs={12} sm={12} md={12} lg={12} sx={{ maxWidth: "100%" }}>
-						<Divider fullWidth sx={{ width: "100%", mt: 5, mb: 5 }} />
+						<Divider sx={{ width: "100%", mt: 5, mb: 5 }} />
 						<Typography variant="h5" textAlign="left" sx={{ mb: 3, color: "#58a45b", ml: 5, fontWeight: 450 }}>
 							More like this
 						</Typography>

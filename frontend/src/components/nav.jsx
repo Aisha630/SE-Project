@@ -13,7 +13,7 @@ import { useMediaQuery } from '@mui/material';
 import theme from '../themes/homeTheme';
 import React from 'react';
 
-const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" , setSearchProducts, setIsEmpty}) => {
+const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" , setsearchproducts, setisempty}) => {
     const navigate = useNavigate();
     const [isCartVisible, setIsCartVisible] = useState(false);
     const { cartItems, fetchCartItems } = useCart();
@@ -86,7 +86,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" , setSea
                     {/* This is to push the search bar to the right */}
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-                        <Search setIsEmpty={setIsEmpty} setSearchProducts={setSearchProducts}/>
+                        <Search setisempty={setisempty} setsearchproducts={setsearchproducts}/>
                         <IconButton edge="end" color="gray" disableRipple aria-label="cart" onClick={() => { fetchCartItems(); toggleCart(); }} sx={{
                             '&:hover': {
                                 backgroundColor: "primary.dark"
