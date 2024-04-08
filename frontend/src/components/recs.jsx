@@ -9,7 +9,6 @@ import "slick-carousel/slick/slick-theme.css";
 
 const Recs = ({productType}) => {
     // Empty slide component
-    console.log("Prod type ", productType)
     const EmptySlide = () => (
         <Card sx={{ height: "auto", maxWidth: "240px", boxShadow: "none", opacity: 0, m: 2, borderRadius: 2 }}>
         </Card>
