@@ -164,6 +164,9 @@ const ShopItems = ({mode}) => {
                 }));
                 setCheckedSubcategories([]);
                 setCheckedSizes([]);
+                setPrice([0, 200000]);
+                setSortBy('unset');
+                setCondition('unset');
                 console.log(data)
                 setProducts(formattedProducts);
 
@@ -194,8 +197,6 @@ const ShopItems = ({mode}) => {
         console.log("In handlePriceSlider")
         console.log("Event: ", event, "New Value: ", newValue)
         setPrice(newValue);
-    //     // setMinPrice(newValue[0]);
-    //     // setMaxPrice(newValue[1]);
     };
 
     let pageOn = "Shop";
@@ -205,8 +206,6 @@ const ShopItems = ({mode}) => {
     else if (mode === "donate") {
         pageOn = "Donations";
     }
-
-    console.log("SHOP: products: ", products);
     
     return (
         <ThemeProvider theme={theme}>

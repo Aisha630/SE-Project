@@ -10,13 +10,6 @@ import ListItemLink from './ListItemLink.jsx';
 import ConditionFilter from './conditionfilter.jsx';
 
 const FilterMenu = ({mode, category, closeFilterMenu, checkedSubcategories, handleSubcategoryChange, checkedSizes, handleSizeChange, handleApplyFilters, handleResetFilters, price, setPrice, sortBy, setSortBy, condition, setCondition }) => {
-
-    // const [sortBy, setSortBy] = useState('new2used');
-
-    // const [condition, setCondition] = useState('new');
-
-
-
     return (
         <Box sx={{ backgroundColor: '#e0e0e0' }}>
             <Grid container justifyContent="flex-start" alignItems={'top'}>
@@ -51,9 +44,11 @@ const FilterMenu = ({mode, category, closeFilterMenu, checkedSubcategories, hand
                 <Grid item xs={12} sm={3}> {/*Sub-categories*/}
                     <CategoryFilter category={category} checkedSubcategories={checkedSubcategories} handleChange={handleSubcategoryChange} />
                 </Grid>
+                {category === 'Clothing' &&
                 <Grid item xs={12} sm={3}> {/* sizes */}
                     <SizesCategories checkedSizes={checkedSizes} handleSizeChange={handleSizeChange} />
                 </Grid>
+                }
             </Grid> {/*This is the last box at the bottom for applying or resetting filters */}
             <Grid container spacing={2} justifyContent="flex-end" alignItems={'bottom'} padding={'20px'} paddingRight={'40px'}>
                 <Grid item xs={12} sm={4}>
