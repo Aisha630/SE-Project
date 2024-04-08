@@ -15,6 +15,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import { CartProvider } from './context/cartContext';
 import OrderSummaryPage from './pages/orderSummary';
 import UserProfile from './pages/userProfile';
+import EditAd from './pages/editad';
+import { Edit } from '@mui/icons-material';
+
 const theme = createTheme({
   palette: {
     background: {
@@ -58,6 +61,7 @@ function App() {
               <Route path="/shop/:id" element={<ProductDetails />} />
               <Route path="/checkout" element={<OrderSummaryPage/>} />
               <Route path="/profile" element={<UserProfile />} />
+              <Route path="/edit/:id" element={<EditAd />} />
               <Route path="*" element={<ErrorPage />} />
 
             </Routes>
