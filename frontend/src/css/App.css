@@ -11,56 +11,9 @@ input:-webkit-autofill:active {
   box-shadow: 0 0 0px 1000px "#D1E4D0" inset !important;
 }
 
-
 .App {
   text-align: center;
-
 }
-
-@keyframes typing {
-  from {
-    width: 0;
-  }
-
-  to {
-    width: 100%;
-  }
-}
-
-@keyframes blinkCursor {
-  from {
-    border-right-color: transparent;
-  }
-
-  to {
-    border-right-color: black;
-  }
-}
-
-.typing-effect {
-  /* font-family: monospace; */
-  white-space: pre-wrap;
-  overflow: visible;
-  border-right: 1em solid black;
-  /* width: 0; */
-  animation: typing 3s steps(40, end), forwards blinkCursor .75s step-end infinite alternate;
-  max-width: 50% !important;
-}
-
-@keyframes moveWave {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(0%);
-  }
-}
-
-.svg {
-  animation: moveWave 10s linear infinite alternate;
-}
-
-
 
 :root {
   --swiper-pagination-color: rgb(88, 167, 91, 0.7);

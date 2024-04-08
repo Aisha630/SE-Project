@@ -6,7 +6,7 @@ import { useMediaQuery } from '@mui/material';
 import theme from '../themes/homeTheme.js';
 import BackHanger from './backHanger.jsx';
 
-function Drawer({pageOn}) {
+function MyDrawer({pageOn}) {
   const [isOpen, setIsOpen] = useState(false);
   const lg = useMediaQuery(theme.breakpoints.up('md'));
   const md = useMediaQuery(theme.breakpoints.between('sm', 'md'));
@@ -18,11 +18,7 @@ function Drawer({pageOn}) {
     }
     setIsOpen(open);
   };
-
-  const handleBack = () => {
-    setIsOpen(false);
-  }
-
+  
   const list = () => (
     <div
       role="presentation"
@@ -53,4 +49,4 @@ function Drawer({pageOn}) {
   );
 }
 
-export default Drawer;
+export default MyDrawer;

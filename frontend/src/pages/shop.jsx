@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Drawer,  Box, ThemeProvider } from '@mui/material'
-import NavBar from '../components/navbarshop.jsx';
+import Nav from '../components/nav.jsx';
 import theme from '../themes/homeTheme.js';
 import ProductList from '../components/productlisting.jsx';
 import TuneIcon from '@mui/icons-material/Tune';
@@ -10,6 +10,8 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ListItemLink from '../components/ListItemLink.jsx';
 import NoProducts from '../components/noProducts.jsx';
+import Search from '../components/search.jsx';
+import MyDrawer from '../components/drawer.jsx';
 
 
 const ShopItems = ({mode}) => {
@@ -18,10 +20,14 @@ const ShopItems = ({mode}) => {
 
     const [category, setCategory] = useState('Clothing')
     const [products, setProducts] = useState([]);
-
     const [isEmpty, setIsEmpty] = useState(false);
-    
     const [checkedSubcategories, setCheckedSubcategories] = useState([]);
+    const [price, setPrice] = useState([0, 200000]);
+    const [checkedSizes, setCheckedSizes] = useState([]);
+    const [sortBy, setSortBy] = useState('unset');
+    const [condition, setCondition] = useState('unset');
+
+    
 
     const handleSubcategoryChange = (subcategory) => {
         const isChecked = checkedSubcategories.includes(subcategory);
@@ -33,7 +39,6 @@ const ShopItems = ({mode}) => {
         console.log("SHOP: checked subcategories: ", checkedSubcategories);
     }
 
-    const [checkedSizes, setCheckedSizes] = useState([]);
     const handleSizeChange = (size) => {
         const isChecked = checkedSizes.includes(size);
         if (isChecked) {
@@ -42,6 +47,14 @@ const ShopItems = ({mode}) => {
             setCheckedSizes([...checkedSizes, size]);
         }
         console.log("SHOP: checked sizes: ", checkedSizes);
+    }
+
+    const handleSortBy = (event) => {
+        setSortBy(event.target.value);
+    }
+
+    const handleCondition = (event) => {
+        setCondition(event.target.value);
     }
 
     const handleApplyFilters = () => {
@@ -57,6 +70,20 @@ const ShopItems = ({mode}) => {
         }
         if (checkedSizes.length > 0) {
             filterCriteria = {...filterCriteria, sizes: checkedSizes};
+        }
+        if (price[0] > 0) {
+            filterCriteria = {...filterCriteria, minPrice: price[0]};   
+        }
+        if (price[1] < 200000) {
+            filterCriteria = {...filterCriteria, maxPrice: price[1]};
+        }
+        if (sortBy !== 'unset') {
+            filterCriteria = {...filterCriteria, sortBy: sortBy};
+            console.log(filterCriteria)
+        }
+        if (condition !== 'unset') {
+            filterCriteria = {...filterCriteria, condition: condition};
+            console.log(filterCriteria)
         }
         
         const queryString = new URLSearchParams(filterCriteria);
@@ -88,6 +115,9 @@ const ShopItems = ({mode}) => {
         console.log("In handleResetFilters")
         setCheckedSubcategories([]);
         setCheckedSizes([]);
+        setPrice([0, 200000]);
+        setSortBy('unset');
+        setCondition('unset');
 
         const queryString = new URLSearchParams({category: category, productType: mode});
         fetch(`http://localhost:5003/filter?${queryString}`, {
@@ -134,6 +164,9 @@ const ShopItems = ({mode}) => {
                 }));
                 setCheckedSubcategories([]);
                 setCheckedSizes([]);
+                setPrice([0, 200000]);
+                setSortBy('unset');
+                setCondition('unset');
                 console.log(data)
                 setProducts(formattedProducts);
 
@@ -155,6 +188,17 @@ const ShopItems = ({mode}) => {
         setIsFilterMenuOpen(false);
     };
 
+    const handleSetProducts = (products) => {
+        setCategory("All");
+        setProducts(products);
+    }
+
+    const handlePriceSlider = (event, newValue) => {
+        console.log("In handlePriceSlider")
+        console.log("Event: ", event, "New Value: ", newValue)
+        setPrice(newValue);
+    };
+
     let pageOn = "Shop";
     if (mode === "auction") {
         pageOn = "Auction";
@@ -166,7 +210,7 @@ const ShopItems = ({mode}) => {
     return (
         <ThemeProvider theme={theme}>
             <Box>
-                <NavBar pageOn={pageOn}/>
+                <Nav Drawer={MyDrawer} Search={Search} pageOn={pageOn} setisempty={setIsEmpty} setsearchproducts={handleSetProducts}/>
             </Box>
             <MainCategoryToolbar setCategory={setCategory} category={category} /> {/*This is the main toolbar that represents clothing, technology, and miscellaneous categories*/}
 
@@ -189,7 +233,7 @@ const ShopItems = ({mode}) => {
                 onClose={handleDrawerClose}
                 style={{ opacity: 0.95 }}
             >
-                <FilterMenu category={category} closeFilterMenu={handleDrawerClose} checkedSubcategories={checkedSubcategories} handleSubcategoryChange={handleSubcategoryChange} checkedSizes={checkedSizes} handleSizeChange={handleSizeChange} handleApplyFilters={handleApplyFilters} handleResetFilters={handleResetFilters}/>
+                <FilterMenu mode={mode} category={category} closeFilterMenu={handleDrawerClose} checkedSubcategories={checkedSubcategories} handleSubcategoryChange={handleSubcategoryChange} checkedSizes={checkedSizes} handleSizeChange={handleSizeChange} handleApplyFilters={handleApplyFilters} handleResetFilters={handleResetFilters} price={price} setPrice={handlePriceSlider} sortBy={sortBy} setSortBy={handleSortBy} condition={condition} setCondition={handleCondition} />
             </Drawer>
 
             {/* This section represents the actual products */}

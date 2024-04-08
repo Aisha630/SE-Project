@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { ThemeProvider } from '@mui/material';
-import { Typography, Box, Grid, Avatar, Stack, Rating, Card, Pagination, FormControl,Select, MenuItem} from '@mui/material';
+import { Typography, Box, Grid, Avatar, Stack, Rating, Card,  FormControl, Select, MenuItem } from '@mui/material';
 import theme from '../themes/homeTheme';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
@@ -13,6 +13,7 @@ import MainCategoryToolbar from '../components/maincategoriestoolbar.jsx';
 import UserProducts from '../components/userProducts.jsx';
 import { LineChart } from '@mui/x-charts/LineChart'
 import NoProducts from '../components/noProducts.jsx';
+import {useMediaQuery} from '@mui/material';
 
 
 
@@ -22,11 +23,8 @@ const UserProfile = () => {
     const [user, setUser] = useState({});
     const [products, setProducts] = useState([]);
     const navigate = useNavigate();
-    // State for pagination
-    const [page, setPage] = useState(1);
-    const [productsPerPage] = useState(2); // Number of products per page
     const [graph, setGraph] = useState('Monthly');
-    const [noItems, setNoItems] = useState(false);
+    const lg = useMediaQuery(theme.breakpoints.up('lg'));
 
     const username = useSelector((state) => state.auth.user);
     const token = useSelector((state) => state.auth.token);
@@ -66,10 +64,6 @@ const UserProfile = () => {
                 // Filter the products that are for sale
                 setProducts(data.filter((product) => product.__t === 'DonationProduct'));
             }
-            // setProducts(data);
-            if (products.length === 0) {
-                setNoItems(true);
-            }
 
         })
             .catch((error) => { console.log("The error is:", error) });
@@ -77,17 +71,9 @@ const UserProfile = () => {
     }, [token, navigate, username, selectedTab])
 
     const rating = user.rating ? user.rating.rating : 0;
+    const currentProducts = products;
+    // console.log("The current products are ", currentProducts, "The products are ", products, "The page is ", page, "The products per page are ", productsPerPage);
 
-    const indexOfLastProduct = page * productsPerPage;
-    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
-    console.log("The current products are ", currentProducts, "The products are ", products, "The page is ", page, "The products per page are ", productsPerPage);
-
-    // Handle page change
-    const handlePageChange = (event, value) => {
-        setPage(value);
-    };
-    // data for one month
     const dataArray = [
         { saleDate: '01', price: 8000 },
         { saleDate: '02', price: 10000 },
@@ -160,14 +146,17 @@ const UserProfile = () => {
             }} />
             <Grid style={{
                 minHeight: '100vh',
-                width: '100vw',
+                width: '100%',
                 backgroundImage: "url('userprofilebg.svg')",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                position: 'relative',
+                maxWidth: "100%",
+                // position: "relative",
+                // backgroundAttachment: "scroll",
+                // overflowY: 'auto',
             }}>
                 <Typography variant="h4" sx={{ color: "white", textAlign: "left", paddingTop: 2, marginLeft: '2%' }}>Dashboard & Profile</Typography>
-                <Grid container style={{ height: '30%', width: '100vw', paddingTop: 5 }}>
+                <Grid container spacing={2} style={{ height: '30%', width: '100%', paddingTop: 5, position:"absolute", }}>
                     <Grid item xs={6} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                         <Card sx={graphStyles}>
                             <Box sx={{ display: 'flex', justifyContent: 'right', alignItems: 'right', width: '100%', height: '1%' }}>
@@ -177,7 +166,7 @@ const UserProfile = () => {
                                         id="graph-select"
                                         value={graph}
                                         onChange={handleGraphChange}
-                                        
+
                                     >
                                         <MenuItem value={"Monthly"}>Monthly</MenuItem>
                                         <MenuItem value={"Yearly"}>Yearly</MenuItem>
@@ -185,29 +174,29 @@ const UserProfile = () => {
                                 </FormControl>
                             </Box>
                             <Typography variant="subtitle1" sx={{ display: 'flex', position: 'absolute', top: 20, left: 20 }}>
-                            Overall Sales
+                                Overall Sales
                             </Typography>
                             <Typography variant="h6" sx={{ display: 'flex', position: 'absolute', top: 40, left: 20, }}>
-                            {sumOfSales} PKR
+                                {sumOfSales} PKR
                             </Typography>
 
-                            
-                            <Box sx={{ width: '100%', height: '110%', paddingTop:2 }}>
-                                
-                            <LineChart
-                                xAxis={[{ data: xdata }]}
-                                series={[
-                                    {
-                                        data: ydata,
-                                    },
-                                ]}
-                            />
-                                </Box>
+
+                            <Box sx={{ width: '100%', height: '110%', paddingTop: 2 }}>
+
+                                <LineChart
+                                    xAxis={[{ data: xdata }]}
+                                    series={[
+                                        {
+                                            data: ydata,
+                                        },
+                                    ]}
+                                />
+                            </Box>
 
                         </Card>
                     </Grid>
 
-                    <Grid item xs={6} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <Grid item xs={6} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                         <Card sx={profileStyles}>
                             <Avatar src={user.avatar} sx={profileAvatarStyles} />
                             <Typography variant='h6' sx={{ color: "black", textAlign: "center", mt: 8, }}>
@@ -218,8 +207,15 @@ const UserProfile = () => {
                             </Typography>
 
                             <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
-                                <Typography variant='h6' sx={{ color: "black", textAlign: "center" }}> <strong>Rating: </strong></Typography>
-                                <Rating name="half-rating-read" value={rating} precision={0.2} readOnly size='large' />
+                                <Typography variant='h6' sx={{ color: "black", textAlign: "center", }}> <strong>Rating: </strong></Typography>
+                                <Rating name="half-rating-read" value={rating} precision={0.2} readOnly size='large' sx={{
+                                    '& .MuiRating-iconFilled': {
+                                        color: '#e87975',
+                                    },
+                                    '& .MuiRating-iconHover': {
+                                        color: '#e87975',
+                                    },
+                                }} />
                             </Stack>
                         </Card>
 
@@ -228,7 +224,8 @@ const UserProfile = () => {
 
                 <Box sx={{
                     position: 'absolute', // Position the toolbar absolutely
-                    bottom: 300, // Align it to the bottom of the parent container
+                    bottom: 200, // Align it to the bottom of the parent container
+                    // bottom: lg? 200: 450, // Align it to the bottom of the parent container
                     left: 0,
                     width: '100%', // Span the full width of the container
                     zIndex: 2, // Ensure it's above the other content
@@ -237,40 +234,24 @@ const UserProfile = () => {
                     <MainCategoryToolbar setCategory={setSelectedTab} category={selectedTab} navItems={["Auctioned", "For Sale", "Donations"]} styles={{ backgroundColor: 'white' }} />
 
                     {/* Product Grid */}
-                    <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3, }} sx={{
+                    <Grid container spacing={0} sx={{
                         display: 'flex',
-                        width: '100vw',
+                        width: '100%',
                         position: 'absolute',
+                        backgroundColor: "white"
                     }}>
-                        {currentProducts.length>0 && <UserProducts products={currentProducts} handleDeleteItem={handleDeleteItem} />}
+                        {currentProducts.length > 0 && <UserProducts products={currentProducts} handleDeleteItem={handleDeleteItem} selectedTab={selectedTab}/>}
                     </Grid>
-                        {currentProducts.length === 0 && <NoProducts styles={{
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            position: 'absolute',
-                            width: '100vw',
-                            bottom: 0,
-                        }}/>}
+                    {currentProducts.length === 0 && <NoProducts styles={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        position: 'absolute',
+                        width: '100%',
+                        bottom: 0,
+                        backgroundColor: "white"
+                    }} />}
                 </Box>
-                <Box sx={{
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    width: '100%',
-                    zIndex: 2,
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: 'white',
-                }}>
-                    <Pagination
-                        count={Math.ceil(products.length / productsPerPage)}
-                        page={page}
-                        onChange={handlePageChange}
-                        color="primary"
-                        size="large"
-                    />
-                </Box>
+               
             </Grid>
 
 

@@ -2,33 +2,29 @@ import { React, useState, useEffect } from "react";
 import Slider from "react-slick";
 import { ThemeProvider, Typography, Card, CardMedia } from "@mui/material";
 import theme from "../themes/homeTheme.js";
-import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-
-
-const Recs = () => {
+const Recs = ({productType}) => {
+    // Empty slide component
     const EmptySlide = () => (
         <Card sx={{ height: "auto", maxWidth: "240px", boxShadow: "none", opacity: 0, m: 2, borderRadius: 2 }}>
         </Card>
     );
 
     const [recs, setRecs] = useState([]);
-    const { id } = useParams();
+    const { id } = useParams(); // Get the product id from the URL
     const navigate = useNavigate();
     const [slides, setSlidesToShow] = useState(1);
-
-
     const emptySlidesCount = slides - recs.length > 0 ? slides - recs.length : 0;
-
-
     const token = useSelector((state) => state.auth.token);
 
+    productType = (productType === "DonationProduct" ) ? "donate" : productType ===  "AuctionProduct"? "auction" : "sale";
+
     useEffect(() => {
-        fetch(`http://localhost:5003/shop/${id}/recs`, {
+        fetch(`http://localhost:5003/shop/${id}/recs?productType=${productType}`, {
             headers: { 'Authorization': `Bearer ${token}` }
         }).then(response => {
             if (!response.ok)
@@ -39,17 +35,25 @@ const Recs = () => {
                 name: product.name,
                 image: `http://localhost:5003${product.images[0]}`,
                 id: product._id
-            }));
 
+            }));
             setRecs(formattedProducts)
         }).catch(error => { console.log(error) })
     }, [navigate, token, id]);
 
-    useEffect(() => {
-        const pageWidth = window.innerWidth;
-        setSlidesToShow(Math.floor(pageWidth / 280))
-    }, [navigate, token, id])
 
+    // This useEffect hook is used to update the number of slides to show based on the window width
+    useEffect(() => {
+        const updateSlidesToShow = () => {
+            const pageWidth = window.innerWidth;
+            setSlidesToShow(Math.floor(pageWidth / 280));
+          };
+          updateSlidesToShow();
+          window.addEventListener('resize', updateSlidesToShow);
+          return () => window.removeEventListener('resize', updateSlidesToShow);
+    }, [])
+
+    // Slick settings
     const settings = {
         dots: emptySlidesCount === 0 ? true : false,
         infinite: emptySlidesCount === 0 ? true : false,
@@ -57,7 +61,7 @@ const Recs = () => {
         slidesToShow: slides,
         slidesToScroll: 1,
         autoplay: emptySlidesCount === 0 ? true : false,
-        autoplaySpeed: 2000,
+        autoplaySpeed: 1500,
         swipe: true,
         adaptiveHeight: true,
         lazyLoad: true,
@@ -116,6 +120,7 @@ const Recs = () => {
                         </Link>
                     </Card>
                 ))}
+                {/* Add empty slides to fill the slider */}
                 {[...Array(emptySlidesCount)].map((_, index) => (
                     <EmptySlide key={`empty-${index}`} />
                 ))}

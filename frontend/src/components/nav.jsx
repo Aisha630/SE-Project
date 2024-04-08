@@ -1,9 +1,9 @@
-import { AppBar, Toolbar, IconButton, Typography, Box, Button, Menu, MenuItem, Badge, Container, Avatar } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Typography, Box, Button, Menu, MenuItem, Badge, Container } from '@mui/material';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useLogout } from '../hooks/useLogout';
 import { useSelector } from 'react-redux';
 import ShoppingCartOverlayCard from './shoppingCartOverlayCard';
@@ -11,9 +11,9 @@ import { toast } from 'react-toastify';
 import { useCart } from '../context/cartContext';
 import { useMediaQuery } from '@mui/material';
 import theme from '../themes/homeTheme';
+import React from 'react';
 
-
-const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" }) => {
+const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" , setsearchproducts, setisempty}) => {
     const navigate = useNavigate();
     const [isCartVisible, setIsCartVisible] = useState(false);
     const { cartItems, fetchCartItems } = useCart();
@@ -21,11 +21,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" }) => {
     const sm = useMediaQuery(theme.breakpoints.up('sm'));
     const md = useMediaQuery(theme.breakpoints.up('md'));
     const lg = useMediaQuery(theme.breakpoints.up('lg'));
-    // console.log("The user name is ", username)
-
-
     const height = lg ? '5vh' : md ? '3vh' : sm ? '40px' : '30px';
-
 
     const deleteFromCart = (product) => {
         fetch(`http://localhost:5003/cart?id=${product._id}`, {
@@ -74,8 +70,6 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" }) => {
         handleClose();
     };
 
-    // console.log("the user is ", user)
-
     return (
         <AppBar position="static" sx={{ backgroundColor: "#e0e0e0", ...styles, boxShadow: "none" }} >
             <Container maxWidth="100vw">
@@ -92,7 +86,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" }) => {
                     {/* This is to push the search bar to the right */}
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-                        <Search />
+                        <Search setisempty={setisempty} setsearchproducts={setsearchproducts}/>
                         <IconButton edge="end" color="gray" disableRipple aria-label="cart" onClick={() => { fetchCartItems(); toggleCart(); }} sx={{
                             '&:hover': {
                                 backgroundColor: "primary.dark"

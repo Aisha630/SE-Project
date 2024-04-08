@@ -20,17 +20,17 @@ const InfoCard = ({ title, items, isCart, deleteItem }) => {
                         <ListItem key={index} sx={{
                             borderRadius: 2, margin: 1, boxShadow: '0 0 4px rgba(0, 0, 0, 0.25)', height: "15vh", maxHeight: "140px", backgroundColor: isCart ? "#e87975" : "#d1e4d0", color: isCart ? "white" : "black",
                             '&:visited': {
-                                color: 'inherit',
+                                color: isCart? 'inherit':"",
                             },
                             '&:hover': {
-                                filter: "brightness(0.8)",
-                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
-                                transform: 'translateY(-4px)',
+                                filter: isCart?"brightness(0.8)":"",
+                                boxShadow: isCart?'0 4px 8px rgba(0, 0, 0, 0.3)':"",
+                                transform: isCart? 'translateY(-4px)':"",
                             },
                             maxWidth: "500px",
                             minWidth: "280px"
                         }}>
-                            <Box display="flex" justifyContent="space-between" alignItems="center" component={RouterLink} to={isCart ? `/shop/${item._id}` : `/shop/${item._id}`} sx={{
+                            <Box display="flex" justifyContent="space-between" alignItems="center" component={isCart? RouterLink: Box} to={isCart ? `/shop/${item._id}` : ""} sx={{
                                 textDecoration: "none", width: "100%", height: "100%", m: 0, '&:visited': {
                                     color: 'inherit',
                                 },

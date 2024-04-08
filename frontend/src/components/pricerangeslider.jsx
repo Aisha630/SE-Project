@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, Slider, Typography } from '@mui/material'
 
-const PriceRangeSlider = ({value, handleChange, valuetext}) => {
+const PriceRangeSlider = ({mode, value, handleChange, valuetext}) => {
     
     const [minValue, maxValue] = value;
     
@@ -9,7 +9,7 @@ const PriceRangeSlider = ({value, handleChange, valuetext}) => {
   return (
     <Box sx={{color:'inherit', paddingLeft:'20px'}}>
         <Typography id="range-slider" gutterBottom textAlign={'left'}>
-            Price range
+            {mode==='auction'? 'Max Bid' : 'Price Range'}
         </Typography>
         <Slider
             value={value}
