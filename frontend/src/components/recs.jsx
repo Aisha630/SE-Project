@@ -9,6 +9,7 @@ import "slick-carousel/slick/slick-theme.css";
 
 const Recs = ({productType}) => {
     // Empty slide component
+    console.log("Prod type ", productType)
     const EmptySlide = () => (
         <Card sx={{ height: "auto", maxWidth: "240px", boxShadow: "none", opacity: 0, m: 2, borderRadius: 2 }}>
         </Card>
@@ -35,6 +36,7 @@ const Recs = ({productType}) => {
                 name: product.name,
                 image: `http://localhost:5003${product.images[0]}`,
                 id: product._id
+
             }));
             setRecs(formattedProducts)
         }).catch(error => { console.log(error) })

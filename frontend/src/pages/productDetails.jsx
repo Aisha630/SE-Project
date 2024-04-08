@@ -304,7 +304,7 @@ const ProductDetails = () => {
 						</Typography>
 					</Grid>
 					<Grid item xs={12} sm={12} md={12} lg={12} sx={{ p: 3 }}>
-						<Recs />
+						{product && <Recs productType={product.__t}/>}
 					</Grid>
 				</Grid>
 			</Grid>
