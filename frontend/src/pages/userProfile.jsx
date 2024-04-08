@@ -20,7 +20,8 @@ import "../css/App.css";
 
 
 const UserProfile = () => {
-    const [selectedTab, setSelectedTab] = useState('For Sale');
+    const [selectedTab, setSelectedTab] = useState('Donations');
+    // const [selectedTab, setSelectedTab] = useState('For Sale');
     const [user, setUser] = useState({});
     const [products, setProducts] = useState([]);
     const navigate = useNavigate();

@@ -1,18 +1,19 @@
 import React from 'react';
-import { Typography, Box, Grid, Card, CardContent, CardActions, Button, IconButton, CardMedia, FormControl, TextField} from '@mui/material';
+import { Typography, Box, Grid, Card, CardContent, CardActions, Button, IconButton, CardMedia, FormControl, TextField } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import SiteButton from './button';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import DonationRequests from './donationRequests';
 import Autocomplete from '@mui/material/Autocomplete';
-import {useMediaQuery} from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import theme from '../themes/homeTheme';
+import ConfirmDeletionOverlay from './confirmDeletion';
+import DonationRequestsOverlay from './donationRequestsOverlay';
 
 const options = [
-  { label: 'On Hold', value: 'on_hold' },
-  { label: 'Live', value: 'live' },
+    { label: 'On Hold', value: 'on_hold' },
+    { label: 'Live', value: 'live' },
 ];
 
 
@@ -25,6 +26,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
     //     // call to backend to modify the status of the product
     //     toast.success('Status changed successfully');
     // }
+    
     const [open, setOpen] = React.useState(false);
     const [selectedProductId, setSelectedProductId] = React.useState(null);
     const [selectedProduct, setSelectedProduct] = React.useState(null);
@@ -39,6 +41,8 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
 
     const handleClose = () => {
         setOpen(false);
+        setOpenDonationRequests(false);
+        
     };
 
     const handleDelete = () => {
@@ -65,14 +69,14 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
         console.log("Inside handleDonationRequests", product);
         setSelectedProduct(product);
         setOpenDonationRequests(true);
-        toast.success('Requests viewed successfully');
+        // toast.success('Requests viewed successfully');
     }
 
     return (
         <Grid container spacing={1} sx={{ backgroundColor: 'white', p: 7, m: 2, maxWidth: "100%", }}>
             {products.map((product) => (
-                <Grid item xs={12} sm={12} md={8} lg={6} key={product._id} sx={{ display: 'flex', justifyContent: 'center',  }}>
-                    <Card sx={{ display: 'flex', width: '90%', m: 2, borderRadius: 2, boxShadow: 3, backgroundColor: '#e0e0e0', mb: 5, maxWidth: "100%",  }}> {/*could also change to #f5f5f5 */}
+                <Grid item xs={12} sm={12} md={8} lg={6} key={product._id} sx={{ display: 'flex', justifyContent: 'center', }}>
+                    <Card sx={{ display: 'flex', width: '90%', m: 2, borderRadius: 2, boxShadow: 3, backgroundColor: '#e0e0e0', mb: 5, maxWidth: "100%", }}> {/*could also change to #f5f5f5 */}
 
                         <CardMedia
                             component="img"
@@ -102,9 +106,9 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
                                     <DeleteIcon />
                                 </IconButton>
                             </Box>
-                            <CardActions sx={{ justifyContent: 'space-between', padding: 2, pt: 0,  }}>
+                            <CardActions sx={{ justifyContent: 'space-between', padding: 2, pt: 0, }}>
 
-                                <FormControl sx={{ minWidth: 120, color: '#517652', display: 'flex', }}>
+                                <FormControl sx={{ minWidth: 140, color: '#517652', display: 'flex', }}>
                                     {/* <InputLabel id="status-label" sx={{m:0, p:0}}>Status</InputLabel> */}
                                     {/* <Select */}
                                     {/* labelId="status-label" */}
@@ -120,14 +124,16 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
                                     {/* <MenuItem value={"Live"} >Live</MenuItem> */}
                                     {/* </Select> */}
                                     <Autocomplete
+                                        defaultValue={product.isHold ? options[0] : options[1]}
                                         options={options}
                                         getOptionLabel={(option) => option.label}
                                         renderInput={(params) => <TextField {...params} label="Status" />}
+                                        disableClearable={true}
                                     />
                                 </FormControl>
                                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                                     {product.__t === 'DonationProduct' && !product.isHold &&
-                                        <Button size="small" variant="contained" onClick={() => handleDonationRequests({ product })} sx={{
+                                        <Button variant="contained" onClick={() => handleDonationRequests({ product })} size={sm ? "small" : "medium"} sx={{
                                             backgroundColor: '#517652',
                                             // marginBottom: 1,
 
@@ -140,7 +146,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
                                             View Requests
                                         </Button>}
 
-                                    {!product.isHold && <Button onClick={handleEditItem} variant="contained" size={lg? "large": "small"}  sx={{
+                                    {!product.isHold && <Button onClick={handleEditItem} variant="contained" size={lg ? "large" : "small"} sx={{
                                         backgroundColor: '#f97171',
                                         marginTop: 1,
                                         color: 'white',
@@ -151,7 +157,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
                                     }}>
                                         Edit Item
                                     </Button>}
-                                    {product.isHold && <Button onClick={handleReopenItem} variant="contained" size={lg? "large": "small"} sx={{
+                                    {product.isHold && <Button onClick={handleReopenItem} variant="contained" size={lg ? "large" : "small"} sx={{
                                         backgroundColor: '#517652',
                                         color: 'white',
                                         '&:hover': {
@@ -167,46 +173,8 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
                         </Box>
 
                     </Card>
-                    <Dialog
-                        open={open}
-                        onClose={handleClose}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                    >
-                        <DialogTitle id="alert-dialog-title">
-                            {"Confirm Deletion"}
-                        </DialogTitle>
-                        <DialogContent>
-                            <DialogContentText id="alert-dialog-description">
-                                Are you sure you want to delete this product?
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                            <SiteButton onClick={handleDelete} text={"Yes"} />
-                            <SiteButton onClick={handleClose} text={"Cancel"} />
-                        </DialogActions>
-                    </Dialog>
-                    <Dialog
-                        open={openDonationRequests}
-                        onClose={() => setOpenDonationRequests(false)}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                    >
-                        <DialogTitle id="alert-dialog-title">
-                            {"Donation Requests"}
-                        </DialogTitle>
-                        <DialogContent>
-                            <DialogContentText id="alert-dialog-description">
-                                {/* Display requests here */}
-                                <DonationRequests product={selectedProduct} />
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                            <SiteButton onClick={() => setOpenDonationRequests(false)} text={"Close"} />
-                        </DialogActions>
-                    </Dialog>
-
-
+                    <ConfirmDeletionOverlay open={open} handleConfirmDelete={handleDelete} handleClose={handleClose} />
+                    <DonationRequestsOverlay open={openDonationRequests} handleClose={handleClose} product={selectedProduct} />
                 </Grid>
             ))
             }
