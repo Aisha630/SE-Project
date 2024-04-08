@@ -20,19 +20,13 @@ const options = [
 
 const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
 
-    console.log("The products are:", products)
-    // const handleChange = () => {
-    //     // Implement status change logic
-    //     // call to backend to modify the status of the product
-    //     toast.success('Status changed successfully');
-    // }
-    
     const [open, setOpen] = React.useState(false);
     const [selectedProductId, setSelectedProductId] = React.useState(null);
     const [selectedProduct, setSelectedProduct] = React.useState(null);
 
     const [openDonationRequests, setOpenDonationRequests] = React.useState(false);
     const lg = useMediaQuery(theme.breakpoints.up('sm'));
+    const sm = useMediaQuery(theme.breakpoints.down('sm'));
 
     const handleClickOpen = (id) => {
         setSelectedProductId(id);
@@ -70,6 +64,15 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
         setSelectedProduct(product);
         setOpenDonationRequests(true);
         // toast.success('Requests viewed successfully');
+    }
+
+    const handleDonateApproved = (username) => {
+        // Implement donate approved logic
+        // call to backend to donate approved
+        
+        setOpenDonationRequests(false);
+        toast.success(`Donation to ${username} approved! Check your email for next steps.`);
+        
     }
 
     return (
@@ -124,7 +127,9 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
                                     {/* <MenuItem value={"Live"} >Live</MenuItem> */}
                                     {/* </Select> */}
                                     <Autocomplete
-                                        defaultValue={product.isHold ? options[0] : options[1]}
+                                        // defaultValue={product.isHold ? options[0] : options[1]}
+                                        defaultValue={options.find(option => option.value === (product.isHold ? 'on_hold' : 'live'))}
+                                        isOptionEqualToValue={(option, value) => option.value === value.value}
                                         options={options}
                                         getOptionLabel={(option) => option.label}
                                         renderInput={(params) => <TextField {...params} label="Status" />}
@@ -174,7 +179,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
 
                     </Card>
                     <ConfirmDeletionOverlay open={open} handleConfirmDelete={handleDelete} handleClose={handleClose} />
-                    <DonationRequestsOverlay open={openDonationRequests} handleClose={handleClose} product={selectedProduct} />
+                    <DonationRequestsOverlay open={openDonationRequests} handleClose={handleClose} product={selectedProduct} handleDonate={handleDonateApproved}/>
                 </Grid>
             ))
             }
