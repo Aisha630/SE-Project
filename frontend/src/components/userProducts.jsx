@@ -1,27 +1,37 @@
 import React from 'react';
-// import { useState } from 'react';
-import { Typography, Box, Grid, Card, CardContent, CardActions, Button, IconButton, CardMedia, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { Typography, Box, Grid, Card, CardContent, CardActions, Button, IconButton, CardMedia, FormControl, TextField} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import SiteButton from './button';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import DonationRequests from './donationRequests';
+import Autocomplete from '@mui/material/Autocomplete';
+import {useMediaQuery} from '@mui/material';
+import theme from '../themes/homeTheme';
+
+const options = [
+  { label: 'On Hold', value: 'on_hold' },
+  { label: 'Live', value: 'live' },
+];
+
 
 
 const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
 
     console.log("The products are:", products)
-    const handleChange = () => {
-        // Implement status change logic
-        // call to backend to modify the status of the product
-        toast.success('Status changed successfully');
-    }
+    // const handleChange = () => {
+    //     // Implement status change logic
+    //     // call to backend to modify the status of the product
+    //     toast.success('Status changed successfully');
+    // }
     const [open, setOpen] = React.useState(false);
     const [selectedProductId, setSelectedProductId] = React.useState(null);
     const [selectedProduct, setSelectedProduct] = React.useState(null);
 
     const [openDonationRequests, setOpenDonationRequests] = React.useState(false);
+    const sm = useMediaQuery(theme.breakpoints.down('xs'));
+    const lg = useMediaQuery(theme.breakpoints.up('sm'));
 
     const handleClickOpen = (id) => {
         setSelectedProductId(id);
@@ -49,7 +59,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
         toast.success(`Your item has been reopened for ${mode}`);
     }
 
-    const handleDonationRequests = ({product}) => {
+    const handleDonationRequests = ({ product }) => {
         // Implement view requests logic
         // call to backend to view the requests
         // setSelectedProductId(id);
@@ -60,10 +70,10 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
     }
 
     return (
-        <Grid container spacing={1} sx={{ backgroundColor: 'white', p: 7, m: 2, maxWidth: "100%" }}>
+        <Grid container spacing={1} sx={{ backgroundColor: 'white', p: 7, m: 2, maxWidth: "100%", }}>
             {products.map((product) => (
-                <Grid item xs={12} sm={12} md={8} lg={6} key={product._id} sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <Card sx={{ display: 'flex', width: '90%', m: 2, borderRadius: 2, boxShadow: 3, backgroundColor: '#e0e0e0', mb: 5, maxWidth: "100%" }}> {/*could also change to #f5f5f5 */}
+                <Grid item xs={12} sm={12} md={8} lg={6} key={product._id} sx={{ display: 'flex', justifyContent: 'center',  }}>
+                    <Card sx={{ display: 'flex', width: '90%', m: 2, borderRadius: 2, boxShadow: 3, backgroundColor: '#e0e0e0', mb: 5, maxWidth: "100%",  }}> {/*could also change to #f5f5f5 */}
 
                         <CardMedia
                             component="img"
@@ -71,7 +81,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
                             image={'http://localhost:5003'.concat(product.images[0])}
                             alt={product.name}
                         />
-                        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flexGrow: 1 }}>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flexGrow: 1, }}>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <CardContent sx={{ padding: 2 }}>
                                     <Link to={`/shop/${product._id}`} style={{ textDecoration: 'none', color: 'black' }}>
@@ -93,27 +103,35 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
                                     <DeleteIcon />
                                 </IconButton>
                             </Box>
-                            <CardActions sx={{ justifyContent: 'space-between', padding: 2, pt: 0 }}>
+                            <CardActions sx={{ justifyContent: 'space-between', padding: 2, pt: 0,  }}>
 
-                                <FormControl sx={{ minWidth: 120, color: '#517652', display: 'flex' }}>
-                                    <InputLabel id="status-label" >Status</InputLabel>
-                                    <Select
-                                        labelId="status-label"
-                                        id="status-select"
-                                        value={product.isHold ? "On Hold" : "Live"}
-                                        label="Status"
-                                        onChange={handleChange}
-                                    >
-                                        <MenuItem value={"On Hold"}>On Hold</MenuItem>
-                                        <MenuItem value={"Live"}>Live</MenuItem>
-                                    </Select>
+                                <FormControl sx={{ minWidth: 120, color: '#517652', display: 'flex', }}>
+                                    {/* <InputLabel id="status-label" sx={{m:0, p:0}}>Status</InputLabel> */}
+                                    {/* <Select */}
+                                    {/* labelId="status-label" */}
+                                    {/* id="status-select" */}
+                                    {/* value={product.isHold ? "On Hold" : "Live"} */}
+                                    {/* label="Status" */}
+                                    {/* onChange={handleChange} */}
+                                    {/* sx={{m:0, p:0, overflowX:"hidden"}} */}
+                                    {/* overflow = "scroll" */}
+                                    {/*  */}
+                                    {/* > */}
+                                    {/* <MenuItem value={"On Hold"} >On Hold</MenuItem> */}
+                                    {/* <MenuItem value={"Live"} >Live</MenuItem> */}
+                                    {/* </Select> */}
+                                    <Autocomplete
+                                        options={options}
+                                        getOptionLabel={(option) => option.label}
+                                        renderInput={(params) => <TextField {...params} label="Status" />}
+                                    />
                                 </FormControl>
                                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                                     {product.__t === 'DonationProduct' && !product.isHold &&
-                                        <Button size="small" variant="contained" onClick = {() => handleDonationRequests({product})}  sx={{
+                                        <Button size="small" variant="contained" onClick={() => handleDonationRequests({ product })} sx={{
                                             backgroundColor: '#517652',
                                             // marginBottom: 1,
-                                            
+
                                             color: 'white',
                                             '&:hover': {
                                                 backgroundColor: '#C7E3C8',
@@ -123,7 +141,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
                                             View Requests
                                         </Button>}
 
-                                    {!product.isHold && <Button  onClick={handleEditItem} variant="contained" size="large" sx={{
+                                    {!product.isHold && <Button onClick={handleEditItem} variant="contained" size={lg? "large": "small"}  sx={{
                                         backgroundColor: '#f97171',
                                         marginTop: 1,
                                         color: 'white',
@@ -134,7 +152,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
                                     }}>
                                         Edit Item
                                     </Button>}
-                                    {product.isHold && <Button onClick={handleReopenItem} variant="contained" size = "large" sx={{
+                                    {product.isHold && <Button onClick={handleReopenItem} variant="contained" size={lg? "large": "small"} sx={{
                                         backgroundColor: '#517652',
                                         color: 'white',
                                         '&:hover': {

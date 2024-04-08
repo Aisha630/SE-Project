@@ -38,3 +38,10 @@ input:-webkit-autofill:active {
   filter: brightness(0.9);
   cursor: pointer;
 }
+
+.listItem:hover {
+  background-color: #58a75b; 
+  border-radius: 30px;
+  opacity: 0.9;
+  
+}

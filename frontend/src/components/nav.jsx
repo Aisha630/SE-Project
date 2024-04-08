@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, IconButton, Typography, Box, Button, Menu, MenuItem, Badge, Container } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Typography, Box, Button, Menu, MenuItem, Badge, Container, Autocomplete, TextField, Popover, List, ListItem, ListItemText } from '@mui/material';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AddIcon from '@mui/icons-material/Add';
@@ -12,8 +12,52 @@ import { useCart } from '../context/cartContext';
 import { useMediaQuery } from '@mui/material';
 import theme from '../themes/homeTheme';
 import React from 'react';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import "../css/App.css";
 
-const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" , setsearchproducts, setisempty}) => {
+function Dropdown() {
+    const [isOpen, setIsOpen] = useState(false);
+    const navigate = useNavigate();
+    const { logout } = useLogout();
+
+    const handleLogout = () => {
+        logout();
+        setIsOpen(false);
+    };
+    const options = [{ label: "Profile", onClick: ()=> navigate("/profile") }, { label: "Logout", onClick: ()=>handleLogout() }];
+
+    const handleClick = () => {
+        setIsOpen((prev) => !prev);
+    };
+
+    const handleClickAway = () => {
+        setIsOpen(false);
+    };
+
+    return (
+        <ClickAwayListener onClickAway={handleClickAway}>
+            <div style={{ position: "relative", display: "inline-block", }}>
+                <IconButton onClick={handleClick}>
+                    <AccountCircleIcon />
+                </IconButton>
+                {isOpen && (
+                    <ul style={{ position: 'absolute', listStyle: 'none', backgroundColor: "white", padding: 0, zIndex: 10, top: "50%", right: "40%" }}>
+                        {options.map((option, index) => (
+                            <li key={index} onClick={option.onClick} className="listItem" style={{ cursor: 'pointer', padding: 10, paddingLeft: 20, paddingRight: 20, margin:10}}>
+                                {option.label}
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </div>
+        </ClickAwayListener>
+    );
+
+}
+
+
+
+const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home", setsearchproducts, setisempty }) => {
     const navigate = useNavigate();
     const [isCartVisible, setIsCartVisible] = useState(false);
     const { cartItems, fetchCartItems } = useCart();
@@ -21,7 +65,9 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" , setsea
     const sm = useMediaQuery(theme.breakpoints.up('sm'));
     const md = useMediaQuery(theme.breakpoints.up('md'));
     const lg = useMediaQuery(theme.breakpoints.up('lg'));
+    // const [isOpen, setOpen] = useState(false);
     const height = lg ? '5vh' : md ? '3vh' : sm ? '40px' : '30px';
+
 
     const deleteFromCart = (product) => {
         fetch(`http://localhost:5003/cart?id=${product._id}`, {
@@ -53,22 +99,6 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" , setsea
         navigate("/");
     }
 
-    const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
-    const handleMenu = (event) => {
-        setAnchorEl(event.currentTarget);
-    }
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    }
-
-    const { logout } = useLogout();
-
-    const handleLogout = () => {
-        logout();
-        handleClose();
-    };
 
     return (
         <AppBar position="static" sx={{ backgroundColor: "#e0e0e0", ...styles, boxShadow: "none" }} >
@@ -86,7 +116,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" , setsea
                     {/* This is to push the search bar to the right */}
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-                        <Search setisempty={setisempty} setsearchproducts={setsearchproducts}/>
+                        <Search setisempty={setisempty} setsearchproducts={setsearchproducts} />
                         <IconButton edge="end" color="gray" disableRipple aria-label="cart" onClick={() => { fetchCartItems(); toggleCart(); }} sx={{
                             '&:hover': {
                                 backgroundColor: "primary.dark"
@@ -112,16 +142,18 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" , setsea
                             isCartVisible && <ShoppingCartOverlayCard cartVisibility={isCartVisible} cartVisibilityToggle={setIsCartVisible} deleteFromCart={deleteFromCart} />
                         }
 
-                        <IconButton edge="end" color="gray" aria-label="account" aria-haspopup="true" aria-controls="menu-account" onClick={handleMenu} sx={{
+                        {/* <IconButton edge="end" color="gray" aria-label="account" aria-haspopup="true" aria-controls="menu-account" onClick={handleMenu} sx={{
                             '&:hover': {
                                 backgroundColor: "primary.dark",
                             },
                             margin: 1,
                         }}>
-                            <AccountCircleIcon sx={{}}/>
-                        </IconButton>
+                            <AccountCircleIcon sx={{}} />
+                        </IconButton> */}
+                        <Dropdown />
 
-                        <Menu
+
+                        {/* <Menu
                             id="menu-account"
                             anchorEl={anchorEl}
                             anchorOrigin={{
@@ -156,7 +188,8 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home" , setsea
                                 }, m: 1, p: 1, paddingLeft: 4, paddingRight: 4
                             }}> Logout </MenuItem>
 
-                        </Menu>
+                        </Menu> */}
+
 
                         <Button
                             type="submit"

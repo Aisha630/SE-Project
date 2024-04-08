@@ -222,7 +222,7 @@ const ProductDetails = () => {
 							</Typography>
 						)}
 						{productDetails.map((detail, index) => (
-							detail.value ? <DetailItem key={index} label={detail.label} value={detail.value} lg={lg} /> : <DetailItem key={index} label={detail.label} value={"Undefined"} lg={lg} />
+							detail.value ? <DetailItem key={index} label={detail.label} value={detail.value} lg={lg} /> : <></>
 						))}
 
 						<DetailItem label="Seller" value={product?.seller} lg={lg} />

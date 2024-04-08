@@ -14,6 +14,7 @@ import UserProducts from '../components/userProducts.jsx';
 import { LineChart } from '@mui/x-charts/LineChart'
 import NoProducts from '../components/noProducts.jsx';
 import {useMediaQuery} from '@mui/material';
+import "../css/App.css";
 
 
 
@@ -153,7 +154,7 @@ const UserProfile = () => {
                 maxWidth: "100%",
                 // position: "relative",
                 // backgroundAttachment: "scroll",
-                // overflowY: 'auto',
+                
             }}>
                 <Typography variant="h4" sx={{ color: "white", textAlign: "left", paddingTop: 2, marginLeft: '2%' }}>Dashboard & Profile</Typography>
                 <Grid container spacing={2} style={{ height: '30%', width: '100%', paddingTop: 5, position:"absolute", }}>
@@ -238,7 +239,7 @@ const UserProfile = () => {
                         display: 'flex',
                         width: '100%',
                         position: 'absolute',
-                        backgroundColor: "white"
+                        backgroundColor: "white",
                     }}>
                         {currentProducts.length > 0 && <UserProducts products={currentProducts} handleDeleteItem={handleDeleteItem} selectedTab={selectedTab}/>}
                     </Grid>
