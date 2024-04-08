@@ -240,7 +240,7 @@ const UserProfile = () => {
                         position: 'absolute',
                         backgroundColor: "white"
                     }}>
-                        {currentProducts.length > 0 && <UserProducts products={currentProducts} handleDeleteItem={handleDeleteItem} />}
+                        {currentProducts.length > 0 && <UserProducts products={currentProducts} handleDeleteItem={handleDeleteItem} selectedTab={selectedTab}/>}
                     </Grid>
                     {currentProducts.length === 0 && <NoProducts styles={{
                         justifyContent: 'center',
