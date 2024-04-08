@@ -30,7 +30,6 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
     const [selectedProduct, setSelectedProduct] = React.useState(null);
 
     const [openDonationRequests, setOpenDonationRequests] = React.useState(false);
-    const sm = useMediaQuery(theme.breakpoints.down('xs'));
     const lg = useMediaQuery(theme.breakpoints.up('sm'));
 
     const handleClickOpen = (id) => {

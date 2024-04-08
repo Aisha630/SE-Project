@@ -110,7 +110,7 @@ const ProductDetails = () => {
 				else
 					throw new Error(data.error);
 			}
-			).catch(error => { console.log(error); toast.error(error || "Error fetching seller details")})
+			).catch(error => { console.log(error); toast.error(error || "Error fetching seller details") })
 		}
 		if (product?.seller) { getSeller() }
 	}, [product?.seller, token, navigate])
@@ -126,12 +126,12 @@ const ProductDetails = () => {
 			credentials: 'include'
 		}).then(response => {
 			fetchCartItems();
-			if (response.ok)
-				toast.success(`${product.name} added to cart`);
-			return response.json();
-		}).then(data => {
-			if (data.error)
-				toast.error(data.error);
+			if (response.ok) { toast.success(`${product.name} added to cart`); return; }
+			else {
+				response.json().then(data => {
+					toast.error(data.error || "Error adding to cart");
+				})
+			}
 		}).catch(error => {
 			console.log(error)
 			toast.error("Error adding to cart")
@@ -304,7 +304,7 @@ const ProductDetails = () => {
 						</Typography>
 					</Grid>
 					<Grid item xs={12} sm={12} md={12} lg={12} sx={{ p: 3 }}>
-						{product && <Recs productType={product.__t}/>}
+						{product && <Recs productType={product.__t} />}
 					</Grid>
 				</Grid>
 			</Grid>
