@@ -42,6 +42,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
     const handleDelete = () => {
         handleDeleteItem(selectedProductId);
         setOpen(false);
+        toast.error('Item deleted successfully');
     }
     const handleEditItem = () => {
         // Implement edit item logic
