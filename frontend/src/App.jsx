@@ -17,6 +17,9 @@ import OrderSummaryPage from './pages/orderSummary';
 import UserProfile from './pages/userProfile';
 import EditAd from './pages/editad';
 import React from 'react';
+import { SocketProvider } from './context/socketContext';
+
+
 const theme = createTheme({
   palette: {
     background: {
@@ -46,26 +49,28 @@ function App() {
         color: "black",
       }} />
       <AuthProvider>
-      <CartProvider>
-        <div className="App">
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/sell" element={<PostAd />} />
-              <Route path="/shop" element={<ShopItems mode={"sale"}/>} />
-              <Route path="/auction" element={<ShopItems mode={"auction"}/>} />
-              <Route path="/donation" element={<ShopItems mode={"donate"}/>} />
-              <Route path="/shop/:id" element={<ProductDetails />} />
-              <Route path="/checkout" element={<OrderSummaryPage/>} />
-              <Route path="/profile" element={<UserProfile />} />
-              <Route path="/edit/:id" element={<EditAd />} />
-              <Route path="*" element={<ErrorPage />} />
+        <CartProvider>
+          <SocketProvider>
+            <div className="App">
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/signup" element={<SignUp />} />
+                  <Route path="/sell" element={<PostAd />} />
+                  <Route path="/shop" element={<ShopItems mode={"sale"} />} />
+                  <Route path="/auction" element={<ShopItems mode={"auction"} />} />
+                  <Route path="/donation" element={<ShopItems mode={"donate"} />} />
+                  <Route path="/shop/:id" element={<ProductDetails />} />
+                  <Route path="/checkout" element={<OrderSummaryPage />} />
+                  <Route path="/profile" element={<UserProfile />} />
+                  <Route path="/edit/:id" element={<EditAd />} />
+                  <Route path="*" element={<ErrorPage />} />
 
-            </Routes>
-          </BrowserRouter>
-        </div>
+                </Routes>
+              </BrowserRouter>
+            </div>
+            </SocketProvider >
         </CartProvider>
       </AuthProvider>
     </ThemeProvider>

@@ -41,7 +41,7 @@ const InfoCard = ({ title, items, isCart, deleteItem }) => {
                             <ListItemText sx={{
                                 textTransform: isCart ? "capitalize" : "", '& .MuiListItemText-primary': md ? "" : { fontSize: '0.85rem' },
                                 '& .MuiListItemText-secondary': md ? "" : { fontSize: '0.80rem' }
-                            }} primary={isCart ? item.name : item.username} secondary={isCart ? `Size: ${item.size}` : item.email.toLowerCase()} />
+                            }} primary={isCart ? item.name : item.username} secondary={isCart ? item.size ? `Size: ${item.size}` : "" :  item.email.toLowerCase()} />
 
                             {isCart &&
                                 <ListItemText sx={{ textAlign: "right", textTransform: "capitalize", m: "0 10px 0 2px", '& .MuiListItemText-primary': md ? "" : { fontSize: '0.85rem' } }} primary={` Rs. ${item.price}`} />

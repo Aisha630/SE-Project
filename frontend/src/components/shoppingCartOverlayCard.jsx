@@ -54,30 +54,30 @@ const ShoppingCartOverlayCard = ({ cartVisibility, cartVisibilityToggle, deleteF
                                             },
 
                                         }}>
-                                        {< Avatar src = {`http://localhost:5003${item.images[0]}`} variant="square" sx={{ width: md ? "12%" : "12%", height: "auto", borderRadius: 2, margin: 2, padding: 0, maxHeight: "100%", minWidth: "60px", maxWidth: "80px" }} />}
+                                            {< Avatar src={`http://localhost:5003${item.images[0]}`} variant="square" sx={{ width: md ? "12%" : "12%", height: "auto", borderRadius: 2, margin: 2, padding: 0, maxHeight: "100%", minWidth: "60px", maxWidth: "80px" }} />}
 
-                                <ListItemText sx={{
-                                    textTransform: "capitalize", '& .MuiListItemText-primary': md ? "" : { fontSize: '0.85rem' },
-                                    '& .MuiListItemText-secondary': md ? "" : { fontSize: '0.80rem' }
-                                }} primary={item.name} secondary={`Size: ${item.size}`} />
-                                <ListItemText sx={{ textAlign: "right", textTransform: "capitalize", m: "0 10px 0 2px", '& .MuiListItemText-primary': md ? "" : { fontSize: '0.85rem' } }} primary={`Rs. ${item.price}`} />
-                                </Box>
+                                            <ListItemText sx={{
+                                                textTransform: "capitalize", '& .MuiListItemText-primary': md ? "" : { fontSize: '0.85rem' },
+                                                '& .MuiListItemText-secondary': md ? "" : { fontSize: '0.80rem' }
+                                            }} primary={item.name} secondary={item.size ? `Size: ${item.size}` : ""} />
+                                            <ListItemText sx={{ textAlign: "right", textTransform: "capitalize", m: "0 10px 0 2px", '& .MuiListItemText-primary': md ? "" : { fontSize: '0.85rem' } }} primary={`Rs. ${item.price}`} />
+                                        </Box>
 
-                                < IconButton edge="end" aria-label="delete" onClick={() => { deleteFromCart(item) }} sx={{ padding: 2, zIndex: 20 }}>
-                                    <DeleteIcon />
-                                </IconButton>
-                            </ListItem>
+                                        < IconButton edge="end" aria-label="delete" onClick={() => { deleteFromCart(item) }} sx={{ padding: 2, zIndex: 20 }}>
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </ListItem>
                                 ))}
-                            <Divider variant="fullWidth" sx={{ m: 2 }} />
-                            <Typography variant="subtitle1" gutterBottom textAlign="left" sx={{ m: 1, textAlign: "left" }}>Total: Rs. {totalPrice}</Typography>
-                            <Box display="flex" justifyContent="flex-end" alignItems="center" sx={{ mt: 3 }}>
-                                <SiteButton align="right" styles={{ width: "30%", padding: 1 }} text="Checkout" onClick={() => { navigate("/checkout") }} />
-                            </Box>
-                        </List>
-                    </Paper>
-                </Grid>
-            </Fade >
-        </Backdrop >
+                                <Divider variant="fullWidth" sx={{ m: 2 }} />
+                                <Typography variant="subtitle1" gutterBottom textAlign="left" sx={{ m: 1, textAlign: "left" }}>Total: Rs. {totalPrice}</Typography>
+                                <Box display="flex" justifyContent="flex-end" alignItems="center" sx={{ mt: 3 }}>
+                                    <SiteButton align="right" styles={{ width: "30%", padding: 1 }} text="Checkout" onClick={() => { navigate("/checkout") }} />
+                                </Box>
+                            </List>
+                        </Paper>
+                    </Grid>
+                </Fade >
+            </Backdrop >
         </Grid >
     )
 };

@@ -1,19 +1,34 @@
-import { AppBar, Toolbar, IconButton, Typography, Box, Button, Menu, MenuItem, Badge, Container, Autocomplete, TextField, Popover, List, ListItem, ListItemText } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Typography, Box, Button, Badge, Container, useMediaQuery } from '@mui/material';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AddIcon from '@mui/icons-material/Add';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLogout } from '../hooks/useLogout';
 import { useSelector } from 'react-redux';
 import ShoppingCartOverlayCard from './shoppingCartOverlayCard';
 import { toast } from 'react-toastify';
 import { useCart } from '../context/cartContext';
-import { useMediaQuery } from '@mui/material';
+import { } from '@mui/material';
 import theme from '../themes/homeTheme';
 import React from 'react';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import "../css/App.css";
+import { useSocket } from '../context/socketContext';
+
+const commonIconStyle = {
+    '&:hover': {
+        backgroundColor: "primary.dark"
+    },
+    '&.visited': {
+        backgroundColor: "primary.dark",
+    },
+    margin: 1,
+    '&:focus': {
+        outline: 'none',
+    }
+}
 
 function Dropdown() {
     const [isOpen, setIsOpen] = useState(false);
@@ -24,7 +39,7 @@ function Dropdown() {
         logout();
         setIsOpen(false);
     };
-    const options = [{ label: "Profile", onClick: ()=> navigate("/profile") }, { label: "Logout", onClick: ()=>handleLogout() }];
+    const options = [{ label: "Profile", onClick: () => navigate("/profile") }, { label: "Logout", onClick: () => handleLogout() }];
 
     const handleClick = () => {
         setIsOpen((prev) => !prev);
@@ -37,13 +52,13 @@ function Dropdown() {
     return (
         <ClickAwayListener onClickAway={handleClickAway}>
             <div style={{ position: "relative", display: "inline-block", }}>
-                <IconButton onClick={handleClick}>
+                <IconButton onClick={handleClick} sx={commonIconStyle}>
                     <AccountCircleIcon />
                 </IconButton>
                 {isOpen && (
                     <ul style={{ position: 'absolute', listStyle: 'none', backgroundColor: "white", padding: 0, zIndex: 10, top: "50%", right: "40%" }}>
                         {options.map((option, index) => (
-                            <li key={index} onClick={option.onClick} className="listItem" style={{ cursor: 'pointer', padding: 10, paddingLeft: 20, paddingRight: 20, margin:10}}>
+                            <li key={index} onClick={option.onClick} className="listItem" style={{ cursor: 'pointer', padding: 10, paddingLeft: 20, paddingRight: 20, margin: 10 }}>
                                 {option.label}
                             </li>
                         ))}
@@ -55,9 +70,9 @@ function Dropdown() {
 
 }
 
-
-
 const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home", setsearchproducts, setisempty }) => {
+
+    const socket = useSocket();
     const navigate = useNavigate();
     const [isCartVisible, setIsCartVisible] = useState(false);
     const { cartItems, fetchCartItems } = useCart();
@@ -65,9 +80,21 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home", setsear
     const sm = useMediaQuery(theme.breakpoints.up('sm'));
     const md = useMediaQuery(theme.breakpoints.up('md'));
     const lg = useMediaQuery(theme.breakpoints.up('lg'));
-    // const [isOpen, setOpen] = useState(false);
     const height = lg ? '5vh' : md ? '3vh' : sm ? '40px' : '30px';
+    const [notifications, setNotifications] = useState([]);
+    const [showNotifications, setShowNotifications] = useState(false);
 
+    useEffect(() => {
+        socket.on("newBid", (data) => { setNotifications([...notifications, data]) });
+        socket.on("donationReq", (data) => { setNotifications([...notifications, data]) });
+        socket.on("productSold", (data) => { setNotifications([...notifications, data]) });
+
+        return () => {
+            socket.off("newBid");
+            socket.off("donationReq");
+            socket.off("productSold");
+        }
+    }, [socket]);
 
     const deleteFromCart = (product) => {
         fetch(`http://localhost:5003/cart?id=${product._id}`, {
@@ -99,6 +126,9 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home", setsear
         navigate("/");
     }
 
+    const toggleNotifs = () => {
+        setShowNotifications(!showNotifications);
+    }
 
     return (
         <AppBar position="static" sx={{ backgroundColor: "#e0e0e0", ...styles, boxShadow: "none" }} >
@@ -117,18 +147,16 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home", setsear
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
                         <Search setisempty={setisempty} setsearchproducts={setsearchproducts} />
-                        <IconButton edge="end" color="gray" disableRipple aria-label="cart" onClick={() => { fetchCartItems(); toggleCart(); }} sx={{
-                            '&:hover': {
-                                backgroundColor: "primary.dark"
-                            },
-                            '&.visited': {
-                                backgroundColor: "primary.dark",
-                            },
-                            margin: 1,
-                            '&:focus': {
-                                outline: 'none',
-                            }
-                        }}>
+                        <IconButton edge="end" color="gray" disableRipple aria-label="notifications" onClick={toggleNotifs} sx={commonIconStyle}>
+                            <Badge badgeContent={notifications.length} max={99} color="secondary">
+                                <NotificationsIcon sx={{
+                                    fontSize: lg ? 25 : md ? 20 : 17, '&:focus': {
+                                        outline: 'none',
+                                    }
+                                }} />
+                            </Badge>
+                        </IconButton>
+                        <IconButton edge="end" color="gray" disableRipple aria-label="cart" onClick={() => { fetchCartItems(); toggleCart(); }} sx={commonIconStyle}>
                             <Badge badgeContent={cartItems.length} max={99} color="secondary">
                                 <ShoppingCartIcon sx={{
                                     fontSize: lg ? 25 : md ? 20 : 17, '&:focus': {
@@ -142,53 +170,8 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home", setsear
                             isCartVisible && <ShoppingCartOverlayCard cartVisibility={isCartVisible} cartVisibilityToggle={setIsCartVisible} deleteFromCart={deleteFromCart} />
                         }
 
-                        {/* <IconButton edge="end" color="gray" aria-label="account" aria-haspopup="true" aria-controls="menu-account" onClick={handleMenu} sx={{
-                            '&:hover': {
-                                backgroundColor: "primary.dark",
-                            },
-                            margin: 1,
-                        }}>
-                            <AccountCircleIcon sx={{}} />
-                        </IconButton> */}
                         <Dropdown />
 
-
-                        {/* <Menu
-                            id="menu-account"
-                            anchorEl={anchorEl}
-                            anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'left',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={open}
-                            onClose={handleClose}
-                            sx={{ borderRadius: 2, boxShadow: 2 }}
-
-                        >
-                            <MenuItem onClick={() => { navigate("/profile") }} sx={{
-                                fontSize: lg ? '0.95rem' : "0.8rem",
-                                '&:hover': {
-                                    backgroundColor: "#58a75b",
-                                    borderRadius: '20px',
-                                    opacity: 0.8,
-
-                                }, m: 1, p: 1, paddingLeft: 4, paddingRight: 4
-                            }}> Profile </MenuItem>
-
-                            <MenuItem onClick={handleLogout} sx={{
-                                fontSize: lg ? '0.95rem' : "0.8rem", '&:hover': {
-                                    backgroundColor: "#58a75b",
-                                    borderRadius: '20px',
-                                    opacity: 0.8,
-                                }, m: 1, p: 1, paddingLeft: 4, paddingRight: 4
-                            }}> Logout </MenuItem>
-
-                        </Menu> */}
 
 
                         <Button
