@@ -43,6 +43,7 @@ export async function checkout(req, res) {
 
     const itemCheckouts = cart.map(async (item) => {
       item.isHold = true;
+      item.buyerUsername = buyer.username;
       const save = item.save();
 
       const seller = await User.findOne({ username: item.seller });
