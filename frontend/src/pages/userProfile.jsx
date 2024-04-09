@@ -20,13 +20,14 @@ import "../css/App.css";
 
 
 const UserProfile = () => {
-    const [selectedTab, setSelectedTab] = useState('Donations');
-    // const [selectedTab, setSelectedTab] = useState('For Sale');
+    // const [selectedTab, setSelectedTab] = useState('Donations');
+    const [selectedTab, setSelectedTab] = useState('For Sale');
     const [user, setUser] = useState({});
     const [products, setProducts] = useState([]);
     const navigate = useNavigate();
     const [graph, setGraph] = useState('Monthly');
     const lg = useMediaQuery(theme.breakpoints.up('lg'));
+    const [refresh, setRefresh] = useState(false);
 
     const username = useSelector((state) => state.auth.user);
     const token = useSelector((state) => state.auth.token);
@@ -70,7 +71,7 @@ const UserProfile = () => {
         })
             .catch((error) => { console.log("The error is:", error) });
 
-    }, [token, navigate, username, selectedTab])
+    }, [token, navigate, username, selectedTab, refresh])
 
     const rating = user.rating ? user.rating.rating : 0;
     const currentProducts = products;
@@ -133,6 +134,7 @@ const UserProfile = () => {
             } return res.json()
         }).then((data) => {
             console.log("The data is ", data);
+            setRefresh(!refresh);
             // setUser(data);
         })
             .catch((error) => { console.log("The error is:", error) });

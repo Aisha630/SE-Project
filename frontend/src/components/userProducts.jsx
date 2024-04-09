@@ -12,17 +12,17 @@ import ConfirmDeletionOverlay from './confirmDeletion';
 import DonationRequestsOverlay from './donationRequestsOverlay';
 
 const options = [
-    { label: 'On Hold', value: 'on_hold' },
     { label: 'Live', value: 'live' },
+    { label: 'On Hold', value: 'on_hold' },
+    { label: 'Sold', value: 'sold' },
 ];
-
-
 
 const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
 
     const [open, setOpen] = React.useState(false);
     const [selectedProductId, setSelectedProductId] = React.useState(null);
     const [selectedProduct, setSelectedProduct] = React.useState(null);
+    // const [options, setOptions] = React.useState([{ label: 'Live', value: 'live' }, { label: 'On Hold', value: 'on_hold' }, { label: 'Sold', value: 'sold' }]);
 
     const [openDonationRequests, setOpenDonationRequests] = React.useState(false);
     const lg = useMediaQuery(theme.breakpoints.up('sm'));
@@ -36,7 +36,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
     const handleClose = () => {
         setOpen(false);
         setOpenDonationRequests(false);
-        
+
     };
 
     const handleDelete = () => {
@@ -56,23 +56,25 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
         toast.success(`Your item has been reopened for ${mode}`);
     }
 
-    const handleDonationRequests = ({ product }) => {
-        // Implement view requests logic
-        // call to backend to view the requests
-        // setSelectedProductId(id);
-        console.log("Inside handleDonationRequests", product);
+    const handleViewDonationRequests = ({ product }) => {
         setSelectedProduct(product);
         setOpenDonationRequests(true);
-        // toast.success('Requests viewed successfully');
+    }
+
+    const handleItemSold = (id) => {
+        // Implement item sold logic
+        // call to backend to mark item as sold
+        handleDeleteItem(id);
+        toast.success('Congratulations on your Sale!');
     }
 
     const handleDonateApproved = (username) => {
         // Implement donate approved logic
         // call to backend to donate approved
-        
+
         setOpenDonationRequests(false);
         toast.success(`Donation to ${username} approved! Check your email for next steps.`);
-        
+
     }
 
     return (
@@ -110,35 +112,28 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
                                 </IconButton>
                             </Box>
                             <CardActions sx={{ justifyContent: 'space-between', padding: 2, pt: 0, }}>
-
                                 <FormControl sx={{ minWidth: 140, color: '#517652', display: 'flex', }}>
-                                    {/* <InputLabel id="status-label" sx={{m:0, p:0}}>Status</InputLabel> */}
-                                    {/* <Select */}
-                                    {/* labelId="status-label" */}
-                                    {/* id="status-select" */}
-                                    {/* value={product.isHold ? "On Hold" : "Live"} */}
-                                    {/* label="Status" */}
-                                    {/* onChange={handleChange} */}
-                                    {/* sx={{m:0, p:0, overflowX:"hidden"}} */}
-                                    {/* overflow = "scroll" */}
-                                    {/*  */}
-                                    {/* > */}
-                                    {/* <MenuItem value={"On Hold"} >On Hold</MenuItem> */}
-                                    {/* <MenuItem value={"Live"} >Live</MenuItem> */}
-                                    {/* </Select> */}
                                     <Autocomplete
                                         // defaultValue={product.isHold ? options[0] : options[1]}
                                         defaultValue={options.find(option => option.value === (product.isHold ? 'on_hold' : 'live'))}
                                         isOptionEqualToValue={(option, value) => option.value === value.value}
-                                        options={options}
+                                        options={options.find(option => option.value === 'on_hold') ? options.filter(option => option.value === 'sold') : options}
                                         getOptionLabel={(option) => option.label}
                                         renderInput={(params) => <TextField {...params} label="Status" />}
                                         disableClearable={true}
+                                        disabled={!product.isHold}
+                                        onChange={(event, value) => {
+                                            // Implement status change logic
+                                            if (value.value === 'sold') {
+                                                // call to backend to change status to sold
+                                                handleItemSold(product._id);
+                                            }
+                                        }}
                                     />
                                 </FormControl>
                                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                                     {product.__t === 'DonationProduct' && !product.isHold &&
-                                        <Button variant="contained" onClick={() => handleDonationRequests({ product })} size={sm ? "small" : "medium"} sx={{
+                                        <Button variant="contained" onClick={() => handleViewDonationRequests({ product })} size={sm ? "small" : "medium"} sx={{
                                             backgroundColor: '#517652',
                                             // marginBottom: 1,
 
@@ -179,7 +174,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
 
                     </Card>
                     <ConfirmDeletionOverlay open={open} handleConfirmDelete={handleDelete} handleClose={handleClose} />
-                    <DonationRequestsOverlay open={openDonationRequests} handleClose={handleClose} product={selectedProduct} handleDonate={handleDonateApproved}/>
+                    <DonationRequestsOverlay open={openDonationRequests} handleClose={handleClose} product={selectedProduct} handleDonate={handleDonateApproved} />
                 </Grid>
             ))
             }
