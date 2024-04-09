@@ -17,10 +17,12 @@ import userRoutes from "./routes/userRoute.js";
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server, {cors: {
-  origin: "http://localhost:3000", 
-  methods: ["GET", "POST"]
-}});
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"]
+  }
+});
 
 // Middleware setup
 app.use(cookieParser());
@@ -97,3 +99,4 @@ mongoose
     console.error(err);
     process.exit(1);
   });
+export default io; 

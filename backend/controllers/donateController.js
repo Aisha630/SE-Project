@@ -6,6 +6,7 @@ import {
   sendRejectionEmail,
   sendApprovalEmail,
 } from "../services/emailService.js";
+import io from "../app.js";
 
 export async function createDonationRequest(req, res) {
   const donee = req.user;
