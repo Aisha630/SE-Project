@@ -18,6 +18,7 @@ import UserProfile from './pages/userProfile';
 import EditAd from './pages/editad';
 import React from 'react';
 import { SocketProvider } from './context/socketContext';
+// import {NotifProvider} from './context/notifContext';
 
 
 const theme = createTheme({
@@ -51,6 +52,7 @@ function App() {
       <AuthProvider>
         <CartProvider>
           <SocketProvider>
+            {/* <NotifProvider> */}
             <div className="App">
               <BrowserRouter>
                 <Routes>
@@ -70,6 +72,7 @@ function App() {
                 </Routes>
               </BrowserRouter>
             </div>
+            {/* </NotifProvider> */}
             </SocketProvider >
         </CartProvider>
       </AuthProvider>
