@@ -87,9 +87,9 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home", setsear
       
     const socket = useSocket();
     useEffect(() => {
-        socket.on("newBid", (data) => { setNotifications([...notifications, data.message]);console.log(data)});
-        socket.on("donationRequest", (data) => { setNotifications([...notifications, data.message]); console.log(data) });
-        socket.on("productSold", (data) => { setNotifications([...notifications, data.message]); console.log(data)  });
+        socket.on("newBid", (data) => { setNotifications((notifications)=> [...notifications, data.message]);console.log(data)});
+        socket.on("donationRequest", (data) => { setNotifications((notifications)=> [...notifications, data.message]); console.log(data) });
+        socket.on("productSold", (data) => { setNotifications((notifications)=> [...notifications, data.message]); console.log(data)  });
   
         return () => {
             socket.off("newBid");

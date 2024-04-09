@@ -34,10 +34,10 @@ const NotificationOverlayCard = ({ notifVisibility, notifVisibilityToggle, notif
                                 </IconButton>
                                 <Typography variant="subtitle1" gutterBottom sx={{ textAlign: "left", fontWeight: 600, m: 1 }}>Continue Shopping </Typography>
                                 <Box flexGrow={1}></Box>
-                                <IconButton onClick={() => { setNotifications([]) }} sx={{ margin: "1px", position: 'relative', padding: 0,}}>
+                                <IconButton onClick={() => { setNotifications([]) }} sx={{ margin: "1px", position: 'relative', padding: 0, color:"black"}}>
                                     <ClearAllIcon />
-                                </IconButton>
                                 <Typography variant="subtitle1" gutterBottom sx={{ textAlign: "left", fontWeight: 600, m: 1 }}>Clear All </Typography>
+                                </IconButton>
 
                             </Box>
 
@@ -46,8 +46,8 @@ const NotificationOverlayCard = ({ notifVisibility, notifVisibilityToggle, notif
                             <Typography variant={md ? "h6" : "subtitle1"} gutterBottom sx={{ textAlign: "left", m: 1, fontWeight: 500 }}>Your Notifications</Typography>
                             <Typography variant="subtitle2" gutterBottom sx={{ textAlign: "left", fontWeight: 400, m: 1 }}>{`You have ${notifications.length} notifications`}</Typography>
                             <List >
-                                {notifications.map(item => (
-                                    <ListItem key={item._id} sx={{
+                                {notifications.map((item, index) => (
+                                    <ListItem key={index} sx={{
                                         borderRadius: 2, margin: 1, mb: 2, boxShadow: '0 0 4px rgba(0, 0, 0, 0.25)', height: "15vh", maxHeight: "140px",
                                         '&:visited': {
                                             color: 'inherit',
