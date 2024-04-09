@@ -56,20 +56,21 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
         // call to backend to reopen the product
         let mode = selectedTab === 'Auctioned' ? 'Auction' : selectedTab === 'Donations' ? 'Donation' : 'Sale';
 
-        const data = { mode: 'SaleProduct', price: product.price}
+        const data = { _id: product._id ,mode: 'SaleProduct', price: product.price}
         toast.success(`Your item has been reopened for ${mode}!`);
         if (selectedTab !== 'Auctioned') {
             handleReopenItem(data);
         } else {
             setConfirmReopen(true);
+            // setSelectedProduct(product);
         }
             
     }
 
-    const handleReopenAuction = (startingBid, endTime) => {
+    const handleReopenAuction = (startingBid, endTime, id) => {
         // Implement reopen auction logic
         console.log(startingBid, endTime);
-        const data = { mode: 'AuctionProduct', startingBid: startingBid, endTime: endTime }
+        const data = { _id: id ,mode: 'AuctionProduct', startingBid: startingBid, endTime: endTime }
         handleReopenItem(data);
         setConfirmReopen(false);
         toast.success('Your auction has been reopened!');
@@ -193,7 +194,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
                     </Card>
                     <ConfirmDeletionOverlay open={open} handleConfirmDelete={handleDelete} handleClose={handleClose} />
                     <DonationRequestsOverlay open={openDonationRequests} handleClose={handleClose} product={selectedProduct} handleDonate={handleDonateApproved} />
-                    <ConfirmReopenOverlay open={confirmReopen} handleReopen={handleReopenAuction} handleClose={handleClose} />
+                    <ConfirmReopenOverlay open={confirmReopen} handleReopen={handleReopenAuction} handleClose={handleClose} product={product} />
                 </Grid>
             ))
             }

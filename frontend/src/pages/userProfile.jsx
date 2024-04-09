@@ -150,8 +150,8 @@ const UserProfile = () => {
         }
 
 
-        // console.log("in user profile and the product is:", product);
-        // console.log("in user profile and the queryBody is:", queryBody);
+        console.log("in user profile and the product is:", product);
+        console.log("in user profile and the queryBody is:", queryBody);
         fetch(`http://localhost:5003/shop/${product._id}/reopen`, {
             method: 'PATCH',
             headers: {

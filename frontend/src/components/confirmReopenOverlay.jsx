@@ -4,7 +4,7 @@ import { Backdrop, Paper, Typography, Box, IconButton, Fade, TextField, InputAdo
 import CloseIcon from '@mui/icons-material/Close';
 import SiteButton from './button';
 
-const ConfirmReopenOverlay = ({ open, handleReopen, handleClose }) => {
+const ConfirmReopenOverlay = ({ open, handleReopen, handleClose, product }) => {
 
   const [startingBid, setStartingBid] = React.useState(0);
   const [endTime, setEndTime] = React.useState(new Date().toISOString().slice(0, 16));
@@ -19,10 +19,11 @@ const ConfirmReopenOverlay = ({ open, handleReopen, handleClose }) => {
   }
 
   const handleSubmit = () => {
-    handleReopen(startingBid, endTime);
+    handleReopen(startingBid, endTime, product._id);
     handleClose();
-    setStartingBid(0);
-    setEndTime(new Date().toISOString().slice(0, 16));
+    // setStartingBid(0);
+    // setEndTime(new Date().toISOString().slice(0, 16));
+    // setId(0);
   }
 
   return (
