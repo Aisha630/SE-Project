@@ -8,6 +8,7 @@ import { useMediaQuery } from '@mui/material';
 import theme from '../themes/homeTheme';
 import ConfirmDeletionOverlay from './confirmDeletion';
 import DonationRequestsOverlay from './donationRequestsOverlay';
+import ConfirmReopenOverlay from './confirmReopenOverlay';
 
 const options = [
     { label: 'Live', value: 'live' },
@@ -17,9 +18,11 @@ const options = [
 
 const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenItem }) => {
 
+    console.log(products)
     const [open, setOpen] = React.useState(false);
     const [selectedProductId, setSelectedProductId] = React.useState(null);
     const [selectedProduct, setSelectedProduct] = React.useState(null);
+    const [confirmReopen, setConfirmReopen] = React.useState(false);
     // const [options, setOptions] = React.useState([{ label: 'Live', value: 'live' }, { label: 'On Hold', value: 'on_hold' }, { label: 'Sold', value: 'sold' }]);
 
     const [openDonationRequests, setOpenDonationRequests] = React.useState(false);
@@ -34,7 +37,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
     const handleClose = () => {
         setOpen(false);
         setOpenDonationRequests(false);
-
+        setConfirmReopen(false);
     };
 
     const handleDelete = () => {
@@ -54,9 +57,11 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
         let mode = selectedTab === 'Auctioned' ? 'Auction' : selectedTab === 'Donations' ? 'Donation' : 'Sale';
 
         toast.success(`Your item has been reopened for ${mode}!`);
-        // if (selectedTab !== 'Auctioned') {
+        if (selectedTab !== 'Auctioned') {
             handleReopenItem(product);
-        // }
+        } else {
+            setConfirmReopen(true);
+        }
             
     }
 
@@ -119,7 +124,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
                                 <FormControl sx={{ minWidth: 140, color: '#517652', display: 'flex', }}>
                                     <Autocomplete
                                         // defaultValue={product.isHold ? options[0] : options[1]}
-                                        defaultValue={options.find(option => option.value === (product.isHold ? 'on_hold' : 'live'))}
+                                        value={options.find(option => option.value === (product.isHold ? 'on_hold' : 'live'))}
                                         isOptionEqualToValue={(option, value) => option.value === value.value}
                                         options={options.find(option => option.value === 'on_hold') ? options.filter(option => option.value === 'sold') : options}
                                         getOptionLabel={(option) => option.label}
@@ -178,6 +183,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
                     </Card>
                     <ConfirmDeletionOverlay open={open} handleConfirmDelete={handleDelete} handleClose={handleClose} />
                     <DonationRequestsOverlay open={openDonationRequests} handleClose={handleClose} product={selectedProduct} handleDonate={handleDonateApproved} />
+                    <ConfirmReopenOverlay open={confirmReopen} handleReopen={handleReopen} handleClose={handleClose} />
                 </Grid>
             ))
             }
