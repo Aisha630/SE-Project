@@ -8,6 +8,7 @@ const joiSchema = Joi.object({
   password: Joi.string().min(8).required(),
   verified: Joi.boolean().default(false),
   avatar: Joi.string().required(),
+  connectionID: Joi.string().optional(),
   donationHistory: Joi.array().items(Joi.string()).default([]),
 
   rating: Joi.object({
