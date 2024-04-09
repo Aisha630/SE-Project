@@ -23,7 +23,7 @@ export async function addToCart(req, res) {
 }
 
 export async function deleteFromCart(req, res) {
-  const toDelete = req.body.id;
+  const toDelete = req.query.id;
   const cartIDs = getIDs(req);
 
   res.cookie(
@@ -48,6 +48,12 @@ export async function checkout(req, res) {
       const seller = await User.findOne({ username: item.seller });
       const productDetails = { name: item.name, price: item.price };
       const email = sendCheckoutEmail(seller, buyer, productDetails);
+
+      if (seller.connectionID) {
+        io.to(seller.connectionID).emit("productSold", {
+          message: `Your product "${item.name}" has been sold to ${buyer.username}.`,
+        });
+      }
 
       return Promise.all([save, email]);
     });

@@ -34,7 +34,9 @@ export async function createDonationRequest(req, res) {
     );
 
     if (existingIndex !== -1) {
-      product.requestList[existingIndex][1] = requestDescription;
+      return res
+        .status(400)
+        .json({ error: "You have already requested this product" });
     } else {
       product.requestList.push([donee.username, requestDescription]);
 
@@ -45,6 +47,14 @@ export async function createDonationRequest(req, res) {
     }
 
     await product.save();
+
+    const seller = await User.findOne({ username: product.seller });
+    if (seller.connectionID) {
+      io.to(seller.connectionID).emit("donationRequest", {
+        message: `A donation request by ${donee.username} was received for "${product.name}".`,
+      });
+    }
+
     res.sendStatus(200);
   } catch (err) {
     console.log(err.message);

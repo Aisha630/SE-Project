@@ -38,12 +38,20 @@ export async function bidOnProduct(req, res) {
 
   try {
     await product.save();
-    const productDetails = {
-      name: product.name,
-      currentBid: product.currentBid,
-      seller: product.seller,
-    };
-    sendBidEmail(productDetails);
+    const seller = await User.findOne({ username: product.seller });
+
+    //const productDetails = {
+    //  name: product.name,
+    //  currentBid: product.currentBid,
+    //  seller: seller.username,
+    //};
+    // sendBidEmail(productDetails);
+
+    if (seller.connectionID) {
+      io.to(seller.connectionID).emit("newBid", {
+        message: `A new bid was placed by ${req.user.username} on "${product.name}".`,
+      });
+    }
     res.json(product);
   } catch (error) {
     console.log(error);

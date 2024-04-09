@@ -3,8 +3,12 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import mongoose from "mongoose";
+import http from "http";
+import { Server } from "socket.io";
+import jwt from "jsonwebtoken";
 
 import Image from "./models/imageModel.js";
+import User from "./models/userModel.js";
 import authRoutes from "./routes/authRoute.js";
 import authorizeUser from "./middleware/authMiddleware.js";
 import cartRoutes from "./routes/cartRoute.js";
@@ -12,10 +16,17 @@ import productRoutes from "./routes/productRoute.js";
 import userRoutes from "./routes/userRoute.js";
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
 
 // Middleware setup
 app.use(cookieParser());
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -28,6 +39,30 @@ app.get("/images/:filename", async (req, res) => {
 
   res.set("Content-Type", image.mimeType);
   res.send(image.data);
+});
+
+io.on("connection", (socket) => {
+  socket.on("register", (token) => {
+    jwt.verify(token, process.env.JWT_PRIVATE_KEY, async (err, decoded) => {
+      if (err) {
+        console.log("Wrong jwt");
+        return socket.disconnect();
+      }
+
+      try {
+        const user = await User.findOne({ username: decoded.username });
+        if (!user) {
+          console.log("User not found");
+          return socket.disconnect();
+        }
+        user.connectionID = socket.id;
+        await user.save();
+      } catch (error) {
+        console.error("Error fetching user:", error);
+        return socket.disconnect();
+      }
+    });
+  });
 });
 
 // Route handling
