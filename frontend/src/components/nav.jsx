@@ -72,7 +72,6 @@ function Dropdown() {
 
 const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home", setsearchproducts, setisempty }) => {
 
-    const socket = useSocket();
     const navigate = useNavigate();
     const [isCartVisible, setIsCartVisible] = useState(false);
     const { cartItems, fetchCartItems } = useCart();
@@ -83,11 +82,12 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home", setsear
     const height = lg ? '5vh' : md ? '3vh' : sm ? '40px' : '30px';
     const [notifications, setNotifications] = useState([]);
     const [showNotifications, setShowNotifications] = useState(false);
-
+    
+    const socket = useSocket();
     useEffect(() => {
-        socket.on("newBid", (data) => { setNotifications([...notifications, data]) });
-        socket.on("donationReq", (data) => { setNotifications([...notifications, data]) });
-        socket.on("productSold", (data) => { setNotifications([...notifications, data]) });
+        socket.on("newBid", (data) => { setNotifications([...notifications, data]);console.log(data)});
+        socket.on("donationReq", (data) => { setNotifications([...notifications, data]); console.log(data) });
+        socket.on("productSold", (data) => { setNotifications([...notifications, data]); console.log(data)  });
 
         return () => {
             socket.off("newBid");
