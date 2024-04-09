@@ -1,4 +1,5 @@
 import User from "../models/userModel.js";
+import io from "../app.js";
 import { SaleProduct } from "../models/productModels.js";
 import { sendCheckoutEmail } from "../services/emailService.js";
 
