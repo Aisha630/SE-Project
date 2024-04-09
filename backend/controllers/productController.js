@@ -156,7 +156,7 @@ export async function addProduct(req, res) {
     await product.save();
 
     if (product.__t == "AuctionProduct") {
-      schedule.scheduleJob(new Date(product.endtime), async () => {
+      schedule.scheduleJob(new Date(product.endTime), async () => {
         await closeAuction(product._id);
       });
     }
@@ -345,7 +345,7 @@ async function reopenAuction(req, res, product) {
   product.currentBid = value.startingBid;
   product.isHold = false;
 
-  schedule.scheduleJob(new Date(product.endtime), async () => {
+  schedule.scheduleJob(new Date(product.endTime), async () => {
     await closeAuction(product._id);
   });
 
@@ -360,7 +360,7 @@ async function reopenSale(req, res, product) {
     return res.status(400).json({ error: error.details[0].message });
   }
 
-  product.price = value.startingBid;
+  product.price = value.price;
   product.isHold = false;
   await product.save();
 }
