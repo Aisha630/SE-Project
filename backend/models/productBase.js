@@ -45,6 +45,7 @@ export const productBaseJoi = Joi.object({
   images: Joi.array().items(Joi.string().required()).min(1).max(5),
   isHold: Joi.boolean().default(false),
   seller: Joi.string().required(),
+  buyerUsername: Joi.string().optional(),
 });
 
 const productBaseSchema = new mongoose.Schema(

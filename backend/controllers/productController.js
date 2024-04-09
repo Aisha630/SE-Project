@@ -315,6 +315,7 @@ export async function reopen(req, res) {
     return res.status(404).json({ error: "Product not found" });
   }
 
+  delete product.buyerUsername;
   const productType = product.__t;
   switch (productType) {
     case "SaleProduct":
@@ -343,7 +344,6 @@ async function reopenAuction(req, res, product) {
   product.endTime = value.endtime;
   product.currentBid = value.startingBid;
   product.isHold = false;
-  delete product.buyerUsername;
 
   schedule.scheduleJob(new Date(product.endtime), async () => {
     await closeAuction(product._id);
@@ -368,6 +368,5 @@ async function reopenSale(req, res, product) {
 async function reopenDonation(product) {
   product.requestList = [];
   product.isHold = false;
-  delete product.buyerUsername;
   await product.save();
 }

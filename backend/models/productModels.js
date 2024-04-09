@@ -12,7 +12,6 @@ const saleProductJoi = productBaseJoi.concat(
 
 const donationProductJoi = productBaseJoi.concat(
   Joi.object({
-    buyerUsername: Joi.string().optional(),
     requestList: Joi.array()
       .items(
         Joi.array().ordered(
@@ -29,7 +28,6 @@ const auctionProductJoi = productBaseJoi.concat(
     startingBid: Joi.number().min(0).required(),
     endTime: Joi.date().required(),
     currentBid: Joi.number().default(Joi.ref("startingBid")).forbidden(),
-    buyerUsername: Joi.string().optional(),
   })
 );
 
