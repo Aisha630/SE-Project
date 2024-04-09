@@ -143,14 +143,15 @@ const UserProfile = () => {
     const handleReopenItem = (product) => {
         
         let queryBody = {};
-        if (product.__t === 'SaleProduct') {
+        if (product.mode === 'SaleProduct') {
             queryBody = { price: product.price };
-        } else if (product.__t === 'AuctionProduct') {
+        } else if (product.mode === 'AuctionProduct') {
             queryBody = { startingBid: product.startingBid, endTime: product.endTime };
         }
 
 
-        console.log("in user profile and the product is:", product);
+        // console.log("in user profile and the product is:", product);
+        // console.log("in user profile and the queryBody is:", queryBody);
         fetch(`http://localhost:5003/shop/${product._id}/reopen`, {
             method: 'PATCH',
             headers: {
