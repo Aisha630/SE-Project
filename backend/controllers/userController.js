@@ -1,6 +1,7 @@
 import Joi from "joi";
 import User from "../models/userModel.js";
 import { Product } from "../models/productBase.js";
+import io from "../app.js";
 
 export async function getUser(req, res) {
   const { username } = req.query;
