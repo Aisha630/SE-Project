@@ -318,16 +318,19 @@ export async function reopen(req, res) {
   const productType = product.__t;
   switch (productType) {
     case "SaleProduct":
-      await reopenSale(req, product);
+      await reopenSale(req, res, product);
+      break;
     case "AuctionProduct":
-      await reopenAuction(req, product);
+      await reopenAuction(req, res, product);
+      break;
     case "DonationProduct":
       await reopenDonation(product);
+      break;
   }
   res.status(201).json(product);
 }
 
-async function reopenAuction(req, product) {
+async function reopenAuction(req, res, product) {
   const { value, error } = Joi.object({
     startingBid: Joi.number().min(0).required(),
     endTime: Joi.date().required(),
@@ -349,7 +352,7 @@ async function reopenAuction(req, product) {
   await product.save();
 }
 
-async function reopenSale(req, product) {
+async function reopenSale(req, res, product) {
   const { value, error } = Joi.object({
     price: Joi.number().min(0).required(),
   }).validate(req.body);
