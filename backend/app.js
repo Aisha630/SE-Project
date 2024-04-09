@@ -17,7 +17,12 @@ import userRoutes from "./routes/userRoute.js";
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
+});
 
 // Middleware setup
 app.use(cookieParser());
@@ -25,6 +30,7 @@ app.use(
   cors({
     origin: "http://localhost:3000",
     credentials: true,
+    methods: ["GET", "POST", "DELETE", "PATCH"],
   })
 );
 app.use(express.json());
@@ -83,7 +89,7 @@ mongoose
   .then(() => {
     const PORT = process.env.PORT;
 
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
       console.log(
         `Server running in ${process.env.BUILD_MODE} mode, on port ${PORT}.`
       );
