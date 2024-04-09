@@ -151,7 +151,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
                                         marginTop: 1,
                                         color: 'white',
                                         '&:hover': {
-                                            backgroundColor: '#f97171',
+                                            backgroundColor: '#FEABAB',
                                             color: 'white'
                                         }
                                     }}>

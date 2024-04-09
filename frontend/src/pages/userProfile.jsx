@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { ThemeProvider } from '@mui/material';
-import { Typography, Box, Grid, Avatar, Stack, Rating, Card,  FormControl, Select, MenuItem } from '@mui/material';
+import { Typography, Box, Grid, Avatar, Stack, Rating, Card, FormControl, Select, MenuItem } from '@mui/material';
 import theme from '../themes/homeTheme';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
@@ -13,7 +13,7 @@ import MainCategoryToolbar from '../components/maincategoriestoolbar.jsx';
 import UserProducts from '../components/userProducts.jsx';
 import { LineChart } from '@mui/x-charts/LineChart'
 import NoProducts from '../components/noProducts.jsx';
-import {useMediaQuery} from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import "../css/App.css";
 
 
@@ -157,10 +157,10 @@ const UserProfile = () => {
                 maxWidth: "100%",
                 // position: "relative",
                 // backgroundAttachment: "scroll",
-                
+
             }}>
                 <Typography variant="h4" sx={{ color: "white", textAlign: "left", paddingTop: 2, marginLeft: '2%' }}>Dashboard & Profile</Typography>
-                <Grid container spacing={2} style={{ height: '30%', width: '100%', paddingTop: 5, position:"absolute", }}>
+                <Grid container spacing={2} style={{ height: '30%', width: '100%', paddingTop: 5, position: "absolute", }}>
                     <Grid item xs={6} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                         <Card sx={graphStyles}>
                             <Box sx={{ display: 'flex', justifyContent: 'right', alignItems: 'right', width: '100%', height: '1%' }}>
@@ -200,7 +200,7 @@ const UserProfile = () => {
                         </Card>
                     </Grid>
 
-                    <Grid item xs={6} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                    <Grid item xs={6} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                         <Card sx={profileStyles}>
                             <Avatar src={user.avatar} sx={profileAvatarStyles} />
                             <Typography variant='h6' sx={{ color: "black", textAlign: "center", mt: 8, }}>
@@ -244,7 +244,7 @@ const UserProfile = () => {
                         position: 'absolute',
                         backgroundColor: "white",
                     }}>
-                        {currentProducts.length > 0 && <UserProducts products={currentProducts} handleDeleteItem={handleDeleteItem} selectedTab={selectedTab}/>}
+                        {currentProducts.length > 0 && <UserProducts products={currentProducts} handleDeleteItem={handleDeleteItem} selectedTab={selectedTab} />}
                     </Grid>
                     {currentProducts.length === 0 && <NoProducts styles={{
                         justifyContent: 'center',
@@ -255,7 +255,7 @@ const UserProfile = () => {
                         backgroundColor: "white"
                     }} />}
                 </Box>
-               
+
             </Grid>
 
 
