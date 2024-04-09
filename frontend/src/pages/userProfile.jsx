@@ -135,12 +135,39 @@ const UserProfile = () => {
         }).then((data) => {
             console.log("The data is ", data);
             setRefresh(!refresh);
-            // setUser(data);
         })
             .catch((error) => { console.log("The error is:", error) });
         console.log("Delete item with id ", id);
     }
 
+    const handleReopenItem = (product) => {
+        let queryBody = {};
+        
+        if (product.__t === 'SaleProduct') {
+            queryBody = { price: product.price };
+        } else if (product.__t === 'AuctionProduct') {
+            queryBody = { startingBid: product.startingBid, endTime: product.endTime };
+        }
+        console.log("in user profile and the product is:", product);
+        fetch(`http://localhost:5003/shop/${product._id}/reopen`, {
+            method: 'PATCH',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(queryBody)
+        }).then((res) => {
+            if (!res.ok) {
+                // navigate("/login");
+                console.log("Error reopening item")
+            } return res.json()
+        }).then((data) => {
+            console.log("The data is ", data);
+            setRefresh(!refresh);
+        })
+            .catch((error) => { console.log("The error is:", error) });
+        console.log("Reopen item with id ", product._id);
+    }
 
 
     return (
@@ -244,7 +271,7 @@ const UserProfile = () => {
                         position: 'absolute',
                         backgroundColor: "white",
                     }}>
-                        {currentProducts.length > 0 && <UserProducts products={currentProducts} handleDeleteItem={handleDeleteItem} selectedTab={selectedTab} />}
+                        {currentProducts.length > 0 && <UserProducts products={currentProducts} handleDeleteItem={handleDeleteItem} selectedTab={selectedTab} handleReopenItem={handleReopenItem} />}
                     </Grid>
                     {currentProducts.length === 0 && <NoProducts styles={{
                         justifyContent: 'center',

@@ -15,7 +15,7 @@ const options = [
     { label: 'Sold', value: 'sold' },
 ];
 
-const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
+const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenItem }) => {
 
     const [open, setOpen] = React.useState(false);
     const [selectedProductId, setSelectedProductId] = React.useState(null);
@@ -48,11 +48,16 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
         toast.success('Item edited successfully');
     }
 
-    const handleReopenItem = () => {
+    const handleReopen = ({product}) => {
         // Implement reopen item logic
         // call to backend to reopen the product
         let mode = selectedTab === 'Auctioned' ? 'Auction' : selectedTab === 'Donations' ? 'Donation' : 'Sale';
-        toast.success(`Your item has been reopened for ${mode}`);
+
+        toast.success(`Your item has been reopened for ${mode}!`);
+        // if (selectedTab !== 'Auctioned') {
+            handleReopenItem(product);
+        // }
+            
     }
 
     const handleViewDonationRequests = ({ product }) => {
@@ -134,7 +139,6 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
                                     {product.__t === 'DonationProduct' && !product.isHold &&
                                         <Button variant="contained" onClick={() => handleViewDonationRequests({ product })} size={sm ? "small" : "medium"} sx={{
                                             backgroundColor: '#517652',
-                                            // marginBottom: 1,
 
                                             color: 'white',
                                             '&:hover': {
@@ -156,7 +160,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab }) => {
                                     }}>
                                         Edit Item
                                     </Button>}
-                                    {product.isHold && <Button onClick={handleReopenItem} variant="contained" size={lg ? "large" : "small"} sx={{
+                                    {product.isHold && <Button onClick={() => handleReopen({product})} variant="contained" size={lg ? "large" : "small"} sx={{
                                         backgroundColor: '#517652',
                                         color: 'white',
                                         '&:hover': {
