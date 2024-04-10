@@ -16,7 +16,7 @@ export const NotifProvider = ({ children }) => {
     const token = useSelector((state) => state.auth.token)
     const [notifications, setNotifications] = useState({});
     // const [readNotifs, setReadNotifs] = useState(0)
-    console.log("Token in notif context is ", token)
+    // console.log("Token in notif context is ", token)
 
     useEffect(()=>{
         if (token) {

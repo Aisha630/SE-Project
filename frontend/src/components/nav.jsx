@@ -207,7 +207,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsear
                     <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
                         <Search setisempty={setisempty} setsearchproducts={setsearchproducts} />
                         <IconButton edge="end" color="gray" disableRipple aria-label="notifications" onClick={toggleNotifs} sx={commonIconStyle}>
-                            <Badge badgeContent={notifications.length} max={99} color="secondary">
+                            <Badge badgeContent={  Array.isArray(notifications) ? notifications.filter(notif => notif.status === "unread").length : 0} max={99} color="secondary">
                                 <NotificationsIcon sx={{
                                     fontSize: lg || md ? 25 : 20, '&:focus': {
                                         outline: 'none',
