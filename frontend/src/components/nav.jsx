@@ -90,11 +90,13 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsear
         socket.on("newBid", (data) => { setNotifications((notifications) => [...notifications, data.message]); console.log(data) });
         socket.on("donationRequest", (data) => { setNotifications((notifications) => [...notifications, data.message]); console.log(data) });
         socket.on("productSold", (data) => { setNotifications((notifications) => [...notifications, data.message]); console.log(data) });
+        socket.on("newRating", (data) => { setNotifications((notifications) => [...notifications, data.message]); console.log(data) });
 
         return () => {
             socket.off("newBid");
             socket.off("donationReq");
             socket.off("productSold");
+            socket.off("newRating");
         }
     }, [socket]);
 
