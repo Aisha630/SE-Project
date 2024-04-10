@@ -199,18 +199,18 @@ const ShopItems = ({mode}) => {
         setPrice(newValue);
     };
 
-    let pageOn = "Shop";
+    let pageon = "Shop";
     if (mode === "auction") {
-        pageOn = "Auction";
+        pageon = "Auction";
     }
     else if (mode === "donate") {
-        pageOn = "Donations";
+        pageon = "Donations";
     }
     
     return (
         <ThemeProvider theme={theme}>
             <Box>
-                <Nav Drawer={MyDrawer} Search={Search} pageOn={pageOn} setisempty={setIsEmpty} setsearchproducts={handleSetProducts}/>
+                <Nav Drawer={MyDrawer} Search={Search} pageon={pageon} setisempty={setIsEmpty} setsearchproducts={handleSetProducts}/>
             </Box>
             <MainCategoryToolbar setCategory={setCategory} category={category} /> {/*This is the main toolbar that represents clothing, technology, and miscellaneous categories*/}
 

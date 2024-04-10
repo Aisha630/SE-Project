@@ -107,6 +107,7 @@ const Recs = ({productType}) => {
                     <Card key={index} sx={{ height: "auto", maxWidth: "240px", boxShadow: "5px 5px 5px 0px rgba(0,0,0,0.2)", mx: 2, borderRadius: 2, '&:hover': { filter: 'brightness(0.9)', cursor: 'pointer', } }}>
                         <Link to={`/shop/${product.id}`} key={index}  >
                             <CardMedia
+                                key={index}
                                 component="img"
                                 image={product.image}
                                 alt={product.name}

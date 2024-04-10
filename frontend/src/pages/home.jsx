@@ -62,7 +62,7 @@ function Home() {
 							{
 								lgd ? <></> : <>
 									<Box sx={{ width: "90%", mr: { xs: '3px', sm: "5px", md: "8px" }, minWidth: { xs: '100px', sm: '120px', md: '150px' } }}>
-										<SidePanel ListStyles={{ ml: { xs: '1px', sm: "3px", md: "5px" }, }} ListItemStyles={{ fontWeight: "bold", mt: "5px" }} ListButtonStyles={{ margin: "8px" }} pageOn={"Home"} />
+										<SidePanel ListStyles={{ ml: { xs: '1px', sm: "3px", md: "5px" }, }} ListItemStyles={{ fontWeight: "bold", mt: "5px" }} ListButtonStyles={{ margin: "8px" }} pageon={"Home"} />
 									</Box>
 								</>
 							}

@@ -6,17 +6,35 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import InnerImageZoom from 'react-inner-image-zoom';
 import BackHanger from '../components/backHanger.jsx';
 import "../css/zoom.css";
+import { useEffect, useState } from 'react';
 
+const RenderItem = (({item})=>{
+    const [enableZoom, setEnableZoom] = useState(true)
 
-const RenderItem = ({ item }) => {
+    useEffect(()=>{
+        const img = new Image()
+        img.src = item.original
+        img.onload = ()=>{
+            const vw = window.innerWidth
+            if (img.naturalWidth > 0.3 * vw )
+                setEnableZoom(true)
+            else
+                setEnableZoom(false)
+        }
+    }, [item.original])
+
     return (
         <div style={{ position: "relative", width: '100%', height: '100%' }}>
-            <InnerImageZoom src={item.original} zoomSrc={item.original} zoomScale={3} zoomType="hover" hasSpacer={true} hideHint={true} imgAttributes={{ width: '100%', height: '100%', }} fullscreenOnMobile={true} />
+            {enableZoom ? (
+                <InnerImageZoom src={item.original} zoomSrc={item.original} zoomScale={1.8} zoomType="hover" hasSpacer={true} hideHint={true} imgAttributes={{ width: '100%', height: '100%' }} fullscreenOnMobile={true} className="custom-zoom-overlay"/>
+            ) : (
+                <img src={item.original} alt="" style={{ width: '100%', height: '100%' }} />
+            )}
             <BackHanger style={{ margin: "10px", position: 'absolute', top: '10px', left: '10px', zIndex: 2 }} />
-
         </div>
     );
-};
+
+})
 
 export const CustomImageGallery = ({ items, ...props }) => {
 
@@ -38,9 +56,10 @@ export const CustomImageGallery = ({ items, ...props }) => {
 
     return (
         <ImageGallery
-            items={items.map(item => ({
+            items={items.map((item, index) => ({
                 ...item,
-                renderItem: () => <RenderItem item={item} />,
+                key: index,
+                renderItem: () => <RenderItem item={item} key={index}/>,
             }))}
             {...props}
             maxHeight="100vh"
@@ -50,6 +69,7 @@ export const CustomImageGallery = ({ items, ...props }) => {
             showThumbnails={false}
             showBullets={true}
             showFullscreenButton={false}
+            
         />
     );
 }

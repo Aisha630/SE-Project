@@ -154,7 +154,7 @@ const ProductDetails = () => {
 					toast.error(data.error);
 				} else {
 					toast.success(`Bid placed: PKR ${bid}`);
-					setProduct({ ...product, currentBid: bid });
+					setProduct({ ...product, currentBd: bid });
 				}
 			})
 			.catch(error => {
@@ -201,7 +201,7 @@ const ProductDetails = () => {
 		<ThemeProvider theme={theme}>
 			<Grid container spacing={0} sx={{ m: 0, p: 0, width: "100%" }}>
 
-				<Nav Drawer={MyDrawer} Search={Box} pageOn={""} />
+				<Nav Drawer={MyDrawer} Search={Box} pageon={""} />
 
 				{/*Image gallery component*/}
 				<Grid item xs={12} sm={12} md={12} lg={6} >
@@ -222,7 +222,7 @@ const ProductDetails = () => {
 							</Typography>
 						)}
 						{productDetails.map((detail, index) => (
-							detail.value ? <DetailItem key={index} label={detail.label} value={detail.value} lg={lg} /> : <></>
+							detail.value ? <DetailItem key={index} label={detail.label} value={detail.value} lg={lg} /> : <Box key={index}></Box>
 						))}
 
 						<DetailItem label="Seller" value={product?.seller} lg={lg} />

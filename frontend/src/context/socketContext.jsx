@@ -12,6 +12,7 @@ const socket = io("http://localhost:5003") // connecting to the server at backen
 
 export const SocketProvider = ({ children }) => {
     const token = useSelector((state) => state.auth.token)
+    console.log("The socket id is ", socket.id)
     console.log("Token ", token)
 
     if (token) {

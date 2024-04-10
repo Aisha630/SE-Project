@@ -71,7 +71,7 @@ function Dropdown() {
 
 }
 
-const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home", setsearchproducts, setisempty }) => {
+const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsearchproducts, setisempty }) => {
 
     const navigate = useNavigate();
     const [isCartVisible, setIsCartVisible] = useState(false);
@@ -137,7 +137,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home", setsear
         <AppBar position="static" sx={{ backgroundColor: "#e0e0e0", ...styles, boxShadow: "none" }} >
             <Container maxWidth="100vw">
                 <Toolbar disableGutters>
-                    <Drawer pageOn={pageOn} />
+                    <Drawer pageon={pageon} />
                     {ShowLogo && <Box onClick={handleLogoClick} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: "flex-start", mr: 1, mt: 3, mb: 1, ml: { xs: '3px', sm: "5px", md: "15px" }, cursor: 'pointer', }}>
                         <img src="/sta_logo.png" alt="Second Time Around Logo" style={{ height: height }} />
                         <Typography variant={lg ? "subtitle2" : "caption"} noWrap sx={{ fontWeight: 'bold', lineHeight: '1.25', textAlign: 'center' }}>
@@ -153,7 +153,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home", setsear
                         <IconButton edge="end" color="gray" disableRipple aria-label="notifications" onClick={toggleNotifs} sx={commonIconStyle}>
                             <Badge badgeContent={notifications.length} max={99} color="secondary">
                                 <NotificationsIcon sx={{
-                                    fontSize: lg ? 25 : md ? 20 : 17, '&:focus': {
+                                    fontSize: lg || md ? 25 : 20, '&:focus': {
                                         outline: 'none',
                                     }
                                 }} />
@@ -164,7 +164,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home", setsear
                         <IconButton edge="end" color="gray" disableRipple aria-label="cart" onClick={() => { fetchCartItems(); toggleCart(); }} sx={commonIconStyle}>
                             <Badge badgeContent={cartItems.length} max={99} color="secondary">
                                 <ShoppingCartIcon sx={{
-                                    fontSize: lg ? 25 : md ? 20 : 17, '&:focus': {
+                                    fontSize: lg || md ? 25 : 20, '&:focus': {
                                         outline: 'none',
                                     }
                                 }} />
