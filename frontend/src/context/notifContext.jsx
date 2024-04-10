@@ -39,7 +39,10 @@ export const NotifProvider = ({ children }) => {
         }).then(data => {
 
             console.log("notifs are ", data)
+            if (data)
                 setNotifications(data)
+            else
+                setNotifications([])
         }).catch((err) => {
             console.log(err)
         })
