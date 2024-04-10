@@ -41,6 +41,19 @@ const ProductDetails = () => {
 	const { fetchCartItems } = useCart();
 	const lg = useMediaQuery(theme.breakpoints.up('sm'));
 
+	const navigateBack = () => {
+        switch (product?.__t) {
+            case 'AuctionProduct':
+                navigate('/auction');
+                break;
+            case 'DonationProduct':
+                navigate('/donation');
+                break;
+            default:
+                navigate('/shop');
+        }
+    };
+
 	const productDetails = product ? [
 		{ label: 'Condition', value: product.condition },
 		{ label: 'Brand', value: product.brand },
@@ -205,7 +218,7 @@ const ProductDetails = () => {
 
 				{/*Image gallery component*/}
 				<Grid item xs={12} sm={12} md={12} lg={6} >
-					<CustomImageGallery items={product ? product.images : []} sx={{ boxShadow: "none" }} />
+					<CustomImageGallery items={product ? product.images : []} sx={{ boxShadow: "none" }} onClick={navigateBack} />
 				</Grid>
 
 				{/*Product details component*/}
