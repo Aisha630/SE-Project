@@ -6,17 +6,14 @@ import {
   Box,
   Button,
   Container,
-  IconButton,
   ThemeProvider,
   Typography,
 } from "@mui/material";
 import theme from "../themes/authThemes.js";
 import AdDetails from "../components/adDetails.jsx";
 import CategorySelection from "../components/categorySelection.jsx";
-import ModeOfAdSelection from "../components/adModeSelection.jsx";
 import Specifications from "../components/specifications.jsx";
 import ConditionSelection from "../components/conditionSelection.jsx";
-import ImageUpload from "../components/imageUpload.jsx";
 import TagSelection from "../components/tagSelection.jsx";
 import details from "../config.json";
 import BackHanger from "../components/backHanger.jsx";
@@ -31,6 +28,10 @@ const EditAd = () => {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
+    if (!user || !token) {
+			console.log("Username or token not available.");
+			navigate("/login");
+		}
     const fetchAdData = async () => {
       if (!token) {
         toast.error("You must be logged in to edit ads.");
@@ -57,6 +58,15 @@ const EditAd = () => {
         if (response.ok) {
           const data = await response.json();
           setAdData(data);
+          if (data.seller !== user) {
+            console.log("seller is not the same as the user [", data.seller, "] not same as [", user,"]")
+            toast.error("You are not authorized to edit this ad.");
+            navigate("/profile");
+            return;
+          }
+          else {
+            console.log("EDIT ALLOWED seller is the same as the user [", data.seller, "] is same as [", user,"]")
+          }
         } else {
           const errorData = await response.json();
           toast.error(`Failed to fetch ad details: ${errorData.error}`);
@@ -76,37 +86,68 @@ const EditAd = () => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setAdData((prevAdData) => ({ ...prevAdData, [name]: value }));
+  
+    if (name === "category") {
+      setAdData(prevAdData => ({
+        ...prevAdData,
+        category: value,
+        tags: [], 
+        size: "",
+        color: "",
+        name: prevAdData.name, 
+        description: prevAdData.description,
+        brand: prevAdData.brand,
+        condition: prevAdData.condition,
+      }));
+    } else {
+      setAdData(prevAdData => ({ ...prevAdData, [name]: value }));
+    }
   };
+  
+  const handleTagChange = (event) => {
+		const { value, checked } = event.target;
+		setAdData((prevAdData) => {
+			const newTags = checked
+				? [...prevAdData.tags, value]
+				: prevAdData.tags.filter((tag) => tag !== value);
+			return { ...prevAdData, tags: newTags };
+		});
+	};
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+  
     if (!validateAd()) {
-      toast.error("Validation failed. Check the input fields.");
+      Object.values(errors).forEach((error) => {
+        toast.error(error);
+      });
       return;
     }
-
+  
     const updatedData = {
       name: adData.name,
       description: adData.description,
       brand: adData.brand,
       category: adData.category,
       tags: adData.tags,
-      size: adData.size,
-      color: adData.color,
       condition: adData.condition,
     };
-
+  
+    if (adData.category === "Clothing") {
+      updatedData.size = adData.size;
+      updatedData.color = adData.color;
+    }
+  
     try {
-        const response = await fetch(`http://localhost:5003/shop/${id}`, {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(updatedData),
-          });          
-
+      const response = await fetch(`http://localhost:5003/shop/${id}`, {
+        method: "PATCH",
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updatedData),
+      });
+  
       if (response.ok) {
         toast.success("Ad updated successfully");
         navigate("/profile");
@@ -119,11 +160,53 @@ const EditAd = () => {
       toast.error("An error occurred while updating the ad.");
     }
   };
-
+  
+  
   const validateAd = () => {
-    // to add valiation
-    return true;
+    let newErrors = {};
+    let isValid = true;
+  
+    if (!adData.name) {
+      isValid = false;
+      newErrors.name = "Ad title is required";
+    }
+  
+    if (!adData.brand) {
+      isValid = false;
+      newErrors.brand = "Brand is required";
+    }
+  
+    if (!adData.category) {
+      isValid = false;
+      newErrors.category = "Category is required";
+    }
+  
+    if (!adData.condition) {
+      isValid = false;
+      newErrors.condition = "Condition is required";
+    }
+  
+    if (adData.category === "Clothing") {
+      if (!adData.size) {
+        isValid = false;
+        newErrors.size = "Size is required for Clothing category";
+      }
+  
+      if (!adData.color) {
+        isValid = false;
+        newErrors.color = "Color is required for Clothing category";
+      }
+    }
+  
+    if (!Array.isArray(adData.tags)) {
+      isValid = false;
+      newErrors.tags = "Tags must be an array";
+    }
+  
+    setErrors(newErrors);
+    return isValid;
   };
+  
 
   if (!isDataFetched) {
     return <div>Loading...</div>;
@@ -131,6 +214,11 @@ const EditAd = () => {
   
   if (isDataFetched && !adData) {
     return <div>Ad not found</div>;
+  }
+
+  if (isDataFetched)
+  {
+    console.log(adData);
   }
 
   return (
@@ -145,9 +233,13 @@ const EditAd = () => {
 
             <CategorySelection categories={details.categories} adData={adData} handleInputChange={handleInputChange} errors={errors} disabled />
 
-            <TagSelection subcategories={details.categories[adData.category]} adData={adData} handleTagChange={handleInputChange} theme={theme} />
+            <TagSelection subcategories={details.categories[adData.category]} adData={adData} handleTagChange={handleTagChange} theme={theme} />
 
-            <Specifications adData={adData} handleInputChange={handleInputChange} sizes={details.sizes} colors={details.colors} disabled={adData.category !== "Clothing"} />
+            {adData.category === "Clothing" && (
+							<>
+								<Specifications adData={adData} handleInputChange={handleInputChange} sizes={details.sizes} colors={details.colors} />
+							</>
+						)}
 
             <AdDetails adData={adData} handleInputChange={handleInputChange} errors={errors} />
 
