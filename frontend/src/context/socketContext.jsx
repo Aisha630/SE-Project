@@ -10,9 +10,7 @@ const SocketContext = createContext(null)
 export const useSocket = () => useContext(SocketContext);
 
 export const SocketProvider = ({ children }) => {
-    // useEffect(()=>{
-	// 	sessionStorage.removeItem('persist:root')
-	// }, [])
+
     const [socket, setSocket] = useState(null)
     const token = useSelector((state) => state.auth.token)
     console.log("Token ", token)

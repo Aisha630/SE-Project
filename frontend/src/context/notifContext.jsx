@@ -1,11 +1,8 @@
 import React, { useContext, createContext } from "react"
-import io from "socket.io-client"
 import { useSelector } from "react-redux"
 import { useState, useEffect } from "react"
 import { toast } from "react-toastify"
 import { useSocket } from "./socketContext"
-
-// i am doing this so that socket is made once and then shared with all components
 
 const NotifContext = createContext(null)
 
@@ -16,7 +13,7 @@ export const NotifProvider = ({ children }) => {
     const token = useSelector((state) => state.auth.token)
     const [notifications, setNotifications] = useState({});
 
-    useEffect(()=>{
+    useEffect(() => {
         if (token) {
             fetchNotifs()
         }
@@ -48,6 +45,7 @@ export const NotifProvider = ({ children }) => {
         })
 
     }
+    
     const deleteNotifs = (notif) => {
         console.log("Deleting notif ", notif._id)
         fetch(`http://localhost:5003/notif/${notif._id}`, {
@@ -67,7 +65,7 @@ export const NotifProvider = ({ children }) => {
     const socket = useSocket();
     useEffect(() => {
         if (!socket) return;
-        socket.on("fetchNotifs", () => { fetchNotifs(); console.log("Got ping for fetching notifs ") })
+        socket.on("fetchNotifs", () => { console.log("Got ping for fetching notifs "); fetchNotifs(); })
 
         return () => {
             socket.off("fetchNotifs")

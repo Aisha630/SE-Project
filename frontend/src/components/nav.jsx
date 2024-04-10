@@ -6,7 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useCart } from '../context/cartContext';
@@ -83,68 +83,9 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsear
     const height = lg ? '5vh' : md ? '3vh' : sm ? '40px' : '30px';
     const [showNotifications, setShowNotifications] = useState(false);
 
-    const { notifications, setNotifications, fetchNotifs, deleteNotifs } = useNotif();
-
-    // const [notifications, setNotifications] = useState([]);
-    const [readNotifs, setReadNotifs] = useState(0)
-
-    // const fetchNotifs = () => {
-    //     fetch(`http://localhost:5003/notifs`, {
-    //         method: "GET"
-    //     }).then(res => {
-    //         if (res.ok)
-    //             return res.json()
-    //         else {
-    //             res.json().then(data => toast.error(data.message))
-    //         }
-    //     }).then(data => {
-
-    //         console.log("notifs are ", data)
-    //         const unread = data.filter((notif) => {
-    //             notif.status === "unread"
-    //         })
-    //         setNotifications(unread)
-    //     }).catch((err) => {
-    //         console.log(err)
-    //     })
-
-    // }
-
-    // const deleteNotifs = (notif) => {
-    //     fetch(`http://localhost:5003/notif${notif._id}`, {
-    //         method: "DELETE"
-    //     }).then(res => {
-    //         if (res.ok) {
-    //             setNotifications((notifs) => notifs.filter((notification) => notification !== notif))
-    //             toast.success("Notification delete successfully")
-    //         }
-    //         else {
-    //             res.json().then((data) => { toast.error(data.message) })
-    //         }
-    //     }).catch((err) => {
-    //         toast.error(err)
-    //     })
-
-    // }
+    const { notifications, fetchNotifs, deleteNotifs } = useNotif();
 
     const socket = useSocket();
-    // useEffect(() => {
-    //     if (!socket) return;
-    //     socket.on("fetchNotifs", () => { fetchNotifs();console.log("Got ping for fetching notifs ")})
-    //     // socket.on("newBid", (data) => { setNotifications((notifications) => [...notifications, data.message]); console.log(data) });
-    //     // socket.on("donationRequest", (data) => { setNotifications((notifications) => [...notifications, data.message]); console.log(data) });
-    //     // socket.on("productSold", (data) => { setNotifications((notifications) => [...notifications, data.message]); console.log(data) });
-    //     // socket.on("newRating", (data) => { setNotifications((notifications) => [...notifications, data.message]); console.log(data) });
-
-    //     return () => {
-    //         socket.off("fetchNotifs")
-    //         // socket.off("newBid");
-    //         // socket.off("donationReq");
-    //         // socket.off("productSold");
-    //         // socket.off("newRating");
-    //     }
-    // }, [socket]);
-
 
     const deleteFromCart = (product) => {
         fetch(`http://localhost:5003/cart?id=${product._id}`, {
@@ -168,10 +109,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsear
             });
     };
 
-
-
     const toggleCart = () => {
-
         setIsCartVisible(!isCartVisible);
     }
 

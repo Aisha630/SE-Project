@@ -2,31 +2,21 @@ import React, { useState } from 'react';
 import { Backdrop, Paper, List, ListItem, ListItemText, IconButton, Fade, Typography, Box, Grid, Divider } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ClearAllIcon from '@mui/icons-material/ClearAll';
-// import { Link as RouterLink, useNavigate } from 'react-router-dom';
-// import SiteButton from './button';
-// import { useCart } from '../context/cartContext';
 import { useMediaQuery } from '@mui/material';
 import theme from '../themes/homeTheme';
 import { useNotif } from '../context/notifContext';
-import { toast } from 'react-toastify';
-import {useSelector} from 'react-redux';
+
 
 
 const NotificationOverlayCard = ({ notifVisibility, notifVisibilityToggle, deletenotifs}) => {
     const [isOpen, setIsOpen] = useState(true);
     const md = useMediaQuery(theme.breakpoints.up('md'));
-    const { fetchNotifs, notifications, setNotifications } = useNotif();
-    const token = useSelector((state) => state.auth.token)
+    const {notifications } = useNotif();
+
 
     const handleClose = () => {
         setIsOpen(false);
     }
-
-    // const handleDelete = (item) => {
-    //     setNotifications(notifications.filter((notification) => notification !== item));
-    // }
-
-
 
     return (
         <Grid container spacing={1}>

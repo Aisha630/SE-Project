@@ -19,8 +19,6 @@ import EditAd from './pages/editad';
 import React from 'react';
 import { SocketProvider } from './context/socketContext';
 import { NotifProvider } from './context/notifContext';
-// import {NotifProvider} from './context/notifContext';
-
 
 const theme = createTheme({
   palette: {
@@ -54,7 +52,6 @@ function App() {
         <CartProvider>
           <SocketProvider>
             <NotifProvider>
-            {/* <NotifProvider> */}
             <div className="App">
               <BrowserRouter>
                 <Routes>
@@ -74,7 +71,6 @@ function App() {
                 </Routes>
               </BrowserRouter>
             </div>
-            {/* </NotifProvider> */}
             </NotifProvider>
             </SocketProvider >
         </CartProvider>
