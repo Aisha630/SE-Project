@@ -56,24 +56,21 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
         // call to backend to reopen the product
         let mode = selectedTab === 'Auctioned' ? 'Auction' : selectedTab === 'Donations' ? 'Donation' : 'Sale';
 
-        const data = { _id: product._id ,mode: 'SaleProduct', price: product.price}
-        toast.success(`Your item has been reopened for ${mode}!`);
+        const data = { _id: product._id, mode: 'SaleProduct', price: product.price}
         if (selectedTab !== 'Auctioned') {
             handleReopenItem(data);
+            toast.success(`Your item has been reopened for ${mode}!`);
         } else {
             setConfirmReopen(true);
-            // setSelectedProduct(product);
         }
-            
     }
 
     const handleReopenAuction = (startingBid, endTime, id) => {
-        // Implement reopen auction logic
         console.log(startingBid, endTime);
         const data = { _id: id ,mode: 'AuctionProduct', startingBid: startingBid, endTime: endTime }
         handleReopenItem(data);
         setConfirmReopen(false);
-        toast.success('Your auction has been reopened!');
+        toast.success('Your item has been reopened for Auction!');
     }
 
     const handleViewDonationRequests = ({ product }) => {
