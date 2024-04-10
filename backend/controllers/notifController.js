@@ -20,20 +20,19 @@ export async function getNotifications(req, res) {
 export async function deleteNotification(req, res) {
   const { id } = req.params;
 
-  console.log("Deleteing notification with id ", id)
+  console.log("Deleteing notification with id ", id);
   try {
     const notification = await Notification.findById(id);
 
-    console.log("Notification is ", notification)
+    console.log("Notification is ", notification);
 
     if (!notification) {
-      return res.status(404).json({ message: "Notification not found" });
+      return res.sendStatus(404);
     }
 
     await Notification.deleteOne({ _id: id });
-    console.log("Deleted notification")
-    res.sendStatus(200);
+    return res.sendStatus(200);
   } catch (error) {
-    res.status(500).json({ message: "Error deleting notification" });
+    return res.status(400).json({ error: error.details[0].message });
   }
 }

@@ -54,7 +54,7 @@ export const NotifProvider = ({ children }) => {
                 "Authorization": `Bearer ${token}`
             }
         }).then(res => {
-            console.log("Got delete notif response ", res)
+            console.log("Got delete notif response ", res.body)
             fetchNotifs()
         }).catch((err) => {
             toast.error(err)
@@ -80,7 +80,3 @@ export const NotifProvider = ({ children }) => {
 }
 
 export default NotifContext
-
-
-
-

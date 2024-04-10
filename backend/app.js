@@ -74,6 +74,9 @@ io.on("connection", (socket) => {
   socket.on("read", async (notificationId) => {
     try {
       const notif = await Notification.findOne({ _id: notificationId });
+      if (notif && notif.status === "read") {
+        return;
+      }
       notif.status = "read";
       await notif.save();
     } catch (error) {

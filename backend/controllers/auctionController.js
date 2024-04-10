@@ -2,6 +2,7 @@ import { sendNotSoldEmail, sendSoldEmail } from "../services/emailService.js";
 import { Product } from "../models/productBase.js";
 import io from "../app.js";
 import Notification from "../models/notifModel.js";
+import Joi from "joi";
 
 export async function bidOnProduct(req, res) {
   const { id } = req.params;
