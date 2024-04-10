@@ -1,22 +1,21 @@
+import React from 'react';
 import { AppBar, Toolbar, IconButton, Typography, Box, Button, Badge, Container, useMediaQuery } from '@mui/material';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AddIcon from '@mui/icons-material/Add';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { useLogout } from '../hooks/useLogout';
 import { useSelector } from 'react-redux';
-import ShoppingCartOverlayCard from './shoppingCartOverlayCard';
 import { toast } from 'react-toastify';
 import { useCart } from '../context/cartContext';
-import { } from '@mui/material';
-import theme from '../themes/homeTheme';
-import React from 'react';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import "../css/App.css";
 import { useSocket } from '../context/socketContext';
+import { useLogout } from '../hooks/useLogout';
+import ShoppingCartOverlayCard from './shoppingCartOverlayCard';
 import NotificationOverlayCard from './notification';
+import theme from '../themes/homeTheme';
+import "../css/App.css";
 
 const commonIconStyle = {
     '&:hover': {
@@ -176,8 +175,6 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsear
                         }
 
                         <Dropdown />
-
-
 
                         <Button
                             type="submit"

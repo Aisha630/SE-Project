@@ -2,7 +2,6 @@ import { useAuth } from './useAuth.js';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
-
 export const useLogout = () => {
     const { dispatch } = useAuth();
     const navigate = useNavigate();
@@ -10,8 +9,8 @@ export const useLogout = () => {
     const logout = () => {
         try {
             console.log('Logging out...');
-            localStorage.removeItem('user');
-            localStorage.removeItem('persist:root')
+            sessionStorage.removeItem('user');
+            sessionStorage.removeItem('persist:root')
             Cookies.remove("cart")
 
             dispatch({ type: 'LOGOUT' });

@@ -8,6 +8,7 @@ export const loginUser = createAsyncThunk('auth/loginUser', async ({ username, p
             body: JSON.stringify({ username, password }),
         });
         const data = await response.json();
+        console.log("auth data is ", data)
         if (!response.ok) throw new Error(data.error);
         return data;
     } catch (error) {
@@ -53,6 +54,8 @@ const authSlice = createSlice({
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.error = action.payload;
+                state.user = null
+                state.token = null
                 state.status = 'failed';
             })
             .addCase(signupUser.pending, (state) => {
@@ -65,6 +68,8 @@ const authSlice = createSlice({
             })
             .addCase(signupUser.rejected, (state, action) => {
                 state.error = action.payload;
+                state.user = null
+                state.token = null
                 state.status = 'failed';
             });
     },
