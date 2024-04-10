@@ -5,7 +5,7 @@ import {
 } from "../controllers/notifController";
 
 const router = express.Router();
-router.get("/notif/:id", getNotifications);
+router.get("/notif", getNotifications);
 router.delete("/notif/:id", deleteNotification);
 
 export default router;

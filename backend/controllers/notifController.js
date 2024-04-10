@@ -1,7 +1,7 @@
 import Notification from "../models/notifModel.js";
 
 export async function getNotifications(req, res) {
-  const { id } = req.params;
+  const id = req.user._id;
   try {
     const notifications = await Notification.find({ userId: id });
 
