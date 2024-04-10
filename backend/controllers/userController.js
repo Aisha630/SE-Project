@@ -1,6 +1,7 @@
 import Joi from "joi";
 import User from "../models/userModel.js";
 import { Product } from "../models/productBase.js";
+import io from "../app.js";
 
 export async function getUser(req, res) {
     const { username } = req.query;
@@ -56,6 +57,12 @@ export async function rateUser(req, res) {
 
     user.ratedBy.push(raterId);
     await user.save();
+
+    if (user.connectionID) {
+      io.to(user.connectionID).emit("newRating", {
+        message: `You have received a new rating of ${newRating} stars!.`,
+      });
+    }
 
     res.json({ averageRating: user.rating.rating });
   } catch (error) {

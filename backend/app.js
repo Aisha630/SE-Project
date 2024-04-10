@@ -20,8 +20,8 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:3000",
-    methods: ["GET", "POST"]
-  }
+    methods: ["GET", "POST"],
+  },
 });
 
 // Middleware setup
@@ -99,4 +99,5 @@ mongoose
     console.error(err);
     process.exit(1);
   });
-export default io; 
+
+export default io;

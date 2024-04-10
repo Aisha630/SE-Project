@@ -153,7 +153,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home", setsear
                         <IconButton edge="end" color="gray" disableRipple aria-label="notifications" onClick={toggleNotifs} sx={commonIconStyle}>
                             <Badge badgeContent={notifications.length} max={99} color="secondary">
                                 <NotificationsIcon sx={{
-                                    fontSize: lg ? 25 : md ? 20 : 17, '&:focus': {
+                                    fontSize: lg || md? 25 : 17, '&:focus': {
                                         outline: 'none',
                                     }
                                 }} />
@@ -164,7 +164,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home", setsear
                         <IconButton edge="end" color="gray" disableRipple aria-label="cart" onClick={() => { fetchCartItems(); toggleCart(); }} sx={commonIconStyle}>
                             <Badge badgeContent={cartItems.length} max={99} color="secondary">
                                 <ShoppingCartIcon sx={{
-                                    fontSize: lg ? 25 : md ? 20 : 17, '&:focus': {
+                                    fontSize: lg || md? 25 : 17, '&:focus': {
                                         outline: 'none',
                                     }
                                 }} />
@@ -184,6 +184,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageOn = "Home", setsear
                             variant="outlined"
                             startIcon={<AddIcon style={{ fontSize: lg ? 25 : md ? 20 : 17 }} />}
                             sx={{
+                                position: "relative",
                                 margin: "1px 1px 1px 10px", // top right bottom left
                                 backgroundColor: "primary.main",
                                 color: "gray",
