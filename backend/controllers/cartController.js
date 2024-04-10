@@ -18,6 +18,10 @@ export async function addToCart(req, res) {
   }
 
   const cartItems = getIDs(req);
+  if (cartItems.includes(req.body.id)) {
+    res.status(400).json({ error: "Product already in cart" });
+    return;
+  }
   cartItems.push(req.body.id);
 
   res.cookie("cart", cartItems);
@@ -63,6 +67,7 @@ export async function checkout(req, res) {
         io.to(seller.connectionID).emit("fetchNotifs");
       }
 
+      res.cookie("cart", []);
       return Promise.all([save, email]);
     });
 
