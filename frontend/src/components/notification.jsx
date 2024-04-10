@@ -7,11 +7,16 @@ import ClearAllIcon from '@mui/icons-material/ClearAll';
 // import { useCart } from '../context/cartContext';
 import { useMediaQuery } from '@mui/material';
 import theme from '../themes/homeTheme';
+import { useNotif } from '../context/notifContext';
+import { toast } from 'react-toastify';
+import {useSelector} from 'react-redux';
 
 
-const NotificationOverlayCard = ({ notifVisibility, notifVisibilityToggle, notifications, setNotifications, deletenotifs }) => {
+const NotificationOverlayCard = ({ notifVisibility, notifVisibilityToggle, deletenotifs}) => {
     const [isOpen, setIsOpen] = useState(true);
     const md = useMediaQuery(theme.breakpoints.up('md'));
+    const { fetchNotifs, notifications, setNotifications } = useNotif();
+    const token = useSelector((state) => state.auth.token)
 
     const handleClose = () => {
         setIsOpen(false);
@@ -20,6 +25,8 @@ const NotificationOverlayCard = ({ notifVisibility, notifVisibilityToggle, notif
     // const handleDelete = (item) => {
     //     setNotifications(notifications.filter((notification) => notification !== item));
     // }
+
+
 
     return (
         <Grid container spacing={1}>
@@ -34,9 +41,9 @@ const NotificationOverlayCard = ({ notifVisibility, notifVisibilityToggle, notif
                                 </IconButton>
                                 <Typography variant="subtitle1" gutterBottom sx={{ textAlign: "left", fontWeight: 600, m: 1 }}>Continue Shopping </Typography>
                                 <Box flexGrow={1}></Box>
-                                <IconButton onClick={() => { notifications.map((notif)=>{deletenotifs(notif)}) }} sx={{ margin: "1px", position: 'relative', padding: 0, color:"black"}}>
+                                <IconButton onClick={() => { notifications.map((notif) => { deletenotifs(notif) }) }} sx={{ margin: "1px", position: 'relative', padding: 0, color: "black" }}>
                                     <ClearAllIcon />
-                                <Typography variant="subtitle1" gutterBottom sx={{ textAlign: "left", fontWeight: 600, m: 1 }}>Clear All </Typography>
+                                    <Typography variant="subtitle1" gutterBottom sx={{ textAlign: "left", fontWeight: 600, m: 1 }}>Clear All </Typography>
                                 </IconButton>
 
                             </Box>
@@ -44,10 +51,10 @@ const NotificationOverlayCard = ({ notifVisibility, notifVisibilityToggle, notif
                             <Divider variant="fullWidth" sx={{ m: 2 }} />
 
                             <Typography variant={md ? "h6" : "subtitle1"} gutterBottom sx={{ textAlign: "left", m: 1, fontWeight: 500 }}>Your Notifications</Typography>
-                            <Typography variant="subtitle2" gutterBottom sx={{ textAlign: "left", fontWeight: 400, m: 1 }}>{`You have ${notifications.length} notifications`}</Typography>
+                            <Typography variant="subtitle2" gutterBottom sx={{ textAlign: "left", fontWeight: 400, m: 1 }}>{`You have ${Array.isArray(notifications) ? notifications.filter(notif => notif.status === "unread").length : 0} notifications`}</Typography>
                             <List >
                                 {notifications.map((item, index) => (
-                                    console.log("Rendering ", item.message),
+                                    // console.log("Rendering ", item.message),
                                     <ListItem key={index} sx={{
                                         borderRadius: 2, margin: 1, mb: 2, boxShadow: '0 0 4px rgba(0, 0, 0, 0.25)', height: "15vh", maxHeight: "140px",
                                         '&:visited': {

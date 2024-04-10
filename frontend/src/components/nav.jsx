@@ -16,7 +16,7 @@ import ShoppingCartOverlayCard from './shoppingCartOverlayCard';
 import NotificationOverlayCard from './notification';
 import theme from '../themes/homeTheme';
 import "../css/App.css";
-import {useNotif} from "../context/notifContext"
+import { useNotif } from "../context/notifContext"
 
 const commonIconStyle = {
     '&:hover': {
@@ -83,7 +83,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsear
     const height = lg ? '5vh' : md ? '3vh' : sm ? '40px' : '30px';
     const [showNotifications, setShowNotifications] = useState(false);
 
-    const {notifications, setNotifications, deleteNotifs, fetchNotifs} = useNotif();
+    const { notifications, setNotifications, fetchNotifs, deleteNotifs } = useNotif();
 
     // const [notifications, setNotifications] = useState([]);
     const [readNotifs, setReadNotifs] = useState(0)
@@ -168,6 +168,8 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsear
             });
     };
 
+
+
     const toggleCart = () => {
 
         setIsCartVisible(!isCartVisible);
@@ -186,6 +188,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsear
                 socket.emit("read", notif._id)
             })
         }
+        fetchNotifs();
         setShowNotifications(!showNotifications);
     }
 
@@ -207,7 +210,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsear
                     <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
                         <Search setisempty={setisempty} setsearchproducts={setsearchproducts} />
                         <IconButton edge="end" color="gray" disableRipple aria-label="notifications" onClick={toggleNotifs} sx={commonIconStyle}>
-                            <Badge badgeContent={  Array.isArray(notifications) ? notifications.filter(notif => notif.status === "unread").length : 0} max={99} color="secondary">
+                            <Badge badgeContent={Array.isArray(notifications) ? notifications.filter(notif => notif.status === "unread").length : 0} max={99} color="secondary">
                                 <NotificationsIcon sx={{
                                     fontSize: lg || md ? 25 : 20, '&:focus': {
                                         outline: 'none',
@@ -216,7 +219,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsear
                             </Badge>
                         </IconButton>
 
-                        {showNotifications && <NotificationOverlayCard notifVisibility={showNotifications} notifVisibilityToggle={toggleNotifs} notifications={notifications} setNotifications={setNotifications} deletenotifs={deleteNotifs}></NotificationOverlayCard>}
+                        {showNotifications && <NotificationOverlayCard notifVisibility={showNotifications} notifVisibilityToggle={toggleNotifs} deletenotifs={deleteNotifs}></NotificationOverlayCard>}
                         <IconButton edge="end" color="gray" disableRipple aria-label="cart" onClick={() => { fetchCartItems(); toggleCart(); }} sx={commonIconStyle}>
                             <Badge badgeContent={cartItems.length} max={99} color="secondary">
                                 <ShoppingCartIcon sx={{

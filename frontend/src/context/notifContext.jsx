@@ -15,8 +15,6 @@ export const NotifProvider = ({ children }) => {
 
     const token = useSelector((state) => state.auth.token)
     const [notifications, setNotifications] = useState({});
-    // const [readNotifs, setReadNotifs] = useState(0)
-    // console.log("Token in notif context is ", token)
 
     useEffect(()=>{
         if (token) {
@@ -34,7 +32,9 @@ export const NotifProvider = ({ children }) => {
             if (res.ok)
                 return res.json()
             else {
-                res.json().then(data => toast.error(data.message))
+                // res.json().then(data => toast.error(data.message))
+                res.json().then(data => console.log(data.message))
+
             }
         }).then(data => {
 
@@ -48,21 +48,16 @@ export const NotifProvider = ({ children }) => {
         })
 
     }
-
     const deleteNotifs = (notif) => {
+        console.log("Deleting notif ", notif._id)
         fetch(`http://localhost:5003/notif/${notif._id}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${token}`
             }
         }).then(res => {
-            if (res.ok) {
-                setNotifications((notifs) => notifs.filter((notification) => notification !== notif))
-                toast.success("Notification delete successfully")
-            }
-            else {
-                res.json().then((data) => { toast.error(data.message) })
-            }
+            console.log("Got delete notif response ", res)
+            fetchNotifs()
         }).catch((err) => {
             toast.error(err)
         })
@@ -80,7 +75,7 @@ export const NotifProvider = ({ children }) => {
     }, [socket]);
 
     return (
-        <NotifContext.Provider value={{ fetchNotifs, deleteNotifs, notifications, setNotifications }}>
+        <NotifContext.Provider value={{ fetchNotifs, notifications, setNotifications, deleteNotifs }}>
             {children}
         </NotifContext.Provider>
     )
