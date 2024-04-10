@@ -84,6 +84,10 @@ const EditAd = () => {
     fetchAdData();
   }, [id, token, navigate]);
 
+  const navigateToProfile = () => {
+    navigate('/profile');
+  };
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
   
@@ -225,7 +229,7 @@ const EditAd = () => {
     <ThemeProvider theme={theme}>
       <Box style={{ display: "flex", alignItems: "flex-start", justifyContent: "flex-start" }}>
         <Container component="main" sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: "auto", py: 4, backgroundColor: theme.palette.secondary.main }}>
-          <BackHanger style={{ margin: "10px" , alignSelf: "flex-start"}} />
+          <BackHanger style={{ margin: "10px" , alignSelf: "flex-start"}} onClick={navigateToProfile} />
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ width: "100%", maxWidth: 600, bgcolor: "background.paper", borderRadius: 2, boxShadow: 1, p: 3 }}>
             <Typography variant="h4" align="center" gutterBottom sx={{ mb: 4 }}>
               Edit Your Ad
