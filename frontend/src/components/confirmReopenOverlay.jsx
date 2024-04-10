@@ -1,35 +1,45 @@
-// ConfirmDeletionOverlay.jsx
-import React from 'react';
-import { Backdrop, Paper, Typography, Box, IconButton, Fade, TextField, InputAdornment } from '@mui/material';
+import React, { useState } from 'react';
+import {
+  Backdrop, Paper, Typography, Box, IconButton, Fade, TextField, Alert
+} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import SiteButton from './button';
 
 const ConfirmReopenOverlay = ({ open, handleReopen, handleClose, product }) => {
+  const [startingBid, setStartingBid] = useState(0);
+  const [endTime, setEndTime] = useState(new Date().toISOString().slice(0, 16));
+  const [error, setError] = useState({ bid: '', time: '' });
 
-  const [startingBid, setStartingBid] = React.useState(0);
-  const [endTime, setEndTime] = React.useState(new Date().toISOString().slice(0, 16));
+  const validate = () => {
+    let hasError = false;
+    setError({ bid: '', time: '' }); // Reset errors
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    if (name === 'startingBid') {
-      setStartingBid(value);
-    } else if (name === 'endTime') {
-      setEndTime(value);
+    if (startingBid < 0) {
+      setError((prev) => ({ ...prev, bid: 'Starting bid must be a positive number.' }));
+      hasError = true;
     }
-  }
+
+    if (new Date(endTime) <= new Date()) {
+      setError((prev) => ({ ...prev, time: 'End time must be in the future.' }));
+      hasError = true;
+    }
+
+    return !hasError;
+  };
 
   const handleSubmit = () => {
-    handleReopen(startingBid, endTime, product._id);
-    handleClose();
-    // setStartingBid(0);
-    // setEndTime(new Date().toISOString().slice(0, 16));
-    // setId(0);
-  }
+    if (validate()) {
+      handleReopen(startingBid, endTime, product._id);
+      handleClose();
+      setStartingBid(''); // Or set to a default starting bid value
+      setEndTime(new Date().toISOString().slice(0, 16));
+    }
+  };
 
   return (
     <Backdrop open={open} style={{ zIndex: 10 }}>
       <Fade in={open}>
-        <Paper style={{ borderRadius: 10, padding: 20, width:'30%', position: 'relative' }}>
+        <Paper style={{ borderRadius: 10, padding: 20, width: '40%', position: 'relative' }}>
           <IconButton onClick={handleClose} style={{ position: 'absolute', right: 10, top: 10 }}>
             <CloseIcon />
           </IconButton>
@@ -39,7 +49,9 @@ const ConfirmReopenOverlay = ({ open, handleReopen, handleClose, product }) => {
           <Typography variant="body1">
             Please update the following fields.
           </Typography>
-          <Box display="flex" justifyContent="flex-end" alignItems="center" mt={3} paddingLeft={2} paddingRight={2}>
+          {error.bid && <Alert severity="error">{error.bid}</Alert>}
+          {error.time && <Alert severity="error">{error.time}</Alert>}
+          <Box mt={3} paddingLeft={2} paddingRight={2}>
             <TextField
               fullWidth
               id="startingBid"
@@ -47,11 +59,13 @@ const ConfirmReopenOverlay = ({ open, handleReopen, handleClose, product }) => {
               type="number"
               name="startingBid"
               value={startingBid}
-              onChange={handleInputChange}
+              onChange={(e) => setStartingBid(e.target.value)}
+              error={!!error.bid}
+              helperText={error.bid}
               margin="normal"
             />
           </Box>
-          <Box display={'flex'} justifyContent="flex-end" alignItems="center" mt={3} paddingLeft={2} paddingRight={2}>
+          <Box mt={3} paddingLeft={2} paddingRight={2}>
             <TextField
               fullWidth
               id="endTime"
@@ -59,22 +73,21 @@ const ConfirmReopenOverlay = ({ open, handleReopen, handleClose, product }) => {
               type="datetime-local"
               name="endTime"
               value={endTime}
-              onChange={handleInputChange}
+              onChange={(e) => setEndTime(e.target.value)}
+              error={!!error.time}
+              helperText={error.time}
               margin="normal"
               InputLabelProps={{
                 shrink: true,
               }}
               inputProps={{
-                max: "9999-12-31T23:59",
+                min: new Date().toISOString().slice(0, 16), // Current time
               }}
             />
           </Box>
 
-          <Box display="flex" justifyContent="flex-end" mt={3} sx={{
-            padding: 2,
-            
-          }}>
-            <SiteButton text={"Reopen"} onClick={handleSubmit} style={{ marginRight: 10,}} />
+          <Box mt={3} sx={{ padding: 2 }}>
+            <SiteButton text={"Reopen"} onClick={handleSubmit} />
           </Box>
         </Paper>
       </Fade>

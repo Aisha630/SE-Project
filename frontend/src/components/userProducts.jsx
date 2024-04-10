@@ -23,7 +23,6 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
     const [selectedProductId, setSelectedProductId] = React.useState(null);
     const [selectedProduct, setSelectedProduct] = React.useState(null);
     const [confirmReopen, setConfirmReopen] = React.useState(false);
-    // const [options, setOptions] = React.useState([{ label: 'Live', value: 'live' }, { label: 'On Hold', value: 'on_hold' }, { label: 'Sold', value: 'sold' }]);
 
     const [openDonationRequests, setOpenDonationRequests] = React.useState(false);
     const lg = useMediaQuery(theme.breakpoints.up('sm'));
@@ -94,6 +93,42 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
 
     }
 
+    function AuctionTimer({ endTime }) {
+        const calculateTimeLeft = () => {
+          const difference = +new Date(endTime) - +new Date();
+          let timeLeft = {};
+      
+          if (difference > 0) {
+            timeLeft = {
+              days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+              hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+              minutes: Math.floor((difference / 1000 / 60) % 60),
+            };
+          }
+      
+          return timeLeft;
+        };
+      
+        const formatTimeLeft = () => {
+          const timeLeft = calculateTimeLeft();
+      
+          if (timeLeft.days || timeLeft.hours) {
+            return `Ends in: ${timeLeft.days ? `${timeLeft.days}d ` : ''}${timeLeft.hours}h`;
+          } else if (timeLeft.minutes < 60) {
+            return "Ends in: Less than 1h";
+          } else {
+            return "Auction has ended";
+          }
+        };
+      
+        return (
+          <div>
+            {formatTimeLeft()}
+          </div>
+        );
+      }
+      
+
     return (
         <Grid container spacing={1} sx={{ backgroundColor: 'white', p: 7, m: 2, maxWidth: "100%", }}>
             {products.map((product) => (
@@ -117,12 +152,20 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
                                     {product.__t !== 'DonationProduct' && <Typography variant="body1" color="text.secondary" sx={{ my: 1 }}>
                                         {product.__t === 'AuctionProduct' ? 'Current Bid: ' + product.currentBid : 'Price: ' + product.price}
                                     </Typography>}
-                                    {/* {product.__t === 'DonationProduct' && <Typography variant="body1" color="#e0e0e0" sx={{ my: 1 }}>
-                                        secret padding
-                                    </Typography>} */}
+                                    {product.__t === 'AuctionProduct' && product.isHold && <Typography variant="body1" color="#2E7D32" sx={{ my: 1 }}>
+                                        Auctioned to: {product.buyerUsername ? product.buyerUsername : "No bids yet"}
+                                    </Typography>}
+                                    {product.__t === 'AuctionProduct' && !product.isHold && <Typography variant="body1" color="#2E7D32" sx={{ my: 1 }}> 
+                                        {/* Ends in {new Date(product.endTime).toLocaleString()} */}
+                                        <AuctionTimer endTime={product.endTime} />
+                                    </Typography>}
+                                    {product.__t === 'SaleProduct' && <Typography variant="body1" color="#2E7D32" sx={{ my: 1 }}>
+                                        Sold to: {product.buyerUsername ? product.buyerUsername : "No buyer yet"}
+                                    </Typography>}
                                     <Typography variant="body1" color="text.secondary" sx={{ paddingTop: 1 }}>
-                                        Created at: {new Date(product.createdAt).toLocaleDateString()}
+                                        Created at: {new Date(product.createdAt).toLocaleString()}
                                     </Typography>
+                                
                                 </CardContent>
                                 <IconButton onClick={() => handleClickOpen(product._id)} sx={{ alignSelf: 'start', padding: 1, m: 2 }}>
                                     <DeleteIcon />
