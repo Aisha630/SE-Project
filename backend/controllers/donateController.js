@@ -58,12 +58,8 @@ export async function createDonationRequest(req, res) {
 
     const seller = await User.findOne({ username: product.seller });
     if (seller.connectionID) {
-      io.to(seller.connectionID).emit("donationRequest", {
-        notificationId: notification._id.toString(),
-        message: notification.message,
-      });
+      io.to(seller.connectionID).emit("donationRequest");
     }
-
     res.sendStatus(200);
   } catch (err) {
     console.log(err.message);

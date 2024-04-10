@@ -46,11 +46,9 @@ export async function bidOnProduct(req, res) {
     await notification.save();
 
     if (seller.connectionID) {
-      io.to(seller.connectionID).emit("newBid", {
-        notificationId: notification._id.toString(),
-        message: notification.message,
-      });
+      io.to(seller.connectionID).emit("fetchNotifs");
     }
+
     res.json(product);
   } catch (error) {
     console.log(error);

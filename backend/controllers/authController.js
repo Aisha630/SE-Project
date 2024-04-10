@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 
+import io from "../app.js";
 import User from "../models/userModel.js";
 import VerificationToken from "../models/verificationTokenModel.js";
 import PasswordReset from "../models/passwordResetModel.js";
@@ -110,14 +111,13 @@ export async function signin(req, res) {
     expiresIn: "1h",
   });
 
-  const notifications = await Notification.find({ userId: user._id }).lean();
-  const unreadCount = notifications.filter((n) => n.status === "unread").length;
+  if (user.connectionID) {
+    io.to(user.connectionID).emit("fetchNotifs");
+  }
 
   res.status(200).json({
     username,
     token,
-    notifications,
-    unreadCount,
   });
 }
 

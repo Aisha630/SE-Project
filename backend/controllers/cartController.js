@@ -60,10 +60,7 @@ export async function checkout(req, res) {
       await notification.save();
 
       if (seller.connectionID) {
-        io.to(seller.connectionID).emit("productSold", {
-          notificationId: notification._id.toString(),
-          message: notification.message,
-        });
+        io.to(seller.connectionID).emit("fetchNotifs");
       }
 
       return Promise.all([save, email]);

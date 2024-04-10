@@ -67,10 +67,7 @@ export async function rateUser(req, res) {
     await notification.save();
 
     if (user.connectionID) {
-      io.to(user.connectionID).emit("newRating", {
-        notificationId: notification._id.toString(),
-        message: notification.message,
-      });
+      io.to(user.connectionID).emit("fetchNotifs");
     }
 
     res.json({ averageRating: user.rating.rating });
