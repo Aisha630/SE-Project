@@ -83,13 +83,14 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsear
     const [showNotifications, setShowNotifications] = useState(false);
 
     const [notifications, setNotifications] = useState([]);
-      
+
     const socket = useSocket();
     useEffect(() => {
-        socket.on("newBid", (data) => { setNotifications((notifications)=> [...notifications, data.message]);console.log(data)});
-        socket.on("donationRequest", (data) => { setNotifications((notifications)=> [...notifications, data.message]); console.log(data) });
-        socket.on("productSold", (data) => { setNotifications((notifications)=> [...notifications, data.message]); console.log(data)  });
-  
+        if (!socket) return;
+        socket.on("newBid", (data) => { setNotifications((notifications) => [...notifications, data.message]); console.log(data) });
+        socket.on("donationRequest", (data) => { setNotifications((notifications) => [...notifications, data.message]); console.log(data) });
+        socket.on("productSold", (data) => { setNotifications((notifications) => [...notifications, data.message]); console.log(data) });
+
         return () => {
             socket.off("newBid");
             socket.off("donationReq");
@@ -159,7 +160,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsear
                             </Badge>
                         </IconButton>
 
-                        {showNotifications && <NotificationOverlayCard notifVisibility = {showNotifications} notifVisibilityToggle={toggleNotifs} notifications={notifications} setNotifications={setNotifications}></NotificationOverlayCard>}
+                        {showNotifications && <NotificationOverlayCard notifVisibility={showNotifications} notifVisibilityToggle={toggleNotifs} notifications={notifications} setNotifications={setNotifications}></NotificationOverlayCard>}
                         <IconButton edge="end" color="gray" disableRipple aria-label="cart" onClick={() => { fetchCartItems(); toggleCart(); }} sx={commonIconStyle}>
                             <Badge badgeContent={cartItems.length} max={99} color="secondary">
                                 <ShoppingCartIcon sx={{

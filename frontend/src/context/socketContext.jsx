@@ -1,30 +1,46 @@
 import React, { useContext, createContext } from "react"
 import io from "socket.io-client"
 import { useSelector } from "react-redux"
+import { useState, useEffect } from "react"
 
 // i am doing this so that socket is made once and then shared with all components
 
 const SocketContext = createContext(null)
 
 export const useSocket = () => useContext(SocketContext);
-const socket = io("http://localhost:5003") // connecting to the server at backend
-
 
 export const SocketProvider = ({ children }) => {
+    const [socket, setSocket] = useState(null)
     const token = useSelector((state) => state.auth.token)
     console.log("Token ", token)
+    useEffect(()=>{
+        if (token) {
+            const newsocket = io("http://localhost:5003") // connecting to the server at backend
+            console.log("The socket id is ", newsocket.id)
+            newsocket.on("connect", () => {
+                newsocket.emit("register", token)
+                console.log("Connected to server and registered")
+            })
     
-    if (token) {
-        console.log("The socket id is ", socket.id)
-        socket.on("connect", () => {
-            socket.emit("register", token)
-            console.log("Connected to server and registered")
-        })
+            newsocket.on('disconnect', () => {
+                console.log('Disconnected from server');
+            });
 
-        socket.on('disconnect', () => {
-            console.log('Disconnected from server');
-        });
-    }
+            setSocket(newsocket)
+            return () => {
+                newsocket.close();
+            };
+        }
+        else {
+            // just making sure any old socket is closed
+            if (socket) {
+                socket.disconnect();
+            }
+            setSocket(null);
+        }
+
+    }, [token])
+   
     return (
         <SocketContext.Provider value={socket}>
             {children}
