@@ -1,7 +1,7 @@
 import User from "../models/userModel.js";
+import io from "../app.js";
 import { SaleProduct } from "../models/productModels.js";
 import { sendCheckoutEmail } from "../services/emailService.js";
-import io from "../app.js";
 
 export async function getCart(req, res) {
   const cartIDs = getIDs(req);
@@ -17,12 +17,6 @@ export async function addToCart(req, res) {
   }
 
   const cartItems = getIDs(req);
-
-  if (cartItems.includes(req.body.id)) {
-    res.status(400).json({ error: "Product already in cart" });
-    return;
-  }
-
   cartItems.push(req.body.id);
 
   res.cookie("cart", cartItems);
@@ -67,7 +61,6 @@ export async function checkout(req, res) {
     });
 
     await Promise.all(itemCheckouts);
-    res.cookie("cart", []);
     res.sendStatus(200);
   } catch (error) {
     console.log(error);

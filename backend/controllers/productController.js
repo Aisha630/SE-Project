@@ -341,7 +341,7 @@ async function reopenAuction(req, res, product) {
   }
 
   product.startingBid = value.startingBid;
-  product.endTime = value.endTime;
+  product.endTime = value.endtime;
   product.currentBid = value.startingBid;
   product.isHold = false;
 

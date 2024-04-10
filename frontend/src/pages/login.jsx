@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -19,6 +19,10 @@ const Login = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const md = useMediaQuery(theme.breakpoints.down('md'));
+
+	useEffect(()=>{
+		sessionStorage.removeItem('persist:root')
+	}, [])
 
 	const handleChange = (e, func) => func(prev => ({ ...prev, [e.target.name]: e.target.value }));
 	const togglePassword = () => setShowPassword(!showPassword);

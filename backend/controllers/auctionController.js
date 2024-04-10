@@ -1,10 +1,5 @@
-import {
-  sendBidEmail,
-  sendNotSoldEmail,
-  sendSoldEmail,
-} from "../services/emailService.js";
+import { sendNotSoldEmail, sendSoldEmail } from "../services/emailService.js";
 import { Product } from "../models/productBase.js";
-import Joi from "joi";
 import io from "../app.js";
 
 export async function bidOnProduct(req, res) {
@@ -41,13 +36,6 @@ export async function bidOnProduct(req, res) {
   try {
     await product.save();
     const seller = await User.findOne({ username: product.seller });
-
-    //const productDetails = {
-    //  name: product.name,
-    //  currentBid: product.currentBid,
-    //  seller: seller.username,
-    //};
-    // sendBidEmail(productDetails);
 
     if (seller.connectionID) {
       io.to(seller.connectionID).emit("newBid", {

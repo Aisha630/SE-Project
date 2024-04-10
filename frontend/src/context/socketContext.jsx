@@ -10,23 +10,28 @@ const SocketContext = createContext(null)
 export const useSocket = () => useContext(SocketContext);
 
 export const SocketProvider = ({ children }) => {
+    // useEffect(()=>{
+	// 	sessionStorage.removeItem('persist:root')
+	// }, [])
     const [socket, setSocket] = useState(null)
     const token = useSelector((state) => state.auth.token)
     console.log("Token ", token)
     useEffect(()=>{
         if (token) {
+            console.log("Making connection to server")
             const newsocket = io("http://localhost:5003") // connecting to the server at backend
-            console.log("The socket id is ", newsocket.id)
             newsocket.on("connect", () => {
                 newsocket.emit("register", token)
                 console.log("Connected to server and registered")
             })
-    
+            
+            console.log("The socket id is ", newsocket)
             newsocket.on('disconnect', () => {
                 console.log('Disconnected from server');
             });
 
             setSocket(newsocket)
+
             return () => {
                 newsocket.close();
             };

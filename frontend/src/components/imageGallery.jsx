@@ -9,7 +9,7 @@ import "../css/zoom.css";
 import { useEffect, useState } from 'react';
 
 const RenderItem = (({item})=>{
-    const [enableZoom, setEnableZoom] = useState(true)
+    const [enableZoom, setEnableZoom] = useState(false)
 
     useEffect(()=>{
         const img = new Image()

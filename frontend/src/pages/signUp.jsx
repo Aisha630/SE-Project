@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { signupUser } from '../stores/authSlice.js';
@@ -21,6 +21,10 @@ const SignUp = () => {
 
 	const handleChange = ({ target: { name, value } }) => setFormData({ ...formData, [name]: value });
 	const togglePasswordVisibility = () => setShowPassword(!showPassword);
+
+	useEffect(()=>{
+		sessionStorage.removeItem('persist:root')
+	}, [])
 
 	const handleSubmit = (e) => {
 		e.preventDefault();

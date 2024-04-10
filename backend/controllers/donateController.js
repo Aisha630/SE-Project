@@ -1,12 +1,11 @@
 import Joi from "joi";
-
+import io from "../app.js";
 import User from "../models/userModel.js";
 import { DonationProduct } from "../models/productModels.js";
 import {
   sendRejectionEmail,
   sendApprovalEmail,
 } from "../services/emailService.js";
-import io from "../app.js";
 
 export async function createDonationRequest(req, res) {
   const donee = req.user;
