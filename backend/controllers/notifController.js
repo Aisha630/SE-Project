@@ -19,12 +19,8 @@ export async function getNotifications(req, res) {
 
 export async function deleteNotification(req, res) {
   const { id } = req.params;
-
-  console.log("Deleteing notification with id ", id);
   try {
     const notification = await Notification.findById(id);
-
-    console.log("Notification is ", notification);
 
     if (!notification) {
       return res.sendStatus(404);
