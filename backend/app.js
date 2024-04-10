@@ -9,6 +9,7 @@ import jwt from "jsonwebtoken";
 
 import Image from "./models/imageModel.js";
 import User from "./models/userModel.js";
+import Notification from "./models/notifModel.js";
 import authRoutes from "./routes/authRoute.js";
 import authorizeUser from "./middleware/authMiddleware.js";
 import cartRoutes from "./routes/cartRoute.js";
@@ -72,7 +73,9 @@ io.on("connection", (socket) => {
 
   socket.on("read", async (notificationId) => {
     try {
-      await Notification.findByIdAndUpdate(notificationId, { status: "read" });
+      const notif = await Notification.findOne({ _id: notificationId });
+      notif.status = "read";
+      await notif.save();
     } catch (error) {
       console.error("Error marking notification as read:", error);
     }
