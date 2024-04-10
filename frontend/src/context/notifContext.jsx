@@ -39,12 +39,7 @@ export const NotifProvider = ({ children }) => {
         }).then(data => {
 
             console.log("notifs are ", data)
-            // if (data) {
-            //     const unread = data.filter((notif) => notif.status === "unread");
-
                 setNotifications(data)
-            // }
-            // else { setNotifications([]) }
         }).catch((err) => {
             console.log(err)
         })
