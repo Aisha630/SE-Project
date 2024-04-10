@@ -13,14 +13,17 @@ const socket = io("http://localhost:5003") // connecting to the server at backen
 export const SocketProvider = ({ children }) => {
     const token = useSelector((state) => state.auth.token)
     console.log("Token ", token)
-    socket.on("connect", () => {
-        socket.emit("register", token)
-        console.log("Connected to server and registered")
-    })
-    
-    socket.on('disconnect', () => {
-        console.log('Disconnected from server');
-    });
+
+    if (token) {
+        socket.on("connect", () => {
+            socket.emit("register", token)
+            console.log("Connected to server and registered")
+        })
+
+        socket.on('disconnect', () => {
+            console.log('Disconnected from server');
+        });
+    }
     return (
         <SocketContext.Provider value={socket}>
             {children}
