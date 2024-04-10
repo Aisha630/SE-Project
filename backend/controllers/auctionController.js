@@ -1,6 +1,7 @@
 import { sendNotSoldEmail, sendSoldEmail } from "../services/emailService.js";
 import { Product } from "../models/productBase.js";
 import io from "../app.js";
+import Notification from "../models/notifModel.js";
 
 export async function bidOnProduct(req, res) {
   const { id } = req.params;
@@ -37,9 +38,17 @@ export async function bidOnProduct(req, res) {
     await product.save();
     const seller = await User.findOne({ username: product.seller });
 
+    const notification = new Notification({
+      userId: seller._id,
+      message: `A new bid was placed by ${req.user.username} on "${product.name}".`,
+      status: "unread",
+    });
+    await notification.save();
+
     if (seller.connectionID) {
       io.to(seller.connectionID).emit("newBid", {
-        message: `A new bid was placed by ${req.user.username} on "${product.name}".`,
+        notificationId: notification._id.toString(),
+        message: notification.message,
       });
     }
     res.json(product);

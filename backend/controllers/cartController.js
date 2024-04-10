@@ -1,5 +1,6 @@
 import User from "../models/userModel.js";
 import io from "../app.js";
+import Notification from "../models/notifModel.js";
 import { SaleProduct } from "../models/productModels.js";
 import { sendCheckoutEmail } from "../services/emailService.js";
 
@@ -51,9 +52,17 @@ export async function checkout(req, res) {
       const productDetails = { name: item.name, price: item.price };
       const email = sendCheckoutEmail(seller, buyer, productDetails);
 
+      const notification = new Notification({
+        userId: seller._id,
+        message: `Your product "${item.name}" has been sold to ${buyer.username}.`,
+        status: "unread",
+      });
+      await notification.save();
+
       if (seller.connectionID) {
         io.to(seller.connectionID).emit("productSold", {
-          message: `Your product "${item.name}" has been sold to ${buyer.username}.`,
+          notificationId: notification._id.toString(),
+          message: notification.message,
         });
       }
 

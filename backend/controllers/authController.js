@@ -110,7 +110,15 @@ export async function signin(req, res) {
     expiresIn: "1h",
   });
 
-  res.status(200).json({ username, token });
+  const notifications = await Notification.find({ userId: user._id }).lean();
+  const unreadCount = notifications.filter((n) => n.status === "unread").length;
+
+  res.status(200).json({
+    username,
+    token,
+    notifications,
+    unreadCount,
+  });
 }
 
 // Verifies the email of the user by checking the provided token

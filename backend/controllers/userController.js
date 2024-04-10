@@ -1,6 +1,8 @@
 import Joi from "joi";
 import User from "../models/userModel.js";
+import Notification from "../models/notifModel.js";
 import { Product } from "../models/productBase.js";
+import io from "../app.js";
 
 export async function getUser(req, res) {
   const { username } = req.query;
@@ -57,9 +59,17 @@ export async function rateUser(req, res) {
     user.ratedBy.push(raterId);
     await user.save();
 
+    const notification = new Notification({
+      userId: seller._id,
+      message: `You have received a new rating of ${newRating} stars!.`,
+      status: "unread",
+    });
+    await notification.save();
+
     if (user.connectionID) {
       io.to(user.connectionID).emit("newRating", {
-        message: `You have received a new rating of ${newRating} stars!.`,
+        notificationId: notification._id.toString(),
+        message: notification.message,
       });
     }
 

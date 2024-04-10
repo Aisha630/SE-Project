@@ -1,6 +1,7 @@
 import Joi from "joi";
 import io from "../app.js";
 import User from "../models/userModel.js";
+import Notification from "../models/notifModel.js";
 import { DonationProduct } from "../models/productModels.js";
 import {
   sendRejectionEmail,
@@ -48,10 +49,18 @@ export async function createDonationRequest(req, res) {
 
     await product.save();
 
+    const notification = new Notification({
+      userId: seller._id,
+      message: `A donation request by ${donee.username} was received for "${product.name}".`,
+      status: "unread",
+    });
+    await notification.save();
+
     const seller = await User.findOne({ username: product.seller });
     if (seller.connectionID) {
       io.to(seller.connectionID).emit("donationRequest", {
-        message: `A donation request by ${donee.username} was received for "${product.name}".`,
+        notificationId: notification._id.toString(),
+        message: notification.message,
       });
     }
 

@@ -14,6 +14,7 @@ import authorizeUser from "./middleware/authMiddleware.js";
 import cartRoutes from "./routes/cartRoute.js";
 import productRoutes from "./routes/productRoute.js";
 import userRoutes from "./routes/userRoute.js";
+import notifRoutes from "./routes/notifRoute.js";
 
 const app = express();
 const server = http.createServer(app);
@@ -68,21 +69,28 @@ io.on("connection", (socket) => {
       }
     });
   });
+
+  socket.on("read", async (notificationId) => {
+    try {
+      await Notification.findByIdAndUpdate(notificationId, { status: "read" });
+    } catch (error) {
+      console.error("Error marking notification as read:", error);
+    }
+  });
 });
 
-// Route handling
 app.use(authRoutes);
 app.use(authorizeUser);
 app.use(productRoutes);
 app.use(cartRoutes);
 app.use(userRoutes);
+app.use(notifRoutes);
 
 if (!["PROD", "DEV"].includes(process.env.BUILD_MODE)) {
   console.error(`Invalid build mode ${process.env.BUILD_MODE}`);
   process.exit(1);
 }
 
-// Connect to MongoDB
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
@@ -97,5 +105,6 @@ mongoose
   .catch((err) => {
     console.error(err);
     process.exit(1);
-  });
 export default io;
+
+export default io; 
