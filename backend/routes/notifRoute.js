@@ -2,7 +2,7 @@ import express from "express";
 import {
   deleteNotification,
   getNotifications,
-} from "../controllers/notifController";
+} from "../controllers/notifController.js";
 
 const router = express.Router();
 router.get("/notif", getNotifications);

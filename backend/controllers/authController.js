@@ -111,9 +111,10 @@ export async function signin(req, res) {
     expiresIn: "1h",
   });
 
-  if (user.connectionID) {
-    io.to(user.connectionID).emit("fetchNotifs");
-  }
+  // if (user.connectionID) {
+  //   console.log("Emitting fetchNotifs to ", username, " ", user.connectionID);
+  //   io.to(user.connectionID).emit("fetchNotifs");
+  // }
 
   res.status(200).json({
     username,
