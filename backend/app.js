@@ -111,6 +111,6 @@ mongoose
   .catch((err) => {
     console.error(err);
     process.exit(1);
-export default io;
+  });
 
-export default io; 
+export default io;
