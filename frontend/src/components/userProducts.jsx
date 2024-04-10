@@ -9,6 +9,7 @@ import theme from '../themes/homeTheme';
 import ConfirmDeletionOverlay from './confirmDeletion';
 import DonationRequestsOverlay from './donationRequestsOverlay';
 import ConfirmReopenOverlay from './confirmReopenOverlay';
+import {useNavigate} from 'react-router-dom';
 
 const options = [
     { label: 'Live', value: 'live' },
@@ -23,7 +24,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
     const [selectedProductId, setSelectedProductId] = React.useState(null);
     const [selectedProduct, setSelectedProduct] = React.useState(null);
     const [confirmReopen, setConfirmReopen] = React.useState(false);
-
+    const navigate = useNavigate();
     const [openDonationRequests, setOpenDonationRequests] = React.useState(false);
     const lg = useMediaQuery(theme.breakpoints.up('sm'));
     const sm = useMediaQuery(theme.breakpoints.down('sm'));
@@ -44,10 +45,11 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
         setOpen(false);
         toast.error('Item deleted successfully');
     }
-    const handleEditItem = () => {
+    const handleEditItem = (selectedProductId) => {
         // Implement edit item logic
         // call to backend to edit the product
-        toast.success('Item edited successfully');
+        navigate(`/edit/${selectedProductId}`);
+        // toast.success('Item edited successfully');
     }
 
     const handleReopen = ({product}) => {
@@ -205,7 +207,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
                                             View Requests
                                         </Button>}
 
-                                    {!product.isHold && <Button onClick={handleEditItem} variant="contained" size={lg ? "large" : "small"} sx={{
+                                    {!product.isHold && <Button  onClick={() => handleEditItem(product._id)} variant="contained" size={lg ? "large" : "small"} sx={{
                                         backgroundColor: '#f97171',
                                         marginTop: 1,
                                         color: 'white',
