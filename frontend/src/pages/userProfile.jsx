@@ -13,20 +13,17 @@ import MainCategoryToolbar from '../components/maincategoriestoolbar.jsx';
 import UserProducts from '../components/userProducts.jsx';
 import { LineChart } from '@mui/x-charts/LineChart'
 import NoProducts from '../components/noProducts.jsx';
-import { useMediaQuery } from '@mui/material';
 import "../css/App.css";
 
 
 
 
 const UserProfile = () => {
-    // const [selectedTab, setSelectedTab] = useState('Donations');
     const [selectedTab, setSelectedTab] = useState('For Sale');
     const [user, setUser] = useState({});
     const [products, setProducts] = useState([]);
     const navigate = useNavigate();
     const [graph, setGraph] = useState('Monthly');
-    const lg = useMediaQuery(theme.breakpoints.up('lg'));
     const [refresh, setRefresh] = useState(false);
 
     const username = useSelector((state) => state.auth.user);

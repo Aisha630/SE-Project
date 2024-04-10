@@ -16,6 +16,7 @@ import ShoppingCartOverlayCard from './shoppingCartOverlayCard';
 import NotificationOverlayCard from './notification';
 import theme from '../themes/homeTheme';
 import "../css/App.css";
+import {useNotif} from "../context/notifContext"
 
 const commonIconStyle = {
     '&:hover': {
@@ -82,23 +83,67 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsear
     const height = lg ? '5vh' : md ? '3vh' : sm ? '40px' : '30px';
     const [showNotifications, setShowNotifications] = useState(false);
 
-    const [notifications, setNotifications] = useState([]);
+    const {notifications, setNotifications, deleteNotifs, fetchNotifs} = useNotif();
+
+    // const [notifications, setNotifications] = useState([]);
+    const [readNotifs, setReadNotifs] = useState(0)
+
+    // const fetchNotifs = () => {
+    //     fetch(`http://localhost:5003/notifs`, {
+    //         method: "GET"
+    //     }).then(res => {
+    //         if (res.ok)
+    //             return res.json()
+    //         else {
+    //             res.json().then(data => toast.error(data.message))
+    //         }
+    //     }).then(data => {
+
+    //         console.log("notifs are ", data)
+    //         const unread = data.filter((notif) => {
+    //             notif.status === "unread"
+    //         })
+    //         setNotifications(unread)
+    //     }).catch((err) => {
+    //         console.log(err)
+    //     })
+
+    // }
+
+    // const deleteNotifs = (notif) => {
+    //     fetch(`http://localhost:5003/notif${notif._id}`, {
+    //         method: "DELETE"
+    //     }).then(res => {
+    //         if (res.ok) {
+    //             setNotifications((notifs) => notifs.filter((notification) => notification !== notif))
+    //             toast.success("Notification delete successfully")
+    //         }
+    //         else {
+    //             res.json().then((data) => { toast.error(data.message) })
+    //         }
+    //     }).catch((err) => {
+    //         toast.error(err)
+    //     })
+
+    // }
 
     const socket = useSocket();
-    useEffect(() => {
-        if (!socket) return;
-        socket.on("newBid", (data) => { setNotifications((notifications) => [...notifications, data.message]); console.log(data) });
-        socket.on("donationRequest", (data) => { setNotifications((notifications) => [...notifications, data.message]); console.log(data) });
-        socket.on("productSold", (data) => { setNotifications((notifications) => [...notifications, data.message]); console.log(data) });
-        socket.on("newRating", (data) => { setNotifications((notifications) => [...notifications, data.message]); console.log(data) });
+    // useEffect(() => {
+    //     if (!socket) return;
+    //     socket.on("fetchNotifs", () => { fetchNotifs();console.log("Got ping for fetching notifs ")})
+    //     // socket.on("newBid", (data) => { setNotifications((notifications) => [...notifications, data.message]); console.log(data) });
+    //     // socket.on("donationRequest", (data) => { setNotifications((notifications) => [...notifications, data.message]); console.log(data) });
+    //     // socket.on("productSold", (data) => { setNotifications((notifications) => [...notifications, data.message]); console.log(data) });
+    //     // socket.on("newRating", (data) => { setNotifications((notifications) => [...notifications, data.message]); console.log(data) });
 
-        return () => {
-            socket.off("newBid");
-            socket.off("donationReq");
-            socket.off("productSold");
-            socket.off("newRating");
-        }
-    }, [socket]);
+    //     return () => {
+    //         socket.off("fetchNotifs")
+    //         // socket.off("newBid");
+    //         // socket.off("donationReq");
+    //         // socket.off("productSold");
+    //         // socket.off("newRating");
+    //     }
+    // }, [socket]);
 
 
     const deleteFromCart = (product) => {
@@ -124,6 +169,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsear
     };
 
     const toggleCart = () => {
+
         setIsCartVisible(!isCartVisible);
     }
 
@@ -132,6 +178,14 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsear
     }
 
     const toggleNotifs = () => {
+        console.log("Toggling notifications ", notifications)
+        if (showNotifications) {
+            notifications.map((notif) => {
+                console.log("Emitting read ", notif.message)
+                console.log("Emitting read ", notif._id)
+                socket.emit("read", notif._id)
+            })
+        }
         setShowNotifications(!showNotifications);
     }
 
@@ -162,7 +216,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsear
                             </Badge>
                         </IconButton>
 
-                        {showNotifications && <NotificationOverlayCard notifVisibility={showNotifications} notifVisibilityToggle={toggleNotifs} notifications={notifications} setNotifications={setNotifications}></NotificationOverlayCard>}
+                        {showNotifications && <NotificationOverlayCard notifVisibility={showNotifications} notifVisibilityToggle={toggleNotifs} notifications={notifications} setNotifications={setNotifications} deletenotifs={deleteNotifs}></NotificationOverlayCard>}
                         <IconButton edge="end" color="gray" disableRipple aria-label="cart" onClick={() => { fetchCartItems(); toggleCart(); }} sx={commonIconStyle}>
                             <Badge badgeContent={cartItems.length} max={99} color="secondary">
                                 <ShoppingCartIcon sx={{

@@ -18,6 +18,7 @@ import UserProfile from './pages/userProfile';
 import EditAd from './pages/editad';
 import React from 'react';
 import { SocketProvider } from './context/socketContext';
+import { NotifProvider } from './context/notifContext';
 // import {NotifProvider} from './context/notifContext';
 
 
@@ -52,6 +53,7 @@ function App() {
       <AuthProvider>
         <CartProvider>
           <SocketProvider>
+            <NotifProvider>
             {/* <NotifProvider> */}
             <div className="App">
               <BrowserRouter>
@@ -73,6 +75,7 @@ function App() {
               </BrowserRouter>
             </div>
             {/* </NotifProvider> */}
+            </NotifProvider>
             </SocketProvider >
         </CartProvider>
       </AuthProvider>
