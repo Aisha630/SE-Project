@@ -60,7 +60,7 @@ export async function rateUser(req, res) {
     await user.save();
 
     const notification = new Notification({
-      userId: seller._id,
+      userId: user._id,
       message: `You have received a new rating of ${newRating} stars!.`,
       status: "unread",
     });

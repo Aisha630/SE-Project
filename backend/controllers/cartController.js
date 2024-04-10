@@ -67,11 +67,11 @@ export async function checkout(req, res) {
         io.to(seller.connectionID).emit("fetchNotifs");
       }
 
-      res.cookie("cart", []);
       return Promise.all([save, email]);
     });
 
     await Promise.all(itemCheckouts);
+    res.cookie("cart", []);
     res.sendStatus(200);
   } catch (error) {
     console.log(error);
