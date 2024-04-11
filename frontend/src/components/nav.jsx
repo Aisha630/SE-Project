@@ -83,7 +83,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsear
     const height = lg ? '5vh' : md ? '3vh' : sm ? '40px' : '30px';
     const [showNotifications, setShowNotifications] = useState(false);
 
-    const { notifications, fetchNotifs, deleteNotifs, setNotifications } = useNotif();
+    const { notifications, deleteNotifs, setNotifications } = useNotif();
 
     const socket = useSocket();
 

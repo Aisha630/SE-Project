@@ -7,7 +7,7 @@ import SiteButton from './button';
 
 const ConfirmReopenOverlay = ({ open, handleReopen, handleClose, product }) => {
   const [startingBid, setStartingBid] = useState(0);
-  const [endTime, setEndTime] = useState(new Date().toISOString().slice(0, 16));
+  const [endTime, setEndTime] = useState(new Date().toLocaleString().slice(0, 16));
   const [error, setError] = useState({ bid: '', time: '' });
 
   const validate = () => {
@@ -81,7 +81,7 @@ const ConfirmReopenOverlay = ({ open, handleReopen, handleClose, product }) => {
                 shrink: true,
               }}
               inputProps={{
-                min: new Date().toISOString().slice(0, 16), // Current time
+                min: new Date().toLocaleString().slice(0, 16), // Current time
               }}
             />
           </Box>

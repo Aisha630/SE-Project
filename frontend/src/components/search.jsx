@@ -14,9 +14,7 @@ const Search = ({ setisempty, setsearchproducts, mode ,category}) => {
 
     const getSearchResults = (event) => {
         const queryString = new URLSearchParams({productType: mode, q: event.target.value});
-        console.log("mode is ", mode)
         if (event.key === 'Enter') {
-            console.log("searching for", event.target.value)
             fetch(`http://localhost:5003/shop?${queryString}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -35,7 +33,6 @@ const Search = ({ setisempty, setsearchproducts, mode ,category}) => {
                 }));
                 setisempty(formattedProducts.length === 0);
                 setsearchproducts(formattedProducts)
-                console.log(formattedProducts)
             }).catch(error => { console.log(error) })
         }
     };
