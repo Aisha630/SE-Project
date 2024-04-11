@@ -19,7 +19,6 @@ const options = [
 
 const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenItem, handleDonationApproval }) => {
 
-    // console.log(products)
     const [open, setOpen] = React.useState(false);
     const [selectedProductId, setSelectedProductId] = React.useState(null);
     const [selectedProduct, setSelectedProduct] = React.useState(null);
@@ -67,7 +66,6 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
     }
 
     const handleReopenAuction = (startingBid, endTime, id) => {
-        console.log(startingBid, endTime);
         const data = { _id: id, mode: 'AuctionProduct', startingBid: startingBid, endTime: endTime }
         handleReopenItem(data);
         setConfirmReopen(false);
@@ -125,9 +123,9 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
         };
 
         return (
-            <div>
+            <Box>
                 {formatTimeLeft()}
-            </div>
+            </Box>
         );
     }
 

@@ -46,7 +46,6 @@ const PostAd = () => {
 		const { name, value } = event.target;
 
 		if (name === "category") {
-			console.log("category changed");
 			setAdData({
 				category: value,
 				tags: [],
@@ -208,8 +207,7 @@ const PostAd = () => {
 			});
 
 			if (response.ok) {
-				const result = await response.json();
-				console.log("Submission Success:", result);
+				await response.json();
 				navigate("/shop");
 			} else {
 				const errorData = await response.json();

@@ -45,7 +45,6 @@ const EditAd = () => {
         return;
       }
 
-      console.log(`Fetching data for ad with id: ${id}`);
       
       try {
         const response = await fetch(`http://localhost:5003/shop/${id}`, {
@@ -59,13 +58,13 @@ const EditAd = () => {
           const data = await response.json();
           setAdData(data);
           if (data.seller !== user) {
-            console.log("seller is not the same as the user [", data.seller, "] not same as [", user,"]")
+            // console.log("seller is not the same as the user [", data.seller, "] not same as [", user,"]")
             toast.error("You are not authorized to edit this ad.");
             navigate("/profile");
             return;
           }
           else {
-            console.log("EDIT ALLOWED seller is the same as the user [", data.seller, "] is same as [", user,"]")
+            // console.log("EDIT ALLOWED seller is the same as the user [", data.seller, "] is same as [", user,"]")
           }
         } else {
           const errorData = await response.json();

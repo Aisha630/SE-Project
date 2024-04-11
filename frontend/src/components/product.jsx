@@ -7,7 +7,7 @@ const Product = ({ product, mode }) => {
   const currentDate = new Date();
   const endDate = new Date(product.endTime);
   const timeDifference = endDate.getTime() - currentDate.getTime();
-  const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+  const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24)) > 0 ? Math.ceil(timeDifference / (1000 * 3600 * 24)).toString() + " days" : "Less than 1 day";
 
   return (
     // <Grid item xs={10} sm={12} md={6} lg={4} style={{ padding: '5px' }}>
@@ -20,10 +20,7 @@ const Product = ({ product, mode }) => {
       {mode === 'auction' &&
         <>
           <Typography variant="subtitle1" align="left">Current Bid: PKR {product.currentBid}</Typography>
-          <div>
-            { }
-          </div>
-          <Typography variant="subtitle1" align="left">Time Left: {daysDifference} days</Typography>
+          <Typography variant="subtitle1" align="left">Time Left: {daysDifference} </Typography>
         </>
       }
     </Grid>

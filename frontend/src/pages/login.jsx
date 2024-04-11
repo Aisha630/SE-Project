@@ -46,7 +46,6 @@ const Login = () => {
 				}).catch(err => { console.error(err); setLoading(false); });
 			}
 			else if (reset) {
-				console.log("The reset creds are ", resetCredentials);
 				fetch(`http://localhost:5003/reset_password`, {
 					method: 'POST',
 					headers: {

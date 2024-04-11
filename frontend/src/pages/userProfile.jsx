@@ -39,7 +39,7 @@ const UserProfile = () => {
             if (!res.ok) {
                 navigate("/login");
             } return res.json()
-        }).then((data) => { console.log("The data is ", data); setUser(data); processSalesHistoryData(data.salesHistory, 'Monthly'); setGraph('Monthly'); })
+        }).then((data) => { setUser(data); processSalesHistoryData(data.salesHistory, 'Monthly'); setGraph('Monthly'); })
             .catch((error) => { console.log("The error is:", error) });
 
 
@@ -53,7 +53,6 @@ const UserProfile = () => {
                 navigate("/login");
             } return res.json()
         }).then((data) => {
-            // console.log("The data is ", data);
             if (selectedTab === 'Auctioned') {
                 // Filter the products that are auctioned
                 setProducts(data.filter((product) => product.__t === 'AuctionProduct'));
@@ -76,9 +75,6 @@ const UserProfile = () => {
 
 
     const sumOfSales = dataArray.reduce((acc, item) => acc + item.price, 0);
-    console.log("The sum of sales is ", sumOfSales)
-    console.log("The data array is ", dataArray)
-
     const xdata = dataArray.map((item) => item.saleDate);
     const ydata = dataArray.map((item) => item.price);
 
@@ -137,13 +133,10 @@ const UserProfile = () => {
         }));
 
         const sortedDataArray = dataArray.sort((a, b) => parseInt(a.saleDate) - parseInt(b.saleDate));
-
-        console.log("The data array is ", sortedDataArray);
         setDataArray(sortedDataArray);
     };
 
     const handleDonationApproval = (donee, productId) => {
-        console.log("Donation approved for donee: ", donee, " and product id: ", productId);
         fetch(`http://localhost:5003/shop/${productId}/close`, {
             method: 'POST',
             headers: {
@@ -156,8 +149,7 @@ const UserProfile = () => {
                 // navigate("/login");
                 console.log("Error approving donation")
             } return res.json()
-        }).then((data) => {
-            console.log("The data is ", data);
+        }).then(() => {
             setRefresh(!refresh);
         })
             .catch((error) => { console.log("The error is:", error) });
@@ -174,12 +166,10 @@ const UserProfile = () => {
                 // navigate("/login");
                 console.log("Error deleting item")
             } return res.json()
-        }).then((data) => {
-            console.log("The data is ", data);
+        }).then(() => {
             setRefresh(!refresh);
         })
             .catch((error) => { console.log("The error is:", error) });
-        console.log("Delete item with id ", id);
     }
 
     const handleReopenItem = (product) => {
@@ -191,9 +181,6 @@ const UserProfile = () => {
             queryBody = { startingBid: product.startingBid, endTime: product.endTime };
         }
 
-
-        console.log("in user profile and the product is:", product);
-        console.log("in user profile and the queryBody is:", queryBody);
         fetch(`http://localhost:5003/shop/${product._id}/reopen`, {
             method: 'PATCH',
             headers: {
@@ -206,14 +193,11 @@ const UserProfile = () => {
                 // navigate("/login");
                 console.log("Error reopening item")
             } return res.json()
-        }).then((data) => {
-            console.log("The data is ", data);
+        }).then(() => {
             setRefresh(!refresh);
         })
             .catch((error) => { console.log("The error is:", error) });
-        console.log("Reopen item with id ", product._id);
     }
-
 
     return (
         <ThemeProvider theme={theme}>

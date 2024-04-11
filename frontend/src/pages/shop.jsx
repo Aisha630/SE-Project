@@ -26,11 +26,7 @@ const ShopItems = ({mode}) => {
     const [checkedSizes, setCheckedSizes] = useState([]);
     const [sortBy, setSortBy] = useState('unset');
     const [condition, setCondition] = useState('unset');
-
-    console.log("SHOP: ", products)
-
-    
-
+  
     const handleSubcategoryChange = (subcategory) => {
         const isChecked = checkedSubcategories.includes(subcategory);
         if (isChecked) {
@@ -38,7 +34,6 @@ const ShopItems = ({mode}) => {
         } else {
             setCheckedSubcategories([...checkedSubcategories, subcategory]);
         }
-        console.log("SHOP: checked subcategories: ", checkedSubcategories);
     }
 
     const handleSizeChange = (size) => {
@@ -48,7 +43,6 @@ const ShopItems = ({mode}) => {
         } else {
             setCheckedSizes([...checkedSizes, size]);
         }
-        console.log("SHOP: checked sizes: ", checkedSizes);
     }
 
     const handleSortBy = (event) => {
@@ -60,9 +54,6 @@ const ShopItems = ({mode}) => {
     }
 
     const handleApplyFilters = () => {
-        console.log("In handleApplyFilters")
-        console.log('Checked subcategories:', checkedSubcategories);
-
         let filterCriteria = {
             productType : mode,
             category: category,
@@ -81,11 +72,9 @@ const ShopItems = ({mode}) => {
         }
         if (sortBy !== 'unset') {
             filterCriteria = {...filterCriteria, sortBy: sortBy};
-            console.log(filterCriteria)
         }
         if (condition !== 'unset') {
             filterCriteria = {...filterCriteria, condition: condition};
-            console.log(filterCriteria)
         }
         
         const queryString = new URLSearchParams(filterCriteria);
@@ -114,7 +103,6 @@ const ShopItems = ({mode}) => {
     };
 
     const handleResetFilters = () => {
-        console.log("In handleResetFilters")
         setCheckedSubcategories([]);
         setCheckedSizes([]);
         setPrice([0, 200000]);
@@ -147,8 +135,6 @@ const ShopItems = ({mode}) => {
     };
 
     useEffect(() => {
-        console.log("In useEffect")
-        console.log("mode is ", mode)
         const queryString = new URLSearchParams({category: category, productType: mode});
         fetch(`http://localhost:5003/filter?${queryString}`, {
             headers: {
@@ -171,7 +157,6 @@ const ShopItems = ({mode}) => {
                 setPrice([0, 200000]);
                 setSortBy('unset');
                 setCondition('unset');
-                console.log(data)
                 setProducts(formattedProducts);
 
                 setIsEmpty(formattedProducts.length === 0);
@@ -198,8 +183,6 @@ const ShopItems = ({mode}) => {
     }
 
     const handlePriceSlider = (event, newValue) => {
-        console.log("In handlePriceSlider")
-        console.log("Event: ", event, "New Value: ", newValue)
         setPrice(newValue);
     };
 
@@ -214,7 +197,7 @@ const ShopItems = ({mode}) => {
     return (
         <ThemeProvider theme={theme}>
             <Box>
-                <Nav Drawer={MyDrawer} Search={Search} pageon={pageon} setisempty={setIsEmpty} setsearchproducts={handleSetProducts} mode={mode} category={category}/>
+                <Nav Drawer={MyDrawer} ShowLogo={false} Search={Search} pageon={pageon} setisempty={setIsEmpty} setsearchproducts={handleSetProducts} mode={mode} category={category}/>
             </Box>
             <MainCategoryToolbar setCategory={setCategory} category={category} /> {/*This is the main toolbar that represents clothing, technology, and miscellaneous categories*/}
 

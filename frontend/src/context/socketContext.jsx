@@ -18,11 +18,11 @@ export const SocketProvider = ({ children }) => {
             const newsocket = io("http://localhost:5003") // connecting to the server at backend
             newsocket.on("connect", () => {
                 newsocket.emit("register", token)
-                console.log("Connected to server and registered")
+                // console.log("Connected to server and registered")
             })
             
             newsocket.on('disconnect', () => {
-                console.log('Disconnected from server');
+                // console.log('Disconnected from server');
             });
 
             setSocket(newsocket)

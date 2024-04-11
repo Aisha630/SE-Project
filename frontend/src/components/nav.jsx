@@ -82,9 +82,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsear
     const lg = useMediaQuery(theme.breakpoints.up('lg'));
     const height = lg ? '5vh' : md ? '3vh' : sm ? '40px' : '30px';
     const [showNotifications, setShowNotifications] = useState(false);
-
     const { notifications, deleteNotifs, setNotifications } = useNotif();
-
     const socket = useSocket();
 
     const deleteFromCart = (product) => {
@@ -141,6 +139,16 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsear
                             <span style={{ display: 'block' }}>Around</span>
                         </Typography>
                     </Box>}
+                    {mode === "sale" && <Typography variant="h6" sx={{ display: { xs: 'none', sm: 'block' }, marginLeft: 2 ,flexGrow: 1, textAlign: 'left', fontWeight: 500, color: 'black' }}> {/*'#58a75b' */}
+                        Shop
+                    </Typography>}
+                    {mode === "donate" && <Typography variant="h6" sx={{ display: { xs: 'none', sm: 'block' }, marginLeft: 2 ,flexGrow: 1, textAlign: 'left', fontWeight: 500, color: 'black' }}> {/*'#58a75b' */}
+                        Donation
+                    </Typography>}
+                    {mode === "auction" && <Typography variant="h6" sx={{ display: { xs: 'none', sm: 'block' }, marginLeft: 2 ,flexGrow: 1, textAlign: 'left', fontWeight: 500, color: 'black' }}> {/*'#58a75b' */}
+                        Auction
+                    </Typography>}
+
 
                     {/* This is to push the search bar to the right */}
                     <Box sx={{ flexGrow: 1 }} />
