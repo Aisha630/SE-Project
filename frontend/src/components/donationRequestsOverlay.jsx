@@ -7,8 +7,6 @@ import {
   Grid,
   Paper,
   List,
-  ListItem,
-  ListItemText,
   Divider,
   Typography,
   IconButton
@@ -90,7 +88,7 @@ const DonationRequestsOverlay = ({ open, handleClose, product, handleDonate }) =
           </Typography>
           <List>
             {product && product.requestList.map((request, index) => (
-              <Grid container spacing={1} sx={{ padding: 1.5, marginTop: 2, boxShadow: '0 0 4px rgba(0, 0, 0, 0.35)', paddingRight: 2, borderRadius: 2, '&:hover': { backgroundColor: '#C7E3C8' } }} onClick={() => {handleDonate(request[0])}}>
+              <Grid container spacing={1} key={index} sx={{ padding: 1.5, marginTop: 2, boxShadow: '0 0 4px rgba(0, 0, 0, 0.35)', paddingRight: 2, borderRadius: 2, '&:hover': { backgroundColor: '#C7E3C8' } }} onClick={() => {handleDonate(request[0], product._id)}}>
                 <Grid item xs={12} >
                   <Typography variant={'body1'} align="left" gutterBottom sx={{ color: '#F97171' }}>
                     Name of Donee:{'  '}

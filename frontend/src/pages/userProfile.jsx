@@ -74,7 +74,7 @@ const UserProfile = () => {
     const rating = user.rating ? user.rating.rating : 0;
     const currentProducts = products;
 
-    
+
     const sumOfSales = dataArray.reduce((acc, item) => acc + item.price, 0);
     console.log("The sum of sales is ", sumOfSales)
     console.log("The data array is ", dataArray)
@@ -96,53 +96,72 @@ const UserProfile = () => {
         const currentYear = today.getFullYear();
         const currentMonth = today.getMonth() + 1; // JavaScript months are 0-indexed
         let totalSalesByPeriod = {};
-      
+
         if (format === 'Monthly') {
-          // Initialize all days of the current month with 0 sales
-          const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
-          for (let day = 1; day <= daysInMonth; day++) {
-            totalSalesByPeriod[String(day).padStart(2, '0')] = 0;
-          }
-      
-          // Filter and sum sales for the current month
-          salesHistory.forEach(sale => {
-            if (sale.price) {
-              const [year, month, day] = sale.saleDate.split('T')[0].split('-');
-              if (parseInt(year) === currentYear && parseInt(month) === currentMonth) {
-                totalSalesByPeriod[day] += sale.price;
-              }
+            // Initialize all days of the current month with 0 sales
+            const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+            for (let day = 1; day <= daysInMonth; day++) {
+                totalSalesByPeriod[String(day).padStart(2, '0')] = 0;
             }
-          });
+
+            // Filter and sum sales for the current month
+            salesHistory.forEach(sale => {
+                if (sale.price) {
+                    const [year, month, day] = sale.saleDate.split('T')[0].split('-');
+                    if (parseInt(year) === currentYear && parseInt(month) === currentMonth) {
+                        totalSalesByPeriod[day] += sale.price;
+                    }
+                }
+            });
         } else if (format === 'Yearly') {
-          // Initialize all months of the current year with 0 sales
-          for (let month = 1; month <= 12; month++) {
-            totalSalesByPeriod[String(month).padStart(2, '0')] = 0;
-          }
-      
-          // Filter and sum sales for the current year
-          salesHistory.forEach(sale => {
-            if (sale.price) {
-              const [year, month] = sale.saleDate.split('T')[0].split('-');
-              if (parseInt(year) === currentYear) {
-                totalSalesByPeriod[month] += sale.price;
-              }
+            // Initialize all months of the current year with 0 sales
+            for (let month = 1; month <= 12; month++) {
+                totalSalesByPeriod[String(month).padStart(2, '0')] = 0;
             }
-          });
+
+            // Filter and sum sales for the current year
+            salesHistory.forEach(sale => {
+                if (sale.price) {
+                    const [year, month] = sale.saleDate.split('T')[0].split('-');
+                    if (parseInt(year) === currentYear) {
+                        totalSalesByPeriod[month] += sale.price;
+                    }
+                }
+            });
         }
-      
+
         // Convert to array format
         const dataArray = Object.entries(totalSalesByPeriod).map(([saleDate, price]) => ({
-          saleDate,
-          price,
+            saleDate,
+            price,
         }));
 
         const sortedDataArray = dataArray.sort((a, b) => parseInt(a.saleDate) - parseInt(b.saleDate));
-      
+
         console.log("The data array is ", sortedDataArray);
         setDataArray(sortedDataArray);
-      };
-      
+    };
 
+    const handleDonationApproval = (donee, productId) => {
+        console.log("Donation approved for donee: ", donee, " and product id: ", productId);
+        fetch(`http://localhost:5003/shop/${productId}/close`, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ doneeUsername: donee})
+        }).then((res) => {
+            if (!res.ok) {
+                // navigate("/login");
+                console.log("Error approving donation")
+            } return res.json()
+        }).then((data) => {
+            console.log("The data is ", data);
+            setRefresh(!refresh);
+        })
+            .catch((error) => { console.log("The error is:", error) });
+    }
 
     const handleDeleteItem = (id) => {
         fetch(`http://localhost:5003/shop/${id}`, {
@@ -164,7 +183,7 @@ const UserProfile = () => {
     }
 
     const handleReopenItem = (product) => {
-        
+
         let queryBody = {};
         if (product.mode === 'SaleProduct') {
             queryBody = { price: product.price };
@@ -296,7 +315,7 @@ const UserProfile = () => {
                         position: 'absolute',
                         backgroundColor: "white",
                     }}>
-                        {currentProducts.length > 0 && <UserProducts products={currentProducts} handleDeleteItem={handleDeleteItem} selectedTab={selectedTab} handleReopenItem={handleReopenItem} />}
+                        {currentProducts.length > 0 && <UserProducts products={currentProducts} handleDeleteItem={handleDeleteItem} selectedTab={selectedTab} handleReopenItem={handleReopenItem} handleDonationApproval={handleDonationApproval}/>}
                     </Grid>
                     {currentProducts.length === 0 && <NoProducts styles={{
                         justifyContent: 'center',

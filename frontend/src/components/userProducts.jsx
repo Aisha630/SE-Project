@@ -17,7 +17,7 @@ const options = [
     { label: 'Sold', value: 'sold' },
 ];
 
-const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenItem }) => {
+const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenItem, handleDonationApproval }) => {
 
     console.log(products)
     const [open, setOpen] = React.useState(false);
@@ -86,10 +86,11 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
         toast.success('Congratulations on your Sale!');
     }
 
-    const handleDonateApproved = (username) => {
+    const handleDonateApproved = (username, id) => {
         // Implement donate approved logic
         // call to backend to donate approved
 
+        handleDonationApproval(username, id);
         setOpenDonationRequests(false);
         toast.success(`Donation to ${username} approved! Check your email for next steps.`);
 
