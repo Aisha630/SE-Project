@@ -53,7 +53,7 @@ export async function createDonationRequest(req, res) {
     await notification.save();
 
     if (seller.connectionID) {
-      io.to(seller.connectionID).emit("donationRequest");
+      io.to(seller.connectionID).emit("fetchNotifs");
     }
     res.sendStatus(200);
   } catch (err) {
