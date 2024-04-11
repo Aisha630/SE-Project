@@ -6,7 +6,7 @@ import { useMediaQuery } from '@mui/material';
 import theme from '../themes/homeTheme.js';
 import BackHanger from './backHanger.jsx';
 
-function MyDrawer({pageOn}) {
+function MyDrawer({pageon}) {
   const [isOpen, setIsOpen] = useState(false);
   const lg = useMediaQuery(theme.breakpoints.up('md'));
   const md = useMediaQuery(theme.breakpoints.between('sm', 'md'));
@@ -27,7 +27,7 @@ function MyDrawer({pageOn}) {
       style={{ width: lg ? 240 : md ? 200 : 180 }}
     >
       <BackHanger />
-      <SidePanel ListStyles={{ ml: { xs: '3px', sm: "5px", md: "10px" } }} ListItemStyles={{ fontWeight: "bold", mt: "5px" }} ListButtonStyles={{ margin: "15px" }} pageOn={pageOn} />
+      <SidePanel ListStyles={{ ml: { xs: '3px', sm: "5px", md: "10px" } }} ListItemStyles={{ fontWeight: "bold", mt: "5px" }} ListButtonStyles={{ margin: "15px" }} pageon={pageon} />
     </div>
   );
 
