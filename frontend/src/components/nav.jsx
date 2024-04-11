@@ -133,7 +133,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsear
         <AppBar position="static" sx={{ backgroundColor: "#e0e0e0", ...styles, boxShadow: "none" }} >
             <Container maxWidth="100vw">
                 <Toolbar disableGutters>
-                    <Drawer pageOn={pageon} />
+                    <Drawer pageon={pageon} />
                     {ShowLogo && <Box onClick={handleLogoClick} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: "flex-start", mr: 1, mt: 3, mb: 1, ml: { xs: '3px', sm: "5px", md: "15px" }, cursor: 'pointer', }}>
                         <img src="/sta_logo.png" alt="Second Time Around Logo" style={{ height: height }} />
                         <Typography variant={lg ? "subtitle2" : "caption"} noWrap sx={{ fontWeight: 'bold', lineHeight: '1.25', textAlign: 'center' }}>
