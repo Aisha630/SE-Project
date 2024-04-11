@@ -263,8 +263,12 @@ const UserProfile = () => {
                                     series={[
                                         {
                                             data: ydata,
+                                            showMark: false,
                                         },
                                     ]}
+                                    disableAxisListener={true}
+                                    
+                                    
                                 />
                             </Box>
 
