@@ -6,7 +6,6 @@ import {
     Shop as ShopIcon,
     VolunteerActivism as VolunteerActivismIcon,
     AttachMoney as AttachMoneyIcon,
-    Info as InfoIcon
 } from '@mui/icons-material';
 
 const menuItems = [
@@ -14,7 +13,6 @@ const menuItems = [
     { text: 'Shop', Icon: ShopIcon, to: '/shop' },
     { text: 'Donations', Icon: VolunteerActivismIcon, to: '/donation' },
     { text: 'Auction', Icon: AttachMoneyIcon, to: '/auction' },
-    { text: 'About', Icon: InfoIcon, to: '/help' },
 ];
 
 function sidePanel({ ListStyles, ListItemStyles, ListButtonStyles, pageOn }) {
