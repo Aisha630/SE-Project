@@ -201,7 +201,7 @@ const UserProfile = () => {
 
     return (
         <ThemeProvider theme={theme}>
-            <Nav Drawer={Drawer} Search={Box} ShowLogo={false} styles={{
+            <Nav Drawer={Drawer} Search={Box} ShowLogo={false} pageon='' styles={{
                 // backgroundImage: "url('userprofilebg.svg')",
             }} />
             <Grid style={{

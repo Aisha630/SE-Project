@@ -117,9 +117,9 @@ const DonationRequestsOverlay = ({ open, handleClose, product, handleDonate }) =
                 </Grid>
               </Grid>
             ))}
-            {!product &&
-              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
-                <Typography variant="h5" align="center" gutterBottom>
+            {product && product.requestList.length === 0 &&
+              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50%' }}>
+                <Typography  align="center" gutterBottom>
                   No Requests Found
                 </Typography>
               </Box>
