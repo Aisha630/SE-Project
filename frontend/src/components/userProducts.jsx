@@ -177,9 +177,10 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
                                <FormControl sx={{ minWidth: 140, color: '#517652', display: 'flex', }}>
                                     <Autocomplete
                                         // defaultValue={product.isHold ? options[0] : options[1]}
+                                        options={options}
+                                        filterOptions={(options) => { return options.filter(option =>  option.value === 'sold') }}
                                         value={options.find(option => option.value === (product.isHold ? 'on_hold' : 'live'))}
                                         isOptionEqualToValue={(option, value) => option.value === value.value}
-                                        options={options.find(option => option.value === 'on_hold') ? options.filter(option => option.value === 'sold') : options}
                                         getOptionLabel={(option) => option.label}
                                         renderInput={(params) => <TextField {...params} label="Status" />}
                                         disableClearable={true}

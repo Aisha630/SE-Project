@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Box, Button, Container, Typography, IconButton, ThemeProvider, } from "@mui/material";
+import { Box, Button, Container, Typography, ThemeProvider, } from "@mui/material";
 import theme from "../themes/authThemes.js";
 import { toast } from "react-toastify";
 import details from "../config.json";
