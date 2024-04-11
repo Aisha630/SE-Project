@@ -15,12 +15,12 @@ const menuItems = [
     { text: 'Auction', Icon: AttachMoneyIcon, to: '/auction' },
 ];
 
-function sidePanel({ ListStyles, ListItemStyles, ListButtonStyles, pageOn }) {
+function sidePanel({ ListStyles, ListItemStyles, ListButtonStyles, pageon }) {
     return (
         <List sx={{ mr: "0px", ...ListStyles }}>
             
             {menuItems.map(({ text, Icon, to }, index) => (
-                <ListItemLink key={index} text={text} Icon={Icon} to={to} TypoStyles={{ ...ListItemStyles }} ButtonStyles={{ ...ListButtonStyles }} pageOn={pageOn} />
+                <ListItemLink key={index} text={text} Icon={Icon} to={to} TypoStyles={{ ...ListItemStyles }} ButtonStyles={{ ...ListButtonStyles }} pageon={pageon} />
             ))}
         </List>
     );
