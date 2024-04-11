@@ -174,17 +174,20 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
                                 </IconButton>
                             </Box>
                             <CardActions sx={{ justifyContent: 'space-between', padding: 2, pt: 0, }}>
-                                <FormControl sx={{ minWidth: 140, color: '#517652', display: 'flex' }}>
+                               <FormControl sx={{ minWidth: 140, color: '#517652', display: 'flex', }}>
                                     <Autocomplete
+                                        // defaultValue={product.isHold ? options[0] : options[1]}
                                         value={options.find(option => option.value === (product.isHold ? 'on_hold' : 'live'))}
                                         isOptionEqualToValue={(option, value) => option.value === value.value}
-                                        options={product.isHold ? [options.find(option => option.value === 'on_hold')] : options}
+                                        options={options.find(option => option.value === 'on_hold') ? options.filter(option => option.value === 'sold') : options}
                                         getOptionLabel={(option) => option.label}
                                         renderInput={(params) => <TextField {...params} label="Status" />}
                                         disableClearable={true}
                                         disabled={!product.isHold}
                                         onChange={(event, value) => {
-                                            if (value && value.value === 'sold') {
+                                            // Implement status change logic
+                                            if (value.value === 'sold') {
+                                                // call to backend to change status to sold
                                                 handleItemSold(product._id);
                                             }
                                         }}
