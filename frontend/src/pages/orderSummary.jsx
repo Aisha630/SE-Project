@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Grid, Box, useMediaQuery } from '@mui/material';
 import { useCart } from '../context/cartContext';
 import { useSelector } from 'react-redux';
@@ -16,8 +16,10 @@ const OrderSummaryPage = () => {
     const navigate = useNavigate();
     const token = useSelector((state) => state.auth.token);
     const { cartItems, fetchCartItems, sellers } = useCart();
+    const [checkingOut, setCheckingOut] = useState(false);
 
     const checkout = () => {
+        setCheckingOut(true);
         fetch(`http://localhost:5003/checkout`, {
             method: 'POST',
             headers: {
@@ -31,10 +33,16 @@ const OrderSummaryPage = () => {
                 fetchCartItems();
                 navigate("/");
             } else {
+                
                 toast.error("Error checking out");
                 throw new Error('Failed to checkout');
             }
-        })
+        }).catch(error => {
+            console.error(error);
+            toast.error("Error checking out");
+        }).finally(() => {
+            setCheckingOut(false);
+        });
     }
 
     const deleteFromCart = (product) => {
@@ -89,7 +97,7 @@ const OrderSummaryPage = () => {
                 {/* Confirm Purchase button */}
                 <Grid item xs={12} sm={12} md={12} lg={12}>
                     <Box sx={{ textAlign: "right", mr: 0, mt: 0, mb: 3, paddingRight: 0, paddingTop: 1 }}>
-                        <SiteButton text={'Confirm Purchase'} styles={{ padding: 2, paddingLeft: lg ? 8 : 4, paddingRight: lg ? 8 : 4, fontSize: "0.95rem" }} onClick={checkout} />
+                        <SiteButton text={'Confirm Purchase'} styles={{ padding: 2, paddingLeft: lg ? 8 : 4, paddingRight: lg ? 8 : 4, fontSize: "0.95rem" }} onClick={checkout} disabled={checkingOut}/>
                     </Box>
                 </Grid>
             </Grid>

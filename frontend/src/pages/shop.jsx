@@ -27,6 +27,8 @@ const ShopItems = ({mode}) => {
     const [sortBy, setSortBy] = useState('unset');
     const [condition, setCondition] = useState('unset');
 
+    console.log("SHOP: ", products)
+
     
 
     const handleSubcategoryChange = (subcategory) => {
@@ -145,6 +147,8 @@ const ShopItems = ({mode}) => {
     };
 
     useEffect(() => {
+        console.log("In useEffect")
+        console.log("mode is ", mode)
         const queryString = new URLSearchParams({category: category, productType: mode});
         fetch(`http://localhost:5003/filter?${queryString}`, {
             headers: {
@@ -189,7 +193,7 @@ const ShopItems = ({mode}) => {
     };
 
     const handleSetProducts = (products) => {
-        setCategory("All");
+        // setCategory("All");
         setProducts(products);
     }
 
@@ -210,7 +214,7 @@ const ShopItems = ({mode}) => {
     return (
         <ThemeProvider theme={theme}>
             <Box>
-                <Nav Drawer={MyDrawer} Search={Search} pageon={pageon} setisempty={setIsEmpty} setsearchproducts={handleSetProducts}/>
+                <Nav Drawer={MyDrawer} Search={Search} pageon={pageon} setisempty={setIsEmpty} setsearchproducts={handleSetProducts} mode={mode} category={category}/>
             </Box>
             <MainCategoryToolbar setCategory={setCategory} category={category} /> {/*This is the main toolbar that represents clothing, technology, and miscellaneous categories*/}
 

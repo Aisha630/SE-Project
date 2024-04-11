@@ -8,7 +8,6 @@ export const loginUser = createAsyncThunk('auth/loginUser', async ({ username, p
             body: JSON.stringify({ username, password }),
         });
         const data = await response.json();
-        console.log("auth data is ", data)
         if (!response.ok) throw new Error(data.error);
         return data;
     } catch (error) {

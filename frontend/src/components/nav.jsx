@@ -71,7 +71,7 @@ function Dropdown() {
 
 }
 
-const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsearchproducts, setisempty }) => {
+const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsearchproducts, setisempty, mode, category }) => {
 
     const navigate = useNavigate();
     const [isCartVisible, setIsCartVisible] = useState(false);
@@ -83,7 +83,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsear
     const height = lg ? '5vh' : md ? '3vh' : sm ? '40px' : '30px';
     const [showNotifications, setShowNotifications] = useState(false);
 
-    const { notifications, fetchNotifs, deleteNotifs } = useNotif();
+    const { notifications, fetchNotifs, deleteNotifs, setNotifications } = useNotif();
 
     const socket = useSocket();
 
@@ -118,15 +118,14 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsear
     }
 
     const toggleNotifs = () => {
-        console.log("Toggling notifications ", notifications)
         if (showNotifications) {
-            notifications.map((notif) => {
-                console.log("Emitting read ", notif.message)
-                console.log("Emitting read ", notif._id)
+            const read = notifications.map((notif) => {
                 socket.emit("read", notif._id)
+                return { ...notif, status: "read" }
             })
+            setNotifications(read);
         }
-        fetchNotifs();
+        // fetchNotifs();
         setShowNotifications(!showNotifications);
     }
 
@@ -146,7 +145,7 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsear
                     {/* This is to push the search bar to the right */}
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-                        <Search setisempty={setisempty} setsearchproducts={setsearchproducts} />
+                        <Search setisempty={setisempty} setsearchproducts={setsearchproducts} mode={mode} category={category} />
                         <IconButton edge="end" color="gray" disableRipple aria-label="notifications" onClick={toggleNotifs} sx={commonIconStyle}>
                             <Badge badgeContent={Array.isArray(notifications) ? notifications.filter(notif => notif.status === "unread").length : 0} max={99} color="secondary">
                                 <NotificationsIcon sx={{

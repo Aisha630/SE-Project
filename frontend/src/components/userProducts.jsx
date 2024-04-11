@@ -9,7 +9,7 @@ import theme from '../themes/homeTheme';
 import ConfirmDeletionOverlay from './confirmDeletion';
 import DonationRequestsOverlay from './donationRequestsOverlay';
 import ConfirmReopenOverlay from './confirmReopenOverlay';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const options = [
     { label: 'Live', value: 'live' },
@@ -19,7 +19,7 @@ const options = [
 
 const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenItem, handleDonationApproval }) => {
 
-    console.log(products)
+    // console.log(products)
     const [open, setOpen] = React.useState(false);
     const [selectedProductId, setSelectedProductId] = React.useState(null);
     const [selectedProduct, setSelectedProduct] = React.useState(null);
@@ -52,12 +52,12 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
         // toast.success('Item edited successfully');
     }
 
-    const handleReopen = ({product}) => {
+    const handleReopen = ({ product }) => {
         // Implement reopen item logic
         // call to backend to reopen the product
         let mode = selectedTab === 'Auctioned' ? 'Auction' : selectedTab === 'Donations' ? 'Donation' : 'Sale';
 
-        const data = { _id: product._id, mode: 'SaleProduct', price: product.price}
+        const data = { _id: product._id, mode: 'SaleProduct', price: product.price }
         if (selectedTab !== 'Auctioned') {
             handleReopenItem(data);
             toast.success(`Your item has been reopened for ${mode}!`);
@@ -68,7 +68,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
 
     const handleReopenAuction = (startingBid, endTime, id) => {
         console.log(startingBid, endTime);
-        const data = { _id: id ,mode: 'AuctionProduct', startingBid: startingBid, endTime: endTime }
+        const data = { _id: id, mode: 'AuctionProduct', startingBid: startingBid, endTime: endTime }
         handleReopenItem(data);
         setConfirmReopen(false);
         toast.success('Your item has been reopened for Auction!');
@@ -98,39 +98,39 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
 
     function AuctionTimer({ endTime }) {
         const calculateTimeLeft = () => {
-          const difference = +new Date(endTime) - +new Date();
-          let timeLeft = {};
-      
-          if (difference > 0) {
-            timeLeft = {
-              days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-              hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-              minutes: Math.floor((difference / 1000 / 60) % 60),
-            };
-          }
-      
-          return timeLeft;
+            const difference = +new Date(endTime) - +new Date();
+            let timeLeft = {};
+
+            if (difference > 0) {
+                timeLeft = {
+                    days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+                    hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+                    minutes: Math.floor((difference / 1000 / 60) % 60),
+                };
+            }
+
+            return timeLeft;
         };
-      
+
         const formatTimeLeft = () => {
-          const timeLeft = calculateTimeLeft();
-      
-          if (timeLeft.days || timeLeft.hours) {
-            return `Ends in: ${timeLeft.days ? `${timeLeft.days}d ` : ''}${timeLeft.hours}h`;
-          } else if (timeLeft.minutes < 60) {
-            return "Ends in: Less than 1h";
-          } else {
-            return "Auction has ended";
-          }
+            const timeLeft = calculateTimeLeft();
+
+            if (timeLeft.days || timeLeft.hours) {
+                return `Ends in: ${timeLeft.days ? `${timeLeft.days}d ` : ''}${timeLeft.hours}h`;
+            } else if (timeLeft.minutes < 60) {
+                return "Ends in: Less than 1h";
+            } else {
+                return "Auction has ended";
+            }
         };
-      
+
         return (
-          <div>
-            {formatTimeLeft()}
-          </div>
+            <div>
+                {formatTimeLeft()}
+            </div>
         );
-      }
-      
+    }
+
 
     return (
         <Grid container spacing={1} sx={{ backgroundColor: 'white', p: 7, m: 2, maxWidth: "100%", }}>
@@ -158,41 +158,39 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
                                     {product.__t === 'AuctionProduct' && product.isHold && <Typography variant="body1" color="#2E7D32" sx={{ my: 1 }}>
                                         Auctioned to: {product.buyerUsername ? product.buyerUsername : "No bids yet"}
                                     </Typography>}
-                                    {product.__t === 'AuctionProduct' && !product.isHold && <Typography variant="body1" color="#2E7D32" sx={{ my: 1 }}> 
+                                    {product.__t === 'AuctionProduct' && !product.isHold && <Typography variant="body1" color="#2E7D32" sx={{ my: 1 }}>
                                         <AuctionTimer endTime={product.endTime} />
                                     </Typography>}
-                                    {product.__t === 'SaleProduct' && product.isHold &&<Typography variant="body1" color="#2E7D32" sx={{ my: 1 }}>
+                                    {product.__t === 'SaleProduct' && product.isHold && <Typography variant="body1" color="#2E7D32" sx={{ my: 1 }}>
                                         Sold to: {product.buyerUsername ? product.buyerUsername : "No buyer yet"}
                                     </Typography>}
                                     <Typography variant="body1" color="text.secondary" sx={{ paddingTop: 1 }}>
                                         Created at: {new Date(product.createdAt).toLocaleString()}
                                     </Typography>
-                                
+
                                 </CardContent>
                                 <IconButton onClick={() => handleClickOpen(product._id)} sx={{ alignSelf: 'start', padding: 1, m: 2 }}>
                                     <DeleteIcon />
                                 </IconButton>
                             </Box>
                             <CardActions sx={{ justifyContent: 'space-between', padding: 2, pt: 0, }}>
-                                <FormControl sx={{ minWidth: 140, color: '#517652', display: 'flex', }}>
+                                <FormControl sx={{ minWidth: 140, color: '#517652', display: 'flex' }}>
                                     <Autocomplete
-                                        // defaultValue={product.isHold ? options[0] : options[1]}
                                         value={options.find(option => option.value === (product.isHold ? 'on_hold' : 'live'))}
                                         isOptionEqualToValue={(option, value) => option.value === value.value}
-                                        options={options.find(option => option.value === 'on_hold') ? options.filter(option => option.value === 'sold') : options}
+                                        options={product.isHold ? [options.find(option => option.value === 'on_hold')] : options}
                                         getOptionLabel={(option) => option.label}
                                         renderInput={(params) => <TextField {...params} label="Status" />}
                                         disableClearable={true}
-                                        disabled={!product.isHold}
+                                        disabled={true}
                                         onChange={(event, value) => {
-                                            // Implement status change logic
-                                            if (value.value === 'sold') {
-                                                // call to backend to change status to sold
+                                            if (value && value.value === 'sold') {
                                                 handleItemSold(product._id);
                                             }
                                         }}
                                     />
                                 </FormControl>
+
                                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                                     {product.__t === 'DonationProduct' && !product.isHold &&
                                         <Button variant="contained" onClick={() => handleViewDonationRequests({ product })} size={sm ? "small" : "medium"} sx={{
@@ -207,7 +205,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
                                             View Requests
                                         </Button>}
 
-                                    {!product.isHold && <Button  onClick={() => handleEditItem(product._id)} variant="contained" size={lg ? "large" : "small"} sx={{
+                                    {!product.isHold && <Button onClick={() => handleEditItem(product._id)} variant="contained" size={lg ? "large" : "small"} sx={{
                                         backgroundColor: '#f97171',
                                         marginTop: 1,
                                         color: 'white',
@@ -218,7 +216,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
                                     }}>
                                         Edit Item
                                     </Button>}
-                                    {product.isHold && <Button onClick={() => handleReopen({product})} variant="contained" size={lg ? "large" : "small"} sx={{
+                                    {product.isHold && <Button onClick={() => handleReopen({ product })} variant="contained" size={lg ? "large" : "small"} sx={{
                                         backgroundColor: '#517652',
                                         color: 'white',
                                         '&:hover': {

@@ -30,8 +30,9 @@ const io = new Server(server, {
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "*",
+    origin: "http://localhost:3000",
     methods: ["GET", "POST", "DELETE", "PATCH", "OPTIONS"],
+    credentials: true,
   })
 );
 app.use(express.json());
@@ -52,7 +53,7 @@ io.on("connection", (socket) => {
   socket.on("register", (token) => {
     jwt.verify(token, process.env.JWT_PRIVATE_KEY, async (err, decoded) => {
       if (err) {
-        console.log("Wrong jwt");
+        console.log("Wrong jwt ", token);
         return socket.disconnect();
       }
 

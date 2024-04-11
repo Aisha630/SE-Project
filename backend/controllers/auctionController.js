@@ -1,5 +1,6 @@
 import { sendNotSoldEmail, sendSoldEmail } from "../services/emailService.js";
 import { Product } from "../models/productBase.js";
+import  User  from "../models/userModel.js";
 import io from "../app.js";
 import Notification from "../models/notifModel.js";
 import Joi from "joi";

@@ -3,7 +3,8 @@ import { IconButton, InputBase, Box } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useSelector } from 'react-redux';
 
-const Search = ({ setisempty, setsearchproducts }) => {
+
+const Search = ({ setisempty, setsearchproducts, mode ,category}) => {
     const [isSearchActive, setIsSearchActive] = useState(false);
     const token = useSelector((state) => state.auth.token);
 
@@ -12,9 +13,11 @@ const Search = ({ setisempty, setsearchproducts }) => {
     };
 
     const getSearchResults = (event) => {
+        const queryString = new URLSearchParams({productType: mode, q: event.target.value});
+        console.log("mode is ", mode)
         if (event.key === 'Enter') {
             console.log("searching for", event.target.value)
-            fetch(`http://localhost:5003/shop?q=${event.target.value}`, {
+            fetch(`http://localhost:5003/shop?${queryString}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
@@ -24,7 +27,7 @@ const Search = ({ setisempty, setsearchproducts }) => {
                     console.log("Error")
                 return response.json()
             }).then(data => {
-                const formattedProducts = data.map(product => ({
+                const formattedProducts = data.filter(product => product.category===category).map(product => ({
                     name: product.name,
                     image: 'http://localhost:5003'.concat(product.images[0]), // Assuming the first image in the array is the main image
                     price: product.price,
@@ -32,6 +35,7 @@ const Search = ({ setisempty, setsearchproducts }) => {
                 }));
                 setisempty(formattedProducts.length === 0);
                 setsearchproducts(formattedProducts)
+                console.log(formattedProducts)
             }).catch(error => { console.log(error) })
         }
     };

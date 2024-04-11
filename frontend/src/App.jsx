@@ -19,6 +19,7 @@ import EditAd from './pages/editad';
 import React from 'react';
 import { SocketProvider } from './context/socketContext';
 import { NotifProvider } from './context/notifContext';
+import { useEffect } from 'react';
 
 const theme = createTheme({
   palette: {
@@ -39,6 +40,9 @@ const theme = createTheme({
 });
 
 function App() {
+
+  useEffect(() => {
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>

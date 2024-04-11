@@ -8,10 +8,10 @@ import { useNotif } from '../context/notifContext';
 
 
 
-const NotificationOverlayCard = ({ notifVisibility, notifVisibilityToggle, deletenotifs}) => {
+const NotificationOverlayCard = ({ notifVisibility, notifVisibilityToggle, deletenotifs }) => {
     const [isOpen, setIsOpen] = useState(true);
     const md = useMediaQuery(theme.breakpoints.up('md'));
-    const {notifications } = useNotif();
+    const { notifications } = useNotif();
 
 
     const handleClose = () => {
@@ -41,7 +41,13 @@ const NotificationOverlayCard = ({ notifVisibility, notifVisibilityToggle, delet
                             <Divider variant="fullWidth" sx={{ m: 2 }} />
 
                             <Typography variant={md ? "h6" : "subtitle1"} gutterBottom sx={{ textAlign: "left", m: 1, fontWeight: 500 }}>Your Notifications</Typography>
-                            <Typography variant="subtitle2" gutterBottom sx={{ textAlign: "left", fontWeight: 400, m: 1 }}>{`You have ${Array.isArray(notifications) ? notifications.filter(notif => notif.status === "unread").length : 0} notifications`}</Typography>
+                            <Typography variant="subtitle2" gutterBottom sx={{ textAlign: "left", fontWeight: 400, m: 1 }}>
+                                {`You have ${Array.isArray(notifications) ? notifications.filter(notif => notif.status === "unread").length : 0
+                                    } `}
+                                <span style={{ fontWeight: 700 }}>unread</span>
+                                {` notifications`}
+                            </Typography>
+
                             <List >
                                 {notifications.map((item, index) => (
                                     // console.log("Rendering ", item.message),

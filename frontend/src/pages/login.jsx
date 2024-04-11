@@ -9,7 +9,9 @@ import theme from '../themes/authThemes.js';
 import '../css/login.css';
 import TypingEffect from '../components/typing.jsx';
 
+
 const Login = () => {
+
 	const [credentials, setCredentials] = useState({ username: '', password: '' }); // This is login state credentials
 	const [resetCredentials, setResetCredentials] = useState({ reset_token: '', newPassword: '', reset_email: '' }); // This is state for the credentials for resetting password
 	const [resetEmail, setResetEmail] = useState(false) // This is the state for taking email for resetting password
@@ -20,9 +22,9 @@ const Login = () => {
 	const navigate = useNavigate();
 	const md = useMediaQuery(theme.breakpoints.down('md'));
 
-	useEffect(()=>{
+	useEffect(() => {
 		sessionStorage.removeItem('persist:root')
-	}, [])
+	}, [credentials])
 
 	const handleChange = (e, func) => func(prev => ({ ...prev, [e.target.name]: e.target.value }));
 	const togglePassword = () => setShowPassword(!showPassword);

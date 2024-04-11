@@ -167,7 +167,7 @@ const ProductDetails = () => {
 					toast.error(data.error);
 				} else {
 					toast.success(`Bid placed: PKR ${bid}`);
-					setProduct({ ...product, currentBd: bid });
+					setProduct({ ...product, currentBid: bid });
 				}
 			})
 			.catch(error => {

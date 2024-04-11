@@ -19,43 +19,42 @@ export const NotifProvider = ({ children }) => {
         }
     }, [token])
 
-    const fetchNotifs = () => {
-        fetch(`http://localhost:5003/notif`, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token}`
+    const fetchNotifs = async () => {
+        try {
+            const response = await fetch(`http://localhost:5003/notif`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                }
+            });
+            const data = await response.json();
+            if (response.ok) {
+                setNotifications(data || []);
+            } else {
+                console.error(data.message);
+                setNotifications([]);
             }
-        }).then(res => {
-            if (res.ok)
-                return res.json()
-            else {
-                // res.json().then(data => toast.error(data.message))
-                res.json().then(data => console.log(data.message))
+        } catch (err) {
+            console.error("Error fetching notifications:", err);
+            setNotifications([]);
+        }
+    };
 
-            }
-        }).then(data => {
 
-            console.log("notifs are ", data)
-            if (data)
-                setNotifications(data)
-            else
-                setNotifications([])
-        }).catch((err) => {
-            console.log(err)
-        })
-
-    }
-    
     const deleteNotifs = (notif) => {
-        console.log("Deleting notif ", notif._id)
         fetch(`http://localhost:5003/notif/${notif._id}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${token}`
             }
         }).then(res => {
-            console.log("Got delete notif response ", res.body)
-            fetchNotifs()
+            if (res.ok) {
+                fetchNotifs()
+            }
+            else if (res.status === 404)
+                toast.error("Notification not found")
+            else
+                toast.error("Failed to delete notification")
         }).catch((err) => {
             toast.error(err)
         })
@@ -65,7 +64,7 @@ export const NotifProvider = ({ children }) => {
     const socket = useSocket();
     useEffect(() => {
         if (!socket) return;
-        socket.on("fetchNotifs", () => { console.log("Got ping for fetching notifs "); fetchNotifs(); })
+        socket.on("fetchNotifs", () => { fetchNotifs(); })
 
         return () => {
             socket.off("fetchNotifs")
