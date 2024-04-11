@@ -1,6 +1,7 @@
 import Joi from "joi";
 import path from "path";
 import schedule from "node-schedule";
+import User from "../models/userModel.js";
 
 import Image from "../models/imageModel.js";
 import config from "../config.js";
@@ -315,8 +316,10 @@ export async function reopen(req, res) {
     return res.status(404).json({ error: "Product not found" });
   }
 
-  delete product.buyerUsername;
+  const buyerUsername = product.buyerUsername;
   const productType = product.__t;
+  delete product.buyerUsername;
+
   switch (productType) {
     case "SaleProduct":
       await reopenSale(req, res, product);
@@ -325,7 +328,7 @@ export async function reopen(req, res) {
       await reopenAuction(req, res, product);
       break;
     case "DonationProduct":
-      await reopenDonation(product);
+      await reopenDonation(product, buyerUsername);
       break;
   }
   res.status(201).json(product);
@@ -365,8 +368,17 @@ async function reopenSale(req, res, product) {
   await product.save();
 }
 
-async function reopenDonation(product) {
+async function reopenDonation(product, buyerUsername) {
   product.requestList = [];
   product.isHold = false;
+
+  const donee = await User.findOne({ username: buyerUsername });
+  if (donee && donee.donationHistory) {
+    donee.donationHistory = donee.donationHistory.filter(
+      (item) => item !== product.name
+    );
+    await donee.save();
+  }
+
   await product.save();
 }

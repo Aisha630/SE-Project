@@ -40,11 +40,6 @@ export async function createDonationRequest(req, res) {
         .json({ error: "You have already requested this product" });
     } else {
       product.requestList.push([donee.username, requestDescription]);
-
-      await User.updateOne(
-        { _id: donee._id },
-        { $push: { donationHistory: product.name } }
-      );
     }
 
     await product.save();
@@ -96,6 +91,10 @@ export async function closeDonation(req, res) {
 
       product.isHold = true;
       product.buyerUsername = doneeUsername;
+      await User.updateOne(
+        { _id: acceptedDonee._id },
+        { $push: { donationHistory: product.name } }
+      );
       await product.save();
 
       sendApprovalEmail(productDetails);
