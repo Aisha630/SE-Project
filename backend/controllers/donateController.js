@@ -49,6 +49,7 @@ export async function createDonationRequest(req, res) {
 
     await product.save();
 
+    const seller = await User.findOne({ username: product.seller });
     const notification = new Notification({
       userId: seller._id,
       message: `A donation request by ${donee.username} was received for "${product.name}".`,
@@ -56,7 +57,6 @@ export async function createDonationRequest(req, res) {
     });
     await notification.save();
 
-    const seller = await User.findOne({ username: product.seller });
     if (seller.connectionID) {
       io.to(seller.connectionID).emit("donationRequest");
     }
