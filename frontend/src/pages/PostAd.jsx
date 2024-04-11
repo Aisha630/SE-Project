@@ -208,7 +208,13 @@ const PostAd = () => {
 
 			if (response.ok) {
 				await response.json();
-				navigate("/shop");
+				if (adData.productType === "sale") {
+					navigate("/shop");
+				} else if (adData.productType === "auction") {
+					navigate("/auction");
+				} else if (adData.productType === "donate") {
+					navigate("/donation");
+				}
 			} else {
 				const errorData = await response.json();
 				toast.error(`Submission Failed: ${errorData.error}`);
