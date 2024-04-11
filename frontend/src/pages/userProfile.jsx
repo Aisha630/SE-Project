@@ -25,6 +25,7 @@ const UserProfile = () => {
     const navigate = useNavigate();
     const [graph, setGraph] = useState('Monthly');
     const [refresh, setRefresh] = useState(false);
+    const [dataArray, setDataArray] = useState([]);
 
     const username = useSelector((state) => state.auth.user);
     const token = useSelector((state) => state.auth.token);
@@ -38,7 +39,7 @@ const UserProfile = () => {
             if (!res.ok) {
                 navigate("/login");
             } return res.json()
-        }).then((data) => { console.log("The data is ", data); setUser(data) })
+        }).then((data) => { console.log("The data is ", data); setUser(data); processSalesHistoryData(data.salesHistory, 'Monthly'); setGraph('Monthly'); })
             .catch((error) => { console.log("The error is:", error) });
 
 
@@ -72,51 +73,76 @@ const UserProfile = () => {
 
     const rating = user.rating ? user.rating.rating : 0;
     const currentProducts = products;
-    // console.log("The current products are ", currentProducts, "The products are ", products, "The page is ", page, "The products per page are ", productsPerPage);
 
-    const dataArray = [
-        { saleDate: '01', price: 8000 },
-        { saleDate: '02', price: 10000 },
-        { saleDate: '03', price: 9300 },
-        { saleDate: '04', price: 30500 },
-        { saleDate: '05', price: 12000 },
-        { saleDate: '06', price: 23000 },
-        { saleDate: '07', price: 14000 },
-        { saleDate: '08', price: 8000 },
-        { saleDate: '09', price: 26000 },
-        { saleDate: '10', price: 17000 },
-        { saleDate: '11', price: 28000 },
-        { saleDate: '12', price: 39000 },
-        { saleDate: '13', price: 10000 },
-        { saleDate: '14', price: 31000 },
-        { saleDate: '15', price: 12000 },
-        { saleDate: '16', price: 32000 },
-        { saleDate: '17', price: 24000 },
-        { saleDate: '18', price: 25000 },
-        { saleDate: '19', price: 16000 },
-        { saleDate: '20', price: 27000 },
-        { saleDate: '21', price: 28000 },
-        { saleDate: '22', price: 9000 },
-        { saleDate: '23', price: 30000 },
-        { saleDate: '24', price: 11000 },
-        { saleDate: '25', price: 32000 },
-        { saleDate: '26', price: 23000 },
-        { saleDate: '27', price: 23000 },
-        { saleDate: '28', price: 32000 },
-        { saleDate: '29', price: 16000 },
-        { saleDate: '30', price: 27000 },
-        { saleDate: '31', price: 18000 },
-
-    ];
+    
     const sumOfSales = dataArray.reduce((acc, item) => acc + item.price, 0);
+    console.log("The sum of sales is ", sumOfSales)
+    console.log("The data array is ", dataArray)
 
     const xdata = dataArray.map((item) => item.saleDate);
     const ydata = dataArray.map((item) => item.price);
 
     const handleGraphChange = (event) => {
-        console.log(event.target.value);
+        if (event.target.value === 'Monthly') {
+            processSalesHistoryData(user.salesHistory, 'Monthly');
+        } else {
+            processSalesHistoryData(user.salesHistory, 'Yearly');
+        }
         setGraph(event.target.value);
     }
+
+    const processSalesHistoryData = (salesHistory, format) => {
+        const today = new Date();
+        const currentYear = today.getFullYear();
+        const currentMonth = today.getMonth() + 1; // JavaScript months are 0-indexed
+        let totalSalesByPeriod = {};
+      
+        if (format === 'Monthly') {
+          // Initialize all days of the current month with 0 sales
+          const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+          for (let day = 1; day <= daysInMonth; day++) {
+            totalSalesByPeriod[String(day).padStart(2, '0')] = 0;
+          }
+      
+          // Filter and sum sales for the current month
+          salesHistory.forEach(sale => {
+            if (sale.price) {
+              const [year, month, day] = sale.saleDate.split('T')[0].split('-');
+              if (parseInt(year) === currentYear && parseInt(month) === currentMonth) {
+                totalSalesByPeriod[day] += sale.price;
+              }
+            }
+          });
+        } else if (format === 'Yearly') {
+          // Initialize all months of the current year with 0 sales
+          for (let month = 1; month <= 12; month++) {
+            totalSalesByPeriod[String(month).padStart(2, '0')] = 0;
+          }
+      
+          // Filter and sum sales for the current year
+          salesHistory.forEach(sale => {
+            if (sale.price) {
+              const [year, month] = sale.saleDate.split('T')[0].split('-');
+              if (parseInt(year) === currentYear) {
+                totalSalesByPeriod[month] += sale.price;
+              }
+            }
+          });
+        }
+      
+        // Convert to array format
+        const dataArray = Object.entries(totalSalesByPeriod).map(([saleDate, price]) => ({
+          saleDate,
+          price,
+        }));
+
+        const sortedDataArray = dataArray.sort((a, b) => parseInt(a.saleDate) - parseInt(b.saleDate));
+      
+        console.log("The data array is ", sortedDataArray);
+        setDataArray(sortedDataArray);
+      };
+      
+
 
     const handleDeleteItem = (id) => {
         fetch(`http://localhost:5003/shop/${id}`, {
@@ -210,7 +236,6 @@ const UserProfile = () => {
                             <Typography variant="h6" sx={{ display: 'flex', position: 'absolute', top: 40, left: 20, }}>
                                 {sumOfSales} PKR
                             </Typography>
-
 
                             <Box sx={{ width: '100%', height: '110%', paddingTop: 2 }}>
 

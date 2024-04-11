@@ -158,10 +158,9 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
                                         Auctioned to: {product.buyerUsername ? product.buyerUsername : "No bids yet"}
                                     </Typography>}
                                     {product.__t === 'AuctionProduct' && !product.isHold && <Typography variant="body1" color="#2E7D32" sx={{ my: 1 }}> 
-                                        {/* Ends in {new Date(product.endTime).toLocaleString()} */}
                                         <AuctionTimer endTime={product.endTime} />
                                     </Typography>}
-                                    {product.__t === 'SaleProduct' && <Typography variant="body1" color="#2E7D32" sx={{ my: 1 }}>
+                                    {product.__t === 'SaleProduct' && product.isHold &&<Typography variant="body1" color="#2E7D32" sx={{ my: 1 }}>
                                         Sold to: {product.buyerUsername ? product.buyerUsername : "No buyer yet"}
                                     </Typography>}
                                     <Typography variant="body1" color="text.secondary" sx={{ paddingTop: 1 }}>
