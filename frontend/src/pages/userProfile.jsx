@@ -19,7 +19,8 @@ import "../css/App.css";
 
 
 const UserProfile = () => {
-    const [selectedTab, setSelectedTab] = useState('For Sale');
+    // const [selectedTab, setSelectedTab] = useState('For Sale');
+    const [selectedTab, setSelectedTab] = useState('Auctioned');
     const [user, setUser] = useState({});
     const [products, setProducts] = useState([]);
     const navigate = useNavigate();
@@ -226,7 +227,6 @@ const UserProfile = () => {
                                         id="graph-select"
                                         value={graph}
                                         onChange={handleGraphChange}
-
                                     >
                                         <MenuItem value={"Monthly"}>Monthly</MenuItem>
                                         <MenuItem value={"Yearly"}>Yearly</MenuItem>

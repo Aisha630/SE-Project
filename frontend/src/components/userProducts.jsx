@@ -20,6 +20,7 @@ const options = [
 const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenItem, handleDonationApproval }) => {
 
     const [open, setOpen] = React.useState(false);
+    const [savedProduct, setsavedProduct] = React.useState(null);
     const [selectedProductId, setSelectedProductId] = React.useState(null);
     const [selectedProduct, setSelectedProduct] = React.useState(null);
     const [confirmReopen, setConfirmReopen] = React.useState(false);
@@ -60,6 +61,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
         if (selectedTab !== 'Auctioned') {
             handleReopenItem(data);
             toast.success(`Your item has been reopened for ${mode}!`);
+            setsavedProduct(null);
         } else {
             setConfirmReopen(true);
         }
@@ -69,6 +71,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
         const data = { _id: id, mode: 'AuctionProduct', startingBid: startingBid, endTime: endTime }
         handleReopenItem(data);
         setConfirmReopen(false);
+        setsavedProduct(null);
         toast.success('Your item has been reopened for Auction!');
     }
 
@@ -123,9 +126,9 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
         };
 
         return (
-            <Box>
+            <span>
                 {formatTimeLeft()}
-            </Box>
+            </span>
         );
     }
 
@@ -146,7 +149,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
                             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <CardContent sx={{ padding: 2 }}>
                                     <Link to={`/shop/${product._id}`} style={{ textDecoration: 'none', color: 'black' }}>
-                                        <Typography component="div" variant="h5" sx={{ fontWeight: 'bold', paddingTop: 1 }}>
+                                        <Typography variant="h5" sx={{ fontWeight: 'bold', paddingTop: 1 }}>
                                             {product.name}
                                         </Typography>
                                     </Link>
@@ -218,7 +221,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
                                     }}>
                                         Edit Item
                                     </Button>}
-                                    {product.isHold && <Button onClick={() => handleReopen({ product })} variant="contained" size={lg ? "large" : "small"} sx={{
+                                    {product.isHold && <Button onClick={() => {handleReopen({ product }); setsavedProduct(product)}} variant="contained" size={lg ? "large" : "small"} sx={{
                                         backgroundColor: '#517652',
                                         color: 'white',
                                         '&:hover': {
@@ -236,10 +239,10 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
                     </Card>
                     <ConfirmDeletionOverlay open={open} handleConfirmDelete={handleDelete} handleClose={handleClose} />
                     <DonationRequestsOverlay open={openDonationRequests} handleClose={handleClose} product={selectedProduct} handleDonate={handleDonateApproved} />
-                    <ConfirmReopenOverlay open={confirmReopen} handleReopen={handleReopenAuction} handleClose={handleClose} product={product} />
                 </Grid>
             ))
-            }
+        }
+        <ConfirmReopenOverlay open={confirmReopen} handleReopen={handleReopenAuction} handleClose={handleClose} product={savedProduct} />
         </Grid >
     );
 };

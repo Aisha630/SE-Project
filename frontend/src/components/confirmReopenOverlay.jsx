@@ -32,7 +32,7 @@ const ConfirmReopenOverlay = ({ open, handleReopen, handleClose, product }) => {
       handleReopen(startingBid, endTime, product._id);
       handleClose();
       setStartingBid(''); // Or set to a default starting bid value
-      setEndTime(new Date().toISOString().slice(0, 16));
+      setEndTime(new Date().toLocaleString().slice(0, 16));
     }
   };
 
