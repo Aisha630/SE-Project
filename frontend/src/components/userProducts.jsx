@@ -182,7 +182,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
                                         getOptionLabel={(option) => option.label}
                                         renderInput={(params) => <TextField {...params} label="Status" />}
                                         disableClearable={true}
-                                        disabled={true}
+                                        disabled={!product.isHold}
                                         onChange={(event, value) => {
                                             if (value && value.value === 'sold') {
                                                 handleItemSold(product._id);
