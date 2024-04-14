@@ -14,9 +14,10 @@ COPY start.sh /app
 
 RUN cd frontend && npm install
 RUN cd backend && npm install
+RUN chmod +x start.sh
+RUN mkdir -p /data/db
 
 EXPOSE 3000
 EXPOSE 5003
 
-CMD ["mongod", "--bind_ip_all", "--fork", "--logpath", "/var/log/mongodb.log"]
-CMD "./start.sh"
+CMD ["sh", "start.sh"]
