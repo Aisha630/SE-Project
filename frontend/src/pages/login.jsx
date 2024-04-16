@@ -3,11 +3,12 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { loginUser } from '../stores/authSlice.js';
-import { Box, Button, TextField, ThemeProvider, IconButton, InputAdornment, Link, Grid, useMediaQuery, Typography } from '@mui/material';
+import { Box, Button, TextField, ThemeProvider, IconButton, InputAdornment, Link, Grid, useMediaQuery, Typography, FormControlLabel, FormGroup, Checkbox, } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import theme from '../themes/authThemes.js';
 import '../css/login.css';
 import TypingEffect from '../components/typing.jsx';
+import { usePasswordValidation } from '../hooks/usePasswordValidation.js';
 
 
 const Login = () => {
@@ -20,7 +21,9 @@ const Login = () => {
 	const [loading, setLoading] = useState(false);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const passwordGuidelines = usePasswordValidation(resetCredentials.newPassword);
 	const md = useMediaQuery(theme.breakpoints.down('md'));
+	const allTrue = obj => Object.values(obj).every(value => value);
 
 	useEffect(() => {
 		sessionStorage.removeItem('persist:root')
@@ -46,17 +49,22 @@ const Login = () => {
 				}).catch(err => { console.error(err); setLoading(false); });
 			}
 			else if (reset) {
-				fetch(`http://localhost:5003/reset_password`, {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify({ resetToken: resetCredentials.reset_token, newPassword: resetCredentials.newPassword })
+				if (allTrue(passwordGuidelines)) {
+					fetch(`http://localhost:5003/reset_password`, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify({ resetToken: resetCredentials.reset_token, newPassword: resetCredentials.newPassword })
 
-				}).then(res => { return res.json() }).then(data => {
-					if (data.error) { toast.error(data.error); return; }
-					setReset(false); toast.success(data.message);
-				}).catch(err => { console.error(err) });
+					}).then(res => { return res.json() }).then(data => {
+						if (data.error) { toast.error(data.error); return; }
+						setReset(false); toast.success(data.message);
+					}).catch(err => { console.error(err) });
+				}
+				else{
+					toast.error("Please fulfill all password guidelines")
+				}
 			}
 			else {
 				await dispatch(loginUser(credentials)).unwrap();
@@ -122,6 +130,11 @@ const Login = () => {
 														</InputAdornment>
 													),
 												}} />
+											{reset && <FormGroup>
+												{Object.entries(passwordGuidelines).map(([key, isFulfilled]) => (
+													<FormControlLabel key={key} control={<Checkbox checked={isFulfilled} disabled sx={{ margin: 0, padding: "5px 5px 2px 10px", }} />} label={key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ')} sx={{ '& .MuiFormControlLabel-label': { fontSize: '0.75rem', } }} />
+												))}
+											</FormGroup>}
 
 											{/* Login/Reset button */}
 											<Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, backgroundColor: "#4a914d", color: "black", '&:hover': { backgroundColor: "#3e7840" }, width: "50%" }}>
