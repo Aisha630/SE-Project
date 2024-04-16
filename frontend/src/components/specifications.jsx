@@ -7,6 +7,8 @@ import {
   Typography,
 } from "@mui/material";
 
+// this component is used to select the size and color of the item being posted as an ad
+// the sizes and colors are passed as props to this component
 const Specifications = ({ adData, handleInputChange, sizes, colors }) => (
   <>
     <Typography

@@ -4,6 +4,8 @@ import { PhotoCamera } from "@mui/icons-material";
 import ImageCropper from "./ImageCropper";
 import theme from "../themes/authThemes";
 
+// this component is used to upload images for the ad
+// it allows the user to select up to 5 images and crop them before uploading
 const ImageUpload = ({ files, handleFileChange, errors }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [cropModalOpen, setCropModalOpen] = useState(false);

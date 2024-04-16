@@ -8,6 +8,8 @@ import {
   TextField,
 } from "@mui/material";
 
+// this component is used to select the mode of the ad (auction, sale, or donation)
+// based on the selected mode, it conditionally renders additional fields
 const ModeOfAdSelection = ({ adData, handleInputChange }) => (
   <Box>
     <Typography variant="h6" sx={{ mb: 2, alignSelf: "flex-start" }}>

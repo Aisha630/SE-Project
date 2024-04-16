@@ -2,13 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import {
-  Box,
-  Button,
-  Container,
-  ThemeProvider,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Container, ThemeProvider, Typography } from "@mui/material";
 import theme from "../themes/authThemes.js";
 import AdDetails from "../components/adDetails.jsx";
 import CategorySelection from "../components/categorySelection.jsx";
@@ -18,6 +12,7 @@ import TagSelection from "../components/tagSelection.jsx";
 import details from "../config.json";
 import BackHanger from "../components/backHanger.jsx";
 
+// this page is used by the user to edit an existing ad
 const EditAd = () => {
   const [adData, setAdData] = useState(null);
   const [isDataFetched, setIsDataFetched] = useState(false);
@@ -28,6 +23,7 @@ const EditAd = () => {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
+    // if the user is not logged in, redirect to the login page
     if (!user || !token) {
 			console.log("Username or token not available.");
 			navigate("/login");
@@ -58,7 +54,7 @@ const EditAd = () => {
           const data = await response.json();
           setAdData(data);
           if (data.seller !== user) {
-            // console.log("seller is not the same as the user [", data.seller, "] not same as [", user,"]")
+            // If seller is not the same as the user, redirect to the profile page
             toast.error("You are not authorized to edit this ad.");
             navigate("/profile");
             return;
@@ -91,6 +87,7 @@ const EditAd = () => {
     const { name, value } = event.target;
   
     if (name === "category") {
+      // clear tags, size, and color when changing the category
       setAdData(prevAdData => ({
         ...prevAdData,
         category: value,
@@ -142,6 +139,7 @@ const EditAd = () => {
     }
   
     try {
+      // send a PATCH request to update the ad on the backend
       const response = await fetch(`http://localhost:5003/shop/${id}`, {
         method: "PATCH",
         headers: {
@@ -163,7 +161,7 @@ const EditAd = () => {
       toast.error("An error occurred while updating the ad.");
     }
   };
-  
+
   
   const validateAd = () => {
     let newErrors = {};
@@ -224,6 +222,7 @@ const EditAd = () => {
     console.log(adData);
   }
 
+
   return (
     <ThemeProvider theme={theme}>
       <Box style={{ display: "flex", alignItems: "flex-start", justifyContent: "flex-start" }}>
@@ -233,21 +232,15 @@ const EditAd = () => {
             <Typography variant="h4" align="center" gutterBottom sx={{ mb: 4 }}>
               Edit Your Ad
             </Typography>
-
             <CategorySelection categories={details.categories} adData={adData} handleInputChange={handleInputChange} errors={errors} disabled />
-
             <TagSelection subcategories={details.categories[adData.category]} adData={adData} handleTagChange={handleTagChange} theme={theme} />
-
             {adData.category === "Clothing" && (
 							<>
 								<Specifications adData={adData} handleInputChange={handleInputChange} sizes={details.sizes} colors={details.colors} />
 							</>
 						)}
-
             <AdDetails adData={adData} handleInputChange={handleInputChange} errors={errors} />
-
             <ConditionSelection adData={adData} handleInputChange={handleInputChange} errors={errors} />
-
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, py: 2, bgcolor: "primary.main", color: "white" }} onClick={handleSubmit}>
               Update Ad
             </Button>

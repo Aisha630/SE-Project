@@ -1,6 +1,8 @@
 import React from 'react';
 import { Box, RadioGroup, FormControlLabel, Radio, Typography } from '@mui/material';
 
+// this component is used to select the category of the ad
+// it displays a list of categories and allows the user to select one
 const CategorySelection = ({ categories, adData, handleInputChange, errors }) => (
   <>
     <Typography

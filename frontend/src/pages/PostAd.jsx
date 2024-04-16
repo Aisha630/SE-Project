@@ -20,6 +20,9 @@ const categories = details.categories;
 const sizes = details.sizes;
 const colors = details.colors;
 
+// this page is used by the user to post a new ad
+// it calls all the components required to post an ad
+// the user can select the category, tags, size, color, name, description, brand, condition, price, product type, starting bid (auctions), end time (auctions) and images
 const PostAd = () => {
 	const [adData, setAdData] = useState({
 		category: "",
@@ -171,6 +174,7 @@ const PostAd = () => {
 		}
 		const formData = new FormData();
 		Object.keys(adData).forEach((key) => {
+			// skip certain fields when not required
 			if (key === "price" && (adData.productType === "auction" || adData.productType === "donate")) {
 				return;
 			}
@@ -198,6 +202,7 @@ const PostAd = () => {
 		});
 
 		try {
+			// send the form data to the server
 			const response = await fetch("http://localhost:5003/sell", {
 				method: "POST",
 				headers: {

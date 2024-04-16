@@ -1,6 +1,7 @@
 import React from 'react';
 import { TextField, InputAdornment } from '@mui/material';
 
+// this component is used to select the price of the ad
 const PriceSelection = ({ adData, handleInputChange, errors }) => (
   <TextField
     type="number"

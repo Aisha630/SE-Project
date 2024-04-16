@@ -1,6 +1,8 @@
 import React from "react";
 import { Typography, TextField } from "@mui/material";
 
+// this component is used to display the ad details form used when creating or editing an ad
+// errors are passed in as props and are used to display error messages
 const AdDetails = ({ adData, handleInputChange, errors }) => (
   <>
     <Typography variant="h5" align="center" gutterBottom sx={{ mb: 4 }}>

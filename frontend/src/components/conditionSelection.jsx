@@ -1,6 +1,7 @@
 import React from 'react';
 import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Typography } from '@mui/material';
 
+// this component is used to select the condition of the item being posted as an ad
 const ConditionSelection = ({ adData, handleInputChange, errors }) => (
   <FormControl component="fieldset" margin="normal">
     <FormLabel component="legend">Condition</FormLabel>

@@ -207,6 +207,7 @@ const ProductDetails = () => {
 			});
 	};
 
+	// Button action and text based on the product type
 	const buttonAction = product?.__t === 'AuctionProduct' ? placeBid : (product?.__t === 'DonationProduct' ? sendDonationRequest : () => addToCart(product));
 	const buttonText = product?.__t === 'AuctionProduct' ? 'Place Bid' : (product?.__t === 'DonationProduct' ? 'Send Request' : 'Add to Cart');
 
