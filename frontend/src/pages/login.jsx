@@ -46,7 +46,7 @@ const Login = () => {
 				).then(res => { return res.json() }).then(data => {
 					if (data.error) { setLoading(false); toast.error(data.error); setReset(false); setResetEmail(false); return; }
 					setReset(true); setResetEmail(false); toast.success(data.message); setLoading(false);
-				}).catch(err => { console.error(err); setLoading(false); });
+				}).catch(err => { console.error(err); setLoading(false); }).finally(() => {setLoading(false); });
 			}
 			else if (reset) {
 				if (allTrue(passwordGuidelines)) {
@@ -58,9 +58,9 @@ const Login = () => {
 						body: JSON.stringify({ resetToken: resetCredentials.reset_token, newPassword: resetCredentials.newPassword })
 
 					}).then(res => { return res.json() }).then(data => {
-						if (data.error) { toast.error(data.error); return; }
-						setReset(false); toast.success(data.message);
-					}).catch(err => { console.error(err) });
+						if (data.error) { toast.error(data.error); setLoading(false); return; }
+						setReset(false); toast.success(data.message);setLoading(false);
+					}).catch(err => { console.error(err);setLoading(false);  });
 				}
 				else{
 					toast.error("Please fulfill all password guidelines")
