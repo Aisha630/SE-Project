@@ -28,6 +28,7 @@ const AdDetails = ({ adData, handleInputChange, errors }) => (
     <TextField
       required
       fullWidth
+      error={Boolean(errors.description)}
       id="description"
       label="Description"
       name="description"
@@ -36,7 +37,7 @@ const AdDetails = ({ adData, handleInputChange, errors }) => (
       value={adData.description}
       onChange={handleInputChange}
       margin="normal"
-      helperText="Please include condition, features, space for negotiation, reasons for selling (max: 300 characters)."
+      helperText={errors.description || "Please include condition, features, space for negotiation, reasons for selling (max: 300 characters)."}
       inputProps={{ maxLength: 300 }}
     />
 
