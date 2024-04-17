@@ -68,7 +68,7 @@ const SignUp = () => {
 			}
 		}
 		else {
-			const res = await fetch(`http://localhost:5003/verify`, {
+			const res = await fetch(`https://api.secondtimearound.xyz/verify`, {
 				method: "POST",
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ token: signupToken.reset_token }),
@@ -88,7 +88,7 @@ const SignUp = () => {
 
 	const resendVerificationEmail = () => {
 		setIsLoading(true);
-		fetch(`http://localhost:5003/resend_code`, {
+		fetch(`https://api.secondtimearound.xyz/resend_code`, {
 			method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: formData.email }),
 		})
 			.then((res) => res.ok ? toast.success("Email sent successfully") : toast.error("Error sending email"))

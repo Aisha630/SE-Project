@@ -3,11 +3,18 @@ services:
     image: nginx:latest
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - sta-volume:/app/frontend/dist
-    depends_on:
-      - sta
+      - ./certbot/www:/var/www/certbot/:ro
+      - ./certbot/conf/:/etc/nginx/ssl/:ro
+    
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
 
   sta:
     build:
@@ -28,3 +35,4 @@ services:
 volumes:
   sta-volume:
   mongodb-data:
+  certbot-data:

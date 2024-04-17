@@ -48,7 +48,7 @@ const Login = () => {
 		setLoading(true);
 		try {
 			if (resetEmail) {
-				fetch('http://localhost:5003/forget_password', {
+				fetch('https://api.secondtimearound.xyz/forget_password', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ const Login = () => {
 			}
 			else if (reset) {
 				if (allTrue(passwordGuidelines)) {
-					fetch(`http://localhost:5003/reset_password`, {
+					fetch(`https://api.secondtimearound.xyz/reset_password`, {
 						method: 'POST',
 						headers: {
 							'Content-Type': 'application/json',

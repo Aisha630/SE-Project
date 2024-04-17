@@ -53,7 +53,7 @@ const Nav = ({ Search, styles, setsearchproducts, setisempty, mode, category, po
     };
 
     const deleteFromCart = (product) => {
-        fetch(`http://localhost:5003/cart?id=${product._id}`, {
+        fetch(`https://api.secondtimearound.xyz/cart?id=${product._id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`,

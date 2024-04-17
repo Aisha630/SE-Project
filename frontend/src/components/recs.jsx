@@ -24,7 +24,7 @@ const Recs = ({productType}) => {
     productType = (productType === "DonationProduct" ) ? "donate" : productType ===  "AuctionProduct"? "auction" : "sale";
 
     useEffect(() => {
-        fetch(`http://localhost:5003/shop/${id}/recs?productType=${productType}`, {
+        fetch(`https://api.secondtimearound.xyz/shop/${id}/recs?productType=${productType}`, {
             headers: { 'Authorization': `Bearer ${token}` }
         }).then(response => {
             if (!response.ok)
@@ -33,7 +33,7 @@ const Recs = ({productType}) => {
         }).then(data => {
             const formattedProducts = data.map(product => ({
                 name: product.name,
-                image: `http://localhost:5003${product.images[0]}`,
+                image: `https://api.secondtimearound.xyz${product.images[0]}`,
                 id: product._id
 
             }));

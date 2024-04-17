@@ -31,7 +31,7 @@ const UserProfile = () => {
     const username = useSelector((state) => state.auth.user);
     const token = useSelector((state) => state.auth.token);
     useEffect(() => {
-        fetch(`http://localhost:5003/profile?username=${username}`, {
+        fetch(`https://api.secondtimearound.xyz/profile?username=${username}`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -44,7 +44,7 @@ const UserProfile = () => {
             .catch((error) => { console.log("The error is:", error) });
 
 
-        fetch(`http://localhost:5003/dashboard`, {
+        fetch(`https://api.secondtimearound.xyz/dashboard`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -138,7 +138,7 @@ const UserProfile = () => {
     };
 
     const handleDonationApproval = (donee, productId) => {
-        fetch(`http://localhost:5003/shop/${productId}/close`, {
+        fetch(`https://api.secondtimearound.xyz/shop/${productId}/close`, {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -157,7 +157,7 @@ const UserProfile = () => {
     }
 
     const handleDeleteItem = (id) => {
-        fetch(`http://localhost:5003/shop/${id}`, {
+        fetch(`https://api.secondtimearound.xyz/shop/${id}`, {
             method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -182,7 +182,7 @@ const UserProfile = () => {
             queryBody = { startingBid: product.startingBid, endTime: product.endTime };
         }
 
-        fetch(`http://localhost:5003/shop/${product._id}/reopen`, {
+        fetch(`https://api.secondtimearound.xyz/shop/${product._id}/reopen`, {
             method: 'PATCH',
             headers: {
                 Authorization: `Bearer ${token}`,

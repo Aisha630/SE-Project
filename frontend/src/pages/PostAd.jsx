@@ -212,7 +212,7 @@ const PostAd = () => {
 
 		try {
 			// send the form data to the server
-			const response = await fetch("http://localhost:5003/sell", {
+			const response = await fetch("https://api.secondtimearound.xyz/sell", {
 				method: "POST",
 				headers: {
 					Authorization: `Bearer ${token}`,

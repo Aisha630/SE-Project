@@ -30,7 +30,7 @@ function Home() {
 			console.log("Username or token not available.");
 			navigate("/login");
 		}
-		fetch(`http://localhost:5003/profile?username=${username}`, {
+		fetch(`https://api.secondtimearound.xyz/profile?username=${username}`, {
 			headers: {
 				'Authorization': `Bearer ${token}`,
 			}

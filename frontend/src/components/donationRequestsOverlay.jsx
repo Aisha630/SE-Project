@@ -24,7 +24,7 @@ const DonationRequestsOverlay = ({ open, handleClose, product, handleDonate }) =
     const fetchDonationHistories = async () => {
       if (product) {
         const historiesPromises = product.requestList.map(([username]) =>
-          fetch(`http://localhost:5003/profile?username=${username}`, {
+          fetch(`https://api.secondtimearound.xyz/profile?username=${username}`, {
             method: 'GET',
             headers: {
               Authorization: `Bearer ${token}`,

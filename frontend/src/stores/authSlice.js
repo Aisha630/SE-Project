@@ -4,7 +4,7 @@ export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async ({ username, password }, { rejectWithValue }) => {
     try {
-      const response = await fetch("http://localhost:5003/login", {
+      const response = await fetch("https://api.secondtimearound.xyz/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
@@ -22,7 +22,7 @@ export const signupUser = createAsyncThunk(
   "auth/signupUser",
   async ({ email, username, password, gender }, { rejectWithValue }) => {
     try {
-      const response = await fetch("http://localhost:5003/register", {
+      const response = await fetch("https://api.secondtimearound.xyz/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, username, gender }),

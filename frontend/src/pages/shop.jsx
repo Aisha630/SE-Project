@@ -89,7 +89,7 @@ const ShopItems = ({ mode }) => {
         }
 
         const queryString = new URLSearchParams(filterCriteria);
-        fetch(`http://localhost:5003/filter?${queryString}`, {
+        fetch(`https://api.secondtimearound.xyz/filter?${queryString}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -99,7 +99,7 @@ const ShopItems = ({ mode }) => {
             .then(data => {
                 const formattedProducts = data.map(product => ({
                     name: product.name,
-                    image: 'http://localhost:5003'.concat(product.images[0]), // Assuming the first image in the array is the main image
+                    image: 'https://api.secondtimearound.xyz'.concat(product.images[0]), // Assuming the first image in the array is the main image
                     price: product.price,
                     id: product._id,
                     currentBid: product.currentBid ? product.currentBid : 0,
@@ -126,7 +126,7 @@ const ShopItems = ({ mode }) => {
         setCategory('Clothing');
 
         const queryString = new URLSearchParams({category: category, productType: mode});
-        fetch(`http://localhost:5003/filter?${queryString}`, {
+        fetch(`https://api.secondtimearound.xyz/filter?${queryString}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -136,7 +136,7 @@ const ShopItems = ({ mode }) => {
             .then(data => {
                 const formattedProducts = data.map(product => ({
                     name: product.name,
-                    image: 'http://localhost:5003'.concat(product.images[0]), // Assuming the first image in the array is the main image
+                    image: 'https://api.secondtimearound.xyx'.concat(product.images[0]), // Assuming the first image in the array is the main image
                     price: product.price,
                     id: product._id,
                     currentBid: product.currentBid ? product.currentBid : 0,
@@ -154,7 +154,7 @@ const ShopItems = ({ mode }) => {
 
     useEffect(() => {
         const queryString = new URLSearchParams({ category: category, productType: mode });
-        fetch(`http://localhost:5003/filter?${queryString}`, {
+        fetch(`https://api.secondtimearound.xyz/filter?${queryString}`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
@@ -164,7 +164,7 @@ const ShopItems = ({ mode }) => {
             .then(data => {
                 const formattedProducts = data.map(product => ({
                     name: product.name,
-                    image: 'http://localhost:5003'.concat(product.images[0]), // Assuming the first image in the array is the main image
+                    image: 'https://api.secondtimearound.xyz'.concat(product.images[0]), // Assuming the first image in the array is the main image
                     price: product.price,
                     id: product._id,
                     currentBid: product.currentBid ? product.currentBid : 0,

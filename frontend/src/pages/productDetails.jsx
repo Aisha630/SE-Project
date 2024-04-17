@@ -82,7 +82,7 @@ const ProductDetails = () => {
 
 	// Sends a request to the server to rate the seller with the given rating
 	const rateUser = (rating) => {
-		fetch(`http://localhost:5003/rate/${seller._id}`, {
+		fetch(`https://api.secondtimearound.xyz/rate/${seller._id}`, {
 			method: 'POST',
 			headers: {
 				'Authorization': `Bearer ${token}`,
@@ -106,7 +106,7 @@ const ProductDetails = () => {
 
 	// Fetches the product details from the server using the product ID in the URL parameters
 	useEffect(() => {
-		fetch(`http://localhost:5003/shop/${id}`, {
+		fetch(`https://api.secondtimearound.xyz/shop/${id}`, {
 			headers: { 'Authorization': `Bearer ${token}` }
 		}).then(response => {
 			if (!response.ok)
@@ -116,8 +116,8 @@ const ProductDetails = () => {
 			// Format the image URLs to be used in the image gallery
 			console.log("Got back data ", data.images)
 			const formattedImages = data.images.map((imageUrl) => ({
-				original: `http://localhost:5003${imageUrl}`,
-				thumbnail: `http://localhost:5003${imageUrl}`,
+				original: `https://api.secondtimearound.xyz${imageUrl}`,
+				thumbnail: `https://api.secondtimearound.xyz${imageUrl}`,
 			}));
 			setProduct({ ...data, images: formattedImages })
 
@@ -127,7 +127,7 @@ const ProductDetails = () => {
 	// Fetches the seller details from the server using the seller username from the product details
 	useEffect(() => {
 		const getSeller = () => {
-			fetch(`http://localhost:5003/profile?username=${product?.seller}`, {
+			fetch(`https://api.secondtimearound.xyz/profile?username=${product?.seller}`, {
 				method: 'GET',
 				headers: { 'Authorization': `Bearer ${token}` },
 			}).then(response => {
@@ -146,7 +146,7 @@ const ProductDetails = () => {
 	}, [product?.seller, token, navigate])
 
 	const addToCart = (product) => {
-		fetch(`http://localhost:5003/cart`, {
+		fetch(`https://api.secondtimearound.xyz/cart`, {
 			method: 'POST',
 			headers: {
 				'Authorization': `Bearer ${token}`,
@@ -169,7 +169,7 @@ const ProductDetails = () => {
 	}
 
 	const placeBid = () => {
-		fetch(`http://localhost:5003/shop/${id}/bid`, {
+		fetch(`https://api.secondtimearound.xyz/shop/${id}/bid`, {
 			method: 'POST',
 			headers: {
 				'Authorization': `Bearer ${token}`,
@@ -199,7 +199,7 @@ const ProductDetails = () => {
 			return;
 		}
 
-		fetch(`http://localhost:5003/shop/${id}/request`, {
+		fetch(`https://api.secondtimearound.xyz/shop/${id}/request`, {
 			method: 'POST',
 			headers: {
 				'Authorization': `Bearer ${token}`,

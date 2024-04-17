@@ -21,7 +21,7 @@ export const NotifProvider = ({ children }) => {
 
     const fetchNotifs = async () => {
         try {
-            const response = await fetch(`http://localhost:5003/notif`, {
+            const response = await fetch(`https://api.secondtimearound.xyz/notif`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -42,7 +42,7 @@ export const NotifProvider = ({ children }) => {
 
 
     const deleteNotifs = (notif) => {
-        fetch(`http://localhost:5003/notif/${notif._id}`, {
+        fetch(`https://api.secondtimearound.xyz/notif/${notif._id}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${token}`

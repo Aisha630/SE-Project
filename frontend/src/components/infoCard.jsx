@@ -37,7 +37,7 @@ const InfoCard = ({ title, items, isCart, deleteItem }) => {
                                 },
                             
                             }}>
-                            {<Avatar src={isCart ? `http://localhost:5003${item.images[0]}` : item.avatar} variant="square" sx={{ width: "12%", height: "auto", borderRadius: 2, margin: 2, padding: 0, maxHeight: "100%", minWidth: "60px", }} />}
+                            {<Avatar src={isCart ? `https://api.secondtimearound.xyz${item.images[0]}` : item.avatar} variant="square" sx={{ width: "12%", height: "auto", borderRadius: 2, margin: 2, padding: 0, maxHeight: "100%", minWidth: "60px", }} />}
 
                             <ListItemText sx={{
                                 textTransform: isCart ? "capitalize" : "", '& .MuiListItemText-primary': md ? "" : { fontSize: '0.85rem' },

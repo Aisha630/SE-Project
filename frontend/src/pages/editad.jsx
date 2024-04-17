@@ -43,7 +43,7 @@ const EditAd = () => {
 
       
       try {
-        const response = await fetch(`http://localhost:5003/shop/${id}`, {
+        const response = await fetch(`https://api.secondtimearound.xyz/shop/${id}`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -140,7 +140,7 @@ const EditAd = () => {
   
     try {
       // send a PATCH request to update the ad on the backend
-      const response = await fetch(`http://localhost:5003/shop/${id}`, {
+      const response = await fetch(`https://api.secondtimearound.xyz/shop/${id}`, {
         method: "PATCH",
         headers: {
           'Content-Type': 'application/json',

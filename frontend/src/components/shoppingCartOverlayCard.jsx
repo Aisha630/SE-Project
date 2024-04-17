@@ -57,7 +57,7 @@ const ShoppingCartOverlayCard = ({ cartVisibility, cartVisibilityToggle, deleteF
                                                 },
 
                                             }}>
-                                                {< Avatar src={`http://localhost:5003${item.images[0]}`} variant="square" sx={{ width: md ? "12%" : "12%", height: "auto", borderRadius: 2, margin: 2, padding: 0, maxHeight: "100%", minWidth: "60px", maxWidth: "80px" }} />}
+                                                {< Avatar src={`https://api.secondtimearound.xyz${item.images[0]}`} variant="square" sx={{ width: md ? "12%" : "12%", height: "auto", borderRadius: 2, margin: 2, padding: 0, maxHeight: "100%", minWidth: "60px", maxWidth: "80px" }} />}
 
                                                 <ListItemText sx={{
                                                     textTransform: "capitalize", '& .MuiListItemText-primary': md ? "" : { fontSize: '0.85rem' },

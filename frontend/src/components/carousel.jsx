@@ -60,14 +60,14 @@ function CarouselComponent() {
   const md = useMediaQuery(theme.breakpoints.up('md'));
 
   useEffect(() => {
-    fetch('http://localhost:5003/latest?limit=10', {
+    fetch('https://api.secondtimearound.xyz/latest?limit=10', {
       headers: {
         Authorization: `Bearer ${token}`
       }
     }).then(response => response.json()).then(data => {
       const formattedProducts = data.map(product => ({
         name: product.name,
-        image: `http://localhost:5003${product.images[0]}`,
+        image: `https://api.secondtimearound.xyz${product.images[0]}`,
         id: product._id
       }));
       setProducts([...formattedProducts, ...formattedProducts, ...formattedProducts]);

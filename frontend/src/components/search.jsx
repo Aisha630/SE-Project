@@ -15,7 +15,7 @@ const Search = ({ setisempty, setsearchproducts, mode ,category}) => {
     const getSearchResults = (event) => {
         const queryString = new URLSearchParams({productType: mode, q: event.target.value});
         if (event.key === 'Enter') {
-            fetch(`http://localhost:5003/shop?${queryString}`, {
+            fetch(`https://api.secondtimearound.xyz/shop?${queryString}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ const Search = ({ setisempty, setsearchproducts, mode ,category}) => {
             }).then(data => {
                 const formattedProducts = data.filter(product => product.category===category).map(product => ({
                     name: product.name,
-                    image: 'http://localhost:5003'.concat(product.images[0]), // Assuming the first image in the array is the main image
+                    image: 'https://api.secondtimearound.xyz'.concat(product.images[0]), // Assuming the first image in the array is the main image
                     price: product.price,
                     id: product._id
                 }));

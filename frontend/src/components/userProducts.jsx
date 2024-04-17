@@ -142,7 +142,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
                         <CardMedia
                             component="img"
                             sx={{ width: 180, padding: 2, objectFit: 'cover', borderRadius: 8 }}
-                            image={'http://localhost:5003'.concat(product.images[0])}
+                            image={'https://api.secondtimearound.xyz'.concat(product.images[0])}
                             alt={product.name}
                         />
                         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flexGrow: 1, }}>

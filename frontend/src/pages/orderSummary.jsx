@@ -20,7 +20,7 @@ const OrderSummaryPage = () => {
 
     const checkout = () => {
         setCheckingOut(true);
-        fetch(`http://localhost:5003/checkout`, {
+        fetch(`https://api.secondtimearound.xyz/checkout`, {
             method: 'POST',
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -46,7 +46,7 @@ const OrderSummaryPage = () => {
     }
 
     const deleteFromCart = (product) => {
-        fetch(`http://localhost:5003/cart?id=${product._id}`, {
+        fetch(`https://api.secondtimearound.xyz/cart?id=${product._id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`,

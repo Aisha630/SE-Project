@@ -15,7 +15,7 @@ export const SocketProvider = ({ children }) => {
     const token = useSelector((state) => state.auth.token)
     useEffect(()=>{
         if (token) {
-            const newsocket = io("http://localhost:5003") // connecting to the server at backend
+            const newsocket = io("https://api.secondtimearound.xyz") // connecting to the server at backend
             newsocket.on("connect", () => {
                 newsocket.emit("register", token)
                 // console.log("Connected to server and registered")

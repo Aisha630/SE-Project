@@ -12,7 +12,7 @@ export const CartProvider = ({ children }) => {
   const token = useSelector((state) => state.auth.token);
 
   const fetchCartItems = () => {
-    fetch(`http://localhost:5003/cart`, {
+    fetch(`https://api.secondtimearound.xyz/cart`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -43,7 +43,7 @@ export const CartProvider = ({ children }) => {
   const fetchSellers = (username) => {
     return new Promise((resolve, reject) => {
       // console.log("Fetching seller: ", username);
-      fetch(`http://localhost:5003/profile?username=${username}`, {
+      fetch(`https://api.secondtimearound.xyz/profile?username=${username}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
