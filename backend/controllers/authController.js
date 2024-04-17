@@ -1,8 +1,6 @@
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
-
-import io from "../app.js";
 import User from "../models/userModel.js";
 import VerificationToken from "../models/verificationTokenModel.js";
 import PasswordReset from "../models/passwordResetModel.js";
@@ -19,13 +17,12 @@ export async function signup(req, res) {
     return res.status(400).json({ error: error.details[0].message });
   }
 
-  // Check for password strength
-  //if (
-  //  process.env.BUILD_MODE == "PROD" &&
-  //  !validator.isStrongPassword(password)
-  //) {
-  //  return res.status(400).json({ error: "Password not strong enough" });
-  //}
+  if (
+    process.env.BUILD_MODE == "PROD" &&
+    !validator.isStrongPassword(password)
+  ) {
+    return res.status(400).json({ error: "Password not strong enough" });
+  }
 
   // Ensure only lums domains are authorized
   if (!email.endsWith("@lums.edu.pk")) {
@@ -59,7 +56,7 @@ export async function signup(req, res) {
 
     if (process.env.BUILD_MODE == "PROD") {
       // Generate a verification token to ensure email ID is valid
-      const token = crypto.randomBytes(20).toString("hex");
+      const token = generateNumericToken();
       const verificationToken = new VerificationToken({
         username,
         verificationToken: token,
@@ -111,11 +108,6 @@ export async function signin(req, res) {
     expiresIn: "1h",
   });
 
-  // if (user.connectionID) {
-  //   console.log("Emitting fetchNotifs to ", username, " ", user.connectionID);
-  //   io.to(user.connectionID).emit("fetchNotifs");
-  // }
-
   res.status(200).json({
     username,
     token,
@@ -124,7 +116,7 @@ export async function signin(req, res) {
 
 // Verifies the email of the user by checking the provided token
 export async function verifyEmail(req, res) {
-  const { token } = req.query;
+  const { token } = req.body;
 
   const verificationToken = await VerificationToken.findOne({
     verificationToken: token,
@@ -145,7 +137,9 @@ export async function verifyEmail(req, res) {
 
   await VerificationToken.deleteOne({ verificationToken: token });
 
-  res.send("Email verified successfully! You can now log in.");
+  res
+    .status(200)
+    .json({ message: "Email verified successfully! You can now log in." });
 }
 
 // Resends the verification email to the user in case of token expiry
@@ -167,7 +161,7 @@ export async function resendVerification(req, res) {
   await VerificationToken.deleteMany({ username: user.username });
 
   // Generate a new verification token
-  const token = crypto.randomBytes(20).toString("hex");
+  const token = generateNumericToken();
   const verificationToken = new VerificationToken({
     username: user.username,
     verificationToken: token,
