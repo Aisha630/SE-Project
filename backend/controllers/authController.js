@@ -6,6 +6,7 @@ import VerificationToken from "../models/verificationTokenModel.js";
 import PasswordReset from "../models/passwordResetModel.js";
 import { sendVerificationEmail } from "../services/emailService.js";
 import { sendPasswordResetEmail } from "../services/emailService.js";
+import validator from "validator";
 
 export async function signup(req, res) {
   const { username, email, password } = req.body;
@@ -116,6 +117,7 @@ export async function signin(req, res) {
 
 // Verifies the email of the user by checking the provided token
 export async function verifyEmail(req, res) {
+  
   const { token } = req.body;
 
   const verificationToken = await VerificationToken.findOne({
@@ -123,7 +125,7 @@ export async function verifyEmail(req, res) {
   });
 
   if (!verificationToken) {
-    return res.send({ error: "The token is invalid." });
+    return res.status(400).json({ error: "The token is invalid." });
   }
 
   // Find the user associated with the verification token

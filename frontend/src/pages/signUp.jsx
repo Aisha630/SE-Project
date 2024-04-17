@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, } from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { signupUser } from '../stores/authSlice.js';
@@ -8,39 +8,68 @@ import '../css/login.css';
 import theme from '../themes/authThemes.js';
 import { usePasswordValidation } from '../hooks/usePasswordValidation.js';
 import TypingEffect from '../components/typing.jsx';
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
 	const [formData, setFormData] = useState({ email: '', username: '', password: '' });
 	const [showPassword, setShowPassword] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [signUp, setSignUp] = useState(false);
+	const [signupToken, setSignupToken] = useState({ reset_token: '' }); // This is state for the credentials for resetting password
+	// const [signupEmail, setSignupEmail] = useState(false) // This is the state for taking email for resetting password
 
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const md = useMediaQuery(theme.breakpoints.down('md'));
 	const allTrue = obj => Object.values(obj).every(value => value); // Check if all values in an object are true
 
-	const handleChange = ({ target: { name, value } }) => setFormData({ ...formData, [name]: value });
+	const handleChange = ({ target: { name, value } }) => {
+		if (!signUp) setFormData({ ...formData, [name]: value });
+		else setSignupToken({ ...signupToken, [name]: value });
+	};
 	const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
-	useEffect(()=>{
+	useEffect(() => {
 		sessionStorage.removeItem('persist:root')
 	}, [])
 
-	const handleSubmit = (e) => {
+	async function handleSubmit(e) {
 		e.preventDefault();
 		setIsLoading(true);
-		if (allTrue(passwordGuidelines)) {
-			dispatch(signupUser(formData)).unwrap()
-				.then(() => toast.success("Please verify your email address."))
-				.catch((error) => { setSignUp(false); toast.error(error) })
-				.finally(() => setIsLoading(false));
+		if (!signUp) {
+			if (allTrue(passwordGuidelines)) {
+				dispatch(signupUser(formData)).unwrap()
+					.then(() => {
+						toast.success("Please verify your email address.");
+						setSignUp(true);
+					})
+					.catch((error) => { setSignUp(false); toast.error(error) })
+					.finally(() => setIsLoading(false));
+			}
+			else {
+				toast.error("Password does not meet the requirements");
+				setIsLoading(false);
+				setSignUp(false);
+			}
 		}
 		else {
-			toast.error("Password does not meet the requirements");
+			const res = await fetch(`http://localhost:5003/verify`, {
+				method: "POST",
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ token: signupToken.reset_token }),
+			})
+
+			const data = await res.json();
+			if (res.status === 200) {
+				toast.success(data.message);
+				navigate('/login');
+			} else {
+				toast.error(data.error);
+			}
 			setIsLoading(false);
-			setSignUp(false);
+
 		}
-	};
+	}
 
 	const resendVerificationEmail = () => {
 		setIsLoading(true);
@@ -96,54 +125,70 @@ const SignUp = () => {
 
 								{/* Sign up form */}
 								<Box component="form" onSubmit={handleSubmit} sx={{ mt: 1, width: '100%', }}>
-
 									{/* Sign up form fields */}
-									<TextField margin="normal" required fullWidth id="username" label="Username" name="username"
-										value={formData.username} onChange={handleChange} variant="filled" sx={{ input: "#084a08", }} />
-									<TextField margin="normal" required fullWidth id="email" label="LUMS Email" name="email"
-										value={formData.email} onChange={handleChange} variant="filled" sx={{ input: "#084a08", }} />
-									<TextField margin="normal" required fullWidth id="password" label="Password" name="password" type={showPassword ? 'text' : 'password'}
-										value={formData.password} onChange={handleChange} autoComplete="current-password" variant="filled"
-										InputProps={{
-											endAdornment: (
-												<InputAdornment position="end">
-													<IconButton aria-label="toggle password visibility" onClick={togglePasswordVisibility}>
-														{showPassword ? <VisibilityOff /> : <Visibility />}
-													</IconButton>
-												</InputAdornment>
-											),
-										}} />
+									{signUp ? (
+										<TextField margin="normal" required fullWidth id="reset_token" label="Verification Code" name="reset_token" value={signupToken.reset_token} onChange={handleChange}/>
+									) : (
+										<>
+											<TextField margin="normal" required fullWidth id="username" label="Username" name="username"
+												value={formData.username} onChange={handleChange} variant="filled" sx={{ input: "#084a08", }} />
+											<TextField margin="normal" required fullWidth id="email" label="LUMS Email" name="email"
+												value={formData.email} onChange={handleChange} variant="filled" sx={{ input: "#084a08", }} />
+											<TextField margin="normal" required fullWidth id="password" label="Password" name="password" type={showPassword ? 'text' : 'password'}
+												value={formData.password} onChange={handleChange} autoComplete="current-password" variant="filled"
+												InputProps={{
+													endAdornment: (
+														<InputAdornment position="end">
+															<IconButton aria-label="toggle password visibility" onClick={togglePasswordVisibility}>
+																{showPassword ? <VisibilityOff /> : <Visibility />}
+															</IconButton>
+														</InputAdornment>
+													),
+												}} />
 
-									{/* Password guidelines */}
-									<FormGroup>
-										{Object.entries(passwordGuidelines).map(([key, isFulfilled]) => (
-											<FormControlLabel key={key} control={<Checkbox checked={isFulfilled} disabled sx={{ margin: 0, padding: "5px 5px 2px 10px", }} />} label={key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ')} sx={{ '& .MuiFormControlLabel-label': { fontSize: '0.75rem', } }} />
-										))}
-									</FormGroup>
+											{/* Password guidelines */}
+											<FormGroup>
+												{Object.entries(passwordGuidelines).map(([key, isFulfilled]) => (
+													<FormControlLabel key={key} control={<Checkbox checked={isFulfilled} disabled sx={{ margin: 0, padding: "5px 5px 2px 10px", }} />} label={key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ')} sx={{ '& .MuiFormControlLabel-label': { fontSize: '0.75rem', } }} />
+												))}
+											</FormGroup>
+										</>)}
 
 									{/* Sign up button and links */}
-									<Button type="submit" variant="contained" disabled={isLoading} onClick={() => setSignUp(true)} sx={{ mt: 2, mb: 2, backgroundColor: "#4a914d", color: "black", '&:hover': { backgroundColor: "#3e7840" }, width: "50%" }}>
+									<Button type="submit" variant="contained" disabled={isLoading} sx={{ mt: 2, mb: 2, backgroundColor: "#4a914d", color: "black", '&:hover': { backgroundColor: "#3e7840" }, width: "50%" }}>
 										Sign Up
 									</Button>
 
 									<Typography textAlign="center">
-										<Link href="/login" variant="body2" sx={{ color: "black", textDecorationColor: "black", '&:hover': { color: "#084a08", textDecorationColor: "#084a08" } }}>Already a member? Log in now!</Link>
-										<br />
+										{!isLoading && !signUp &&
+											<>
+												<Link href="/login" variant="body2" sx={{ color: "black", textDecorationColor: "black", '&:hover': { color: "#084a08", textDecorationColor: "#084a08" } }}>Already a member? Log in now!</Link>
+												<br />
+											</>
+										}
+										{(!signUp && isLoading) &&
+											<>
+												<Typography variant="body2" sx={{ color: "gray",}}>Verifying details</Typography>
+												<br />
+											</>
+										}
 
 										{/* logic for resend verification email link and isloading state of email */}
 										{signUp && (
-											<Link
-												onClick={!isLoading ? resendVerificationEmail : undefined}
-												sx={{
-													textDecorationColor: 'black',
-													color: isLoading ? 'grey' : 'black',
-													cursor: isLoading ? 'default' : 'pointer',
-													'&:hover': isLoading ? {} : { color: '#084a08', textDecorationColor: '#084a08' },
-												}}
-												variant="body2"
-											>
-												{isLoading ? "Verifying details..." : "Didn't receive verification email? Click here to resend."}
-											</Link>
+											<>
+												<Link
+													onClick={!isLoading ? resendVerificationEmail : undefined}
+													sx={{
+														textDecorationColor: 'black',
+														color: isLoading ? 'grey' : 'black',
+														cursor: isLoading ? 'default' : 'pointer',
+														'&:hover': isLoading ? {} : { color: '#084a08', textDecorationColor: '#084a08' },
+													}}
+													variant="body2"
+												>
+													{isLoading ? " Loading..." : "Click here to resend token."}
+												</Link>
+											</>
 										)}
 									</Typography>
 								</Box>
