@@ -1,7 +1,8 @@
 import Joi from "joi";
+import User from "../models/userModel.js";
+import crypto from "crypto";
 import path from "path";
 import schedule from "node-schedule";
-import User from "../models/userModel.js";
 
 import Image from "../models/imageModel.js";
 import config from "../config.js";
@@ -142,7 +143,7 @@ export async function addProduct(req, res) {
   const images = await Promise.all(
     req.files.map(async (file) => {
       const image = new Image({
-        filename: Date.now() + path.extname(file.originalname),
+        filename: `${Date.now()}_${crypto.randomBytes(16).toString("hex")}.${path.extname(file.originalname)}`,
         data: file.buffer,
         mimeType: file.mimeType,
       });
