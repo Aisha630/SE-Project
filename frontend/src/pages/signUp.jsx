@@ -16,7 +16,6 @@ const SignUp = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [signUp, setSignUp] = useState(false);
 	const [signupToken, setSignupToken] = useState({ reset_token: '' }); // This is state for the credentials for resetting password
-	// const [signupEmail, setSignupEmail] = useState(false) // This is the state for taking email for resetting password
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
