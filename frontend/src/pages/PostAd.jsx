@@ -160,7 +160,7 @@ const PostAd = () => {
 			newErrors.images = "At least one image must be uploaded.";
 		}
 
-		if (adData.endTime && Date(adData.endTime) <= new Date()) {
+		if (adData.endTime && new Date(adData.endTime) <= new Date()) {
 			isValid = false;
 			newErrors.endTime = "End time must be in the future.";
 		}
