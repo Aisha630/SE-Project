@@ -144,6 +144,7 @@ const PostAd = () => {
 			newErrors.productType = "Please select a mode of ad";
 		}
 
+
 		if (!adData.brand) {
 			isValid = false;
 			newErrors.brand = "Brand is required";
@@ -157,6 +158,11 @@ const PostAd = () => {
 		if (files.length === 0) {
 			isValid = false;
 			newErrors.images = "At least one image must be uploaded.";
+		}
+
+		if (adData.endTime && Date(adData.endTime) <= new Date()) {
+			isValid = false;
+			newErrors.endTime = "End time must be in the future.";
 		}
 
 		setErrors(newErrors);
@@ -183,7 +189,7 @@ const PostAd = () => {
 				return;
 			}
 
-			if ((key === "startingBid" || key === "endTime") && adData.productType !== "auction") {
+			if ((key === "startingBid" || key === "endTime" ) && adData.productType !== "auction") {
 				return;
 			}
 			if (Array.isArray(adData[key])) {
@@ -194,6 +200,8 @@ const PostAd = () => {
 		});
 
 		formData.append("seller", user);
+
+		formData.endTime = new Date(adData.endTime).toISOString()
 
 		files.forEach((file) => {
 			if (file) {

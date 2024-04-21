@@ -98,6 +98,7 @@ const ProductDetails = () => {
 			return response.json()
 		}).then(data => {
 			// Format the image URLs to be used in the image gallery
+			console.log("Got back data ", data.images)
 			const formattedImages = data.images.map((imageUrl) => ({
 				original: `http://localhost:5003${imageUrl}`,
 				thumbnail: `http://localhost:5003${imageUrl}`,
