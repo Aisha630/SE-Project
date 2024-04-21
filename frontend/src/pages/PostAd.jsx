@@ -201,7 +201,9 @@ const PostAd = () => {
 
 		formData.append("seller", user);
 
-		formData.endTime = new Date(adData.endTime).toISOString()
+    if (adData.endTime) {
+      formData.endTime = new Date(adData.endTime).toISOString()
+    }
 
 		files.forEach((file) => {
 			if (file) {
