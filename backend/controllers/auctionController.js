@@ -1,6 +1,6 @@
 import { sendNotSoldEmail, sendSoldEmail } from "../services/emailService.js";
 import { Product } from "../models/productBase.js";
-import  User  from "../models/userModel.js";
+import User from "../models/userModel.js";
 import io from "../app.js";
 import Notification from "../models/notifModel.js";
 import Joi from "joi";
@@ -50,6 +50,11 @@ export async function bidOnProduct(req, res) {
     if (seller.connectionID) {
       io.to(seller.connectionID).emit("fetchNotifs");
     }
+
+    io.emit("newBid", {
+      productID: product._id,
+      currentBid: product.currentBid,
+    });
 
     res.json(product);
   } catch (error) {

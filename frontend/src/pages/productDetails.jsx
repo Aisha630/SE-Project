@@ -11,7 +11,7 @@ import theme from '../themes/homeTheme.js';
 import "../css/image-gallery.css";
 import Recs from '../components/recs.jsx';
 import MyDrawer from '../components/drawer.jsx';
-
+import { useSocket } from '../context/socketContext.jsx';
 // This component is used to display the details of a product
 const DetailItem = ({ label, value, lg }) => (
 	<Grid container columnSpacing={2} alignItems="center">
@@ -31,6 +31,7 @@ const DetailItem = ({ label, value, lg }) => (
 const ProductDetails = () => {
 	const [product, setProduct] = useState();
 	const [bid, setBid] = useState('');
+	const [currentBid, setCurrentBid] = useState();
 	const [seller, setSeller] = useState({});
 	const [rating, setRating] = useState(0);
 	const [requestDescription, setRequestDescription] = useState('');
@@ -40,6 +41,13 @@ const ProductDetails = () => {
 	const user = useSelector((state) => state.auth.user);
 	const { fetchCartItems } = useCart();
 	const lg = useMediaQuery(theme.breakpoints.up('sm'));
+	const socket = useSocket();
+
+	socket.on("newBid", (args) => {
+		if(id === args.productID) {
+			setCurrentBid(args.currentBid);
+		}
+	})
 
 	const navigateBack = () => {
         switch (product?.__t) {
@@ -104,9 +112,9 @@ const ProductDetails = () => {
 				thumbnail: `http://localhost:5003${imageUrl}`,
 			}));
 			setProduct({ ...data, images: formattedImages })
-
+			
 		}).catch(error => { console.log(error) })
-	}, [token, id, navigate]);
+	}, [token, id, navigate, currentBid]);
 
 	// Fetches the seller details from the server using the seller username from the product details
 	useEffect(() => {
