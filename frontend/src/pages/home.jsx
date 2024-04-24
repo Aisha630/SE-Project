@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Grid, ThemeProvider } from '@mui/material';
+import { Box, Typography, Grid, ThemeProvider, Card, CardContent } from '@mui/material';
 import CarouselComponent from '../components/carousel.jsx';
 import theme from '../themes/homeTheme.js';
 import Nav from '../components/nav.jsx';
@@ -40,50 +40,65 @@ function Home() {
 
 	return (
 		<ThemeProvider theme={theme}>
-
 			{/* The following Box is the main container for the Home page */}
-			<Box display="flex" width="100%" height="100vh" flexDirection="column" alignItems="stretch" alignContent="center" sx={{ backgroundColor: "#ffffff" }}>
+			<Box style={{
+				minHeight: '100vh',
+				backgroundImage: "url('homebg.svg')",
+				backgroundSize: "cover",
+				maxWidth: "100%",
+				backgroundAttachment: "scroll",
 
-				{/* The following Box is for the navigation bar and renders navbar according to screen size */}
-				{
-					lgd || c ? <Box>
-						<Nav Drawer={MyDrawer} Search={Box} />
-					</Box> : <Box>
-						<Nav Drawer={Box} Search={Box} />
-					</Box>
-				}
 
-				{/* This is grid is for the main content of the Home page */}
-				<Grid container spacing={1} sx={{ padding: 1, maxWidth: "100%", boxSizing: "border-box" }}>
-
-					{/* The following Grid item is for the side panel and renders the side panel according to screen size */}
-					{lgd ? <></> :
-						<Grid item xs={1} sm={1} md={2} lg={2} sx={{ backgroundColor: "#e0e0e0", alignItems: "stretch", height: "100vh" }}>
-							{
-								lgd ? <></> : <>
-									<Box sx={{ width: "90%", mr: { xs: '3px', sm: "5px", md: "8px" }, minWidth: { xs: '100px', sm: '120px', md: '150px' } }}>
-										<SidePanel ListStyles={{ ml: { xs: '1px', sm: "3px", md: "5px" }, }} ListItemStyles={{ fontWeight: "bold", mt: "5px" }} ListButtonStyles={{ margin: "8px" }} pageon={"Home"} />
-									</Box>
-								</>
-							}
-						</Grid>
-					}
-
-					{/* The following Grid item is for the carousel and heading */}
-					<Grid item xs={12} sm={12} md={12} lg={10} sx={{ backgroundColor: "#ffffff", maxWidth: "100%", display: "flex", flexDirection: "column", boxSizing: "border-box", mx: "auto" }}>
-
-						<Typography variant={lg ? "h4" : md ? "h5" : "h6"} noWrap sx={{ lineHeight: '1.25', textAlign: 'left', ml: lg ? 10 : "30px", mt: 5, }}>
-							<span style={{ color: '#E57373', fontWeight: 'bold' }}>NEW</span><br />
-							<span style={{ display: 'block' }}>
-								<span style={{ color: '#58a75b', fontSize: "20px" }}>in </span>
-								<span style={{ color: '#58a75b' }}>Store</span>
-							</span>
-						</Typography>
-
-						{/* The following Box is for the carousel */}
-						<Box sx={{ width: md ? "100%" : "90%", mb: 0, paddingBottom: 0, ml: lg ? 10 : 5, mr: "auto", maxWidth: "100%", boxSizing: "border-box", display: "flex", justifyContent: "center" }}>
+			}}>
+				<Grid conatiner spacing={1}>
+					<Grid item xs={12} sm={12} md={12} lg={12} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+						<Box sx={{ maxWidth: "70%", mt: 5 }}>
+							<Typography variant={lg ? "h4" : md ? "h5" : "h6"} noWrap sx={{ lineHeight: '1', textAlign: 'right' }}>
+								<span style={{ color: '#345744', fontWeight: 'bold', textAlign: "left" }}>NEW</span><br />
+								<span style={{ display: 'block', textAlign: "right" }}>
+									<span style={{ color: '#345744', fontSize: "20px" }}>in </span>
+									<span style={{ color: '#345744' }}>Store</span>
+								</span>
+							</Typography>
 							<CarouselComponent />
 						</Box>
+					</Grid>
+
+
+
+				</Grid>
+				<Grid container spacing={3} sx={{ mt: 10, display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+					{/* Second Grid item */}
+					<Grid item xs={12} sm={6} md={6} lg={5} sx={{}}>
+						<img src={"/hp1.svg"} alt="Description" style={{ maxWidth: '55%', }} />
+					</Grid>
+					<Grid item xs={12} sm={6} md={6} lg={5} sx={{ m: 10 }}>
+						<Typography variant={lg ? "h4" : "h5"} sx={{ lineHeight: '1', textAlign: 'right' }}>
+							Some text about why the website is supposed to be cool. We care about sustainability... do you?
+						</Typography>
+					</Grid>
+				</Grid>
+				<Grid container spacing={3} sx={{  display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", alignContent:"center"}}>
+					{/* Second Grid item */}
+					<Grid item xs={12} sm={6} md={6} lg={5} sx={{justifyContent:"center", display:"flex", flexDirection:"row", alignItems:"center"}}>
+						<Card sx={{ backgroundColor: "#7FB378", borderRadius:"16px", maxWidth:"80%",p:4}}>
+							<CardContent sx={{}}>
+								<Typography variant={lg ? "h4" : "h5"} sx={{ textAlign: 'center', fontWeight:700, color:"white" , lineHeight:"1.5",m:2 }}>Buy Cheaper</Typography>
+								<Typography variant={lg ? "h4" : "h5"} sx={{ fontWeight:300, textAlign: 'center', lineHeight:"1.5" , color:"white", p:2}}>Browse our items for sale, bid in an auction, or request a donation</Typography>
+							</CardContent>
+						</Card>
+
+					</Grid>
+					<Grid item xs={12} sm={6} md={6} lg={5} sx={{justifyContent:"center", display:"flex", flexDirection:"column" , alignItems:"center", pb:10}}>
+						<Typography variant={lg ? "h4" : "h5"} sx={{ lineHeight: '1.5', textAlign: "left", pt:20, pb:4, ml:8}}>
+						Feeling like a broke college student? We got you
+						</Typography>
+					<Card sx={{ backgroundColor: "#7FB378", borderRadius:"16px", maxWidth:"80%", p:4 }}>
+							<CardContent>
+								<Typography variant={lg ? "h4" : "h5"} sx={{ textAlign: 'center', fontWeight:700, color:"white" , lineHeight:"1.5",m:2 }}>Sell Cheap</Typography>
+								<Typography variant={lg ? "h4" : "h5"} sx={{ fontWeight:300, textAlign: 'center', lineHeight:"1.5" , color:"white", p:2}}>Put up an ad to sell, auction, or even donate an item to a fellow LUMS student</Typography>
+							</CardContent>
+						</Card>
 					</Grid>
 				</Grid>
 			</Box>

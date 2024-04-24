@@ -144,7 +144,6 @@ const PostAd = () => {
 			newErrors.productType = "Please select a mode of ad";
 		}
 
-
 		if (!adData.brand) {
 			isValid = false;
 			newErrors.brand = "Brand is required";

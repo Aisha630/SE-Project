@@ -5,9 +5,9 @@ const theme = createTheme({
         primary: { main: 'rgb(243, 244, 246)' },
         secondary: { main: '#58a75b', dark: 'rgba(88, 167, 91, 0.8)'},
         
-        background: {
-            default: 'rgb(243, 244, 246)',
-        },
+        // background: {
+        //     default: 'rgb(243, 244, 246)',
+        // },
     },
     typography: {
         fontFamily: 'Poppins, Arial, sans-serif',
