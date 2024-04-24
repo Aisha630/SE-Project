@@ -6,7 +6,7 @@ const SizesCategories = ({ checkedSizes, handleSizeChange }) => {
   const { sizes } = sizesData;
 
   return (
-    <FormControl sx={{ color: 'inherit' }}>
+    <FormControl sx={{ color: 'inherit', alignContent:'left' }}>
       <Typography variant="subtitle1" gutterBottom textAlign={'left'} sx={{ color: 'inherit' }}>
         Sizes
       </Typography>

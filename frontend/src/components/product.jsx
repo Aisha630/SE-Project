@@ -11,8 +11,8 @@ const Product = ({ product, mode }) => {
 
   return (
     // <Grid item xs={10} sm={12} md={6} lg={4} style={{ padding: '5px' }}>
-      <Grid item xs={12} sm={6} md={3} lg={2} style={{ padding: '5px' }}>
-      <img src={product.image} alt={product.name} style={{ width: '100%' }} />
+      <Grid item xs={12} sm={6} md={6} lg={3} style={{ paddingBottom:80, paddingLeft:5, paddingRight:5, }}>
+      <img src={product.image} alt={product.name} style={{ width: '100%', height:'83%' }} />
       <Typography variant="h6" align="left">{product.name}</Typography>
       {mode === 'sale' &&
         <Typography variant="subtitle1" align="left">PKR {product.price}</Typography>

@@ -22,10 +22,20 @@ const ShopItems = ({mode}) => {
     const [products, setProducts] = useState([]);
     const [isEmpty, setIsEmpty] = useState(false);
     const [checkedSubcategories, setCheckedSubcategories] = useState([]);
-    const [price, setPrice] = useState([0, 200000]);
+    const [price, setPrice] = useState([0, 15000]);
     const [checkedSizes, setCheckedSizes] = useState([]);
     const [sortBy, setSortBy] = useState('unset');
     const [condition, setCondition] = useState('unset');
+    const [checkedColors, setCheckedColors] = useState([]);
+
+    const handleColorChange = (color) => {
+        const isChecked = checkedColors.includes(color);
+        if (isChecked) {
+            setCheckedColors(checkedColors.filter((item) => item !== color));
+        } else {
+            setCheckedColors([...checkedColors, color]);
+        }
+    }
   
     const handleSubcategoryChange = (subcategory) => {
         const isChecked = checkedSubcategories.includes(subcategory);
@@ -67,7 +77,7 @@ const ShopItems = ({mode}) => {
         if (price[0] > 0) {
             filterCriteria = {...filterCriteria, minPrice: price[0]};   
         }
-        if (price[1] < 200000) {
+        if (price[1] < 15000) {
             filterCriteria = {...filterCriteria, maxPrice: price[1]};
         }
         if (sortBy !== 'unset') {
@@ -77,6 +87,10 @@ const ShopItems = ({mode}) => {
             filterCriteria = {...filterCriteria, condition: condition};
         }
         
+        if (checkedColors.length>0){
+            filterCriteria = {...filterCriteria, colors: checkedColors}
+        }
+
         const queryString = new URLSearchParams(filterCriteria);
         fetch(`http://localhost:5003/filter?${queryString}`, {
             headers: {
@@ -105,9 +119,10 @@ const ShopItems = ({mode}) => {
     const handleResetFilters = () => {
         setCheckedSubcategories([]);
         setCheckedSizes([]);
-        setPrice([0, 200000]);
+        setPrice([0, 15000]);
         setSortBy('unset');
         setCondition('unset');
+        setCheckedColors([]);
 
         const queryString = new URLSearchParams({category: category, productType: mode});
         fetch(`http://localhost:5003/filter?${queryString}`, {
@@ -151,14 +166,15 @@ const ShopItems = ({mode}) => {
                     id: product._id,
                     currentBid : product.currentBid,
                     endTime : product.endTime
+                    
                 }));
                 setCheckedSubcategories([]);
                 setCheckedSizes([]);
-                setPrice([0, 200000]);
+                setPrice([0, 15000]);
                 setSortBy('unset');
                 setCondition('unset');
                 setProducts(formattedProducts);
-
+                setCheckedColors([]);
                 setIsEmpty(formattedProducts.length === 0);
             })
             .catch(error => {
@@ -220,7 +236,7 @@ const ShopItems = ({mode}) => {
                 onClose={handleDrawerClose}
                 style={{ opacity: 0.95 }}
             >
-                <FilterMenu mode={mode} category={category} closeFilterMenu={handleDrawerClose} checkedSubcategories={checkedSubcategories} handleSubcategoryChange={handleSubcategoryChange} checkedSizes={checkedSizes} handleSizeChange={handleSizeChange} handleApplyFilters={handleApplyFilters} handleResetFilters={handleResetFilters} price={price} setPrice={handlePriceSlider} sortBy={sortBy} setSortBy={handleSortBy} condition={condition} setCondition={handleCondition} />
+                <FilterMenu mode={mode} category={category} closeFilterMenu={handleDrawerClose} checkedSubcategories={checkedSubcategories} handleSubcategoryChange={handleSubcategoryChange} checkedSizes={checkedSizes} handleSizeChange={handleSizeChange} handleApplyFilters={handleApplyFilters} handleResetFilters={handleResetFilters} price={price} setPrice={handlePriceSlider} sortBy={sortBy} setSortBy={handleSortBy} condition={condition} setCondition={handleCondition} checkedColors={checkedColors} handleColorChange={handleColorChange} />
             </Drawer>
 
             {/* This section represents the actual products */}
