@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppBar, Toolbar, IconButton, Typography, Box, Button, Badge, Container, useMediaQuery } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Box, Button, Badge, Container, useMediaQuery } from '@mui/material';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AddIcon from '@mui/icons-material/Add';
@@ -71,19 +71,27 @@ function Dropdown() {
 
 }
 
-const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsearchproducts, setisempty, mode, category }) => {
+const Nav = ({ Search, styles, setsearchproducts, setisempty, mode, category, position = "fixed" }) => {
 
     const navigate = useNavigate();
     const [isCartVisible, setIsCartVisible] = useState(false);
     const { cartItems, fetchCartItems } = useCart();
     const token = useSelector((state) => state.auth.token);
-    const sm = useMediaQuery(theme.breakpoints.up('sm'));
     const md = useMediaQuery(theme.breakpoints.up('md'));
     const lg = useMediaQuery(theme.breakpoints.up('lg'));
-    const height = lg ? '5vh' : md ? '3vh' : sm ? '40px' : '30px';
     const [showNotifications, setShowNotifications] = useState(false);
     const { notifications, deleteNotifs, setNotifications } = useNotif();
     const socket = useSocket();
+
+    const navigationLinks = [
+        { label: "Shop", mode: "sale", path: "/shop" },
+        { label: "Donate", mode: "donate", path: "/donation" },
+        { label: "Auction", mode: "auction", path: "/auction" }
+    ];
+
+    const handleNavigation = (path) => {
+        navigate(path);
+    };
 
     const deleteFromCart = (product) => {
         fetch(`http://localhost:5003/cart?id=${product._id}`, {
@@ -123,32 +131,36 @@ const Nav = ({ Drawer, Search, ShowLogo = true, styles, pageon = "Home", setsear
             })
             setNotifications(read);
         }
-        // fetchNotifs();
         setShowNotifications(!showNotifications);
     }
 
     return (
-        <AppBar position="static" sx={{ backgroundColor: "#e0e0e0", ...styles, boxShadow: "none" }} >
+        <AppBar position={position} sx={{ backgroundColor: "#f3f4f6", ...styles, boxShadow: "none" }} >
             <Container maxWidth="100vw">
                 <Toolbar disableGutters>
-                    <Drawer pageon={pageon} />
-                    {ShowLogo && <Box onClick={handleLogoClick} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: "flex-start", mr: 1, mt: 3, mb: 1, ml: { xs: '3px', sm: "5px", md: "15px" }, cursor: 'pointer', }}>
-                        <img src="/sta_logo.png" alt="Second Time Around Logo" style={{ height: height }} />
-                        <Typography variant={lg ? "subtitle2" : "caption"} noWrap sx={{ fontWeight: 'bold', lineHeight: '1.25', textAlign: 'center' }}>
-                            Second Time <br />
-                            <span style={{ display: 'block' }}>Around</span>
-                        </Typography>
-                    </Box>}
-                    {mode === "sale" && <Typography variant="h6" sx={{ display: { xs: 'none', sm: 'block' }, marginLeft: 2 ,flexGrow: 1, textAlign: 'left', fontWeight: 500, color: 'black' }}> {/*'#58a75b' */}
-                        Shop
-                    </Typography>}
-                    {mode === "donate" && <Typography variant="h6" sx={{ display: { xs: 'none', sm: 'block' }, marginLeft: 2 ,flexGrow: 1, textAlign: 'left', fontWeight: 500, color: 'black' }}> {/*'#58a75b' */}
-                        Donation
-                    </Typography>}
-                    {mode === "auction" && <Typography variant="h6" sx={{ display: { xs: 'none', sm: 'block' }, marginLeft: 2 ,flexGrow: 1, textAlign: 'left', fontWeight: 500, color: 'black' }}> {/*'#58a75b' */}
-                        Auction
-                    </Typography>}
-
+                <IconButton onClick={handleLogoClick} sx={{ mr: 2, '&:hover': { backgroundColor: 'transparent' }}}>
+                        <img src="/try6.png" alt="Logo" style={{ height: '40px' }} />
+                </IconButton>
+                <Box sx={{ display: 'flex', flexGrow: 1, alignItems: 'center' }}>
+                {navigationLinks.map((link) => (
+                    <Button
+                        key={link.label}
+                        onClick={() => handleNavigation(link.path)}
+                        sx={{
+                            color: mode === link.mode ? '#58a75b' : 'black', 
+                            '&:hover': {
+                                color: '#58a75b', 
+                            },
+                            mr: 0.9,
+                            fontWeight: 'normal',
+                            fontSize: '0.9rem',
+                            padding: '6px 16px',
+                        }}
+                    >
+                        {link.label}
+                    </Button>
+                ))}
+                </Box>
 
                     {/* This is to push the search bar to the right */}
                     <Box sx={{ flexGrow: 1 }} />

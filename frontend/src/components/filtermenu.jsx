@@ -10,7 +10,7 @@ import ListItemLink from './ListItemLink.jsx';
 import ConditionFilter from './conditionfilter.jsx';
 import ColorFilter from './colorFilters.jsx';
 
-const FilterMenu = ({ mode, category, closeFilterMenu, checkedSubcategories, handleSubcategoryChange, checkedSizes, handleSizeChange, handleApplyFilters, handleResetFilters, price, setPrice, sortBy, setSortBy, condition, setCondition, checkedColors, handleColorChange }) => {
+const FilterMenu = ({ mode, category, closeFilterMenu, checkedSizes, handleSizeChange, handleApplyFilters, handleResetFilters, price, setPrice, sortBy, setSortBy, condition, setCondition, checkedColors, handleColorChange }) => {
     return (
         <Box sx={{ backgroundColor: '#e0e0e0' }}>
             <Grid container justifyContent="flex-start" alignItems={'top'}>

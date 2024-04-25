@@ -11,8 +11,8 @@ import { useSelector } from 'react-redux';
 import ListItemLink from '../components/ListItemLink.jsx';
 import NoProducts from '../components/noProducts.jsx';
 import Search from '../components/search.jsx';
-import MyDrawer from '../components/drawer.jsx';
-
+import TagList from '../components/tagList';
+import config from "../../config_display.json";
 
 const ShopItems = ({mode}) => {
     const navigate = useNavigate();
@@ -21,12 +21,17 @@ const ShopItems = ({mode}) => {
     const [category, setCategory] = useState('Clothing')
     const [products, setProducts] = useState([]);
     const [isEmpty, setIsEmpty] = useState(false);
-    const [checkedSubcategories, setCheckedSubcategories] = useState([]);
     const [price, setPrice] = useState([0, 15000]);
     const [checkedSizes, setCheckedSizes] = useState([]);
     const [sortBy, setSortBy] = useState('unset');
     const [condition, setCondition] = useState('unset');
+    const [selectedTag, setSelectedTag] = useState('All');
     const [checkedColors, setCheckedColors] = useState([]);
+
+    const getTagsList = () => ['All', ...config.categories[category]]
+    const handleSelectedTag = (tag) => {
+        setSelectedTag(tag);
+    }
 
     const handleColorChange = (color) => {
         const isChecked = checkedColors.includes(color);
@@ -34,15 +39,6 @@ const ShopItems = ({mode}) => {
             setCheckedColors(checkedColors.filter((item) => item !== color));
         } else {
             setCheckedColors([...checkedColors, color]);
-        }
-    }
-  
-    const handleSubcategoryChange = (subcategory) => {
-        const isChecked = checkedSubcategories.includes(subcategory);
-        if (isChecked) {
-            setCheckedSubcategories(checkedSubcategories.filter((item) => item !== subcategory));
-        } else {
-            setCheckedSubcategories([...checkedSubcategories, subcategory]);
         }
     }
 
@@ -68,8 +64,8 @@ const ShopItems = ({mode}) => {
             productType : mode,
             category: category,
         }
-        if (checkedSubcategories.length > 0) {
-            filterCriteria = {...filterCriteria, tags: checkedSubcategories};
+        if (selectedTag !== 'All') {
+            filterCriteria = {...filterCriteria, tags: selectedTag};
         }
         if (checkedSizes.length > 0) {
             filterCriteria = {...filterCriteria, sizes: checkedSizes};
@@ -117,12 +113,12 @@ const ShopItems = ({mode}) => {
     };
 
     const handleResetFilters = () => {
-        setCheckedSubcategories([]);
         setCheckedSizes([]);
         setPrice([0, 15000]);
         setSortBy('unset');
         setCondition('unset');
         setCheckedColors([]);
+        setSelectedTag('All');
 
         const queryString = new URLSearchParams({category: category, productType: mode});
         fetch(`http://localhost:5003/filter?${queryString}`, {
@@ -168,7 +164,6 @@ const ShopItems = ({mode}) => {
                     endTime : product.endTime
                     
                 }));
-                setCheckedSubcategories([]);
                 setCheckedSizes([]);
                 setPrice([0, 15000]);
                 setSortBy('unset');
@@ -176,12 +171,17 @@ const ShopItems = ({mode}) => {
                 setProducts(formattedProducts);
                 setCheckedColors([]);
                 setIsEmpty(formattedProducts.length === 0);
+                setSelectedTag('All');
             })
             .catch(error => {
                 console.error('Error:', error);
                 navigate('/login');
             });
     }, [token, navigate, category]);
+
+    useEffect(() => {
+        handleApplyFilters();
+      }, [token, selectedTag, category, mode]);
     
     const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
 
@@ -194,7 +194,6 @@ const ShopItems = ({mode}) => {
     };
 
     const handleSetProducts = (products) => {
-        // setCategory("All");
         setProducts(products);
     }
 
@@ -209,17 +208,20 @@ const ShopItems = ({mode}) => {
     else if (mode === "donate") {
         pageon = "Donations";
     }
-    
+
     return (
         <ThemeProvider theme={theme}>
             <Box>
-                <Nav Drawer={MyDrawer} ShowLogo={false} Search={Search} pageon={pageon} setisempty={setIsEmpty} setsearchproducts={handleSetProducts} mode={mode} category={category}/>
+                <Nav Search={Search} setisempty={setIsEmpty} setsearchproducts={handleSetProducts} mode={mode} category={category}/>
             </Box>
             <MainCategoryToolbar setCategory={setCategory} category={category} /> {/*This is the main toolbar that represents clothing, technology, and miscellaneous categories*/}
-
-            {/* This box followed by a drawer represents the filters menu. The box contains the clickable button that opens and closes the filters menu drawer */}
+            <TagList
+                tags={getTagsList()}
+                selectedTag={selectedTag}
+                onTagSelected={handleSelectedTag}
+            />
             <Box display="flex" justifyContent="left" mt={2} ml={2} sx={{ width: "15%", fontWeight: "normal", }} >
-                <ListItemLink text={"Filter and Order"} Icon={TuneIcon} to={"#"} onClick={toggleFilterMenu} ButtonStyles={{
+                <ListItemLink text={""} Icon={TuneIcon} to={"#"} onClick={toggleFilterMenu} ButtonStyles={{
                     '&:hover': {
                         backgroundColor: "transparent",
                         textDecoration: 'underline',
@@ -236,7 +238,7 @@ const ShopItems = ({mode}) => {
                 onClose={handleDrawerClose}
                 style={{ opacity: 0.95 }}
             >
-                <FilterMenu mode={mode} category={category} closeFilterMenu={handleDrawerClose} checkedSubcategories={checkedSubcategories} handleSubcategoryChange={handleSubcategoryChange} checkedSizes={checkedSizes} handleSizeChange={handleSizeChange} handleApplyFilters={handleApplyFilters} handleResetFilters={handleResetFilters} price={price} setPrice={handlePriceSlider} sortBy={sortBy} setSortBy={handleSortBy} condition={condition} setCondition={handleCondition} checkedColors={checkedColors} handleColorChange={handleColorChange} />
+                <FilterMenu mode={mode} category={category} closeFilterMenu={handleDrawerClose} checkedSizes={checkedSizes} handleSizeChange={handleSizeChange} handleApplyFilters={handleApplyFilters} handleResetFilters={handleResetFilters} price={price} setPrice={handlePriceSlider} sortBy={sortBy} setSortBy={handleSortBy} condition={condition} setCondition={handleCondition} checkedColors={checkedColors} handleColorChange={handleColorChange} />
             </Drawer>
 
             {/* This section represents the actual products */}

@@ -10,7 +10,6 @@ import { useCart } from '../context/cartContext.jsx';
 import theme from '../themes/homeTheme.js';
 import "../css/image-gallery.css";
 import Recs from '../components/recs.jsx';
-import MyDrawer from '../components/drawer.jsx';
 import { useSocket } from '../context/socketContext.jsx';
 // This component is used to display the details of a product
 const DetailItem = ({ label, value, lg }) => (
@@ -224,7 +223,7 @@ const ProductDetails = () => {
 		<ThemeProvider theme={theme}>
 			<Grid container spacing={0} sx={{ m: 0, p: 0, width: "100%" }}>
 
-				<Nav Drawer={MyDrawer} Search={Box} pageon={""} />
+				<Nav Search={Box}/>
 
 				{/*Image gallery component*/}
 				<Grid item xs={12} sm={12} md={12} lg={6} >

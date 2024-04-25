@@ -3,9 +3,7 @@ import { Box, Typography, Grid, ThemeProvider, Card, CardContent } from '@mui/ma
 import CarouselComponent from '../components/carousel.jsx';
 import theme from '../themes/homeTheme.js';
 import Nav from '../components/nav.jsx';
-import SidePanel from '../components/sidePanel.jsx';
 import { useMediaQuery } from '@mui/material';
-import MyDrawer from '../components/drawer.jsx';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -40,6 +38,8 @@ function Home() {
 
 	return (
 		<ThemeProvider theme={theme}>
+			<Nav Search={Box} position='relative'/>
+			
 			{/* The following Box is the main container for the Home page */}
 			<Box style={{
 				minHeight: '100vh',
@@ -47,7 +47,6 @@ function Home() {
 				backgroundSize: "cover",
 				maxWidth: "100%",
 				backgroundAttachment: "scroll",
-
 
 			}}>
 				<Grid conatiner spacing={1}>

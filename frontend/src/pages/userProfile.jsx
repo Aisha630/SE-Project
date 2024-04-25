@@ -6,7 +6,6 @@ import theme from '../themes/homeTheme';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import Nav from '../components/nav.jsx';
-import Drawer from '../components/drawer.jsx';
 import { useNavigate } from 'react-router-dom';
 import { profileStyles, profileAvatarStyles, graphStyles } from '../components/profilestyles.jsx';
 import MainCategoryToolbar from '../components/maincategoriestoolbar.jsx';
@@ -202,9 +201,7 @@ const UserProfile = () => {
 
     return (
         <ThemeProvider theme={theme}>
-            <Nav Drawer={Drawer} Search={Box} ShowLogo={false} pageon='' styles={{
-                // backgroundImage: "url('userprofilebg.svg')",
-            }} />
+            <Nav Search={Box} position='relative'/>
             <Grid style={{
                 minHeight: '100vh',
                 width: '100%',

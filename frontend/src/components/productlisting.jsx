@@ -20,9 +20,9 @@ const ProductList = ({ products, mode }) => {
     return (
         <Box>
             <Grid container spacing={1}>
-                {displayedProducts.map((product, index) => (
+                {displayedProducts.map((product) => (
                     <Link
-                        key={index}
+                        key={product.id}
                         to={`/shop/${product.id}`}
                         style={{
                             textDecoration: 'none',

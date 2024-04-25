@@ -1,0 +1,23 @@
+{
+    "categories": {
+      "Clothing": [
+        "Eastern",
+        "Trousers",
+        "Jeans",
+        "Dresses",
+        "T-shirts",
+        "Formal",
+        "Jackets",
+        "Sweaters"
+      ],
+      "Technology": [
+        "Phone",
+        "Laptop",
+        "Tablet",
+        "Headphones",
+        "Accessories",
+        "Gaming Console"
+      ],
+      "Miscellaneous": ["Watch", "Jewelry", "Sunglasses", "Shoes", "Bags", "Hats"]
+    }
+  }
