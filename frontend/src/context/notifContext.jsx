@@ -29,7 +29,7 @@ export const NotifProvider = ({ children }) => {
             });
             const data = await response.json();
             if (response.ok) {
-                setNotifications(data || []);
+                setNotifications(data.reverse() || []);
             } else {
                 console.error(data.message);
                 setNotifications([]);
