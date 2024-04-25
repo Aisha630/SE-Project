@@ -22,8 +22,8 @@ function ImageCard({ imageUrl, style }) {
         image={imageUrl}
         alt="New item"
         sx={{
-          // height: '100%',
-          // width: '100%',
+          height: '100%',
+          width: '100%',
           objectFit: 'cover',
           objectPosition: 'center',
         }}
@@ -85,7 +85,6 @@ function CarouselComponent() {
       spaceBetween={70}
       slidesPerView={md ? 3 : sm ? 2 : 1}
       pagination={{ clickable: true, dynamicBullets: true }}
-      dots={true}
       autoplay={{
         delay: 2500,
         disableOnInteraction: false,

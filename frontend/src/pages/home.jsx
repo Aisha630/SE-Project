@@ -54,7 +54,7 @@ function Home() {
 
 			}}>
 				{/* Text and carousel */}
-				<Grid conatiner spacing={1}>
+				<Grid container spacing={1}>
 					<Grid item xs={12} sm={12} md={12} lg={12} sx={{ display: "flex", justifyContent: "center", alignItems: "center", pt: 5 }}>
 						<Box sx={{ maxWidth: "70%", mt: 5, mb: 1 }}>
 							<Typography variant={lg ? "h4" : md ? "h5" : "h6"} noWrap sx={{ lineHeight: '1', textAlign: 'right' }}>
