@@ -21,7 +21,6 @@ function Home() {
 	const md = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 	const lg = useMediaQuery(theme.breakpoints.between('md', 'xl'));
 
-
 	{/* This useEffect hook is used to check if the user is logged in or not. If the user is not logged in, the user is redirected to the login page. */ }
 	useEffect(() => {
 		if (!username || !token) {
@@ -72,7 +71,7 @@ function Home() {
 
 				{/* Text about site and image */}
 				<Grid container spacing={1} sx={{ mt: 0, display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
-					{/* <Box sx={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}> */}
+					{/* The Flower thingy image*/}
 					<Grid item xs={12} sm={6} md={6} lg={5} sx={{mt:15}}>
 						<img src={"/hp1.svg"} alt="Description" style={{ maxWidth: "80%" }} />
 					</Grid>
@@ -83,12 +82,10 @@ function Home() {
 							do you?
 						</Typography>
 					</Grid>
-					{/* </Box> */}
 				</Grid>
 
-
 				{/* Cards */}
-
+				{/* Card 1 */}
 				<Grid container spacing={1} sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", alignContent: "center" }}>
 					<Grid item xs={12} sm={6} md={6} lg={5} sx={{ justifyContent: "center", display: "flex", flexDirection: "row", alignItems: "center" }}>
 						<Card sx={{ backgroundColor: "#6A9B81", borderRadius: "16px", maxWidth: "80%", p: 4 }}>
@@ -99,8 +96,8 @@ function Home() {
 						</Card>
 					</Grid>
 
+				{/* Card 2 and above text */}
 					<Grid item xs={12} sm={6} md={6} lg={5} sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", alignContent: "center", pb:10}}>
-						{/* <Box container sx={{ m: 0, p: 0 }} > */}
 							<Typography variant={lg ? "h4" : "h5"} sx={{ lineHeight: '1.5', textAlign: "left", mb: 3, m:5}}>
 								Feeling like a broke college student? <ColorText text={"We got you"} fontWeight={650} color={"#66C659"} />
 							</Typography>
@@ -110,7 +107,6 @@ function Home() {
 									<Typography variant={lg ? "h4" : "h5"} sx={{ fontWeight: 300, textAlign: 'center', lineHeight: "1.5", color: "white", p: 2 }}>Put up an ad to <strong>sell</strong>, <strong>auction</strong>, or even <strong>donate</strong> an item to a fellow LUMS student</Typography>
 								</CardContent>
 							</Card>
-						{/* </Box> */}
 					</Grid>
 				</Grid>
 			</Box>
