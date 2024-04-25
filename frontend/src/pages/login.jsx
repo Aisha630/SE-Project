@@ -46,7 +46,7 @@ const Login = () => {
 				).then(res => { return res.json() }).then(data => {
 					if (data.error) { setLoading(false); toast.error(data.error); setReset(false); setResetEmail(false); return; }
 					setReset(true); setResetEmail(false); toast.success(data.message); setLoading(false);
-				}).catch(err => { console.error(err); setLoading(false); }).finally(() => {setLoading(false); });
+				}).catch(err => { console.error(err); setLoading(false); }).finally(() => { setLoading(false); });
 			}
 			else if (reset) {
 				if (allTrue(passwordGuidelines)) {
@@ -59,10 +59,10 @@ const Login = () => {
 
 					}).then(res => { return res.json() }).then(data => {
 						if (data.error) { toast.error(data.error); setLoading(false); return; }
-						setReset(false); toast.success(data.message);setLoading(false);
-					}).catch(err => { console.error(err);setLoading(false);  });
+						setReset(false); toast.success(data.message); setLoading(false);
+					}).catch(err => { console.error(err); setLoading(false); });
 				}
-				else{
+				else {
 					toast.error("Please fulfill all password guidelines")
 				}
 			}
@@ -137,6 +137,13 @@ const Login = () => {
 											</FormGroup>}
 
 											{/* Login/Reset button */}
+											{!reset &&
+												<Box textAlign="left" sx={{ mt: 1 }}>
+													<Link href="#" variant="body2" sx={{ color: "#084a08", '&:hover': { color: "#084a08", textDecorationColor: "#084a08", textDecoration:'underline'}, textDecorationColor: "black", textDecoration:'none'}} onClick={() => { setResetEmail(!resetEmail) }}>
+														Forgot password? 
+													</Link>
+												</Box>
+											}
 											<Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, backgroundColor: "#4a914d", color: "black", '&:hover': { backgroundColor: "#3e7840" }, width: "50%" }}>
 												{reset ? "Reset Password" : "Log In"}
 											</Button>
@@ -155,16 +162,15 @@ const Login = () => {
 											{/* Signup/Forgot password links */}
 											{!reset &&
 												<>
-													<Box textAlign="center" sx={{ mb: 1 }}>
-														<Link href="/signup" variant="body2" sx={{ color: "black", '&:hover': { color: "#084a08", textDecorationColor: "#084a08", }, textDecorationColor: "black", }}>
-															Not a member? Sign up now!
+													<Box textAlign="center" sx={{ mb: 1,}}>
+														<Typography variant='body2' component={'span'} >
+														Not a member? {}
+														</Typography>
+														<Link href="/signup" variant="body2" sx={{ color: "#084a08", '&:hover': { color: "#084a08", textDecorationColor: "#084a08", textDecoration:'underline'}, textDecorationColor: "black", textDecoration:'none'}}>
+															Sign up now!
 														</Link>
 													</Box>
-													<Box textAlign="center" sx={{ mb: 1 }}>
-														<Link href="#" variant="body2" sx={{ color: "black", '&:hover': { color: "#084a08", textDecorationColor: "#084a08", }, textDecorationColor: "black", }} onClick={() => { setResetEmail(!resetEmail) }}>
-															Forgot password? Reset here!
-														</Link>
-													</Box>
+
 												</>}
 										</>}
 

@@ -240,7 +240,7 @@ const UserProfile = () => {
                                 {sumOfSales} PKR
                             </Typography>
 
-                            <Box sx={{ width: '100%', height: '110%', paddingTop: 2 }}>
+                            <Box sx={{ width: '100%', height: '115%', paddingTop: 2 }}>
 
                                 <LineChart
                                     xAxis={[{ data: xdata }]}
@@ -251,8 +251,7 @@ const UserProfile = () => {
                                         },
                                     ]}
                                     disableAxisListener={true}
-                                    
-                                    
+                                    sx={{margin:'0.15%'}}
                                 />
                             </Box>
 

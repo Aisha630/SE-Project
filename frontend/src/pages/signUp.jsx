@@ -161,7 +161,10 @@ const SignUp = () => {
 									<Typography textAlign="center">
 										{!isLoading && !signUp &&
 											<>
-												<Link href="/login" variant="body2" sx={{ color: "black", textDecorationColor: "black", '&:hover': { color: "#084a08", textDecorationColor: "#084a08" } }}>Already a member? Log in now!</Link>
+											<Typography variant='body2' component={'span'}>Already a member? {}</Typography>
+												<Link href="/login" variant="body2" sx={{ color: "#084a08", textDecorationColor: "black", '&:hover': { color: "#084a08", textDecorationColor: "#084a08", textDecoration:'underline' }, textDecoration:'none' }}>
+													Log in now!
+													</Link>
 												<br />
 											</>
 										}
