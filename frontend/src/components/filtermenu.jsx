@@ -51,9 +51,11 @@ const FilterMenu = ({ mode, category, closeFilterMenu, checkedSubcategories, han
                     {/* <CategoryFilter category={category} checkedSubcategories={checkedSubcategories} handleChange={handleSubcategoryChange} />
                 </Grid> */}
 
-                <Grid item xs={12} sm={3} alignItems={'flex-start'}> {/*Colors*/}
-                    <ColorFilter checkedColors={checkedColors} handleChange={handleColorChange} />
-                </Grid>
+                {category === 'Clothing' && 
+                    <Grid item xs={12} sm={3} alignItems={'flex-start'}> {/*Colors*/}
+                        <ColorFilter checkedColors={checkedColors} handleChange={handleColorChange} />
+                    </Grid>
+                }
                 {category === 'Clothing' &&
                     <Grid item xs={12} sm={3} alignItems={'flex-start'} > {/* sizes */}
                         <SizesCategories checkedSizes={checkedSizes} handleSizeChange={handleSizeChange} />
