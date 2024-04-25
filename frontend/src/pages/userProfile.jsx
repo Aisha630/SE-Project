@@ -201,7 +201,8 @@ const UserProfile = () => {
 
     return (
         <ThemeProvider theme={theme}>
-            <Nav Search={Box} position='relative'/>
+            
+            <Nav Search={Box} position='relative' color="#6A9B81"/>
             <Grid style={{
                 minHeight: '100vh',
                 width: '100%',
@@ -209,8 +210,6 @@ const UserProfile = () => {
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 maxWidth: "100%",
-                // position: "relative",
-                // backgroundAttachment: "scroll",
 
             }}>
                 <Typography variant="h4" sx={{ color: "white", textAlign: "left", paddingTop: 2, marginLeft: '2%' }}>Dashboard & Profile</Typography>
@@ -288,16 +287,17 @@ const UserProfile = () => {
                     left: 0,
                     width: '100%', // Span the full width of the container
                     zIndex: 2, // Ensure it's above the other content
-                    paddingBottom: 5,
+                    paddingBottom: 5
                 }}>
-                    <MainCategoryToolbar setCategory={setSelectedTab} category={selectedTab} navItems={["Auctioned", "For Sale", "Donations"]} styles={{ backgroundColor: 'white' }} />
+                    <MainCategoryToolbar setCategory={setSelectedTab} category={selectedTab} navItems={["Auctioned", "For Sale", "Donations"]} />
 
                     {/* Product Grid */}
+                    <Box sx={{ bgcolor: 'background.default' }}> 
                     <Grid container spacing={0} sx={{
                         display: 'flex',
                         width: '100%',
                         position: 'absolute',
-                        backgroundColor: "white",
+                        
                     }}>
                         {currentProducts.length > 0 && <UserProducts products={currentProducts} handleDeleteItem={handleDeleteItem} selectedTab={selectedTab} handleReopenItem={handleReopenItem} handleDonationApproval={handleDonationApproval}/>}
                     </Grid>
@@ -307,8 +307,9 @@ const UserProfile = () => {
                         position: 'absolute',
                         width: '100%',
                         bottom: 0,
-                        backgroundColor: "white"
+                        
                     }} />}
+                    </Box>
                 </Box>
 
             </Grid>

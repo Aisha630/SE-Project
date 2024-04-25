@@ -1,17 +1,15 @@
 import React from 'react';
 import { AppBar, Toolbar, IconButton, Box, Button, Badge, Container, useMediaQuery } from '@mui/material';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AddIcon from '@mui/icons-material/Add';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useCart } from '../context/cartContext';
 import { useSocket } from '../context/socketContext';
-import { useLogout } from '../hooks/useLogout';
+import UserDropDown from './userDropDown';
 import ShoppingCartOverlayCard from './shoppingCartOverlayCard';
 import NotificationOverlayCard from './notification';
 import theme from '../themes/homeTheme';
@@ -20,7 +18,8 @@ import { useNotif } from "../context/notifContext"
 
 const commonIconStyle = {
     '&:hover': {
-        backgroundColor: "primary.dark"
+        backgroundColor: "primary.dark",
+        boxShadow: "none",
     },
     '&.visited': {
         backgroundColor: "primary.dark",
@@ -31,47 +30,8 @@ const commonIconStyle = {
     }
 }
 
-function Dropdown() {
-    const [isOpen, setIsOpen] = useState(false);
-    const navigate = useNavigate();
-    const { logout } = useLogout();
 
-    const handleLogout = () => {
-        logout();
-        setIsOpen(false);
-    };
-    const options = [{ label: "Profile", onClick: () => navigate("/profile") }, { label: "Logout", onClick: () => handleLogout() }];
-
-    const handleClick = () => {
-        setIsOpen((prev) => !prev);
-    };
-
-    const handleClickAway = () => {
-        setIsOpen(false);
-    };
-
-    return (
-        <ClickAwayListener onClickAway={handleClickAway}>
-            <div style={{ position: "relative", display: "inline-block", }}>
-                <IconButton onClick={handleClick} sx={commonIconStyle}>
-                    <AccountCircleIcon />
-                </IconButton>
-                {isOpen && (
-                    <ul style={{ position: 'absolute', listStyle: 'none', backgroundColor: "white", padding: 0, zIndex: 10, top: "50%", right: "40%" }}>
-                        {options.map((option, index) => (
-                            <li key={index} onClick={option.onClick} className="listItem" style={{ cursor: 'pointer', padding: 10, paddingLeft: 20, paddingRight: 20, margin: 10 }}>
-                                {option.label}
-                            </li>
-                        ))}
-                    </ul>
-                )}
-            </div>
-        </ClickAwayListener>
-    );
-
-}
-
-const Nav = ({ Search, styles, setsearchproducts, setisempty, mode, category, position = "fixed" }) => {
+const Nav = ({ Search, styles, setsearchproducts, setisempty, mode, category, position = "fixed", color="#F5F4E7" }) => {
 
     const navigate = useNavigate();
     const [isCartVisible, setIsCartVisible] = useState(false);
@@ -135,11 +95,11 @@ const Nav = ({ Search, styles, setsearchproducts, setisempty, mode, category, po
     }
 
     return (
-        <AppBar position={position} sx={{ backgroundColor: "#f3f4f6", ...styles, boxShadow: "none" }} >
-            <Container maxWidth="100vw">
+        <AppBar position={position} sx={{ backgroundColor: color, ...styles, boxShadow: "none" }} >
+            <Container maxWidth="false">
                 <Toolbar disableGutters>
-                <IconButton onClick={handleLogoClick} sx={{ mr: 2, '&:hover': { backgroundColor: 'transparent' }}}>
-                        <img src="/try6.png" alt="Logo" style={{ height: '40px' }} />
+                <IconButton onClick={handleLogoClick} sx={{ mr: 1, '&:hover': { backgroundColor: 'transparent' }}}>
+                        <img src="/sta_logo2.png" alt="Logo" style={{ height: '40px' }} />
                 </IconButton>
                 <Box sx={{ display: 'flex', flexGrow: 1, alignItems: 'center' }}>
                 {navigationLinks.map((link) => (
@@ -150,11 +110,13 @@ const Nav = ({ Search, styles, setsearchproducts, setisempty, mode, category, po
                             color: mode === link.mode ? '#58a75b' : 'black', 
                             '&:hover': {
                                 color: '#58a75b', 
+                                color: color !== "#F5F4E7" ? 'white' : '#58a75b'
                             },
                             mr: 0.9,
                             fontWeight: 'normal',
                             fontSize: '0.9rem',
                             padding: '6px 16px',
+                            
                         }}
                     >
                         {link.label}
@@ -191,7 +153,7 @@ const Nav = ({ Search, styles, setsearchproducts, setisempty, mode, category, po
                             isCartVisible && <ShoppingCartOverlayCard cartVisibility={isCartVisible} cartVisibilityToggle={setIsCartVisible} deleteFromCart={deleteFromCart} />
                         }
 
-                        <Dropdown />
+                        <UserDropDown />
 
                         <Button
                             type="submit"

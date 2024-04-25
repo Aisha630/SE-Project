@@ -42,8 +42,8 @@ function Home() {
 
 	return (
 		<ThemeProvider theme={theme}>
-			<Nav Search={Box} position='relative' />
-
+			<Nav Search={Box} position='relative' color="#6A9B81"/>
+			
 			{/* The following Box is the main container for the Home page */}
 			<Box style={{
 				minHeight: '100vh',

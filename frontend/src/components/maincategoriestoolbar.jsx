@@ -1,17 +1,7 @@
-import React, { useState } from 'react';
-import { AppBar, Toolbar, Box, Typography, IconButton } from '@mui/material';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'; 
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'; 
+import React from 'react';
+import { AppBar, Toolbar, Box, Button } from '@mui/material';
 
-const MainCategoryToolbar = ({ setCategory, category }) => {
-    const navItems = ['Clothing', 'Technology', 'Miscellaneous'];
-    const [hover, setHover] = useState(false);
-
-    const handleNavigation = (direction) => {
-        const currentIndex = navItems.indexOf(category);
-        const nextIndex = (currentIndex + direction + navItems.length) % navItems.length;
-        setCategory(navItems[nextIndex]);
-    };
+const MainCategoryToolbar = ({ setCategory, category, navItems=['Technology', 'Clothing', 'Miscellaneous'] }) => {
 
     return (
         <AppBar 
@@ -21,36 +11,45 @@ const MainCategoryToolbar = ({ setCategory, category }) => {
             sx={{
                 backgroundColor: 'transparent',
                 boxShadow: 'none',
+                overflow: 'hidden'
             }}
         >
             <Toolbar
                 sx={{
                     justifyContent: 'center',
-                    paddingTop: '4rem'
+                    paddingTop: '7rem'
                 }}
             >
-                <Box
-                    onMouseEnter={() => setHover(true)}
-                    onMouseLeave={() => setHover(false)}
-                    sx={{
+                {/* Outer Box to position the underline */}
+                <Box sx={{
+                    borderBottom: '1px solid', 
+                }}>
+                    {/* Inner Box to horizontally align category Buttons */}
+                    <Box sx={{
                         display: 'flex',
                         alignItems: 'center',
-                        transition: 'all 0.3s ease-in-out',
-                    }}
-                >
-                    {hover && (
-                        <IconButton onClick={() => handleNavigation(-1)} sx={{ color: '#58a75b', visibility: hover ? 'visible' : 'hidden' }}>
-                            <ArrowBackIosIcon fontSize="small" />
-                        </IconButton>
-                    )}
-                    <Typography variant="h6" sx={{ color: '#58a75b', mx: 2, transition: 'color 0.3s ease' }}>
-                        {category}
-                    </Typography>
-                    {hover && (
-                        <IconButton onClick={() => handleNavigation(1)} sx={{ color: '#58a75b', visibility: hover ? 'visible' : 'hidden' }}>
-                            <ArrowForwardIosIcon fontSize="small" />
-                        </IconButton>
-                    )}
+                        justifyContent: 'center',
+                    }}>
+                        {navItems.map((item, index) => (
+                            <Button
+                                key={index}
+                                onClick={() => setCategory(item)}
+                                sx={{
+                                    color: item === category ? '#58a75b' : 'black',
+                                    mx: 0.5, 
+                                    padding: '6px 16px',
+                                    fontSize: '1rem', 
+                                    fontWeight: 'regular',
+                                    '&:hover': {
+                                        backgroundColor: 'transparent',
+                                        color: '#58a75b',
+                                    },
+                                }}
+                            >
+                                {item}
+                            </Button>
+                        ))}
+                    </Box>
                 </Box>
             </Toolbar>
         </AppBar>

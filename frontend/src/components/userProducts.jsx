@@ -134,7 +134,7 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
 
 
     return (
-        <Grid container spacing={1} sx={{ backgroundColor: 'white', p: 7, m: 2, maxWidth: "100%", }}>
+        <Grid container spacing={1} sx={{ backgroundColor: 'background.default', p: 7, m: 2, maxWidth: "100%", }}>
             {products.map((product) => (
                 <Grid item xs={12} sm={12} md={8} lg={6} key={product._id} sx={{ display: 'flex', justifyContent: 'center', }}>
                     <Card sx={{ display: 'flex', width: '90%', m: 2, borderRadius: 2, boxShadow: 3, backgroundColor: '#e0e0e0', mb: 5, maxWidth: "100%", }}> {/*could also change to #f5f5f5 */}

@@ -4,7 +4,7 @@ import React from 'react'
 const NoProducts = ({styles}) => {
   return (
     <Box sx={{
-      ...styles
+      ...styles,
     }}>
       Sorry, no products found.
     </Box>

@@ -96,6 +96,7 @@ const ShopItems = ({mode}) => {
         })
         .then(response => response.json())
         .then(data => {
+            console.log(`Apply filters ${queryString}`)
             const formattedProducts = data.map(product => ({
                 name: product.name,
                 image: 'http://localhost:5003'.concat(product.images[0]), // Assuming the first image in the array is the main image
@@ -121,8 +122,10 @@ const ShopItems = ({mode}) => {
         setCondition('unset');
         setCheckedColors([]);
         setSelectedTag('All');
+        setCategory('Clothing');
 
         const queryString = new URLSearchParams({category: category, productType: mode});
+
         fetch(`http://localhost:5003/filter?${queryString}`, {
             headers: {
                 'Content-Type': 'application/json',
@@ -184,7 +187,7 @@ const ShopItems = ({mode}) => {
 
     useEffect(() => {
         handleApplyFilters();
-      }, [token, selectedTag, category, mode]);
+      }, [token, selectedTag, category]);
     
     const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
 
@@ -214,7 +217,8 @@ const ShopItems = ({mode}) => {
 
     return (
         <ThemeProvider theme={theme}>
-            <Box>
+            <Box sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
+             <Box> 
                 <Nav Search={Search} setisempty={setIsEmpty} setsearchproducts={handleSetProducts} mode={mode} category={category}/>
             </Box>
             <MainCategoryToolbar setCategory={setCategory} category={category} /> {/*This is the main toolbar that represents clothing, technology, and miscellaneous categories*/}
@@ -223,7 +227,7 @@ const ShopItems = ({mode}) => {
                 selectedTag={selectedTag}
                 onTagSelected={handleSelectedTag}
             />
-            <Box display="flex" justifyContent="left" mt={2} ml={2} sx={{ width: "15%", fontWeight: "normal", }} >
+            <Box display="flex" justifyContent="left" mt={2} ml={2} sx={{ width: "15%", fontWeight: "normal" }}>
                 <ListItemLink text={""} Icon={TuneIcon} to={"#"} onClick={toggleFilterMenu} ButtonStyles={{
                     '&:hover': {
                         backgroundColor: "transparent",
@@ -245,10 +249,11 @@ const ShopItems = ({mode}) => {
             </Drawer>
 
             {/* This section represents the actual products */}
-            <Box sx={{ padding: '30px' }}>
+            <Box sx={{ padding: '30px', backgroundColor: "background.default" }}>
                 {isEmpty && <NoProducts />}
                 {!isEmpty && <ProductList products={products} mode={mode}/>}
                 
+            </Box>
             </Box>
         </ThemeProvider>
     )
