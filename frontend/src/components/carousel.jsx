@@ -34,13 +34,13 @@ function ImageCard({ imageUrl, style }) {
 
 function OverlayImageCards({ bottomCardProps, topCardProps, link }) {
   return (
-    <Box sx={{ position: "relative", width: "97%", height: "97%", margin: 0, p: 0, mb: 4 }}>
-      <ImageCard {...bottomCardProps} style={{ width: "calc(100%)", height: "calc(100%)",  mt:5, ml:1,}} />
-      <Link to={link} style={{ position: "absolute", bottom:20, right:-5 }}>
+    <Box sx={{ position: "relative", width: "97%", height: "97%", margin: 0, p: 0, mb: 8 }}>
+      <ImageCard {...bottomCardProps} style={{ width: "calc(100%)", height: "calc(100%)", mt: 5, ml: 1, }} />
+      <Link to={link} style={{ position: "absolute", bottom: 20, right: -5 }}>
         <ImageCard
           {...topCardProps}
           style={{
-            width: "calc(100% - 20px)", 
+            width: "calc(100% - 20px)",
             height: "calc(100% - 20px)",
             '&:hover': { filter: 'brightness(0.9)' },
             p: 0, m: 0
@@ -81,19 +81,23 @@ function CarouselComponent() {
 
   return (
     <Swiper
-      modules={[Navigation, Pagination, Autoplay, A11y]}
+      modules={[Navigation,Pagination, Autoplay, A11y]}
       spaceBetween={70}
       slidesPerView={md ? 3 : sm ? 2 : 1}
       pagination={{ clickable: true, dynamicBullets: true }}
+      dots={true}
       autoplay={{
         delay: 2500,
         disableOnInteraction: false,
       }}
-      sx={{ m: 5, p: 5 }}>
+      sx={{ m: 5, p: 5,}}         
+      
+      >
+
       {products.map((product, index) => (
         <SwiperSlide key={index} >
           <OverlayImageCards
-            bottomCardProps={{ imageUrl: "/cardBack.svg"}}
+            bottomCardProps={{ imageUrl: "/cardBack.svg" }}
             topCardProps={{ imageUrl: product.image }}
             link={`/shop/${product.id}`}
           />

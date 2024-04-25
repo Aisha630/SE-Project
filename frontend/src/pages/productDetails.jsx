@@ -42,24 +42,24 @@ const ProductDetails = () => {
 	const lg = useMediaQuery(theme.breakpoints.up('sm'));
 	const socket = useSocket();
 
-	socket.on("newBid", (args) => {
-		if(id === args.productID) {
+	socket?.on("newBid", (args) => {
+		if (id === args.productID) {
 			setCurrentBid(args.currentBid);
 		}
 	})
 
 	const navigateBack = () => {
-        switch (product?.__t) {
-            case 'AuctionProduct':
-                navigate('/auction');
-                break;
-            case 'DonationProduct':
-                navigate('/donation');
-                break;
-            default:
-                navigate('/shop');
-        }
-    };
+		switch (product?.__t) {
+			case 'AuctionProduct':
+				navigate('/auction');
+				break;
+			case 'DonationProduct':
+				navigate('/donation');
+				break;
+			default:
+				navigate('/shop');
+		}
+	};
 
 	const productDetails = product ? [
 		{ label: 'Condition', value: product.condition },
@@ -111,7 +111,7 @@ const ProductDetails = () => {
 				thumbnail: `http://localhost:5003${imageUrl}`,
 			}));
 			setProduct({ ...data, images: formattedImages })
-			
+
 		}).catch(error => { console.log(error) })
 	}, [token, id, navigate, currentBid]);
 
@@ -223,7 +223,7 @@ const ProductDetails = () => {
 		<ThemeProvider theme={theme}>
 			<Grid container spacing={0} sx={{ m: 0, p: 0, width: "100%" }}>
 
-				<Nav Search={Box}/>
+				<Nav Search={Box} position='relative' />
 
 				{/*Image gallery component*/}
 				<Grid item xs={12} sm={12} md={12} lg={6} >
@@ -246,7 +246,6 @@ const ProductDetails = () => {
 						{productDetails.map((detail, index) => (
 							detail.value ? <DetailItem key={index} label={detail.label} value={detail.value} lg={lg} /> : <Box key={index}></Box>
 						))}
-
 						<DetailItem label="Seller" value={product?.seller} lg={lg} />
 
 						{/* Seller Rating */}
@@ -270,15 +269,15 @@ const ProductDetails = () => {
 						{/* Bid and Donation Request */}
 						{product?.__t === 'AuctionProduct' && (
 							<>
-								<Typography variant={"subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 300, mb: 2 }}>
-									Starting Bid: PKR {product.startingBid}
-								</Typography>
-								<Typography variant={"subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 300, mb: 2 }}>
-									Current Bid: PKR {product.currentBid}
-								</Typography>
-								<Typography variant={"subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 300, mb: 2 }}>
-									End Time: {new Date(product.endTime).toLocaleString()}
-								</Typography>
+								<DetailItem label={"Starting Bid"} value={`PKR ${product.startingBid}`} lg={lg} />
+								<DetailItem label={"Current Bid"} value={`PKR ${product.currentBid}`} lg={lg} />
+								<DetailItem label={"End Time"} value={new Date(product.endTime).toLocaleString()} lg={lg} />
+								{/* <Typography variant={"subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 300, mb: 2 }}> */}
+								{/* Current Bid: PKR {product.currentBid} */}
+								{/* </Typography> */}
+								{/* <Typography variant={"subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 300, mb: 2 }}> */}
+								{/* End Time: {new Date(product.endTime).toLocaleString()} */}
+								{/* </Typography> */}
 								<TextField
 									label="Your Bid"
 									type="number"
@@ -303,6 +302,7 @@ const ProductDetails = () => {
 								/>
 							</>
 						)}
+
 
 						{/* Add to Cart/Place Bid/Request donation button */}
 						<SiteButton disabled={seller.username === user} text={buttonText} onClick={buttonAction} styles={{ width: '100%', mt: 3, mb: 3, fontSize: lg ? "1rem" : "0.8rem", padding: 1.5, }} />
