@@ -11,6 +11,7 @@ import theme from '../themes/homeTheme.js';
 import "../css/image-gallery.css";
 import Recs from '../components/recs.jsx';
 import { useSocket } from '../context/socketContext.jsx';
+
 // This component is used to display the details of a product
 const DetailItem = ({ label, value, lg }) => (
 	<Grid container columnSpacing={2} alignItems="center">
