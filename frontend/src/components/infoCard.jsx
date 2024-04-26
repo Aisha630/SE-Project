@@ -11,7 +11,7 @@ const InfoCard = ({ title, items, isCart, deleteItem }) => {
 
     return (
         <ThemeProvider theme={theme}>
-        <Card raised sx={{ backgroundColor: isCart ? "#d1e4d0" : "#6a9b81", borderRadius: 5, padding: md ? 5 : xs ? 1 : 3, maxWidth: "750px" }}>
+        <Card raised sx={{ backgroundColor: "#d1e4d0" , borderRadius: 5, padding: md ? 5 : xs ? 1 : 3, maxWidth: "750px" }}>
             <CardContent>
                 <Typography variant="h5" gutterBottom textAlign="left" sx={{ color: "black", fontWeight: 500, marginLeft: 1, mb: 5 }}>
                     {title}
@@ -19,7 +19,7 @@ const InfoCard = ({ title, items, isCart, deleteItem }) => {
                 <List sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", m: 0, p: 0 }}>
                     {items.map((item, index) => (
                         <ListItem key={index} sx={{
-                            borderRadius: 2, margin: 1, boxShadow: '0 0 4px rgba(0, 0, 0, 0.25)', height: "15vh", maxHeight: "140px", backgroundColor: isCart ? "secondary.dark" : "#d1e4d0", color: isCart ? "white" : "black",
+                            borderRadius: 2, margin: 1, boxShadow: '0 0 4px rgba(0, 0, 0, 0.25)', height: "15vh", maxHeight: "140px", backgroundColor: "secondary.dark" , color: isCart ? "white" : "black",
                             '&:visited': {
                                 color: isCart? 'inherit':"",
                             },

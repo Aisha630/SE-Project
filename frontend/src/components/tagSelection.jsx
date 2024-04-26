@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Typography, FormControlLabel, Checkbox } from "@mui/material";
 
+
 // this component is used to select the subcategories of the ad
 const TagSelection = ({ subcategories, adData, handleTagChange, theme }) => (
   <>
@@ -12,7 +13,7 @@ const TagSelection = ({ subcategories, adData, handleTagChange, theme }) => (
     </Typography>
     <Box
       sx={{
-        bgcolor: theme.palette.secondary.light,
+        backgroundColor: "#acc7b8",
         p: 2,
         borderRadius: 2,
         mb: 3,

@@ -254,7 +254,7 @@ const PostAd = () => {
 						<CategorySelection categories={categories} adData={adData} handleInputChange={handleInputChange} errors={errors} />
 
 						{adData.category && (
-							<TagSelection subcategories={subcategories} adData={adData} handleTagChange={handleTagChange} theme={theme} />
+							<TagSelection subcategories={subcategories} adData={adData} handleTagChange={handleTagChange}  />
 						)}
 
 						{adData.category === "Clothing" && (
