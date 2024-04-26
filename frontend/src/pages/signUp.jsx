@@ -9,13 +9,18 @@ import theme from '../themes/authThemes.js';
 import { usePasswordValidation } from '../hooks/usePasswordValidation.js';
 import TypingEffect from '../components/typing.jsx';
 import { useNavigate } from 'react-router-dom';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 
 const SignUp = () => {
-	const [formData, setFormData] = useState({ email: '', username: '', password: '' });
+	const [formData, setFormData] = useState({ email: '', username: '', password: '', gender: '' });
 	const [showPassword, setShowPassword] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [signUp, setSignUp] = useState(false);
 	const [signupToken, setSignupToken] = useState({ reset_token: '' }); // This is state for the credentials for resetting password
+	const [gender, setGender] = useState('');
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -26,6 +31,12 @@ const SignUp = () => {
 		if (!signUp) setFormData({ ...formData, [name]: value });
 		else setSignupToken({ ...signupToken, [name]: value });
 	};
+
+	const handleGenderChange = (event) => {
+		setGender(event.target.value);
+		setFormData({ ...formData, gender: event.target.value });
+	  };
+
 	const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
 	useEffect(() => {
@@ -36,6 +47,12 @@ const SignUp = () => {
 		e.preventDefault();
 		setIsLoading(true);
 		if (!signUp) {
+			if (!formData.gender) {
+				toast.error("Please select a gender");
+				setIsLoading(false);
+				setSignUp(false);
+				return;
+			}
 			if (allTrue(passwordGuidelines)) {
 				dispatch(signupUser(formData)).unwrap()
 					.then(() => {
@@ -144,14 +161,29 @@ const SignUp = () => {
 														</InputAdornment>
 													),
 												}} />
-
 											{/* Password guidelines */}
 											<FormGroup>
 												{Object.entries(passwordGuidelines).map(([key, isFulfilled]) => (
 													<FormControlLabel key={key} control={<Checkbox checked={isFulfilled} disabled sx={{ margin: 0, padding: "5px 5px 2px 10px", }} />} label={key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ')} sx={{ '& .MuiFormControlLabel-label': { fontSize: '0.75rem', } }} />
 												))}
 											</FormGroup>
+											<Box sx={{ mt: 2, display: 'flex', alignItems: 'center' }}>
+          									<FormLabel component="legend" sx={{ marginRight: 2 }}>Gender:</FormLabel>
+          									<RadioGroup
+          									  row
+          									  aria-label="gender"
+          									  name="gender"
+          									  value={formData.gender}
+          									  onChange={handleChange}
+          									>
+          									  <FormControlLabel value="girl" control={<Radio />} label="Female" />
+          									  <FormControlLabel value="boy" control={<Radio />} label="Male" />
+          									</RadioGroup>
+        									</Box>
+											
 										</>)}
+
+										
 
 									{/* Sign up button and links */}
 									<Button type="submit" variant="contained" disabled={isLoading} sx={{ mt: 2, mb: 2, backgroundColor: "#4a914d", color: "black", '&:hover': { backgroundColor: "#3e7840" }, width: "50%" }}>

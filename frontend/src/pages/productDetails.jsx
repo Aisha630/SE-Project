@@ -230,11 +230,8 @@ const ProductDetails = () => {
 
 	return (
 		<ThemeProvider theme={theme}>
-			{/* <Grid container spacing={0} sx={{ m: 0, p: 0, width: "100%" }}> */}
-
-				{/* <Nav Search={Box} position='relative' /> */}
-
-				<Grid container spacing={0} sx={{ m: 0, p: 0, width: "100%", backgroundColor: "background.default" }}>
+			
+			<Grid container spacing={0} sx={{ m: 0, p: 0, width: "100%", backgroundColor: "background.default" }}>
 
 					<Nav Search={Box} position='relative' />
 
@@ -330,20 +327,19 @@ const ProductDetails = () => {
 						</Paper>
 					</Grid>
 
-					{/* Recommendations */}
-					<Grid container spacing={0} sx={{ padding: 3.5, backgroundColor: "background.default" }}>
-						<Grid item xs={12} sm={12} md={12} lg={12} sx={{ maxWidth: "100%" }}>
-							<Divider sx={{ width: "100%", mt: 5, mb: 5 }} />
-							<Typography variant="h5" textAlign="left" sx={{ mb: 3, color: "#58a45b", ml: 5, fontWeight: 450 }}>
-								More like this
-							</Typography>
-						</Grid>
-						<Grid item xs={12} sm={12} md={12} lg={12} sx={{ p: 3 }}>
-							{product && <Recs productType={product.__t} />}
-						</Grid>
+				{/* Recommendations */}
+				<Grid container spacing={0} sx={{ padding: 3.5, backgroundColor: "background.default" }}>
+					<Grid item xs={12} sm={12} md={12} lg={12} sx={{ maxWidth: "100%" }}>
+						<Divider sx={{ width: "100%", mt: 5, mb: 5 }} />
+						<Typography variant="h5" textAlign="left" sx={{ mb: 3, color: "#58a45b", ml: 5, fontWeight: 450 }}>
+							More like this
+						</Typography>
+					</Grid>
+					<Grid item xs={12} sm={12} md={12} lg={12} sx={{ p: 3 }}>
+						{product && <Recs productType={product.__t} />}
 					</Grid>
 				</Grid>
-			{/* </Grid> */}
+			</Grid>
 		</ThemeProvider>
 	);
 };

@@ -109,7 +109,6 @@ const Nav = ({ Search, styles, setsearchproducts, setisempty, mode, category, po
                         sx={{
                             color: mode === link.mode ? '#58a75b' : 'black', 
                             '&:hover': {
-                                color: '#58a75b', 
                                 color: color !== "#F5F4E7" ? 'white' : '#58a75b'
                             },
                             mr: 0.9,

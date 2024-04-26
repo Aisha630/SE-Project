@@ -4,7 +4,7 @@ export const profileStyles = {
     height: '225px',
     flexDirection: 'column',
     alignItems: 'center',
-    backgroundColor: '#C7e3c8',
+    backgroundColor: 'background.default',
     borderRadius: '16px', // Soft corners
     position: 'relative', // Required for absolute positioning of the Avatar
     padding: '20px',

@@ -212,10 +212,9 @@ const UserProfile = () => {
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 maxWidth: "100%",
-
+                paddingTop: "2rem",
             }}>
-
-                <Typography variant="h4" sx={{ color: "white", textAlign: "left", paddingTop: 2, marginLeft: '2%' }}>Dashboard & Profile</Typography>
+                <Typography variant="h4" sx={{ color: "white", textAlign: "left", paddingTop: 2, marginLeft: '3%' }}>Dashboard & Profile</Typography>
                 <Grid container spacing={2} style={{ height: '30%', width: '100%', paddingTop: 5, position: "absolute", }}>
                     <Grid item xs={6} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                         <Card sx={graphStyles}>
@@ -290,7 +289,7 @@ const UserProfile = () => {
                     left: 0,
                     width: '100%', // Span the full width of the container
                     zIndex: 2, // Ensure it's above the other content
-                    paddingBottom: 5
+                    marginTop: '2rem',
                 }}>
                     <MainCategoryToolbar setCategory={setSelectedTab} category={selectedTab} navItems={["Auctioned", "For Sale", "Donations"]} />
 
@@ -309,7 +308,7 @@ const UserProfile = () => {
                         alignItems: 'center',
                         position: 'absolute',
                         width: '100%',
-                        bottom: 0,
+                        paddingTop: '3rem'
                         
                     }} />}
                     </Box>

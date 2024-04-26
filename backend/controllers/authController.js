@@ -1,5 +1,4 @@
 import bcrypt from "bcrypt";
-import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
 import VerificationToken from "../models/verificationTokenModel.js";
@@ -9,8 +8,9 @@ import { sendPasswordResetEmail } from "../services/emailService.js";
 import validator from "validator";
 
 export async function signup(req, res) {
-  const { username, email, password } = req.body;
-  const avatar = `https://api.dicebear.com/8.x/thumbs/svg?backgroundColor=F97171&radius=30&seed=${username}`;
+  const { username, email, password, gender } = req.body;
+
+  const avatar = `https://avatar.iran.liara.run/public/${gender}?username=${username}`;
 
   // Validate user input against the user model
   const error = User.validate({ username, email, password, avatar }).error;
@@ -117,7 +117,6 @@ export async function signin(req, res) {
 
 // Verifies the email of the user by checking the provided token
 export async function verifyEmail(req, res) {
-  
   const { token } = req.body;
 
   const verificationToken = await VerificationToken.findOne({
