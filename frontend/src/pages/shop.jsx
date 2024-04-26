@@ -136,7 +136,9 @@ const ShopItems = ({ mode }) => {
                     name: product.name,
                     image: 'http://localhost:5003'.concat(product.images[0]), // Assuming the first image in the array is the main image
                     price: product.price,
-                    id: product._id
+                    id: product._id,
+                    currentBid: product.currentBid ? product.currentBid : 0,
+                    endTime: product.endTime ? product.endTime : new Date()
                 }));
                 setProducts(formattedProducts);
                 setIsEmpty(formattedProducts.length === 0);
@@ -163,8 +165,8 @@ const ShopItems = ({ mode }) => {
                     image: 'http://localhost:5003'.concat(product.images[0]), // Assuming the first image in the array is the main image
                     price: product.price,
                     id: product._id,
-                    currentBid: product.currentBid,
-                    endTime: product.endTime
+                    currentBid: product.currentBid ? product.currentBid : 0,
+                    endTime: product.endTime ? product.endTime : new Date()
 
                 }));
                 setCheckedSizes([]);
