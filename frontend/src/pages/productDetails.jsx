@@ -266,10 +266,10 @@ const ProductDetails = () => {
 								<Grid item xs={6} sx={{ textAlign: 'right', mt: 1, mb: 1 }}>
 									<Rating name="half-rating-read" value={rating} precision={0.25} size={lg ? 'large' : 'medium'} onChange={handleRatingChange} sx={{
 										'& .MuiRating-iconFilled': {
-											color: '#e87975',
+											color: '#6A9B81',
 										},
 										'& .MuiRating-iconHover': {
-											color: '#e87975',
+											color: '#6A9B81',
 										},
 
 									}} />
@@ -282,12 +282,6 @@ const ProductDetails = () => {
 									<DetailItem label={"Starting Bid"} value={`PKR ${product.startingBid}`} lg={lg} />
 									<DetailItem label={"Current Bid"} value={`PKR ${product.currentBid}`} lg={lg} />
 									<DetailItem label={"End Time"} value={new Date(product.endTime).toLocaleString()} lg={lg} />
-									{/* <Typography variant={"subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 300, mb: 2 }}> */}
-									{/* Current Bid: PKR {product.currentBid} */}
-									{/* </Typography> */}
-									{/* <Typography variant={"subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 300, mb: 2 }}> */}
-									{/* End Time: {new Date(product.endTime).toLocaleString()} */}
-									{/* </Typography> */}
 									<TextField
 										label="Your Bid"
 										type="number"

@@ -1,7 +1,6 @@
 import React from 'react';
 import { AppBar, Toolbar, IconButton, Box, Button, Badge, Container, useMediaQuery } from '@mui/material';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import AddIcon from '@mui/icons-material/Add';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -152,34 +151,7 @@ const Nav = ({ Search, styles, setsearchproducts, setisempty, mode, category, po
                             isCartVisible && <ShoppingCartOverlayCard cartVisibility={isCartVisible} cartVisibilityToggle={setIsCartVisible} deleteFromCart={deleteFromCart} />
                         }
 
-                        <UserDropDown />
-
-                        {showButton && <Button
-                            type="submit"
-                            variant="outlined"
-                            startIcon={<AddIcon style={{ fontSize: lg ? 25 : md ? 20 : 17 }} />}
-                            sx={{
-                                margin: "1px 1px 1px 10px", // top right bottom left
-                                backgroundColor: "primary.main",
-                                color: "gray",
-                                '&:hover': {
-                                    backgroundColor: "primary.dark",
-                                },
-                                borderRadius: '20px',
-                                border: "2px solid gray",
-                                padding: lg ? "3px 10px" : "2px 0px 2px 0px",
-                                whiteSpace: "nowrap",
-                                fontFamily: "Poppins",
-                                fontSize: lg ? "0.85rem" : "0.6rem",
-                                '& .MuiButton-startIcon': {
-                                    margin: 0,
-                                    color: "inherit",
-                                },
-                            }}
-                            onClick={() => navigate("/sell")}
-                        >
-                            Sell
-                        </Button>}
+                        <UserDropDown commonIconStyle={commonIconStyle}/>
                     </Box>
 
                 </Toolbar>

@@ -69,16 +69,17 @@ const OrderSummaryPage = () => {
 
     return (
         <ThemeProvider theme={theme}>
-            <Grid container spacing={5} sx={{ paddingRight: sm ? 2 : 8, paddingLeft: sm ? 2 : 8 }}>
+            <Box sx={{backgroundColor:"background.default", minHeight:"110vh"}}>
+            <Grid container spacing={5} sx={{ paddingRight: sm ? 2 : 8, paddingLeft: sm ? 2 : 8, backgroundColor:"background.default", minHeight:"100vh"}}>
                 {/* Back button */}
-                <Grid item xs={12} sm={12} md={12} lg={12}>
-                    <Box style={{ display: "flex", alignItems: "flex-start", justifyContent: "flex-start", m: 0, paddingLeft: 8 }}>
+                <Grid item xs={12} sm={12} md={12} lg={12} sx={{backgroundColor:"background.default"}}>
+                    <Box style={{ display: "flex", alignItems: "flex-start", justifyContent: "flex-start", m: 0, paddingLeft: 8 }} sx={{backgroundColor:"background.default"}}>
                         <BackHanger style={{ marginTop: "20px", mb: 0 }} imgStyle={{ width: lg ? 65 : 45, height: lg ? 50 : 35, display: "flex", flexDirection: "column", alignItems: "flex-start" }} />
                     </Box>
                 </Grid>
 
                 {/* Order Summary and Seller's Details cards */}
-                <Grid item xs={12} sm={12} md={6} lg={6}>
+                <Grid item xs={12} sm={12} md={6} lg={6} sx={{backgroundColor:"background.default"}}>
                     <InfoCard
                         title="Order Summary"
                         items={cartItems}
@@ -95,12 +96,13 @@ const OrderSummaryPage = () => {
                 </Grid>
 
                 {/* Confirm Purchase button */}
-                <Grid item xs={12} sm={12} md={12} lg={12}>
-                    <Box sx={{ textAlign: "right", mr: 0, mt: 0, mb: 3, paddingRight: 0, paddingTop: 1 }}>
+                <Grid item xs={12} sm={12} md={12} lg={12} >
+                    <Box sx={{ textAlign: "right", mr: 0, mt: 0, mb: 3, paddingRight: 0, paddingTop: 1 , }}>
                         <SiteButton text={'Confirm Purchase'} styles={{ padding: 2, paddingLeft: lg ? 8 : 4, paddingRight: lg ? 8 : 4, fontSize: "0.95rem" }} onClick={checkout} disabled={checkingOut}/>
                     </Box>
                 </Grid>
             </Grid>
+            </Box>
         </ThemeProvider>
     );
 };

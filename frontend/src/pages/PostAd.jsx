@@ -200,9 +200,7 @@ const PostAd = () => {
 
 		formData.append("seller", user);
 
-    if (adData.endTime) {
-      formData.endTime = new Date(adData.endTime).toISOString()
-    }
+		formData.endTime = new Date(adData.endTime).toISOString()
 
 		files.forEach((file) => {
 			if (file) {
@@ -243,10 +241,10 @@ const PostAd = () => {
 
 	return (
 		<ThemeProvider theme={theme}>
-			<Box style={{ display: "flex", alignItems: "flex-start", justifyContent: "flex-start", }} >
+			<Box sx={{ display: "flex", alignItems: "flex-start", justifyContent: "flex-start", backgroundColor:"background.default"}} >
 				<Container component="main" sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: "auto", py: 4, backgroundColor: theme.palette.secondary.main, }}>
 					<BackHanger style={{ margin: "10px" , alignSelf: "flex-start"}} />
-					<Box component="form" onSubmit={handleSubmit} noValidate sx={{ width: "100%", maxWidth: 600, bgcolor: "background.paper", borderRadius: 2, boxShadow: 1, p: 3, }}>
+					<Box component="form" onSubmit={handleSubmit} noValidate sx={{ width: "100%", maxWidth: 700, bgcolor: "background.default", borderRadius: 2, boxShadow: 1, p: 3, }}>
 						<Typography variant="h4" align="center" gutterBottom sx={{ mb: 4 }}>
 							Post Your Ad
 						</Typography>

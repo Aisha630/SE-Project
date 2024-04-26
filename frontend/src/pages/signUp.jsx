@@ -11,8 +11,9 @@ import TypingEffect from '../components/typing.jsx';
 import { useNavigate } from 'react-router-dom';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
-import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const SignUp = () => {
 	const [formData, setFormData] = useState({ email: '', username: '', password: '', gender: '' });
@@ -35,7 +36,7 @@ const SignUp = () => {
 	const handleGenderChange = (event) => {
 		setGender(event.target.value);
 		setFormData({ ...formData, gender: event.target.value });
-	  };
+	};
 
 	const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
@@ -97,38 +98,63 @@ const SignUp = () => {
 			.finally(() => setIsLoading(false));
 	};
 
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			AOS.init({
+				duration: 1200,
+				mirror: false,
+			});
+			AOS.refresh();
+		}, 1000);
+
+		return () => clearTimeout(timer);
+	}, []);
+
 	const passwordGuidelines = usePasswordValidation(formData.password);
 
 	return (
 		<ThemeProvider theme={theme}>
 			{/* The following div is for the background image */}
-			<div style={{
+			<Grid style={{
 				minHeight: '100vh',
-				width: '100vw',
-				backgroundImage: "url('Group 6.svg')",
+				width: '100%',
+				backgroundImage: "url('userprofilebg.svg')",
 				backgroundSize: "cover",
 				backgroundPosition: "center",
-				backgroundAttachment: "fixed",
-				overflowY: 'auto',
+				maxWidth: "100%",
+				m:0, p:0,
 			}}>
 				{/* The following div is for the background overlay to darken the bg */}
 				<Box sx={{
-					display: 'flex',
-					flexDirection: 'row',
-					justifyContent: 'center',
-					alignItems: 'center',
+					// display: 'flex',
+					// flexDirection: 'row',
+					// justifyContent: 'center',
+					// alignItems: 'center',
 					minHeight: '100vh',
 					width: '100%',
 					backgroundColor: 'rgba(0, 0, 0, 0.2)',
+					
 				}}>
-					<Grid container spacing={1} sx={{ position: 'relative', zIndex: 2, width: '100%', height: '100%', }}>
+					{/* <Grid container spacing={1} data-aos="fade-up" sx={{ position: 'relative', zIndex: 2, width: '100%', height: '100%',display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", }}> */}
+					<Grid item xs={12} sx={{ display: "flex", flexDirection: "row", justifyContent: "flex-start", alignItems: "center", p:3 }}>
+					<IconButton sx={{ ml: 1, m:0, p:0}}>
+							<img src="/sta_logo2.png" alt="Logo" style={{ height: '40px' }} />
+					</IconButton>
+					
+					</Grid>
+					{/* </Grid> */}
+					<Grid container spacing={1} data-aos="fade-up" sx={{ position: 'relative', zIndex: 2, width: '100%', height: '100%',display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
 
 						{/* Shop text */}
-						{!md ?
-							<Grid item md={6} lg={6} sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", }}>
-								<TypingEffect text="Rediscover Hidden Gems on Campus!" speed={80} />
+						{/* {!md ? */}
+							<Grid item sm={12} md={6} lg={5} >
+								{/* <TypingEffect text="Rediscover Hidden Gems on Campus!" speed={80} /> */}
+								<Typography variant="h3" sx={{ color: "white",  maxWidth: "70%", mb:2 }}> Welcome to Second Time Around!</Typography>
+								<Typography color="white" variant="h6" sx={{  maxWidth: "70%" }} >Find New Beginnings in Preloved Treasures: Shop, Sell, Donate!
+									
+								</Typography>
 							</Grid> : <></>
-						}
+						{/* } */}
 
 						<Grid item xs={12} sm={11} md={5} lg={4} sx={{ display: "flex", justifyContent: "center", alignItems: "center", }}>
 
@@ -143,7 +169,7 @@ const SignUp = () => {
 								<Box component="form" onSubmit={handleSubmit} sx={{ mt: 1, width: '100%', }}>
 									{/* Sign up form fields */}
 									{signUp ? (
-										<TextField margin="normal" required fullWidth id="reset_token" label="Verification Code" name="reset_token" value={signupToken.reset_token} onChange={handleChange}/>
+										<TextField margin="normal" required fullWidth id="reset_token" label="Verification Code" name="reset_token" value={signupToken.reset_token} onChange={handleChange} />
 									) : (
 										<>
 											<TextField margin="normal" required fullWidth id="username" label="Username" name="username"
@@ -164,26 +190,49 @@ const SignUp = () => {
 											{/* Password guidelines */}
 											<FormGroup>
 												{Object.entries(passwordGuidelines).map(([key, isFulfilled]) => (
-													<FormControlLabel key={key} control={<Checkbox checked={isFulfilled} disabled sx={{ margin: 0, padding: "5px 5px 2px 10px", }} />} label={key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ')} sx={{ '& .MuiFormControlLabel-label': { fontSize: '0.75rem', } }} />
+													<FormControlLabel
+														key={key}
+														control={
+															<Checkbox
+																checked={isFulfilled}
+																disabled
+																sx={{
+																	margin: 0,
+																	padding: "5px 5px 2px 10px",
+																	'& .MuiSvgIcon-root': { 
+																		fontSize: '1rem',
+																	}
+																}}
+																size="small"
+															/>
+														}
+														label={key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ')}
+														sx={{
+															'& .MuiFormControlLabel-label': {
+																fontSize: '0.70rem',
+															}
+														}}
+													/>
 												))}
 											</FormGroup>
-											<Box sx={{ mt: 2, display: 'flex', alignItems: 'center' }}>
-          									<FormLabel component="legend" sx={{ marginRight: 2 }}>Gender:</FormLabel>
-          									<RadioGroup
-          									  row
-          									  aria-label="gender"
-          									  name="gender"
-          									  value={formData.gender}
-          									  onChange={handleChange}
-          									>
-          									  <FormControlLabel value="girl" control={<Radio />} label="Female" />
-          									  <FormControlLabel value="boy" control={<Radio />} label="Male" />
-          									</RadioGroup>
-        									</Box>
-											
+
+											<Box sx={{ mt: 1, display: 'flex', alignItems: 'center' }}>
+												<FormLabel component="legend" sx={{ marginRight: 2, color:"#3e7840"}}>Gender:</FormLabel>
+												<RadioGroup
+													row
+													aria-label="gender"
+													name="gender"
+													value={formData.gender}
+													onChange={handleChange}
+												>
+													<FormControlLabel value="girl" control={<Radio />} label="Female" />
+													<FormControlLabel value="boy" control={<Radio />} label="Male" />
+												</RadioGroup>
+											</Box>
+
 										</>)}
 
-										
+
 
 									{/* Sign up button and links */}
 									<Button type="submit" variant="contained" disabled={isLoading} sx={{ mt: 2, mb: 2, backgroundColor: "#4a914d", color: "black", '&:hover': { backgroundColor: "#3e7840" }, width: "50%" }}>
@@ -193,16 +242,16 @@ const SignUp = () => {
 									<Typography textAlign="center">
 										{!isLoading && !signUp &&
 											<>
-											<Typography variant='body2' component={'span'}>Already a member? {}</Typography>
-												<Link href="/login" variant="body2" sx={{ color: "#084a08", textDecorationColor: "black", '&:hover': { color: "#084a08", textDecorationColor: "#084a08", textDecoration:'underline' }, textDecoration:'none' }}>
+												<Typography variant='body2' component={'span'}>Already a member? { }</Typography>
+												<Link href="/login" variant="body2" sx={{ color: "#084a08", textDecorationColor: "black", '&:hover': { color: "#084a08", textDecorationColor: "#084a08", textDecoration: 'underline' }, textDecoration: 'none' }}>
 													Log in now!
-													</Link>
+												</Link>
 												<br />
 											</>
 										}
 										{(!signUp && isLoading) &&
 											<>
-												<Typography variant="body2" sx={{ color: "gray",}}>Verifying details</Typography>
+												<Typography variant="body2" sx={{ color: "gray", }}>Verifying details</Typography>
 												<br />
 											</>
 										}
@@ -230,7 +279,7 @@ const SignUp = () => {
 						</Grid>
 					</Grid>
 				</Box>
-			</div>
+			</Grid>
 		</ThemeProvider>
 	);
 };

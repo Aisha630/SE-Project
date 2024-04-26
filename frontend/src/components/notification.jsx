@@ -25,7 +25,7 @@ const NotificationOverlayCard = ({ notifVisibility, notifVisibilityToggle, delet
             <Backdrop open={isOpen} onClick={() => { notifVisibilityToggle(); handleClose() }} style={{ zIndex: 10, color: '#fff' }}>
                 <Fade in={notifVisibility}>
                     <Grid item xs={11} sm={11} md={10} lg={5}>
-                        <Paper style={{ position: 'relative', borderRadius: 10, padding: md ? 40 : 20, overflow: 'auto', maxHeight: '60vh', }} onClick={e => e.stopPropagation()} >
+                        <Paper style={{ position: 'relative', borderRadius: 10, padding: md ? 40 : 20, overflow: 'auto', maxHeight: '60vh', }} sx={{backgroundColor: "background.default"}} onClick={e => e.stopPropagation()} >
                             <Box display="flex" justifyContent="flex-start" alignItems="center">
                                 <IconButton onClick={() => { notifVisibilityToggle(); handleClose() }} sx={{ margin: "1px", position: 'relative', padding: 0 }}>
                                     <ArrowBackIcon style={{ width: 45, height: 35 }} />

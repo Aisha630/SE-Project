@@ -4,6 +4,7 @@ const theme = createTheme({
     palette: {
         primary: { main: '#58a75b' },
         secondary: { main: "#D1E4D0", dark: 'rgba(209, 228, 208, 0.8)' },
+        background: { default: "#F5F4E7" },
     },
     typography: {
         fontFamily: 'Poppins, Arial, sans-serif',

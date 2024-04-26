@@ -199,11 +199,11 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
                                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                                     {product.__t === 'DonationProduct' && !product.isHold &&
                                         <Button variant="contained" onClick={() => handleViewDonationRequests({ product })} size={sm ? "small" : "medium"} sx={{
-                                            backgroundColor: '#517652',
+                                            backgroundColor: 'secondary.dark',
 
                                             color: 'white',
                                             '&:hover': {
-                                                backgroundColor: '#C7E3C8',
+                                                backgroundColor: 'secondary.main',
                                                 color: 'white'
                                             }
                                         }}>
@@ -211,21 +211,21 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
                                         </Button>}
 
                                     {!product.isHold && <Button onClick={() => handleEditItem(product._id)} variant="contained" size={lg ? "large" : "small"} sx={{
-                                        backgroundColor: '#f97171',
+                                        backgroundColor: 'secondary.dark',
                                         marginTop: 1,
                                         color: 'white',
                                         '&:hover': {
-                                            backgroundColor: '#FEABAB',
+                                            backgroundColor: 'secondary.main',
                                             color: 'white'
                                         }
                                     }}>
                                         Edit Item
                                     </Button>}
                                     {product.isHold && <Button onClick={() => {handleReopen({ product }); setsavedProduct(product)}} variant="contained" size={lg ? "large" : "small"} sx={{
-                                        backgroundColor: '#517652',
+                                        backgroundColor: 'secondary.dark',
                                         color: 'white',
                                         '&:hover': {
-                                            backgroundColor: '#C7E3C8',
+                                            backgroundColor: 'secodary.main',
                                             color: 'white'
                                         }
                                     }}>

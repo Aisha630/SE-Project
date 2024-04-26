@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, Typography, List, ListItem, Avatar, ListItemText, Divider, Box, IconButton } from '@mui/material';
+import { Card, CardContent, Typography, List, ListItem, Avatar, ListItemText, Divider, Box, IconButton, ThemeProvider } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useMediaQuery } from '@mui/material';
@@ -10,6 +10,7 @@ const InfoCard = ({ title, items, isCart, deleteItem }) => {
     const xs = useMediaQuery(theme.breakpoints.down('xs'));
 
     return (
+        <ThemeProvider theme={theme}>
         <Card raised sx={{ backgroundColor: isCart ? "#d1e4d0" : "#e0e0e0", borderRadius: 5, padding: md ? 5 : xs ? 1 : 3, maxWidth: "750px" }}>
             <CardContent>
                 <Typography variant="h5" gutterBottom textAlign="left" sx={{ color: "gray", fontWeight: 500, marginLeft: 1, mb: 5 }}>
@@ -18,7 +19,7 @@ const InfoCard = ({ title, items, isCart, deleteItem }) => {
                 <List sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", m: 0, p: 0 }}>
                     {items.map((item, index) => (
                         <ListItem key={index} sx={{
-                            borderRadius: 2, margin: 1, boxShadow: '0 0 4px rgba(0, 0, 0, 0.25)', height: "15vh", maxHeight: "140px", backgroundColor: isCart ? "#e87975" : "#d1e4d0", color: isCart ? "white" : "black",
+                            borderRadius: 2, margin: 1, boxShadow: '0 0 4px rgba(0, 0, 0, 0.25)', height: "15vh", maxHeight: "140px", backgroundColor: isCart ? "secondary.dark" : "#d1e4d0", color: isCart ? "white" : "black",
                             '&:visited': {
                                 color: isCart? 'inherit':"",
                             },
@@ -71,6 +72,7 @@ const InfoCard = ({ title, items, isCart, deleteItem }) => {
 
             </CardContent>
         </Card>
+        </ThemeProvider>
     );
 };
 

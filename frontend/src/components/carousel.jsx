@@ -85,6 +85,7 @@ function CarouselComponent() {
       spaceBetween={70}
       slidesPerView={md ? 3 : sm ? 2 : 1}
       pagination={{ clickable: true, dynamicBullets: true }}
+      // navigation={true}
       autoplay={{
         delay: 2500,
         disableOnInteraction: false,

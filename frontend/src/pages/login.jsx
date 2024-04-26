@@ -7,9 +7,10 @@ import { Box, Button, TextField, ThemeProvider, IconButton, InputAdornment, Link
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import theme from '../themes/authThemes.js';
 import '../css/login.css';
-import TypingEffect from '../components/typing.jsx';
+// import TypingEffect from '../components/typing.jsx';
 import { usePasswordValidation } from '../hooks/usePasswordValidation.js';
-
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const Login = () => {
 
@@ -24,6 +25,17 @@ const Login = () => {
 	const passwordGuidelines = usePasswordValidation(resetCredentials.newPassword);
 	const md = useMediaQuery(theme.breakpoints.down('md'));
 	const allTrue = obj => Object.values(obj).every(value => value);
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			AOS.init({
+				duration: 1200,
+				mirror: false,
+			});
+			AOS.refresh();
+		}, 1000);
+
+		return () => clearTimeout(timer);
+	}, []);
 
 	useEffect(() => {
 		sessionStorage.removeItem('persist:root')
@@ -78,14 +90,13 @@ const Login = () => {
 
 	return (
 		<ThemeProvider theme={theme}>
-			<div style={{ // Page background
+			<Grid style={{
 				minHeight: '100vh',
-				width: '100vw',
-				backgroundImage: "url('Group 6.svg')",
+				width: '100%',
+				backgroundImage: "url('userprofilebg.svg')",
 				backgroundSize: "cover",
 				backgroundPosition: "center",
-				backgroundAttachment: "fixed",
-				overflowY: 'auto',
+				maxWidth: "100%",
 			}}>
 				<Box sx={{ // filter on background to make it less bright
 					display: 'flex',
@@ -96,13 +107,15 @@ const Login = () => {
 					width: '100%',
 					backgroundColor: 'rgba(0, 0, 0, 0.2)',
 				}}>
-					<Grid container spacing={1} sx={{ position: 'relative', zIndex: 2, width: '100%', height: '100%', }}>
+					<Grid container spacing={1} data-aos="fade-up" sx={{ position: 'relative', zIndex: 2, width: '100%', height: '100%', }}>
 
 						{!md ?
 							<Grid item md={6} lg={6} sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", }}>
-								{/* <TypingEffect text="Rediscover Hidden Gems on Campus!" speed={80} /> */}
-								<TypingEffect text="Find New Beginnings in Preloved Treasures: Shop, Sell, Donate!" speed={100} />
-								
+								{/* <TypingEffect text="Find New Beginnings in Preloved Treasures: Shop, Sell, Donate!" speed={60} /> */}
+								<Typography color="white" sx={{ fontSize: "30px", maxWidth: "50%" }} className="typing-effect">Find New Beginnings in Preloved Treasures: Shop, Sell, Donate!
+									
+								</Typography>
+
 							</Grid> : <></>
 						}
 
@@ -141,8 +154,8 @@ const Login = () => {
 											{/* Login/Reset button */}
 											{!reset &&
 												<Box textAlign="left" sx={{ mt: 1 }}>
-													<Link href="#" variant="body2" sx={{ color: "#084a08", '&:hover': { color: "#084a08", textDecorationColor: "#084a08", textDecoration:'underline'}, textDecorationColor: "black", textDecoration:'none'}} onClick={() => { setResetEmail(!resetEmail) }}>
-														Forgot password? 
+													<Link href="#" variant="body2" sx={{ color: "#084a08", '&:hover': { color: "#084a08", textDecorationColor: "#084a08", textDecoration: 'underline' }, textDecorationColor: "black", textDecoration: 'none' }} onClick={() => { setResetEmail(!resetEmail) }}>
+														Forgot password?
 													</Link>
 												</Box>
 											}
@@ -164,11 +177,11 @@ const Login = () => {
 											{/* Signup/Forgot password links */}
 											{!reset &&
 												<>
-													<Box textAlign="center" sx={{ mb: 1,}}>
+													<Box textAlign="center" sx={{ mb: 1, }}>
 														<Typography variant='body2' component={'span'} >
-														Not a member? {}
+															Not a member? { }
 														</Typography>
-														<Link href="/signup" variant="body2" sx={{ color: "#084a08", '&:hover': { color: "#084a08", textDecorationColor: "#084a08", textDecoration:'underline'}, textDecorationColor: "black", textDecoration:'none'}}>
+														<Link href="/signup" variant="body2" sx={{ color: "#084a08", '&:hover': { color: "#084a08", textDecorationColor: "#084a08", textDecoration: 'underline' }, textDecorationColor: "black", textDecoration: 'none' }}>
 															Sign up now!
 														</Link>
 													</Box>
@@ -197,7 +210,7 @@ const Login = () => {
 						</Grid>
 					</Grid>
 				</Box>
-			</div>
+			</Grid>
 		</ThemeProvider>
 	);
 };

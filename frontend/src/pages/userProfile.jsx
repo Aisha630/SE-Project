@@ -270,10 +270,10 @@ const UserProfile = () => {
                                 <Typography variant='h6' sx={{ color: "black", textAlign: "center", }}> <strong>Rating: </strong></Typography>
                                 <Rating name="half-rating-read" value={rating} precision={0.2} readOnly size='large' sx={{
                                     '& .MuiRating-iconFilled': {
-                                        color: '#e87975',
+                                        color: 'secondary.dark',
                                     },
                                     '& .MuiRating-iconHover': {
-                                        color: '#e87975',
+                                        color: 'secondary.dark',
                                     },
                                 }} />
                             </Stack>
