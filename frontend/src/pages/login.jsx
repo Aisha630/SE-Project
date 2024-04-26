@@ -100,7 +100,9 @@ const Login = () => {
 
 						{!md ?
 							<Grid item md={6} lg={6} sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", }}>
-								<TypingEffect text="Rediscover Hidden Gems on Campus!" speed={80} />
+								{/* <TypingEffect text="Rediscover Hidden Gems on Campus!" speed={80} /> */}
+								<TypingEffect text="Find New Beginnings in Preloved Treasures: Shop, Sell, Donate!" speed={100} />
+								
 							</Grid> : <></>
 						}
 

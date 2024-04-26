@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Drawer,  Box, ThemeProvider } from '@mui/material'
+import { Drawer, Box, ThemeProvider } from '@mui/material'
 import Nav from '../components/nav.jsx';
 import theme from '../themes/homeTheme.js';
 import ProductList from '../components/productlisting.jsx';
@@ -13,8 +13,9 @@ import NoProducts from '../components/noProducts.jsx';
 import Search from '../components/search.jsx';
 import TagList from '../components/tagList';
 import config from "../../config_display.json";
+import SellButton from '../components/sellButton.jsx';
 
-const ShopItems = ({mode}) => {
+const ShopItems = ({ mode }) => {
     const navigate = useNavigate();
     const token = useSelector((state) => state.auth.token);
 
@@ -61,30 +62,30 @@ const ShopItems = ({mode}) => {
 
     const handleApplyFilters = () => {
         let filterCriteria = {
-            productType : mode,
+            productType: mode,
             category: category,
         }
         if (selectedTag !== 'All') {
-            filterCriteria = {...filterCriteria, tags: selectedTag};
+            filterCriteria = { ...filterCriteria, tags: selectedTag };
         }
         if (checkedSizes.length > 0) {
-            filterCriteria = {...filterCriteria, sizes: checkedSizes};
+            filterCriteria = { ...filterCriteria, sizes: checkedSizes };
         }
         if (price[0] > 0) {
-            filterCriteria = {...filterCriteria, minPrice: price[0]};   
+            filterCriteria = { ...filterCriteria, minPrice: price[0] };
         }
         if (price[1] < 15000) {
-            filterCriteria = {...filterCriteria, maxPrice: price[1]};
+            filterCriteria = { ...filterCriteria, maxPrice: price[1] };
         }
         if (sortBy !== 'unset') {
-            filterCriteria = {...filterCriteria, sortBy: sortBy};
+            filterCriteria = { ...filterCriteria, sortBy: sortBy };
         }
         if (condition !== 'unset') {
-            filterCriteria = {...filterCriteria, condition: condition};
+            filterCriteria = { ...filterCriteria, condition: condition };
         }
-        
-        if (checkedColors.length>0){
-            filterCriteria = {...filterCriteria, colors: checkedColors}
+
+        if (checkedColors.length > 0) {
+            filterCriteria = { ...filterCriteria, colors: checkedColors }
         }
 
         const queryString = new URLSearchParams(filterCriteria);
@@ -94,23 +95,21 @@ const ShopItems = ({mode}) => {
                 'Authorization': `Bearer ${token}`
             },
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log(`Apply filters ${queryString}`)
-            const formattedProducts = data.map(product => ({
-                name: product.name,
-                image: 'http://localhost:5003'.concat(product.images[0]), // Assuming the first image in the array is the main image
-                price: product.price,
-                id: product._id,
-                currentBid : product.currentBid ? product.currentBid : 0,
-            }));
-            setProducts(formattedProducts);
-            setIsEmpty(formattedProducts.length === 0);
+            .then(response => response.json())
+            .then(data => {
+                const formattedProducts = data.map(product => ({
+                    name: product.name,
+                    image: 'http://localhost:5003'.concat(product.images[0]), // Assuming the first image in the array is the main image
+                    price: product.price,
+                    id: product._id
+                }));
+                setProducts(formattedProducts);
+                setIsEmpty(formattedProducts.length === 0);
 
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         handleDrawerClose();
     };
 
@@ -125,34 +124,32 @@ const ShopItems = ({mode}) => {
         setCategory('Clothing');
 
         const queryString = new URLSearchParams({category: category, productType: mode});
-
         fetch(`http://localhost:5003/filter?${queryString}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
         })
-        .then(response => response.json())
-        .then(data => {
-            const formattedProducts = data.map(product => ({
-                name: product.name,
-                image: 'http://localhost:5003'.concat(product.images[0]), // Assuming the first image in the array is the main image
-                price: product.price,
-                id: product._id,
-                currentBid : product.currentBid ? product.currentBid : 0,
-            }));
-            setProducts(formattedProducts);
-            setIsEmpty(formattedProducts.length === 0);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                const formattedProducts = data.map(product => ({
+                    name: product.name,
+                    image: 'http://localhost:5003'.concat(product.images[0]), // Assuming the first image in the array is the main image
+                    price: product.price,
+                    id: product._id
+                }));
+                setProducts(formattedProducts);
+                setIsEmpty(formattedProducts.length === 0);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         handleDrawerClose();
 
     };
 
     useEffect(() => {
-        const queryString = new URLSearchParams({category: category, productType: mode});
+        const queryString = new URLSearchParams({ category: category, productType: mode });
         fetch(`http://localhost:5003/filter?${queryString}`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -166,9 +163,9 @@ const ShopItems = ({mode}) => {
                     image: 'http://localhost:5003'.concat(product.images[0]), // Assuming the first image in the array is the main image
                     price: product.price,
                     id: product._id,
-                    currentBid : product.currentBid,
-                    endTime : product.endTime
-                    
+                    currentBid: product.currentBid,
+                    endTime: product.endTime
+
                 }));
                 setCheckedSizes([]);
                 setPrice([0, 15000]);
@@ -187,8 +184,8 @@ const ShopItems = ({mode}) => {
 
     useEffect(() => {
         handleApplyFilters();
-      }, [token, selectedTag, category]);
-    
+    }, [token, selectedTag, category, mode]);
+
     const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
 
     const toggleFilterMenu = () => {
@@ -215,11 +212,12 @@ const ShopItems = ({mode}) => {
         pageon = "Donations";
     }
 
+    
+
     return (
         <ThemeProvider theme={theme}>
-            <Box sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
-             <Box> 
-                <Nav Search={Search} setisempty={setIsEmpty} setsearchproducts={handleSetProducts} mode={mode} category={category}/>
+            <Box>
+                <Nav Search={Search} setisempty={setIsEmpty} setsearchproducts={handleSetProducts} mode={mode} category={category} showButton={false} />
             </Box>
             <MainCategoryToolbar setCategory={setCategory} category={category} /> {/*This is the main toolbar that represents clothing, technology, and miscellaneous categories*/}
             <TagList
@@ -237,7 +235,7 @@ const ShopItems = ({mode}) => {
                             color: "#58a75b",
                         }
                     },
-                }}/>
+                }} />
             </Box>
             <Drawer
                 anchor='top'
@@ -248,12 +246,13 @@ const ShopItems = ({mode}) => {
                 <FilterMenu mode={mode} category={category} closeFilterMenu={handleDrawerClose} checkedSizes={checkedSizes} handleSizeChange={handleSizeChange} handleApplyFilters={handleApplyFilters} handleResetFilters={handleResetFilters} price={price} setPrice={handlePriceSlider} sortBy={sortBy} setSortBy={handleSortBy} condition={condition} setCondition={handleCondition} checkedColors={checkedColors} handleColorChange={handleColorChange} />
             </Drawer>
 
+            <SellButton />
+
             {/* This section represents the actual products */}
             <Box sx={{ padding: '30px', backgroundColor: "background.default" }}>
                 {isEmpty && <NoProducts />}
                 {!isEmpty && <ProductList products={products} mode={mode}/>}
                 
-            </Box>
             </Box>
         </ThemeProvider>
     )

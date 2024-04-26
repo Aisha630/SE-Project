@@ -35,12 +35,17 @@ const ProductList = ({ products, mode }) => {
                 ))}
             </Grid>
             <Box display="flex" justifyContent="center" mt={2}>
+
                 <Pagination
                     count={totalPages}
                     page={page}
                     onChange={handlePageChange}
-                    color="primary"
-                    style={{ marginTop: '20px' }}
+                    sx={{ 
+                        "& .MuiPaginationItem-root": {
+                          color: 'black',
+                          backgroundColor: 'background.default' 
+                        }
+                      }}
                 />
             </Box>
         </Box>

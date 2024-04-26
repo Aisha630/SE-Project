@@ -31,7 +31,7 @@ const commonIconStyle = {
 }
 
 
-const Nav = ({ Search, styles, setsearchproducts, setisempty, mode, category, position = "fixed", color="#F5F4E7" }) => {
+const Nav = ({ Search, styles, setsearchproducts, setisempty, mode, category, position = "fixed", showButton = false, color="#F5F4E7" }) => {
 
     const navigate = useNavigate();
     const [isCartVisible, setIsCartVisible] = useState(false);
@@ -155,7 +155,7 @@ const Nav = ({ Search, styles, setsearchproducts, setisempty, mode, category, po
 
                         <UserDropDown />
 
-                        <Button
+                        {showButton && <Button
                             type="submit"
                             variant="outlined"
                             startIcon={<AddIcon style={{ fontSize: lg ? 25 : md ? 20 : 17 }} />}
@@ -180,7 +180,7 @@ const Nav = ({ Search, styles, setsearchproducts, setisempty, mode, category, po
                             onClick={() => navigate("/sell")}
                         >
                             Sell
-                        </Button>
+                        </Button>}
                     </Box>
 
                 </Toolbar>

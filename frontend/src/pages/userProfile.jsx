@@ -13,6 +13,7 @@ import UserProducts from '../components/userProducts.jsx';
 import { LineChart } from '@mui/x-charts/LineChart'
 import NoProducts from '../components/noProducts.jsx';
 import "../css/App.css";
+import SellButton from '../components/sellButton.jsx';
 
 
 
@@ -203,6 +204,7 @@ const UserProfile = () => {
         <ThemeProvider theme={theme}>
             
             <Nav Search={Box} position='relative' color="#6A9B81"/>
+            <SellButton />
             <Grid style={{
                 minHeight: '100vh',
                 width: '100%',
@@ -212,6 +214,7 @@ const UserProfile = () => {
                 maxWidth: "100%",
 
             }}>
+
                 <Typography variant="h4" sx={{ color: "white", textAlign: "left", paddingTop: 2, marginLeft: '2%' }}>Dashboard & Profile</Typography>
                 <Grid container spacing={2} style={{ height: '30%', width: '100%', paddingTop: 5, position: "absolute", }}>
                     <Grid item xs={6} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -247,7 +250,7 @@ const UserProfile = () => {
                                         },
                                     ]}
                                     disableAxisListener={true}
-                                    sx={{margin:'0.15%'}}
+                                    sx={{margin:'0.20%'}}
                                 />
                             </Box>
 
