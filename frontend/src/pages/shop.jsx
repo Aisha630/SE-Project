@@ -226,7 +226,7 @@ const ShopItems = ({ mode }) => {
                 onTagSelected={handleSelectedTag}
             />
             <Box display="flex" justifyContent="left" mt={2} ml={2} sx={{ width: "15%", fontWeight: "normal" }}>
-                <ListItemLink text={""} Icon={TuneIcon} to={"#"} onClick={toggleFilterMenu} ButtonStyles={{
+                <ListItemLink text={"Filter and Sort"} Icon={TuneIcon} to={"#"} onClick={toggleFilterMenu} ButtonStyles={{
                     '&:hover': {
                         backgroundColor: "transparent",
                         textDecoration: 'underline',
