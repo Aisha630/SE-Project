@@ -25,7 +25,6 @@ const SignUp = () => {
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const md = useMediaQuery(theme.breakpoints.down('md'));
 	const allTrue = obj => Object.values(obj).every(value => value); // Check if all values in an object are true
 
 	const handleChange = ({ target: { name, value } }) => {
@@ -122,41 +121,32 @@ const SignUp = () => {
 				backgroundSize: "cover",
 				backgroundPosition: "center",
 				maxWidth: "100%",
-				m:0, p:0,
 			}}>
 				{/* The following div is for the background overlay to darken the bg */}
 				<Box sx={{
-					// display: 'flex',
-					// flexDirection: 'row',
-					// justifyContent: 'center',
-					// alignItems: 'center',
 					minHeight: '100vh',
 					width: '100%',
 					backgroundColor: 'rgba(0, 0, 0, 0.2)',
-					
 				}}>
-					{/* <Grid container spacing={1} data-aos="fade-up" sx={{ position: 'relative', zIndex: 2, width: '100%', height: '100%',display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", }}> */}
-					<Grid item xs={12} sx={{ display: "flex", flexDirection: "row", justifyContent: "flex-start", alignItems: "center", p:3 }}>
-					<IconButton sx={{ ml: 1, m:0, p:0}}>
+					{/* The following grid item is for the logo */}
+					<Grid item xs={12} sx={{ display: "flex", flexDirection: "row", justifyContent: "flex-start", alignItems: "center", p: 3 }}>
+						<IconButton sx={{ ml: 1, m: 0, p: 0 }}>
 							<img src="/sta_logo2.png" alt="Logo" style={{ height: '40px' }} />
-					</IconButton>
-					
+						</IconButton>
 					</Grid>
-					{/* </Grid> */}
-					<Grid container spacing={1} data-aos="fade-up" sx={{ position: 'relative', zIndex: 2, width: '100%', height: '100%',display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
+
+					{/* The following grid item is for the sign up form and corresponding text*/}
+					<Grid container spacing={1} data-aos="fade-up" sx={{ position: 'relative',  width: '100%', height: '100%', display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", pt:5}}>
 
 						{/* Shop text */}
-						{/* {!md ? */}
-							<Grid item sm={12} md={6} lg={5} >
-								{/* <TypingEffect text="Rediscover Hidden Gems on Campus!" speed={80} /> */}
-								<Typography variant="h3" sx={{ color: "white",  maxWidth: "70%", mb:2 }}> Welcome to Second Time Around!</Typography>
-								<Typography color="white" variant="h6" sx={{  maxWidth: "70%" }} >Find New Beginnings in Preloved Treasures: Shop, Sell, Donate!
-									
-								</Typography>
-							</Grid> : <></>
-						{/* } */}
+						<Grid item sm={12} md={6} lg={5} sx={{ position: 'relative',  width: '100%', height: '100%', display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" , }}>
+							<Typography variant="h3" sx={{ color: "white",  mb: 2, maxWidth:"90%" }}> Welcome to Second Time Around!</Typography>
+							<Typography color="white" variant="h6" sx={{ maxWidth: "70%" }} >Find New Beginnings in Preloved Treasures: Shop, Sell, Donate!
+							</Typography>
+						</Grid> 
 
-						<Grid item xs={12} sm={11} md={5} lg={4} sx={{ display: "flex", justifyContent: "center", alignItems: "center", }}>
+
+						<Grid item xs={12} sm={10} md={5} lg={4} sx={{ display: "flex", justifyContent: "center", alignItems: "center", pb:5}}>
 
 							{/* Sign up form background */}
 							<Box sx={{
@@ -199,7 +189,7 @@ const SignUp = () => {
 																sx={{
 																	margin: 0,
 																	padding: "5px 5px 2px 10px",
-																	'& .MuiSvgIcon-root': { 
+																	'& .MuiSvgIcon-root': {
 																		fontSize: '1rem',
 																	}
 																}}
@@ -215,15 +205,16 @@ const SignUp = () => {
 													/>
 												))}
 											</FormGroup>
-
+											
+											{/* Gender */}
 											<Box sx={{ mt: 1, display: 'flex', alignItems: 'center' }}>
-												<FormLabel component="legend" sx={{ marginRight: 2, color:"#3e7840"}}>Gender:</FormLabel>
+												<FormLabel component="legend" sx={{ marginRight: 2, color: "#3e7840" }}>Gender:</FormLabel>
 												<RadioGroup
 													row
 													aria-label="gender"
 													name="gender"
 													value={formData.gender}
-													onChange={handleChange}
+													onChange={handleGenderChange}
 												>
 													<FormControlLabel value="girl" control={<Radio />} label="Female" />
 													<FormControlLabel value="boy" control={<Radio />} label="Male" />
@@ -231,8 +222,6 @@ const SignUp = () => {
 											</Box>
 
 										</>)}
-
-
 
 									{/* Sign up button and links */}
 									<Button type="submit" variant="contained" disabled={isLoading} sx={{ mt: 2, mb: 2, backgroundColor: "#4a914d", color: "black", '&:hover': { backgroundColor: "#3e7840" }, width: "50%" }}>

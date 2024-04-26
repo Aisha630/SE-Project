@@ -99,27 +99,28 @@ const Login = () => {
 				maxWidth: "100%",
 			}}>
 				<Box sx={{ // filter on background to make it less bright
-					display: 'flex',
-					flexDirection: 'row',
-					justifyContent: 'center',
-					alignItems: 'center',
 					minHeight: '100vh',
 					width: '100%',
 					backgroundColor: 'rgba(0, 0, 0, 0.2)',
 				}}>
-					<Grid container spacing={1} data-aos="fade-up" sx={{ position: 'relative', zIndex: 2, width: '100%', height: '100%', }}>
+					<Grid item xs={12} sx={{ display: "flex", flexDirection: "row", justifyContent: "flex-start", alignItems: "center", p: 3 }}>
+						<IconButton sx={{ ml: 1, m: 0, p: 0 }}>
+							<img src="/sta_logo2.png" alt="Logo" style={{ height: '40px' }} />
+						</IconButton>
+					</Grid>
 
-						{!md ?
-							<Grid item md={6} lg={6} sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", }}>
-								{/* <TypingEffect text="Find New Beginnings in Preloved Treasures: Shop, Sell, Donate!" speed={60} /> */}
-								<Typography color="white" sx={{ fontSize: "30px", maxWidth: "50%" }} className="typing-effect">Find New Beginnings in Preloved Treasures: Shop, Sell, Donate!
-									
-								</Typography>
+					{/* The following grid item is for the sign up form and corresponding text*/}
+					<Grid container spacing={1} data-aos="fade-up" sx={{ position: 'relative', zIndex: 2, width: '100%', height: '100%', display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", pt:10}}>
 
-							</Grid> : <></>
-						}
+						{/* Shop text */}
+						<Grid item sm={12} md={6} lg={5} sx={{ position: 'relative', zIndex: 2, width: '100%', height: '100%', display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center",}}>
+							<Typography variant="h3" sx={{ color: "white", maxWidth: "90%", mb: 2 }}> Welcome to Second Time Around!</Typography>
+							<Typography color="white" variant="h6" sx={{ maxWidth: "70%" }} >Find New Beginnings in Preloved Treasures: Shop, Sell, Donate!
+							</Typography>
+						</Grid> 
 
-						<Grid item xs={12} sm={11} md={5} lg={4} sx={{ display: "flex", justifyContent: "center", alignItems: "center", }}>
+
+						<Grid item xs={12} sm={11} md={5} lg={4} sx={{ display: "flex", justifyContent: "center", alignItems: "center", pb:5 }}>
 							{/* Login box background */}
 							<Box sx={{
 								backgroundColor: theme.palette.secondary.dark,
