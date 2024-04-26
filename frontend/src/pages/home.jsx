@@ -135,7 +135,7 @@ function Home() {
 					<Grid item xs={12} sm={6} md={6} lg={5} sx={{ justifyContent: "center", display: "flex", flexDirection: "row", alignItems: "center" }}>
 						<Card sx={{ backgroundColor: "#6A9B81", borderRadius: "16px", maxWidth: "80%", p: 4 }}>
 							<CardContent sx={{}}>
-								<Typography variant={lg ? "h4" : "h5"} sx={{ textAlign: 'center', fontWeight: 700, color: "white", lineHeight: "1.5", m: 2 }}>Buy Cheaper</Typography>
+								<Typography variant={lg ? "h4" : "h5"} sx={{ textAlign: 'center', fontWeight: 700, color: "white", lineHeight: "1.5", m: 2 }}>Buy Cheap</Typography>
 								<Typography variant={lg ? "h4" : "h5"} sx={{ fontWeight: 300, textAlign: 'center', lineHeight: "1.5", color: "white", p: 2 }}>Browse our items for <strong>sale</strong>, <strong>bid in an auction</strong> , or <strong>request a donation</strong></Typography>
 							</CardContent>
 						</Card>
