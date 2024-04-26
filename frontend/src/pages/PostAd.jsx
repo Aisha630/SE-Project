@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Box, Button, Container, Typography, ThemeProvider, } from "@mui/material";
-import theme from "../themes/authThemes.js";
+// import theme from "../themes/authThemes.js";
+import theme from "../themes/homeTheme.js";
 import { toast } from "react-toastify";
 import details from "../config.json";
 import AdDetails from "../components/adDetails.jsx";
@@ -188,7 +189,7 @@ const PostAd = () => {
 				return;
 			}
 
-			if ((key === "startingBid" || key === "endTime" ) && adData.productType !== "auction") {
+			if ((key === "startingBid" || key === "endTime") && adData.productType !== "auction") {
 				return;
 			}
 			if (Array.isArray(adData[key])) {
@@ -199,8 +200,9 @@ const PostAd = () => {
 		});
 
 		formData.append("seller", user);
-
-		formData.endTime = new Date(adData.endTime).toISOString()
+		if (adData.endTime) {
+			formData.endTime = new Date(adData.endTime).toISOString()
+		}
 
 		files.forEach((file) => {
 			if (file) {
@@ -241,9 +243,9 @@ const PostAd = () => {
 
 	return (
 		<ThemeProvider theme={theme}>
-			<Box sx={{ display: "flex", alignItems: "flex-start", justifyContent: "flex-start", backgroundColor:"background.default"}} >
-				<Container component="main" sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: "auto", py: 4, backgroundColor: theme.palette.secondary.main, }}>
-					<BackHanger style={{ margin: "10px" , alignSelf: "flex-start"}} />
+			<Box sx={{ display: "flex", alignItems: "flex-start", justifyContent: "flex-start", backgroundColor: theme.palette.secondary.light }} >
+				<Container component="main" sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: "auto", py: 4, backgroundColor: theme.palette.secondary.light, }}>
+					<BackHanger style={{ margin: "10px", alignSelf: "flex-start" }} />
 					<Box component="form" onSubmit={handleSubmit} noValidate sx={{ width: "100%", maxWidth: 700, bgcolor: "background.default", borderRadius: 2, boxShadow: 1, p: 3, }}>
 						<Typography variant="h4" align="center" gutterBottom sx={{ mb: 4 }}>
 							Post Your Ad

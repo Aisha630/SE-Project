@@ -12,7 +12,7 @@ const TagSelection = ({ subcategories, adData, handleTagChange, theme }) => (
     </Typography>
     <Box
       sx={{
-        bgcolor: theme.palette.secondary.main,
+        bgcolor: theme.palette.secondary.light,
         p: 2,
         borderRadius: 2,
         mb: 3,
@@ -38,6 +38,7 @@ const TagSelection = ({ subcategories, adData, handleTagChange, theme }) => (
                 onChange={handleTagChange}
                 value={tag}
                 name="tags"
+                // color="secondary.dark"
               />
             }
             label={tag}

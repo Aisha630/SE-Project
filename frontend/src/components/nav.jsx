@@ -17,11 +17,11 @@ import { useNotif } from "../context/notifContext"
 
 const commonIconStyle = {
     '&:hover': {
-        backgroundColor: "primary.dark",
+        backgroundColor: "#c0c0c0",
         boxShadow: "none",
     },
     '&.visited': {
-        backgroundColor: "primary.dark",
+        backgroundColor:"#c0c0c0",
     },
     margin: 1,
     '&:focus': {
@@ -127,7 +127,7 @@ const Nav = ({ Search, styles, setsearchproducts, setisempty, mode, category, po
                     <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
                         <Search setisempty={setisempty} setsearchproducts={setsearchproducts} mode={mode} category={category} />
                         <IconButton edge="end" color="gray" disableRipple aria-label="notifications" onClick={toggleNotifs} sx={commonIconStyle}>
-                            <Badge badgeContent={Array.isArray(notifications) ? notifications.filter(notif => notif.status === "unread").length : 0} max={99} color="secondary">
+                            <Badge badgeContent={Array.isArray(notifications) ? notifications.filter(notif => notif.status === "unread").length : 0} max={99} color="secondary.light">
                                 <NotificationsIcon sx={{
                                     fontSize: lg || md ? 25 : 20, '&:focus': {
                                         outline: 'none',
@@ -141,8 +141,7 @@ const Nav = ({ Search, styles, setsearchproducts, setisempty, mode, category, po
                             <Badge badgeContent={cartItems.length} max={99} color="secondary">
                                 <ShoppingCartIcon sx={{
                                     fontSize: lg || md ? 25 : 20, '&:focus': {
-                                        outline: 'none',
-                                    }
+                                        outline: 'none',}
                                 }} />
                             </Badge>
                         </IconButton>

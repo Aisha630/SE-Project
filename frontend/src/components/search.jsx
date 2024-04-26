@@ -58,7 +58,7 @@ const Search = ({ setisempty, setsearchproducts, mode ,category}) => {
                     onClick={toggleSearch}
                     sx={{
                         '&:hover': {
-                            backgroundColor: "primary.dark",
+                            backgroundColor: "#c0c0c0",
                         },
                         mr: '10px',
                         ml: 'auto',

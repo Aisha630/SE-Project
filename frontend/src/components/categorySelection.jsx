@@ -13,7 +13,7 @@ const CategorySelection = ({ categories, adData, handleInputChange, errors }) =>
     </Typography>
     <Box
       sx={{
-        bgcolor: "secondary.main",
+        bgcolor: "secondary.light",
         p: 2,
         borderRadius: 2,
         mb: 3,

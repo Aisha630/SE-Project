@@ -1,29 +1,29 @@
-import "@fontsource/poppins";
-import { createTheme } from "@mui/material";
+import '@fontsource/poppins';
+import { createTheme } from '@mui/material';
 const theme = createTheme({
-  palette: {
-    primary: { main: "#fffff" },
-    secondary: { main: "#6A9B81", dark: "rgba(209, 228, 208, 0.8)" },
-    background: { default: "#6A9B81" },
-  },
-  typography: {
-    fontFamily: "Poppins, Arial, sans-serif",
-  },
-  components: {
-    MuiTextField: {
-      styleOverrides: {
-        root: {
-          "& .MuiOutlinedInput-root": {
-            "&.Mui-focused fieldset": { borderColor: "#6A9B81" },
-          },
-          "& label.Mui-focused": { color: "#6A9B81" },
-          "& label": { color: "#6A9B81" },
-        },
-      },
+    palette: {
+        primary: { main: '#4a6a59' },
+        secondary: { main: "#D1E4D0", dark: 'rgba(209, 228, 208, 0.8)' },
+        background: { default: "#F5F4E7" },
     },
-  },
-  shape: { borderRadius: 5 },
-  shadows: ["none", "0px 2px 4px rgba(0, 0, 0, 0.1)"],
+    typography: {
+        fontFamily: 'Poppins, Arial, sans-serif',
+    },
+    components: {
+        MuiTextField: {
+            styleOverrides: {
+                root: {
+                    '& .MuiOutlinedInput-root': {
+                        '&.Mui-focused fieldset': { borderColor: '#4a6a59' },
+                    },
+                    '& label.Mui-focused': { color: '#4a6a59' },
+                    '& label': { color: '#4a6a59' },
+                },
+            },
+        },
+    },
+    shape: { borderRadius: 5 },
+    shadows: ["none", "0px 2px 4px rgba(0, 0, 0, 0.1)"],
 });
 
 export default theme;

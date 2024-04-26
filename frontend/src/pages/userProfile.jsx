@@ -284,7 +284,7 @@ const UserProfile = () => {
 
                 <Box sx={{
                     position: 'absolute', 
-                    bottom: 200,
+                    bottom: 190,
                     left: 0,
                     width: '100%', 
                     zIndex: 2,

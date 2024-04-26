@@ -11,9 +11,9 @@ const InfoCard = ({ title, items, isCart, deleteItem }) => {
 
     return (
         <ThemeProvider theme={theme}>
-        <Card raised sx={{ backgroundColor: isCart ? "#d1e4d0" : "#e0e0e0", borderRadius: 5, padding: md ? 5 : xs ? 1 : 3, maxWidth: "750px" }}>
+        <Card raised sx={{ backgroundColor: isCart ? "#d1e4d0" : "#6a9b81", borderRadius: 5, padding: md ? 5 : xs ? 1 : 3, maxWidth: "750px" }}>
             <CardContent>
-                <Typography variant="h5" gutterBottom textAlign="left" sx={{ color: "gray", fontWeight: 500, marginLeft: 1, mb: 5 }}>
+                <Typography variant="h5" gutterBottom textAlign="left" sx={{ color: "black", fontWeight: 500, marginLeft: 1, mb: 5 }}>
                     {title}
                 </Typography>
                 <List sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", m: 0, p: 0 }}>

@@ -130,7 +130,7 @@ const Login = () => {
 									{resetEmail ? <></> :
 										<>
 											{/* Username/Reset token fields */}
-											<TextField margin="normal" required fullWidth id={reset ? "reset_token" : "username"} label={reset ? "Reset Token" : "Username"} name={reset ? "reset_token" : "username"} value={reset ? resetCredentials.reset_token : credentials.username} onChange={() => { reset ? handleChange(event, setResetCredentials) : handleChange(event, setCredentials) }} variant="filled" sx={{ input: "#084a08", }} />
+											<TextField margin="normal" required fullWidth id={reset ? "reset_token" : "username"} label={reset ? "Reset Token" : "Username"} name={reset ? "reset_token" : "username"} value={reset ? resetCredentials.reset_token : credentials.username} onChange={() => { reset ? handleChange(event, setResetCredentials) : handleChange(event, setCredentials) }} variant="filled" sx={{ input: "#587E6A", }} />
 
 											{/* Password/New passwords fields */}
 											<TextField margin="normal" required fullWidth id={reset ? "newPassword" : "password"} label={reset ? "New Password" : "Password"} name={reset ? "newPassword" : "password"} type={showPassword ? 'text' : 'password'}
@@ -153,7 +153,7 @@ const Login = () => {
 											{/* Login/Reset button */}
 											{!reset &&
 												<Box textAlign="left" sx={{ mt: 1 }}>
-													<Link href="#" variant="body2" sx={{ color: "#6A9B81", '&:hover': { color: "#6A9B81", textDecorationColor: "#6A9B81", textDecoration: 'underline' }, textDecorationColor: "black", textDecoration: 'none' }} onClick={() => { setResetEmail(!resetEmail) }}>
+													<Link href="#" variant="body2" sx={{ color: "#4a6a59", '&:hover': { color: "#4a6a59", textDecorationColor: "#4a6a59", textDecoration: 'underline' }, textDecorationColor: "black", textDecoration: 'none' }} onClick={() => { setResetEmail(!resetEmail) }}>
 														Forgot password?
 													</Link>
 												</Box>
@@ -166,7 +166,7 @@ const Login = () => {
 											{
 												(reset) &&
 												<Box textAlign="center" sx={{ mb: 1 }}>
-													<Link href="/login" variant="body2" sx={{ color: "black", '&:hover': { color: "#084a08", textDecorationColor: "#084a08", }, textDecorationColor: "black", }} onClick={() => { setReset(false); setResetCredentials(false) }}>
+													<Link href="/login" variant="body2" sx={{ color: "black", '&:hover': { color: "#4a6a59", textDecorationColor: "#4a6a59", }, textDecorationColor: "black", }} onClick={() => { setReset(false); setResetCredentials(false) }}>
 														Take me to login page
 													</Link>
 												</Box>
@@ -180,7 +180,7 @@ const Login = () => {
 														<Typography variant='body2' component={'span'} >
 															Not a member? { }
 														</Typography>
-														<Link href="/signup" variant="body2" sx={{ color: "#084a08", '&:hover': { color: "#084a08", textDecorationColor: "#084a08", textDecoration: 'underline' }, textDecorationColor: "black", textDecoration: 'none' }}>
+														<Link href="/signup" variant="body2" sx={{ color: "#4a6a59", '&:hover': { color: "#4a6a59", textDecorationColor: "#4a6a59", textDecoration: 'underline' }, textDecorationColor: "black", textDecoration: 'none' }}>
 															Sign up now!
 														</Link>
 													</Box>
@@ -192,7 +192,7 @@ const Login = () => {
 									{resetEmail &&
 										<>
 											<TextField margin="normal" required fullWidth id="reset_email" label="LUMS Email" name="reset_email"
-												value={resetCredentials.reset_email} onChange={() => { handleChange(event, setResetCredentials) }} variant="filled" sx={{ input: "#084a08", }} />
+												value={resetCredentials.reset_email} onChange={() => { handleChange(event, setResetCredentials) }} variant="filled" sx={{ input: "#4a6a59", }} />
 											<Button type="submit" variant="contained" disabled={loading} sx={{ mt: 3, mb: 2, backgroundColor: "#6A9B81", color: "black", '&:hover': { backgroundColor: "#587E6A" }, width: "50%" }}>
 												{"Send reset email"}
 											</Button>

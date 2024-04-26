@@ -2,12 +2,11 @@ import React, { useState, useEffect, } from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { signupUser } from '../stores/authSlice.js';
-import { Box, Button, Grid, TextField, Typography, ThemeProvider, IconButton, InputAdornment, Link, FormControlLabel, FormGroup, Checkbox, useMediaQuery } from '@mui/material';
+import { Box, Button, Grid, TextField, Typography, ThemeProvider, IconButton, InputAdornment, Link, FormControlLabel, FormGroup, Checkbox } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import '../css/login.css';
 import theme from '../themes/authThemes.js';
 import { usePasswordValidation } from '../hooks/usePasswordValidation.js';
-import TypingEffect from '../components/typing.jsx';
 import { useNavigate } from 'react-router-dom';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -163,9 +162,9 @@ const SignUp = () => {
 									) : (
 										<>
 											<TextField margin="normal" required fullWidth id="username" label="Username" name="username"
-												value={formData.username} onChange={handleChange} variant="filled" sx={{ input: "#084a08", }} />
+												value={formData.username} onChange={handleChange} variant="filled" sx={{ input: "#587E6A", }} />
 											<TextField margin="normal" required fullWidth id="email" label="LUMS Email" name="email"
-												value={formData.email} onChange={handleChange} variant="filled" sx={{ input: "#084a08", }} />
+												value={formData.email} onChange={handleChange} variant="filled" sx={{ input: "#587E6A", }} />
 											<TextField margin="normal" required fullWidth id="password" label="Password" name="password" type={showPassword ? 'text' : 'password'}
 												value={formData.password} onChange={handleChange} autoComplete="current-password" variant="filled"
 												InputProps={{
@@ -224,7 +223,7 @@ const SignUp = () => {
 										</>)}
 
 									{/* Sign up button and links */}
-									<Button type="submit" variant="contained" disabled={isLoading} sx={{ mt: 2, mb: 2, backgroundColor: "#4a914d", color: "black", '&:hover': { backgroundColor: "#587E6A" }, width: "50%" }}>
+									<Button type="submit" variant="contained" disabled={isLoading} sx={{ mt: 2, mb: 2, backgroundColor: "#6A9B81", color: "black", '&:hover': { backgroundColor: "#587E6A" }, width: "50%" }}>
 										Sign Up
 									</Button>
 
@@ -232,7 +231,7 @@ const SignUp = () => {
 										{!isLoading && !signUp &&
 											<>
 												<Typography variant='body2' component={'span'}>Already a member? { }</Typography>
-												<Link href="/login" variant="body2" sx={{ color: "#084a08", textDecorationColor: "black", '&:hover': { color: "#084a08", textDecorationColor: "#084a08", textDecoration: 'underline' }, textDecoration: 'none' }}>
+												<Link href="/login" variant="body2" sx={{ color: "#587E6A", textDecorationColor: "black", '&:hover': { color: "#587E6A", textDecorationColor: "#587E6A", textDecoration: 'underline' }, textDecoration: 'none' }}>
 													Log in now!
 												</Link>
 												<br />
@@ -254,7 +253,7 @@ const SignUp = () => {
 														textDecorationColor: 'black',
 														color: isLoading ? 'grey' : 'black',
 														cursor: isLoading ? 'default' : 'pointer',
-														'&:hover': isLoading ? {} : { color: '#084a08', textDecorationColor: '#084a08' },
+														'&:hover': isLoading ? {} : { color: '#587E6A', textDecorationColor: '#587E6A' },
 													}}
 													variant="body2"
 												>

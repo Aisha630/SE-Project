@@ -2,8 +2,9 @@ import "@fontsource/poppins";
 import { createTheme } from "@mui/material";
 const theme = createTheme({
   palette: {
-    primary: { main: "rgb(243, 244, 246)" },
-    secondary: { main: "#66C659", dark: "#6A9B81" },
+    primary: { main: "#4a6a59" },
+    // primary: { main: "rgb(243, 244, 246)" },
+    secondary: { main: "#66C659", light: "#acc7b8", dark:"#6a9b81" , default:"#58a75b"},
     // secondary: { main: "#58a75b", dark: "rgba(88, 167, 91, 0.8)" },
     background: { default: "#F5F4E7" },
   },
@@ -15,13 +16,13 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           "&.Mui-selected, &.Mui-selected:hover": {
-            backgroundColor: "#58a75b",
+            backgroundColor: "#6a9b81",
             "& .MuiListItemIcon-root, & .MuiTypography-root": {
               color: "#ffffff",
             },
           },
           "&:hover": {
-            backgroundColor: "#58a75b",
+            backgroundColor: "#6a9b81",
             "& .MuiListItemIcon-root, & .MuiTypography-root": {
               color: "#ffffff",
             },
@@ -39,10 +40,13 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           "& .MuiOutlinedInput-root": {
-            "&.Mui-focused fieldset": { borderColor: "#587E6A" },
+            "&.Mui-focused fieldset": { borderColor: "#4a6a59" },
+            // "&.Mui-focused fieldset": { borderColor: "#587E6A" },
           },
-          "& label.Mui-focused": { color: "#587E6A" },
-          "& label": { color: "#587E6A" },
+          "& label.Mui-focused": { color: "#4a6a59" },
+          "& label": { color: "#4a6a59" },
+          // "& label.Mui-focused": { color: "#587E6A" },
+          // "& label": { color: "#587E6A" },
         },
       },
     },
