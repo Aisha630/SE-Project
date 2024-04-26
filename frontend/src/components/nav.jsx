@@ -138,7 +138,7 @@ const Nav = ({ Search, styles, setsearchproducts, setisempty, mode, category, po
 
                         {showNotifications && <NotificationOverlayCard notifVisibility={showNotifications} notifVisibilityToggle={toggleNotifs} deletenotifs={deleteNotifs}></NotificationOverlayCard>}
                         <IconButton edge="end" color="gray" disableRipple aria-label="cart" onClick={() => { fetchCartItems(); toggleCart(); }} sx={commonIconStyle}>
-                            <Badge badgeContent={cartItems.length} max={99} color="secondary">
+                            <Badge badgeContent={cartItems.length} max={99} color="secondary.light">
                                 <ShoppingCartIcon sx={{
                                     fontSize: lg || md ? 25 : 20, '&:focus': {
                                         outline: 'none',}
