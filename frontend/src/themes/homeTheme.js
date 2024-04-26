@@ -39,10 +39,10 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           "& .MuiOutlinedInput-root": {
-            "&.Mui-focused fieldset": { borderColor: "#3e7840" },
+            "&.Mui-focused fieldset": { borderColor: "#587E6A" },
           },
-          "& label.Mui-focused": { color: "#3e7840" },
-          "& label": { color: "#3e7840" },
+          "& label.Mui-focused": { color: "#587E6A" },
+          "& label": { color: "#587E6A" },
         },
       },
     },

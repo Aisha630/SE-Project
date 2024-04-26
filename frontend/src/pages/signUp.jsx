@@ -117,7 +117,7 @@ const SignUp = () => {
 			<Grid style={{
 				minHeight: '100vh',
 				width: '100%',
-				backgroundImage: "url('userprofilebg.svg')",
+				backgroundImage: "url('login.svg')",
 				backgroundSize: "cover",
 				backgroundPosition: "center",
 				maxWidth: "100%",
@@ -139,9 +139,9 @@ const SignUp = () => {
 					<Grid container spacing={1} data-aos="fade-up" sx={{ position: 'relative',  width: '100%', height: '100%', display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", pt:5}}>
 
 						{/* Shop text */}
-						<Grid item sm={12} md={6} lg={5} sx={{ position: 'relative',  width: '100%', height: '100%', display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" , }}>
-							<Typography variant="h3" sx={{ color: "white",  mb: 2, maxWidth:"90%" }}> Welcome to Second Time Around!</Typography>
-							<Typography color="white" variant="h6" sx={{ maxWidth: "70%" }} >Find New Beginnings in Preloved Treasures: Shop, Sell, Donate!
+						<Grid item sm={12} md={6} lg={5} sx={{ position: 'relative', zIndex: 2, width: '100%', height: '100%', display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start", textAlign: "left", marginRight: "8rem"}}>
+							<Typography variant="h3" sx={{ color: "white", maxWidth: "90%", mb: 2, fontWeight: 'medium' }}> Welcome to Second Time Around!</Typography>
+							<Typography color="white" variant="h6" sx={{ maxWidth: "70%" }} >One-stop shop for Pre-loved products to buy, sell, donate, or even auction...
 							</Typography>
 						</Grid> 
 
@@ -208,7 +208,7 @@ const SignUp = () => {
 											
 											{/* Gender */}
 											<Box sx={{ mt: 1, display: 'flex', alignItems: 'center' }}>
-												<FormLabel component="legend" sx={{ marginRight: 2, color: "#3e7840" }}>Gender:</FormLabel>
+												<FormLabel component="legend" sx={{ marginRight: 2, color: "#587E6A" }}>Gender:</FormLabel>
 												<RadioGroup
 													row
 													aria-label="gender"
@@ -224,7 +224,7 @@ const SignUp = () => {
 										</>)}
 
 									{/* Sign up button and links */}
-									<Button type="submit" variant="contained" disabled={isLoading} sx={{ mt: 2, mb: 2, backgroundColor: "#4a914d", color: "black", '&:hover': { backgroundColor: "#3e7840" }, width: "50%" }}>
+									<Button type="submit" variant="contained" disabled={isLoading} sx={{ mt: 2, mb: 2, backgroundColor: "#4a914d", color: "black", '&:hover': { backgroundColor: "#587E6A" }, width: "50%" }}>
 										Sign Up
 									</Button>
 

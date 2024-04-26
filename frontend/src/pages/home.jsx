@@ -79,11 +79,11 @@ function Home() {
 				{/* Text and carousel */}
 				<Box sx={{ maxWidth: "100%", textAlign: 'center' }}>
 
-					<Typography variant="h4" component="h1" sx={{ color: 'black', fontWeight: 'light', p: 2 }}>
+					<Typography variant="h4" component="h1" sx={{ color: 'black', fontWeight: 'gray', p: 2 }}>
 						SECOND TIME AROUND
 					</Typography>
 
-					<Typography variant="h5" component="h2" sx={{ color: '#345644', fontWeight: 'bold', mt: -1 }}>
+					<Typography variant="h5" component="h2" sx={{ color: '#345644', fontWeight: 'medium', mt: -1 }}>
 						New in Store
 					</Typography>
 				</Box>

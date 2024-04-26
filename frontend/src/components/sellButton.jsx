@@ -1,6 +1,5 @@
 import React from 'react'
-import { Fab } from '@mui/material';
-import Add from '@mui/icons-material/Add.js';
+import { Fab, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -9,13 +8,13 @@ const SellButton = () => {
 
     const fabStyle = {
         position: 'fixed',
-        bottom: '5%',
-        right: '2%',
+        bottom: '6%',
+        right: '5%',
         padding: 5,
-        backgroundColor: '#6A9B81', // 
+        backgroundColor: '#C7E3C8', // 
         color: 'black', 
         '&:hover': {
-          backgroundColor: '#66C659', 
+          backgroundColor: '#BBD7BC', 
           boxShadow: '0px 6px 10px rgba(0, 0, 0, 0.3)',
           transform: 'scale(1.05)',
         },
@@ -23,7 +22,9 @@ const SellButton = () => {
       };
     return (
         <Fab aria-label="sell" size='large' sx={fabStyle} onClick={() => { navigate('/sell') }}>
-            <Add /> Sell
+            <Typography sx={{fontWeight: 'medium', fontSize: '1.1rem'}}>
+             Sell
+            </Typography>
         </Fab>
     )
 }

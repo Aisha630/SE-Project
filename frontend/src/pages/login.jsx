@@ -93,7 +93,7 @@ const Login = () => {
 			<Grid style={{
 				minHeight: '100vh',
 				width: '100%',
-				backgroundImage: "url('userprofilebg.svg')",
+				backgroundImage: "url('login.svg')",
 				backgroundSize: "cover",
 				backgroundPosition: "center",
 				maxWidth: "100%",
@@ -104,18 +104,16 @@ const Login = () => {
 					backgroundColor: 'rgba(0, 0, 0, 0.2)',
 				}}>
 					<Grid item xs={12} sx={{ display: "flex", flexDirection: "row", justifyContent: "flex-start", alignItems: "center", p: 3 }}>
-						<IconButton sx={{ ml: 1, m: 0, p: 0 }}>
 							<img src="/sta_logo2.png" alt="Logo" style={{ height: '40px' }} />
-						</IconButton>
 					</Grid>
 
 					{/* The following grid item is for the sign up form and corresponding text*/}
 					<Grid container spacing={1} data-aos="fade-up" sx={{ position: 'relative', zIndex: 2, width: '100%', height: '100%', display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", pt:10}}>
 
 						{/* Shop text */}
-						<Grid item sm={12} md={6} lg={5} sx={{ position: 'relative', zIndex: 2, width: '100%', height: '100%', display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center",}}>
-							<Typography variant="h3" sx={{ color: "white", maxWidth: "90%", mb: 2 }}> Welcome to Second Time Around!</Typography>
-							<Typography color="white" variant="h6" sx={{ maxWidth: "70%" }} >Find New Beginnings in Preloved Treasures: Shop, Sell, Donate!
+						<Grid item sm={12} md={6} lg={5} sx={{ position: 'relative', zIndex: 2, width: '100%', height: '100%', display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start", textAlign: "left", marginRight: "8rem"}}>
+							<Typography variant="h3" sx={{ color: "white", maxWidth: "90%", mb: 2, fontWeight: 'medium' }}> Welcome to Second Time Around!</Typography>
+							<Typography color="white" variant="h6" sx={{ maxWidth: "70%" }} >One-stop shop for Pre-loved products to buy, sell, donate, or even auction...
 							</Typography>
 						</Grid> 
 
@@ -155,12 +153,12 @@ const Login = () => {
 											{/* Login/Reset button */}
 											{!reset &&
 												<Box textAlign="left" sx={{ mt: 1 }}>
-													<Link href="#" variant="body2" sx={{ color: "#084a08", '&:hover': { color: "#084a08", textDecorationColor: "#084a08", textDecoration: 'underline' }, textDecorationColor: "black", textDecoration: 'none' }} onClick={() => { setResetEmail(!resetEmail) }}>
+													<Link href="#" variant="body2" sx={{ color: "#6A9B81", '&:hover': { color: "#6A9B81", textDecorationColor: "#6A9B81", textDecoration: 'underline' }, textDecorationColor: "black", textDecoration: 'none' }} onClick={() => { setResetEmail(!resetEmail) }}>
 														Forgot password?
 													</Link>
 												</Box>
 											}
-											<Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, backgroundColor: "#4a914d", color: "black", '&:hover': { backgroundColor: "#3e7840" }, width: "50%" }}>
+											<Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, backgroundColor: "#6A9B81", color: "black", '&:hover': { backgroundColor: "#587E6A" }, width: "50%" }}>
 												{reset ? "Reset Password" : "Log In"}
 											</Button>
 
@@ -195,7 +193,7 @@ const Login = () => {
 										<>
 											<TextField margin="normal" required fullWidth id="reset_email" label="LUMS Email" name="reset_email"
 												value={resetCredentials.reset_email} onChange={() => { handleChange(event, setResetCredentials) }} variant="filled" sx={{ input: "#084a08", }} />
-											<Button type="submit" variant="contained" disabled={loading} sx={{ mt: 3, mb: 2, backgroundColor: "#4a914d", color: "black", '&:hover': { backgroundColor: "#3e7840" }, width: "50%" }}>
+											<Button type="submit" variant="contained" disabled={loading} sx={{ mt: 3, mb: 2, backgroundColor: "#6A9B81", color: "black", '&:hover': { backgroundColor: "#587E6A" }, width: "50%" }}>
 												{"Send reset email"}
 											</Button>
 											<br />
