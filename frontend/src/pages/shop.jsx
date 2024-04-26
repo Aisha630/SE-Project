@@ -216,6 +216,7 @@ const ShopItems = ({ mode }) => {
 
     return (
         <ThemeProvider theme={theme}>
+            <Box sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
             <Box>
                 <Nav Search={Search} setisempty={setIsEmpty} setsearchproducts={handleSetProducts} mode={mode} category={category} showButton={false} />
             </Box>
@@ -253,6 +254,7 @@ const ShopItems = ({ mode }) => {
                 {isEmpty && <NoProducts />}
                 {!isEmpty && <ProductList products={products} mode={mode}/>}
                 
+            </Box>
             </Box>
         </ThemeProvider>
     )

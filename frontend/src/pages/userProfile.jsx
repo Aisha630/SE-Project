@@ -283,12 +283,11 @@ const UserProfile = () => {
                 </Grid>
 
                 <Box sx={{
-                    position: 'absolute', // Position the toolbar absolutely
-                    bottom: 200, // Align it to the bottom of the parent container
-                    // bottom: lg? 200: 450, // Align it to the bottom of the parent container
+                    position: 'absolute', 
+                    bottom: 200,
                     left: 0,
-                    width: '100%', // Span the full width of the container
-                    zIndex: 2, // Ensure it's above the other content
+                    width: '100%', 
+                    zIndex: 2,
                     marginTop: '2rem',
                 }}>
                     <MainCategoryToolbar setCategory={setSelectedTab} category={selectedTab} navItems={["Auctioned", "For Sale", "Donations"]} />
