@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Grid, Pagination } from '@mui/material';
+import { Grid, PaginationItem, Pagination } from '@mui/material';
 import Product from './product';
 import { Box } from '@mui/material';
 import { Link } from 'react-router-dom';
@@ -35,17 +35,33 @@ const ProductList = ({ products, mode }) => {
                 ))}
             </Grid>
             <Box display="flex" justifyContent="center" mt={2}>
-
-                <Pagination
+                {/* <Pagination
                     count={totalPages}
                     page={page}
                     onChange={handlePageChange}
-                    sx={{ 
-                        "& .MuiPaginationItem-root": {
-                          color: 'black',
-                          backgroundColor: 'background.default' 
-                        }
-                      }}
+                >
+                    <PaginationItem />
+                </Pagination> */}
+
+
+                <Pagination
+                    count={totalPages}  // Total number of pages
+                    onChange={handlePageChange}
+                    renderItem={(item) => (
+                        <PaginationItem
+                            component="button"
+                            {...item}
+                            sx={{
+                            //     // Custom styling can be applied here
+                                color: 'black', // Example: Highlight the 5th page
+                                backgroundColor: 'background.default',
+
+                                '&.Mui-selected': {
+                                    backgroundColor: 'background.default', // this is potentially here to change in the future in case we want to show 50+ products
+                                }
+                            }}
+                        />
+                    )}
                 />
             </Box>
         </Box>
