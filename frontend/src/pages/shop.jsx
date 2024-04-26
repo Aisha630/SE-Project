@@ -101,7 +101,9 @@ const ShopItems = ({ mode }) => {
                     name: product.name,
                     image: 'http://localhost:5003'.concat(product.images[0]), // Assuming the first image in the array is the main image
                     price: product.price,
-                    id: product._id
+                    id: product._id,
+                    currentBid: product.currentBid ? product.currentBid : 0,
+                    endTime: product.endTime ? product.endTime : new Date()
                 }));
                 setProducts(formattedProducts);
                 setIsEmpty(formattedProducts.length === 0);
@@ -229,7 +231,7 @@ const ShopItems = ({ mode }) => {
                 onTagSelected={handleSelectedTag}
             />
             <Box display="flex" justifyContent="left" mt={2} ml={2} sx={{ width: "15%", fontWeight: "normal" }}>
-                <ListItemLink text={"Filter and Sort"} Icon={TuneIcon} to={"#"} onClick={toggleFilterMenu} ButtonStyles={{
+                <ListItemLink text={""} Icon={TuneIcon} to={"#"} onClick={toggleFilterMenu} ButtonStyles={{
                     '&:hover': {
                         backgroundColor: "transparent",
                         textDecoration: 'underline',
