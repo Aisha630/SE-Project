@@ -127,7 +127,7 @@ const Nav = ({ Search, styles, setsearchproducts, setisempty, mode, category, po
                     <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
                         <Search setisempty={setisempty} setsearchproducts={setsearchproducts} mode={mode} category={category} />
                         <IconButton edge="end" color="gray" disableRipple aria-label="notifications" onClick={toggleNotifs} sx={commonIconStyle}>
-                            <Badge badgeContent={Array.isArray(notifications) ? notifications.filter(notif => notif.status === "unread").length : 0} max={99} color="secondary.light">
+                            <Badge badgeContent={Array.isArray(notifications) ? notifications.filter(notif => notif.status === "unread").length : 0} max={99} color="secondary">
                                 <NotificationsIcon sx={{
                                     fontSize: lg || md ? 25 : 20, '&:focus': {
                                         outline: 'none',
@@ -138,7 +138,7 @@ const Nav = ({ Search, styles, setsearchproducts, setisempty, mode, category, po
 
                         {showNotifications && <NotificationOverlayCard notifVisibility={showNotifications} notifVisibilityToggle={toggleNotifs} deletenotifs={deleteNotifs}></NotificationOverlayCard>}
                         <IconButton edge="end" color="gray" disableRipple aria-label="cart" onClick={() => { fetchCartItems(); toggleCart(); }} sx={commonIconStyle}>
-                            <Badge badgeContent={cartItems.length} max={99} color="secondary.light">
+                            <Badge badgeContent={cartItems.length} max={99} color="secondary">
                                 <ShoppingCartIcon sx={{
                                     fontSize: lg || md ? 25 : 20, '&:focus': {
                                         outline: 'none',}
