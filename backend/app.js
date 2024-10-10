@@ -6,6 +6,8 @@ import mongoose from "mongoose";
 import http from "http";
 import { Server } from "socket.io";
 import jwt from "jsonwebtoken";
+import path from "path";
+import { fileURLToPath } from "url";
 
 import Image from "./models/imageModel.js";
 import User from "./models/userModel.js";
@@ -16,6 +18,9 @@ import cartRoutes from "./routes/cartRoute.js";
 import productRoutes from "./routes/productRoute.js";
 import userRoutes from "./routes/userRoute.js";
 import notifRoutes from "./routes/notifRoute.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const server = http.createServer(app);
@@ -28,6 +33,13 @@ const io = new Server(server, {
 
 // Middleware setup
 app.use(express.static("public"));
+app.use((req, res, next) => {
+  if (req.hostname === "api.secondtimearound.xyz") {
+    next();
+  } else {
+    res.sendFile(path.join(__dirname, "public", "index.html"));
+  }
+});
 app.use(cookieParser());
 app.use(
   cors({
