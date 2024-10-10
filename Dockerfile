@@ -1,17 +1,22 @@
-FROM node:latest
+FROM node:18 AS frontend-build
+
+WORKDIR /app/frontend
+COPY frontend/ .
+
+RUN npm install
+RUN npx vite build
+
+FROM node:18 AS backend-build
+WORKDIR /app/backend
+
+COPY backend/ .
+COPY --from=frontend-build /app/frontend/dist ./public
+RUN npm install
+
+FROM node:18-alpine
 
 WORKDIR /app
+COPY --from=backend-build /app/backend .
 
-COPY frontend /app/frontend
-COPY backend /app/backend
-COPY start.sh /app
-
-RUN cd frontend && npm install
-RUN cd backend && npm install
-RUN chmod +x start.sh
-RUN mkdir -p /data/db
-
-EXPOSE 3000
 EXPOSE 5003
-
-CMD ["sh", "start.sh"]
+CMD ["node", "app.js"]

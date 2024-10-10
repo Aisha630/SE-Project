@@ -27,13 +27,14 @@ const io = new Server(server, {
 });
 
 // Middleware setup
+app.use(express.static("public"));
 app.use(cookieParser());
 app.use(
   cors({
     origin: "https://secondtimearound.xyz",
     methods: ["GET", "POST", "DELETE", "PATCH", "OPTIONS"],
     credentials: true,
-  })
+  }),
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -105,7 +106,7 @@ mongoose
 
     server.listen(PORT, () => {
       console.log(
-        `Server running in ${process.env.BUILD_MODE} mode, on port ${PORT}.`
+        `Server running in ${process.env.BUILD_MODE} mode, on port ${PORT}.`,
       );
     });
   })
