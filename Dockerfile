@@ -13,7 +13,7 @@ COPY backend/ .
 COPY --from=frontend-build /app/frontend/dist ./public
 RUN npm install
 
-FROM node:18-alpine
+FROM node:18
 
 WORKDIR /app
 COPY --from=backend-build /app/backend .
