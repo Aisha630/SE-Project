@@ -163,7 +163,7 @@ const SignUp = () => {
 										<>
 											<TextField margin="normal" required fullWidth id="username" label="Username" name="username"
 												value={formData.username} onChange={handleChange} variant="filled" sx={{ input: "#587E6A", }} />
-											<TextField margin="normal" required fullWidth id="email" label="LUMS Email" name="email"
+											<TextField margin="normal" required fullWidth id="email" label="Email" name="email"
 												value={formData.email} onChange={handleChange} variant="filled" sx={{ input: "#587E6A", }} />
 											<TextField margin="normal" required fullWidth id="password" label="Password" name="password" type={showPassword ? 'text' : 'password'}
 												value={formData.password} onChange={handleChange} autoComplete="current-password" variant="filled"

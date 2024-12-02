@@ -26,7 +26,7 @@ export async function signup(req, res) {
   }
 
   // Ensure only lums domains are authorized
-  if (!email.endsWith("@lums.edu.pk")) {
+  if (process.env.LUMSU_REQUIRED && !email.endsWith("@lums.edu.pk")) {
     return res
       .status(400)
       .json({ error: "Only @lums.edu.pk emails are allowed" });
