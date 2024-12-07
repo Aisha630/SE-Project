@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Drawer,  Box, ThemeProvider } from '@mui/material'
+import { Drawer, Box, ThemeProvider } from '@mui/material'
 import Nav from '../components/nav.jsx';
 import theme from '../themes/homeTheme.js';
 import ProductList from '../components/productlisting.jsx';
@@ -11,28 +11,35 @@ import { useSelector } from 'react-redux';
 import ListItemLink from '../components/ListItemLink.jsx';
 import NoProducts from '../components/noProducts.jsx';
 import Search from '../components/search.jsx';
-import MyDrawer from '../components/drawer.jsx';
+import TagList from '../components/tagList';
+import config from "../../config_display.json";
+import SellButton from '../components/sellButton.jsx';
 
-
-const ShopItems = ({mode}) => {
+const ShopItems = ({ mode }) => {
     const navigate = useNavigate();
     const token = useSelector((state) => state.auth.token);
 
     const [category, setCategory] = useState('Clothing')
     const [products, setProducts] = useState([]);
     const [isEmpty, setIsEmpty] = useState(false);
-    const [checkedSubcategories, setCheckedSubcategories] = useState([]);
-    const [price, setPrice] = useState([0, 200000]);
+    const [price, setPrice] = useState([0, 15000]);
     const [checkedSizes, setCheckedSizes] = useState([]);
     const [sortBy, setSortBy] = useState('unset');
     const [condition, setCondition] = useState('unset');
-  
-    const handleSubcategoryChange = (subcategory) => {
-        const isChecked = checkedSubcategories.includes(subcategory);
+    const [selectedTag, setSelectedTag] = useState('All');
+    const [checkedColors, setCheckedColors] = useState([]);
+
+    const getTagsList = () => ['All', ...config.categories[category]]
+    const handleSelectedTag = (tag) => {
+        setSelectedTag(tag);
+    }
+
+    const handleColorChange = (color) => {
+        const isChecked = checkedColors.includes(color);
         if (isChecked) {
-            setCheckedSubcategories(checkedSubcategories.filter((item) => item !== subcategory));
+            setCheckedColors(checkedColors.filter((item) => item !== color));
         } else {
-            setCheckedSubcategories([...checkedSubcategories, subcategory]);
+            setCheckedColors([...checkedColors, color]);
         }
     }
 
@@ -55,28 +62,32 @@ const ShopItems = ({mode}) => {
 
     const handleApplyFilters = () => {
         let filterCriteria = {
-            productType : mode,
+            productType: mode,
             category: category,
         }
-        if (checkedSubcategories.length > 0) {
-            filterCriteria = {...filterCriteria, tags: checkedSubcategories};
+        if (selectedTag !== 'All') {
+            filterCriteria = { ...filterCriteria, tags: selectedTag };
         }
         if (checkedSizes.length > 0) {
-            filterCriteria = {...filterCriteria, sizes: checkedSizes};
+            filterCriteria = { ...filterCriteria, sizes: checkedSizes };
         }
         if (price[0] > 0) {
-            filterCriteria = {...filterCriteria, minPrice: price[0]};   
+            filterCriteria = { ...filterCriteria, minPrice: price[0] };
         }
-        if (price[1] < 200000) {
-            filterCriteria = {...filterCriteria, maxPrice: price[1]};
+        if (price[1] < 15000) {
+            filterCriteria = { ...filterCriteria, maxPrice: price[1] };
         }
         if (sortBy !== 'unset') {
-            filterCriteria = {...filterCriteria, sortBy: sortBy};
+            filterCriteria = { ...filterCriteria, sortBy: sortBy };
         }
         if (condition !== 'unset') {
-            filterCriteria = {...filterCriteria, condition: condition};
+            filterCriteria = { ...filterCriteria, condition: condition };
         }
-        
+
+        if (checkedColors.length > 0) {
+            filterCriteria = { ...filterCriteria, colors: checkedColors }
+        }
+
         const queryString = new URLSearchParams(filterCriteria);
         fetch(`http://localhost:5003/filter?${queryString}`, {
             headers: {
@@ -84,30 +95,35 @@ const ShopItems = ({mode}) => {
                 'Authorization': `Bearer ${token}`
             },
         })
-        .then(response => response.json())
-        .then(data => {
-            const formattedProducts = data.map(product => ({
-                name: product.name,
-                image: 'http://localhost:5003'.concat(product.images[0]), // Assuming the first image in the array is the main image
-                price: product.price,
-                id: product._id
-            }));
-            setProducts(formattedProducts);
-            setIsEmpty(formattedProducts.length === 0);
+            .then(response => response.json())
+            .then(data => {
+                const formattedProducts = data.map(product => ({
+                    name: product.name,
+                    image: 'http://localhost:5003'.concat(product.images[0]), // Assuming the first image in the array is the main image
+                    price: product.price,
+                    id: product._id,
+                    currentBid: product.currentBid ? product.currentBid : 0,
+                    endTime: product.endTime ? product.endTime : new Date()
+                }));
+                setProducts(formattedProducts);
+                setIsEmpty(formattedProducts.length === 0);
 
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         handleDrawerClose();
     };
 
+
     const handleResetFilters = () => {
-        setCheckedSubcategories([]);
         setCheckedSizes([]);
-        setPrice([0, 200000]);
+        setPrice([0, 15000]);
         setSortBy('unset');
         setCondition('unset');
+        setCheckedColors([]);
+        setSelectedTag('All');
+        setCategory('Clothing');
 
         const queryString = new URLSearchParams({category: category, productType: mode});
         fetch(`http://localhost:5003/filter?${queryString}`, {
@@ -116,26 +132,28 @@ const ShopItems = ({mode}) => {
                 'Authorization': `Bearer ${token}`
             },
         })
-        .then(response => response.json())
-        .then(data => {
-            const formattedProducts = data.map(product => ({
-                name: product.name,
-                image: 'http://localhost:5003'.concat(product.images[0]), // Assuming the first image in the array is the main image
-                price: product.price,
-                id: product._id
-            }));
-            setProducts(formattedProducts);
-            setIsEmpty(formattedProducts.length === 0);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                const formattedProducts = data.map(product => ({
+                    name: product.name,
+                    image: 'http://localhost:5003'.concat(product.images[0]), // Assuming the first image in the array is the main image
+                    price: product.price,
+                    id: product._id,
+                    currentBid: product.currentBid ? product.currentBid : 0,
+                    endTime: product.endTime ? product.endTime : new Date()
+                }));
+                setProducts(formattedProducts);
+                setIsEmpty(formattedProducts.length === 0);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         handleDrawerClose();
 
     };
 
     useEffect(() => {
-        const queryString = new URLSearchParams({category: category, productType: mode});
+        const queryString = new URLSearchParams({ category: category, productType: mode });
         fetch(`http://localhost:5003/filter?${queryString}`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -149,24 +167,29 @@ const ShopItems = ({mode}) => {
                     image: 'http://localhost:5003'.concat(product.images[0]), // Assuming the first image in the array is the main image
                     price: product.price,
                     id: product._id,
-                    currentBid : product.currentBid,
-                    endTime : product.endTime
+                    currentBid: product.currentBid ? product.currentBid : 0,
+                    endTime: product.endTime ? product.endTime : new Date()
+
                 }));
-                setCheckedSubcategories([]);
                 setCheckedSizes([]);
-                setPrice([0, 200000]);
+                setPrice([0, 15000]);
                 setSortBy('unset');
                 setCondition('unset');
                 setProducts(formattedProducts);
-
+                setCheckedColors([]);
                 setIsEmpty(formattedProducts.length === 0);
+                setSelectedTag('All');
             })
             .catch(error => {
                 console.error('Error:', error);
                 navigate('/login');
             });
     }, [token, navigate, category]);
-    
+
+    useEffect(() => {
+        handleApplyFilters();
+    }, [token, selectedTag, category, mode]);
+
     const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
 
     const toggleFilterMenu = () => {
@@ -178,7 +201,6 @@ const ShopItems = ({mode}) => {
     };
 
     const handleSetProducts = (products) => {
-        // setCategory("All");
         setProducts(products);
     }
 
@@ -193,17 +215,23 @@ const ShopItems = ({mode}) => {
     else if (mode === "donate") {
         pageon = "Donations";
     }
+
     
+
     return (
         <ThemeProvider theme={theme}>
+            <Box sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
             <Box>
-                <Nav Drawer={MyDrawer} ShowLogo={false} Search={Search} pageon={pageon} setisempty={setIsEmpty} setsearchproducts={handleSetProducts} mode={mode} category={category}/>
+                <Nav Search={Search} setisempty={setIsEmpty} setsearchproducts={handleSetProducts} mode={mode} category={category} showButton={false} />
             </Box>
             <MainCategoryToolbar setCategory={setCategory} category={category} /> {/*This is the main toolbar that represents clothing, technology, and miscellaneous categories*/}
-
-            {/* This box followed by a drawer represents the filters menu. The box contains the clickable button that opens and closes the filters menu drawer */}
-            <Box display="flex" justifyContent="left" mt={2} ml={2} sx={{ width: "15%", fontWeight: "normal", }} >
-                <ListItemLink text={"Filter and Order"} Icon={TuneIcon} to={"#"} onClick={toggleFilterMenu} ButtonStyles={{
+            <TagList
+                tags={getTagsList()}
+                selectedTag={selectedTag}
+                onTagSelected={handleSelectedTag}
+            />
+            <Box display="flex" justifyContent="left" mt={2} ml={2} sx={{ width: "15%", fontWeight: "normal" }}>
+                <ListItemLink text={""} Icon={TuneIcon} to={"#"} onClick={toggleFilterMenu} ButtonStyles={{
                     '&:hover': {
                         backgroundColor: "transparent",
                         textDecoration: 'underline',
@@ -212,7 +240,7 @@ const ShopItems = ({mode}) => {
                             color: "#58a75b",
                         }
                     },
-                }}/>
+                }} />
             </Box>
             <Drawer
                 anchor='top'
@@ -220,14 +248,17 @@ const ShopItems = ({mode}) => {
                 onClose={handleDrawerClose}
                 style={{ opacity: 0.95 }}
             >
-                <FilterMenu mode={mode} category={category} closeFilterMenu={handleDrawerClose} checkedSubcategories={checkedSubcategories} handleSubcategoryChange={handleSubcategoryChange} checkedSizes={checkedSizes} handleSizeChange={handleSizeChange} handleApplyFilters={handleApplyFilters} handleResetFilters={handleResetFilters} price={price} setPrice={handlePriceSlider} sortBy={sortBy} setSortBy={handleSortBy} condition={condition} setCondition={handleCondition} />
+                <FilterMenu mode={mode} category={category} closeFilterMenu={handleDrawerClose} checkedSizes={checkedSizes} handleSizeChange={handleSizeChange} handleApplyFilters={handleApplyFilters} handleResetFilters={handleResetFilters} price={price} setPrice={handlePriceSlider} sortBy={sortBy} setSortBy={handleSortBy} condition={condition} setCondition={handleCondition} checkedColors={checkedColors} handleColorChange={handleColorChange} />
             </Drawer>
 
+            <SellButton />
+
             {/* This section represents the actual products */}
-            <Box sx={{ padding: '30px' }}>
+            <Box sx={{ padding: '30px', backgroundColor: "background.default" }}>
                 {isEmpty && <NoProducts />}
                 {!isEmpty && <ProductList products={products} mode={mode}/>}
                 
+            </Box>
             </Box>
         </ThemeProvider>
     )

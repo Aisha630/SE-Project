@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { Box, Button, Container, ThemeProvider, Typography } from "@mui/material";
-import theme from "../themes/authThemes.js";
+import theme from "../themes/homeTheme.js";
 import AdDetails from "../components/adDetails.jsx";
 import CategorySelection from "../components/categorySelection.jsx";
 import Specifications from "../components/specifications.jsx";
@@ -225,10 +225,10 @@ const EditAd = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box style={{ display: "flex", alignItems: "flex-start", justifyContent: "flex-start" }}>
-        <Container component="main" sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: "auto", py: 4, backgroundColor: theme.palette.secondary.main }}>
+      <Box sx={{ display: "flex", alignItems: "flex-start", justifyContent: "flex-start", backgroundColor: theme.palette.secondary.main  }}>
+        <Container component="main" sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: "auto", py: 4, backgroundColor: theme.palette.secondary.main, p:5 }}>
           <BackHanger style={{ margin: "10px" , alignSelf: "flex-start"}} onClick={navigateToProfile} />
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ width: "100%", maxWidth: 600, bgcolor: "background.paper", borderRadius: 2, boxShadow: 1, p: 3 }}>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ width: "100%", maxWidth: 700, bgcolor: "background.default", borderRadius: 2, boxShadow: 1, p: 5 }}>
             <Typography variant="h4" align="center" gutterBottom sx={{ mb: 4 }}>
               Edit Your Ad
             </Typography>

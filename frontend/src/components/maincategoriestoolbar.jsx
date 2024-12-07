@@ -1,11 +1,7 @@
 import React from 'react';
-import { Button, AppBar, Toolbar, Box, Typography } from '@mui/material';
+import { AppBar, Toolbar, Box, Button } from '@mui/material';
 
-const MainCategoryToolbar = ({ setCategory, category, navItems=['Clothing', 'Technology', 'Miscellaneous'], styles }) => {
-
-    const handleMainCategory = (selectedCategory) => {
-        setCategory(selectedCategory);
-    };
+const MainCategoryToolbar = ({ setCategory, category, navItems=['Technology', 'Clothing', 'Miscellaneous'] }) => {
 
     return (
         <AppBar 
@@ -13,39 +9,47 @@ const MainCategoryToolbar = ({ setCategory, category, navItems=['Clothing', 'Tec
             position="static"
             color="default"
             sx={{
-                backgroundColor: '#e0e0e0',
+                backgroundColor: 'transparent',
                 boxShadow: 'none',
-                borderBottom: '1px solid #e0e0e0',
-                ...styles
+                overflow: 'hidden'
             }}
         >
             <Toolbar
                 sx={{
                     justifyContent: 'center',
-                    width: '80%',
-                    margin: '0 auto',
+                    paddingTop: '7rem'
                 }}
             >
-                <Box
-                    sx={{
+                {/* Outer Box to position the underline */}
+                <Box sx={{
+                    borderBottom: '1px solid', 
+                }}>
+                    {/* Inner Box to horizontally align category Buttons */}
+                    <Box sx={{
                         display: 'flex',
-                        justifyContent: 'space-between',
-                        width: '80%',
-                        flexWrap: 'wrap',
-                    }}
-                >
-                    {navItems.map((item) => (
-                        <Button
-                            key={item}
-                            onClick={() => handleMainCategory(item)}
-                            sx={{
-                                color: category === item ? 'green' : 'black',
-                                fontSize: '1.2rem',
-                            }}
-                        >
-                            <Typography variant="body1">{item}</Typography>
-                        </Button>
-                    ))}
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}>
+                        {navItems.map((item, index) => (
+                            <Button
+                                key={index}
+                                onClick={() => setCategory(item)}
+                                sx={{
+                                    color: item === category ? '#58a75b' : 'black',
+                                    mx: 0.5, 
+                                    padding: '6px 16px',
+                                    fontSize: '1rem', 
+                                    fontWeight: 'regular',
+                                    '&:hover': {
+                                        backgroundColor: 'transparent',
+                                        color: '#58a75b',
+                                    },
+                                }}
+                            >
+                                {item}
+                            </Button>
+                        ))}
+                    </Box>
                 </Box>
             </Toolbar>
         </AppBar>

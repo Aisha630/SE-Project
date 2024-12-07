@@ -134,10 +134,10 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
 
 
     return (
-        <Grid container spacing={1} sx={{ backgroundColor: 'white', p: 7, m: 2, maxWidth: "100%", }}>
+        <Grid container spacing={1} sx={{ backgroundColor: 'background.default', p: 7, m: 2, maxWidth: "100%", }}>
             {products.map((product) => (
                 <Grid item xs={12} sm={12} md={8} lg={6} key={product._id} sx={{ display: 'flex', justifyContent: 'center', }}>
-                    <Card sx={{ display: 'flex', width: '90%', m: 2, borderRadius: 2, boxShadow: 3, backgroundColor: '#e0e0e0', mb: 5, maxWidth: "100%", }}> {/*could also change to #f5f5f5 */}
+                    <Card sx={{ display: 'flex', width: '90%', m: 2, borderRadius: 2, boxShadow: 3, backgroundColor: 'background.default', mb: 5, maxWidth: "100%", }}> {/*could also change to #f5f5f5 */}
 
                         <CardMedia
                             component="img"
@@ -199,11 +199,11 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
                                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                                     {product.__t === 'DonationProduct' && !product.isHold &&
                                         <Button variant="contained" onClick={() => handleViewDonationRequests({ product })} size={sm ? "small" : "medium"} sx={{
-                                            backgroundColor: '#517652',
+                                            backgroundColor: 'secondary.dark',
 
                                             color: 'white',
                                             '&:hover': {
-                                                backgroundColor: '#C7E3C8',
+                                                backgroundColor: 'secondary.main',
                                                 color: 'white'
                                             }
                                         }}>
@@ -211,21 +211,21 @@ const UserProducts = ({ products, handleDeleteItem, selectedTab, handleReopenIte
                                         </Button>}
 
                                     {!product.isHold && <Button onClick={() => handleEditItem(product._id)} variant="contained" size={lg ? "large" : "small"} sx={{
-                                        backgroundColor: '#f97171',
+                                        backgroundColor: 'secondary.dark',
                                         marginTop: 1,
                                         color: 'white',
                                         '&:hover': {
-                                            backgroundColor: '#FEABAB',
+                                            backgroundColor: 'secondary.main',
                                             color: 'white'
                                         }
                                     }}>
                                         Edit Item
                                     </Button>}
                                     {product.isHold && <Button onClick={() => {handleReopen({ product }); setsavedProduct(product)}} variant="contained" size={lg ? "large" : "small"} sx={{
-                                        backgroundColor: '#517652',
+                                        backgroundColor: 'secondary.dark',
                                         color: 'white',
                                         '&:hover': {
-                                            backgroundColor: '#C7E3C8',
+                                            backgroundColor: 'secodary.main',
                                             color: 'white'
                                         }
                                     }}>

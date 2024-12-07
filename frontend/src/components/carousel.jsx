@@ -15,10 +15,10 @@ import 'swiper/swiper-bundle.css';
 function ImageCard({ imageUrl, style }) {
 
   return (
-    <Card sx={{ ...style, borderRadius: '16px', overflow: 'hidden', boxShadow: 3, }}>
+    <Card sx={{ ...style, borderRadius: '16px', overflow: "hidden", boxShadow: 3, }}>
       <CardMedia
         component="img"
-        height="auto"
+        // height="auto"
         image={imageUrl}
         alt="New item"
         sx={{
@@ -33,31 +33,24 @@ function ImageCard({ imageUrl, style }) {
 }
 
 function OverlayImageCards({ bottomCardProps, topCardProps, link }) {
-
   return (
-    <Box sx={{ position: 'relative', width: 380, height: 490, margin: 0, p: 0 }}>
-      <ImageCard {...bottomCardProps} style={{
-        mt: 5, width: 'calc(100% - 100px)',
-        height: 'calc(100% - 100px)', opacity: 0.7, ml: 0, p: 0, mr: 0
-      }} />
-      <Link to={link}>
+    <Box sx={{ position: "relative", width: "97%", height: "97%", margin: 0, p: 0, mb: 8 }}>
+      <ImageCard {...bottomCardProps} style={{ width: "calc(100%)", height: "calc(100%)", mt: 5, ml: 1, }} />
+      <Link to={link} style={{ position: "absolute", bottom: 20, right: -5 }}>
         <ImageCard
           {...topCardProps}
           style={{
-            position: 'absolute',
-            top: -20,
-            left: 20,
-            width: 'calc(100% - 100px)',
-            height: 'calc(100% - 100px)',
+            width: "calc(100% - 20px)",
+            height: "calc(100% - 20px)",
             '&:hover': { filter: 'brightness(0.9)' },
             p: 0, m: 0
-
           }}
         />
       </Link>
     </Box>
   );
 }
+
 
 function CarouselComponent() {
   const token = useSelector((state) => state.auth.token);
@@ -88,19 +81,23 @@ function CarouselComponent() {
 
   return (
     <Swiper
-      modules={[Navigation, Pagination, Autoplay, A11y]}
-      spaceBetween={10}
+      modules={[Navigation,Pagination, Autoplay, A11y]}
+      spaceBetween={70}
       slidesPerView={md ? 3 : sm ? 2 : 1}
       pagination={{ clickable: true, dynamicBullets: true }}
+      // navigation={true}
       autoplay={{
-        delay: 1500,
+        delay: 2500,
         disableOnInteraction: false,
       }}
-      sx={{ m: 0, p: 0 }}>
+      sx={{ m: 5, p: 5,}}         
+      
+      >
+
       {products.map((product, index) => (
-        <SwiperSlide key={index} sx={{ m: 0, p: 0 }}>
+        <SwiperSlide key={index} >
           <OverlayImageCards
-            bottomCardProps={{ imageUrl: index % 2 === 0 ? "/green.png" : "/pink.png" }}
+            bottomCardProps={{ imageUrl: "/cardBack.svg" }}
             topCardProps={{ imageUrl: product.image }}
             link={`/shop/${product.id}`}
           />

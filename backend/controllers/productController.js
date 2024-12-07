@@ -253,11 +253,11 @@ export async function filterProducts(req, res) {
   }
 
   if (sizes && sizes.length > 0 && category === "Clothing") {
-    query.size = { $in: Array.isArray(sizes) ? sizes : [sizes] };
+    query.size = { $in: Array.isArray(sizes) ? sizes : sizes.split(",") };
   }
 
   if (colors && colors.length > 0 && category === "Clothing") {
-    query.color = { $in: Array.isArray(colors) ? colors : [colors] };
+    query.color = { $in: Array.isArray(colors) ? colors : colors.split(",") };
   }
 
   if (productType !== "donation") {

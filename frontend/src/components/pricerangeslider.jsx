@@ -7,7 +7,7 @@ const PriceRangeSlider = ({mode, value, handleChange, valuetext}) => {
     
 
   return (
-    <Box sx={{color:'inherit', paddingLeft:'20px'}}>
+    <Box sx={{color:'inherit', paddingLeft: 2}}>
         <Typography id="range-slider" gutterBottom textAlign={'left'}>
             {mode==='auction'? 'Max Bid' : 'Price Range'}
         </Typography>
@@ -20,8 +20,8 @@ const PriceRangeSlider = ({mode, value, handleChange, valuetext}) => {
             width="100%"
             step={10}
             min={0}
-            max={200000}
-            sx={{color:'inherit'}}
+            max={15000}
+            sx={{color:'inherit', marginLeft:0.5}}
             valueLabelDisplay="off"
         />
         <Box sx={{display:'flex', justifyContent:'space-between'}}>

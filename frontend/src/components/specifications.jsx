@@ -19,7 +19,7 @@ const Specifications = ({ adData, handleInputChange, sizes, colors }) => (
     </Typography>
     <Box
       sx={{
-        bgcolor: "secondary.main",
+        backgroundColor: "#acc7b8",
         p: 2,
         borderRadius: 2,
         mb: 3,

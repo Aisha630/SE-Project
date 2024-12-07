@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const DonationRequestsOverlay = ({ open, handleClose, product, handleDonate }) => {
 
@@ -77,7 +78,8 @@ const DonationRequestsOverlay = ({ open, handleClose, product, handleDonate }) =
             left: 10,
             top: 10
           }}>
-            <img src="/backIcon.png" alt="Back" style={{ width: 45, height: 35 }} />
+            <ArrowBackIcon style={{ width: 45, height: 35 }} />
+            {/* <img src="/backIcon.png" alt="Back" style={{ width: 45, height: 35 }} /> */}
           </IconButton>
           <Typography variant="h5" align="left" gutterBottom sx={{ marginLeft: 7, fontWeight: 600 }}>
             Requests List

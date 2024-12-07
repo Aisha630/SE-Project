@@ -5,6 +5,7 @@ import ClearAllIcon from '@mui/icons-material/ClearAll';
 import { useMediaQuery } from '@mui/material';
 import theme from '../themes/homeTheme';
 import { useNotif } from '../context/notifContext';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
 
@@ -24,10 +25,11 @@ const NotificationOverlayCard = ({ notifVisibility, notifVisibilityToggle, delet
             <Backdrop open={isOpen} onClick={() => { notifVisibilityToggle(); handleClose() }} style={{ zIndex: 10, color: '#fff' }}>
                 <Fade in={notifVisibility}>
                     <Grid item xs={11} sm={11} md={10} lg={5}>
-                        <Paper style={{ position: 'relative', borderRadius: 10, padding: md ? 40 : 20, overflow: 'auto', maxHeight: '60vh', }} onClick={e => e.stopPropagation()} >
+                        <Paper style={{ position: 'relative', borderRadius: 10, padding: md ? 40 : 20, overflow: 'auto', maxHeight: '60vh', }} sx={{backgroundColor: "background.default"}} onClick={e => e.stopPropagation()} >
                             <Box display="flex" justifyContent="flex-start" alignItems="center">
                                 <IconButton onClick={() => { notifVisibilityToggle(); handleClose() }} sx={{ margin: "1px", position: 'relative', padding: 0 }}>
-                                    <img src="/backIcon.png" alt="Back" style={{ width: 45, height: 35 }} />
+                                    <ArrowBackIcon style={{ width: 45, height: 35 }} />
+
                                 </IconButton>
                                 <Typography variant="subtitle1" gutterBottom sx={{ textAlign: "left", fontWeight: 600, m: 1 }}>Continue Shopping </Typography>
                                 <Box flexGrow={1}></Box>

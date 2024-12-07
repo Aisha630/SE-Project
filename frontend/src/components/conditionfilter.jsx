@@ -3,7 +3,7 @@ import React from 'react'
 
 const ConditionFilter = ({condition, handleCondition}) => {
     return (
-        <FormControl sx={{color:'inherit', paddingTop:'20px'}}>
+        <FormControl sx={{color:'inherit', paddingTop:'20px', paddingLeft:2}}>
             <Typography variant="subtitle1" gutterBottom textAlign={'left'} sx={{color:'inherit'}}>
                 Condition
             </Typography>

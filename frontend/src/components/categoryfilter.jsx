@@ -7,7 +7,7 @@ const CategoryFilter = ({category, checkedSubcategories, handleChange }) => {
   const clothingSubcategories = categories[category];
 
   return (
-    <FormControl sx={{ color: 'inherit' }}>
+    <FormControl sx={{ color: 'inherit', paddingLeft:10 }}>
       <Typography variant="subtitle1" gutterBottom textAlign={'left'} sx={{ color: 'inherit' }}>
         Categories
       </Typography>

@@ -1,23 +1,28 @@
-import React from 'react';
-import { Box, Typography, Grid, ThemeProvider } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Typography, Grid, ThemeProvider, Card, CardContent } from '@mui/material';
 import CarouselComponent from '../components/carousel.jsx';
 import theme from '../themes/homeTheme.js';
 import Nav from '../components/nav.jsx';
-import SidePanel from '../components/sidePanel.jsx';
 import { useMediaQuery } from '@mui/material';
-import MyDrawer from '../components/drawer.jsx';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import SellButton from '../components/sellButton.jsx';
+
+function ColorText({ text, color, fontWeight }) {
+	return (
+		<span style={{ color: color, fontWeight: fontWeight }}>{text}</span>
+	)
+}
 
 function Home() {
 	const token = useSelector((state) => state.auth.token);
 	const username = useSelector((state) => state.auth.user);
 	const navigate = useNavigate();
-	const md = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 	const lg = useMediaQuery(theme.breakpoints.between('md', 'xl'));
-	const lgd = useMediaQuery(theme.breakpoints.down('lg'));
-	const c = useMediaQuery(theme.breakpoints.down("950")); // Custom breakpoint for the drawer in navbar
+	const [carouselLoaded, setCarouselLoaded] = useState(false);
 
 	{/* This useEffect hook is used to check if the user is logged in or not. If the user is not logged in, the user is redirected to the login page. */ }
 	useEffect(() => {
@@ -38,55 +43,117 @@ function Home() {
 			.catch((error) => { console.log(error) });
 	}, [token, username, navigate])
 
+	function handleCarouselLoad() {
+		console.log(carouselLoaded);
+		setCarouselLoaded(true);
+	}
+
+	useEffect(() => handleCarouselLoad());
+
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			AOS.init({
+				duration: 1200,
+				mirror: false,
+			});
+			AOS.refresh();
+		}, 1000);
+
+		return () => clearTimeout(timer);
+	}, [carouselLoaded]);
+
 	return (
 		<ThemeProvider theme={theme}>
-
+			<Nav Search={Box} position='relative' color="secondary.dark" />
+			<SellButton />
 			{/* The following Box is the main container for the Home page */}
-			<Box display="flex" width="100%" height="100vh" flexDirection="column" alignItems="stretch" alignContent="center" sx={{ backgroundColor: "#ffffff" }}>
+			<Box style={{
+				minHeight: '100vh',
+				backgroundImage: "url('homebg.svg')",
+				backgroundSize: "cover",
+				maxWidth: "100%",
+				maxHeight: "100%",
+				backgroundRepeat: 'no-repeat',
+				backgroundAttachment: "scroll",
+			}}>
+				{/* Text and carousel */}
+				<Box sx={{ maxWidth: "100%", textAlign: 'center' }}>
 
-				{/* The following Box is for the navigation bar and renders navbar according to screen size */}
-				{
-					lgd || c ? <Box>
-						<Nav Drawer={MyDrawer} Search={Box} />
-					</Box> : <Box>
-						<Nav Drawer={Box} Search={Box} />
-					</Box>
-				}
+					<Typography variant="h4" component="h1" sx={{ color: 'black', fontWeight: 'gray', p: 2 }}>
+						SECOND TIME AROUND
+					</Typography>
 
-				{/* This is grid is for the main content of the Home page */}
-				<Grid container spacing={1} sx={{ padding: 1, maxWidth: "100%", boxSizing: "border-box" }}>
+					<Typography variant="h5" component="h2" sx={{ color: '#345644', fontWeight: 'medium', mt: -1 }}>
+						New in Store
+					</Typography>
+				</Box>
 
-					{/* The following Grid item is for the side panel and renders the side panel according to screen size */}
-					{lgd ? <></> :
-						<Grid item xs={1} sm={1} md={2} lg={2} sx={{ backgroundColor: "#e0e0e0", alignItems: "stretch", height: "100vh" }}>
-							{
-								lgd ? <></> : <>
-									<Box sx={{ width: "90%", mr: { xs: '3px', sm: "5px", md: "8px" }, minWidth: { xs: '100px', sm: '120px', md: '150px' } }}>
-										<SidePanel ListStyles={{ ml: { xs: '1px', sm: "3px", md: "5px" }, }} ListItemStyles={{ fontWeight: "bold", mt: "5px" }} ListButtonStyles={{ margin: "8px" }} pageon={"Home"} />
-									</Box>
-								</>
-							}
-						</Grid>
-					}
-
-					{/* The following Grid item is for the carousel and heading */}
-					<Grid item xs={12} sm={12} md={12} lg={10} sx={{ backgroundColor: "#ffffff", maxWidth: "100%", display: "flex", flexDirection: "column", boxSizing: "border-box", mx: "auto" }}>
-
-						<Typography variant={lg ? "h4" : md ? "h5" : "h6"} noWrap sx={{ lineHeight: '1.25', textAlign: 'left', ml: lg ? 10 : "30px", mt: 5, }}>
-							<span style={{ color: '#E57373', fontWeight: 'bold' }}>NEW</span><br />
-							<span style={{ display: 'block' }}>
-								<span style={{ color: '#58a75b', fontSize: "20px" }}>in </span>
-								<span style={{ color: '#58a75b' }}>Store</span>
-							</span>
-						</Typography>
-
-						{/* The following Box is for the carousel */}
-						<Box sx={{ width: md ? "100%" : "90%", mb: 0, paddingBottom: 0, ml: lg ? 10 : 5, mr: "auto", maxWidth: "100%", boxSizing: "border-box", display: "flex", justifyContent: "center" }}>
-							<CarouselComponent />
+				<Grid container spacing={1} sx={{ minHeight: '60vh' }}>
+					<Grid item xs={12} sm={12} md={12} lg={12} sx={{ display: "flex", justifyContent: "center", alignItems: "center", pt: 5 }}>
+						<Box sx={{ maxWidth: "70%" }}>
+							<CarouselComponent onLoad={handleCarouselLoad} />
 						</Box>
 					</Grid>
 				</Grid>
+
+				{/* Text about site and image */}
+				{carouselLoaded &&
+					<Grid container spacing={1} data-aos="fade-up" sx={{ mt: 10, mb: 2, display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+						{/* The Flower thingy image*/}
+						<Grid item xs={12} sm={6} md={6} lg={5} sx={{ mb: 0 }} >
+							<img src={"/hp1.svg"} alt="Description" style={{ maxWidth: "70%", maxHeight: '100%' }} />
+						</Grid>
+						<Grid item xs={12} sm={6} md={6} lg={5} sx={{ m: 0 }}>
+							<Typography variant={lg ? "h4" : "h5"} sx={{ lineHeight: '1.5', textAlign: 'left', m: 5 }}>
+								Join our marketplace where sustainability matters – {' '}
+								<ColorText text={"because we care "} fontWeight={650} color={"#66C659"} />...
+								do you?
+							</Typography>
+						</Grid>
+					</Grid>
+				}
+				{carouselLoaded &&
+					<Grid container spacing={1} data-aos="fade-up" sx={{ mt: 2, mb: 10, display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+						{/* The OTHER Flower thingy image*/}
+						<Grid item xs={12} sm={6} md={6} lg={5} sx={{ m: 0 }}>
+							<Typography variant={lg ? "h4" : "h5"} sx={{ lineHeight: '1.5', textAlign: 'right', m: 5 }}>
+
+								Innovative {' '}
+								<ColorText text={"student-built "} fontWeight={650} color={"#66C659"} /> platform for conscious consumption, connecting sellers and buyers who {' '}
+								<ColorText text={"care about positive impact."} fontWeight={650} color={"#66C659"} />
+							</Typography>
+						</Grid>
+						<Grid item xs={12} sm={6} md={6} lg={5} sx={{ mb: 0 }} >
+							<img src={"/hp2.svg"} alt="Description" style={{ maxWidth: "70%", maxHeight: '100%' }} />
+						</Grid>
+					</Grid>
+				}
+
+				{/* Cards */}
+				{/* Card 1 */}
+				<Grid container spacing={1} data-aos="fade-up" sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", alignContent: "center", mt: 5 }}>
+					<Grid item xs={12} sm={6} md={6} lg={5} sx={{ justifyContent: "center", display: "flex", flexDirection: "row", alignItems: "center" }}>
+						<Card sx={{ backgroundColor: "#6A9B81", borderRadius: "16px", maxWidth: "80%", p: 4 }}>
+							<CardContent sx={{}}>
+								<Typography variant={lg ? "h4" : "h5"} sx={{ textAlign: 'center', fontWeight: 700, color: "white", lineHeight: "1.5", m: 2 }}>Buy Cheap</Typography>
+								<Typography variant={lg ? "h4" : "h5"} sx={{ fontWeight: 300, textAlign: 'center', lineHeight: "1.5", color: "white", p: 2 }}>Browse our items for <strong>sale</strong>, <strong>bid in an auction</strong> , or <strong>request a donation</strong></Typography>
+							</CardContent>
+						</Card>
+					</Grid>
+
+					{/* Card 2 and above text */}
+					<Grid item xs={12} sm={6} md={6} lg={5} data-aos="fade-up" sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", alignContent: "center", pb: 20 }}>
+						<Card sx={{ backgroundColor: "#6A9B81", borderRadius: "16px", maxWidth: "80%", p: 4 }}>
+							<CardContent>
+								<Typography variant={lg ? "h4" : "h5"} sx={{ textAlign: 'center', fontWeight: 700, color: "white", lineHeight: "1.5", m: 2 }}>Maximize profits</Typography>
+								<Typography variant={lg ? "h4" : "h5"} sx={{ fontWeight: 300, textAlign: 'center', lineHeight: "1.5", color: "white", p: 2 }}>Put up an ad to <strong>sell</strong>, <strong>auction</strong>, or even <strong>donate</strong> an item to a fellow LUMS student</Typography>
+							</CardContent>
+						</Card>
+					</Grid>
+				</Grid>
 			</Box>
+
+
 		</ThemeProvider >
 	);
 }

@@ -7,9 +7,10 @@ import { Box, Button, TextField, ThemeProvider, IconButton, InputAdornment, Link
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import theme from '../themes/authThemes.js';
 import '../css/login.css';
-import TypingEffect from '../components/typing.jsx';
+// import TypingEffect from '../components/typing.jsx';
 import { usePasswordValidation } from '../hooks/usePasswordValidation.js';
-
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const Login = () => {
 
@@ -24,6 +25,17 @@ const Login = () => {
 	const passwordGuidelines = usePasswordValidation(resetCredentials.newPassword);
 	const md = useMediaQuery(theme.breakpoints.down('md'));
 	const allTrue = obj => Object.values(obj).every(value => value);
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			AOS.init({
+				duration: 1200,
+				mirror: false,
+			});
+			AOS.refresh();
+		}, 1000);
+
+		return () => clearTimeout(timer);
+	}, []);
 
 	useEffect(() => {
 		sessionStorage.removeItem('persist:root')
@@ -46,7 +58,7 @@ const Login = () => {
 				).then(res => { return res.json() }).then(data => {
 					if (data.error) { setLoading(false); toast.error(data.error); setReset(false); setResetEmail(false); return; }
 					setReset(true); setResetEmail(false); toast.success(data.message); setLoading(false);
-				}).catch(err => { console.error(err); setLoading(false); }).finally(() => {setLoading(false); });
+				}).catch(err => { console.error(err); setLoading(false); }).finally(() => { setLoading(false); });
 			}
 			else if (reset) {
 				if (allTrue(passwordGuidelines)) {
@@ -59,10 +71,10 @@ const Login = () => {
 
 					}).then(res => { return res.json() }).then(data => {
 						if (data.error) { toast.error(data.error); setLoading(false); return; }
-						setReset(false); toast.success(data.message);setLoading(false);
-					}).catch(err => { console.error(err);setLoading(false);  });
+						setReset(false); toast.success(data.message); setLoading(false);
+					}).catch(err => { console.error(err); setLoading(false); });
 				}
-				else{
+				else {
 					toast.error("Please fulfill all password guidelines")
 				}
 			}
@@ -78,33 +90,35 @@ const Login = () => {
 
 	return (
 		<ThemeProvider theme={theme}>
-			<div style={{ // Page background
+			<Grid style={{
 				minHeight: '100vh',
-				width: '100vw',
-				backgroundImage: "url('Group 6.svg')",
+				width: '100%',
+				backgroundImage: "url('login.svg')",
 				backgroundSize: "cover",
 				backgroundPosition: "center",
-				backgroundAttachment: "fixed",
-				overflowY: 'auto',
+				maxWidth: "100%",
 			}}>
 				<Box sx={{ // filter on background to make it less bright
-					display: 'flex',
-					flexDirection: 'row',
-					justifyContent: 'center',
-					alignItems: 'center',
 					minHeight: '100vh',
 					width: '100%',
 					backgroundColor: 'rgba(0, 0, 0, 0.2)',
 				}}>
-					<Grid container spacing={1} sx={{ position: 'relative', zIndex: 2, width: '100%', height: '100%', }}>
+					<Grid item xs={12} sx={{ display: "flex", flexDirection: "row", justifyContent: "flex-start", alignItems: "center", p: 3 }}>
+							<img src="/sta_logo2.png" alt="Logo" style={{ height: '40px' }} />
+					</Grid>
 
-						{!md ?
-							<Grid item md={6} lg={6} sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", }}>
-								<TypingEffect text="Rediscover Hidden Gems on Campus!" speed={80} />
-							</Grid> : <></>
-						}
+					{/* The following grid item is for the sign up form and corresponding text*/}
+					<Grid container spacing={1} data-aos="fade-up" sx={{ position: 'relative', zIndex: 2, width: '100%', height: '100%', display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", pt:10}}>
 
-						<Grid item xs={12} sm={11} md={5} lg={4} sx={{ display: "flex", justifyContent: "center", alignItems: "center", }}>
+						{/* Shop text */}
+						<Grid item sm={12} md={6} lg={5} sx={{ position: 'relative', zIndex: 2, width: '100%', height: '100%', display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start", textAlign: "left", marginRight: "8rem"}}>
+							<Typography variant="h3" sx={{ color: "white", maxWidth: "90%", mb: 2, fontWeight: 'medium' }}> Welcome to Second Time Around!</Typography>
+							<Typography color="white" variant="h6" sx={{ maxWidth: "70%" }} >One-stop shop for Pre-loved products to buy, sell, donate, or even auction...
+							</Typography>
+						</Grid> 
+
+
+						<Grid item xs={12} sm={11} md={5} lg={4} sx={{ display: "flex", justifyContent: "center", alignItems: "center", pb:5 }}>
 							{/* Login box background */}
 							<Box sx={{
 								backgroundColor: theme.palette.secondary.dark,
@@ -116,7 +130,7 @@ const Login = () => {
 									{resetEmail ? <></> :
 										<>
 											{/* Username/Reset token fields */}
-											<TextField margin="normal" required fullWidth id={reset ? "reset_token" : "username"} label={reset ? "Reset Token" : "Username"} name={reset ? "reset_token" : "username"} value={reset ? resetCredentials.reset_token : credentials.username} onChange={() => { reset ? handleChange(event, setResetCredentials) : handleChange(event, setCredentials) }} variant="filled" sx={{ input: "#084a08", }} />
+											<TextField margin="normal" required fullWidth id={reset ? "reset_token" : "username"} label={reset ? "Reset Token" : "Username"} name={reset ? "reset_token" : "username"} value={reset ? resetCredentials.reset_token : credentials.username} onChange={() => { reset ? handleChange(event, setResetCredentials) : handleChange(event, setCredentials) }} variant="filled" sx={{ input: "#587E6A", }} />
 
 											{/* Password/New passwords fields */}
 											<TextField margin="normal" required fullWidth id={reset ? "newPassword" : "password"} label={reset ? "New Password" : "Password"} name={reset ? "newPassword" : "password"} type={showPassword ? 'text' : 'password'}
@@ -137,7 +151,14 @@ const Login = () => {
 											</FormGroup>}
 
 											{/* Login/Reset button */}
-											<Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, backgroundColor: "#4a914d", color: "black", '&:hover': { backgroundColor: "#3e7840" }, width: "50%" }}>
+											{!reset &&
+												<Box textAlign="left" sx={{ mt: 1 }}>
+													<Link href="#" variant="body2" sx={{ color: "#4a6a59", '&:hover': { color: "#4a6a59", textDecorationColor: "#4a6a59", textDecoration: 'underline' }, textDecorationColor: "black", textDecoration: 'none' }} onClick={() => { setResetEmail(!resetEmail) }}>
+														Forgot password?
+													</Link>
+												</Box>
+											}
+											<Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, backgroundColor: "#6A9B81", color: "black", '&:hover': { backgroundColor: "#587E6A" }, width: "50%" }}>
 												{reset ? "Reset Password" : "Log In"}
 											</Button>
 
@@ -145,7 +166,7 @@ const Login = () => {
 											{
 												(reset) &&
 												<Box textAlign="center" sx={{ mb: 1 }}>
-													<Link href="/login" variant="body2" sx={{ color: "black", '&:hover': { color: "#084a08", textDecorationColor: "#084a08", }, textDecorationColor: "black", }} onClick={() => { setReset(false); setResetCredentials(false) }}>
+													<Link href="/login" variant="body2" sx={{ color: "black", '&:hover': { color: "#4a6a59", textDecorationColor: "#4a6a59", }, textDecorationColor: "black", }} onClick={() => { setReset(false); setResetCredentials(false) }}>
 														Take me to login page
 													</Link>
 												</Box>
@@ -155,16 +176,15 @@ const Login = () => {
 											{/* Signup/Forgot password links */}
 											{!reset &&
 												<>
-													<Box textAlign="center" sx={{ mb: 1 }}>
-														<Link href="/signup" variant="body2" sx={{ color: "black", '&:hover': { color: "#084a08", textDecorationColor: "#084a08", }, textDecorationColor: "black", }}>
-															Not a member? Sign up now!
+													<Box textAlign="center" sx={{ mb: 1, }}>
+														<Typography variant='body2' component={'span'} >
+															Not a member? { }
+														</Typography>
+														<Link href="/signup" variant="body2" sx={{ color: "#4a6a59", '&:hover': { color: "#4a6a59", textDecorationColor: "#4a6a59", textDecoration: 'underline' }, textDecorationColor: "black", textDecoration: 'none' }}>
+															Sign up now!
 														</Link>
 													</Box>
-													<Box textAlign="center" sx={{ mb: 1 }}>
-														<Link href="#" variant="body2" sx={{ color: "black", '&:hover': { color: "#084a08", textDecorationColor: "#084a08", }, textDecorationColor: "black", }} onClick={() => { setResetEmail(!resetEmail) }}>
-															Forgot password? Reset here!
-														</Link>
-													</Box>
+
 												</>}
 										</>}
 
@@ -172,8 +192,8 @@ const Login = () => {
 									{resetEmail &&
 										<>
 											<TextField margin="normal" required fullWidth id="reset_email" label="LUMS Email" name="reset_email"
-												value={resetCredentials.reset_email} onChange={() => { handleChange(event, setResetCredentials) }} variant="filled" sx={{ input: "#084a08", }} />
-											<Button type="submit" variant="contained" disabled={loading} sx={{ mt: 3, mb: 2, backgroundColor: "#4a914d", color: "black", '&:hover': { backgroundColor: "#3e7840" }, width: "50%" }}>
+												value={resetCredentials.reset_email} onChange={() => { handleChange(event, setResetCredentials) }} variant="filled" sx={{ input: "#4a6a59", }} />
+											<Button type="submit" variant="contained" disabled={loading} sx={{ mt: 3, mb: 2, backgroundColor: "#6A9B81", color: "black", '&:hover': { backgroundColor: "#587E6A" }, width: "50%" }}>
 												{"Send reset email"}
 											</Button>
 											<br />
@@ -189,7 +209,7 @@ const Login = () => {
 						</Grid>
 					</Grid>
 				</Box>
-			</div>
+			</Grid>
 		</ThemeProvider>
 	);
 };

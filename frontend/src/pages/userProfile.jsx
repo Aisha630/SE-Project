@@ -6,7 +6,6 @@ import theme from '../themes/homeTheme';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import Nav from '../components/nav.jsx';
-import Drawer from '../components/drawer.jsx';
 import { useNavigate } from 'react-router-dom';
 import { profileStyles, profileAvatarStyles, graphStyles } from '../components/profilestyles.jsx';
 import MainCategoryToolbar from '../components/maincategoriestoolbar.jsx';
@@ -14,13 +13,14 @@ import UserProducts from '../components/userProducts.jsx';
 import { LineChart } from '@mui/x-charts/LineChart'
 import NoProducts from '../components/noProducts.jsx';
 import "../css/App.css";
+import SellButton from '../components/sellButton.jsx';
 
 
 
 
 const UserProfile = () => {
     // const [selectedTab, setSelectedTab] = useState('For Sale');
-    const [selectedTab, setSelectedTab] = useState('Auctioned');
+    const [selectedTab, setSelectedTab] = useState('For Sale');
     const [user, setUser] = useState({});
     const [products, setProducts] = useState([]);
     const navigate = useNavigate();
@@ -202,9 +202,9 @@ const UserProfile = () => {
 
     return (
         <ThemeProvider theme={theme}>
-            <Nav Drawer={Drawer} Search={Box} ShowLogo={false} pageon='' styles={{
-                // backgroundImage: "url('userprofilebg.svg')",
-            }} />
+            
+            <Nav Search={Box} position='relative' color="#6A9B81"/>
+            <SellButton />
             <Grid style={{
                 minHeight: '100vh',
                 width: '100%',
@@ -212,11 +212,9 @@ const UserProfile = () => {
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 maxWidth: "100%",
-                // position: "relative",
-                // backgroundAttachment: "scroll",
-
+                paddingTop: "2rem",
             }}>
-                <Typography variant="h4" sx={{ color: "white", textAlign: "left", paddingTop: 2, marginLeft: '2%' }}>Dashboard & Profile</Typography>
+                <Typography variant="h4" sx={{ color: "white", textAlign: "left", paddingTop: 2, marginLeft: '3%' }}>Dashboard & Profile</Typography>
                 <Grid container spacing={2} style={{ height: '30%', width: '100%', paddingTop: 5, position: "absolute", }}>
                     <Grid item xs={6} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                         <Card sx={graphStyles}>
@@ -240,7 +238,7 @@ const UserProfile = () => {
                                 {sumOfSales} PKR
                             </Typography>
 
-                            <Box sx={{ width: '100%', height: '110%', paddingTop: 2 }}>
+                            <Box sx={{ width: '100%', height: '115%', paddingTop: 2 }}>
 
                                 <LineChart
                                     xAxis={[{ data: xdata }]}
@@ -251,8 +249,7 @@ const UserProfile = () => {
                                         },
                                     ]}
                                     disableAxisListener={true}
-                                    
-                                    
+                                    sx={{margin:'0.20%'}}
                                 />
                             </Box>
 
@@ -273,10 +270,10 @@ const UserProfile = () => {
                                 <Typography variant='h6' sx={{ color: "black", textAlign: "center", }}> <strong>Rating: </strong></Typography>
                                 <Rating name="half-rating-read" value={rating} precision={0.2} readOnly size='large' sx={{
                                     '& .MuiRating-iconFilled': {
-                                        color: '#e87975',
+                                        color: 'secondary.dark',
                                     },
                                     '& .MuiRating-iconHover': {
-                                        color: '#e87975',
+                                        color: 'secondary.dark',
                                     },
                                 }} />
                             </Stack>
@@ -286,22 +283,22 @@ const UserProfile = () => {
                 </Grid>
 
                 <Box sx={{
-                    position: 'absolute', // Position the toolbar absolutely
-                    bottom: 200, // Align it to the bottom of the parent container
-                    // bottom: lg? 200: 450, // Align it to the bottom of the parent container
+                    position: 'absolute', 
+                    bottom: 190,
                     left: 0,
-                    width: '100%', // Span the full width of the container
-                    zIndex: 2, // Ensure it's above the other content
-                    paddingBottom: 5,
+                    width: '100%', 
+                    zIndex: 2,
+                    marginTop: '2rem',
                 }}>
-                    <MainCategoryToolbar setCategory={setSelectedTab} category={selectedTab} navItems={["Auctioned", "For Sale", "Donations"]} styles={{ backgroundColor: 'white' }} />
+                    <MainCategoryToolbar setCategory={setSelectedTab} category={selectedTab} navItems={["Auctioned", "For Sale", "Donations"]} />
 
                     {/* Product Grid */}
+                    <Box sx={{ bgcolor: 'background.default' }}> 
                     <Grid container spacing={0} sx={{
                         display: 'flex',
                         width: '100%',
                         position: 'absolute',
-                        backgroundColor: "white",
+                        
                     }}>
                         {currentProducts.length > 0 && <UserProducts products={currentProducts} handleDeleteItem={handleDeleteItem} selectedTab={selectedTab} handleReopenItem={handleReopenItem} handleDonationApproval={handleDonationApproval}/>}
                     </Grid>
@@ -310,9 +307,10 @@ const UserProfile = () => {
                         alignItems: 'center',
                         position: 'absolute',
                         width: '100%',
-                        bottom: 0,
-                        backgroundColor: "white"
+                        paddingTop: '3rem'
+                        
                     }} />}
+                    </Box>
                 </Box>
 
             </Grid>

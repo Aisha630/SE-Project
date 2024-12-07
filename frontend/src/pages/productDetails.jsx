@@ -10,8 +10,8 @@ import { useCart } from '../context/cartContext.jsx';
 import theme from '../themes/homeTheme.js';
 import "../css/image-gallery.css";
 import Recs from '../components/recs.jsx';
-import MyDrawer from '../components/drawer.jsx';
 import { useSocket } from '../context/socketContext.jsx';
+
 // This component is used to display the details of a product
 const DetailItem = ({ label, value, lg }) => (
 	<Grid container columnSpacing={2} alignItems="center">
@@ -43,24 +43,32 @@ const ProductDetails = () => {
 	const lg = useMediaQuery(theme.breakpoints.up('sm'));
 	const socket = useSocket();
 
-	socket.on("newBid", (args) => {
-		if(id === args.productID) {
+	socket?.on("newBid", (args) => {
+		if (id === args.productID) {
 			setCurrentBid(args.currentBid);
 		}
 	})
+	if (socket) {
+		socket.on("newBid", (args) => {
+			if (id === args.productID) {
+				setCurrentBid(args.currentBid);
+			}
+		})
+	}
+
 
 	const navigateBack = () => {
-        switch (product?.__t) {
-            case 'AuctionProduct':
-                navigate('/auction');
-                break;
-            case 'DonationProduct':
-                navigate('/donation');
-                break;
-            default:
-                navigate('/shop');
-        }
-    };
+		switch (product?.__t) {
+			case 'AuctionProduct':
+				navigate('/auction');
+				break;
+			case 'DonationProduct':
+				navigate('/donation');
+				break;
+			default:
+				navigate('/shop');
+		}
+	};
 
 	const productDetails = product ? [
 		{ label: 'Condition', value: product.condition },
@@ -112,7 +120,7 @@ const ProductDetails = () => {
 				thumbnail: `http://localhost:5003${imageUrl}`,
 			}));
 			setProduct({ ...data, images: formattedImages })
-			
+
 		}).catch(error => { console.log(error) })
 	}, [token, id, navigate, currentBid]);
 
@@ -222,104 +230,99 @@ const ProductDetails = () => {
 
 	return (
 		<ThemeProvider theme={theme}>
-			<Grid container spacing={0} sx={{ m: 0, p: 0, width: "100%" }}>
+			
+			<Grid container spacing={0} sx={{ m: 0, p: 0, width: "100%", backgroundColor: "background.default" }}>
 
-				<Nav Drawer={MyDrawer} Search={Box} pageon={""} />
+					<Nav Search={Box} position='relative' />
 
-				{/*Image gallery component*/}
-				<Grid item xs={12} sm={12} md={12} lg={6} >
-					<CustomImageGallery items={product ? product.images : []} sx={{ boxShadow: "none" }} onClick={navigateBack} />
-				</Grid>
+					{/*Image gallery component*/}
+					<Grid item xs={12} sm={12} md={12} lg={6} >
+						<CustomImageGallery items={product ? product.images : []} sx={{ boxShadow: "none" }} onClick={navigateBack} />
+					</Grid>
 
-				{/*Product details component*/}
-				<Grid item xs={12} sm={12} md={12} lg={6} sx={{ display: "flex", flexDirection: "row", alignItems: "stretch", m: 0, p: 0 }}>
-					<Paper sx={{ padding: 7, flex: 1, borderRadius: 0 }}>
+					{/*Product details component*/}
+					<Grid item xs={12} sm={12} md={12} lg={6} sx={{ display: "flex", flexDirection: "row", alignItems: "stretch", m: 0, p: 0 }}>
+						<Paper sx={{ padding: 7, flex: 1, borderRadius: 0, backgroundColor:'background.default' }}>
 
-						{/*Different product details*/}
-						<Typography variant="h5" color="black" textAlign="left" sx={{ fontWeight: 500, mb: 0, textTransform: 'capitalize' }}>
-							{product?.name}
-						</Typography>
-						{product?.__t === 'SaleProduct' && (
-							<Typography variant={lg ? "h6" : "subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 500, mb: 4 }}>
-								{product && `PKR ${product.price}`}
+							{/*Different product details*/}
+							<Typography variant="h5" color="black" textAlign="left" sx={{ fontWeight: 500, mb: 0, textTransform: 'capitalize' }}>
+								{product?.name}
 							</Typography>
-						)}
-						{productDetails.map((detail, index) => (
-							detail.value ? <DetailItem key={index} label={detail.label} value={detail.value} lg={lg} /> : <Box key={index}></Box>
-						))}
+							{product?.__t === 'SaleProduct' && (
+								<Typography variant={lg ? "h6" : "subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 500, mb: 4 }}>
+									{product && `PKR ${product.price}`}
+								</Typography>
+							)}
+							{productDetails.map((detail, index) => (
+								detail.value ? <DetailItem key={index} label={detail.label} value={detail.value} lg={lg} /> : <Box key={index}></Box>
+							))}
+							<DetailItem label="Seller" value={product?.seller} lg={lg} />
 
-						<DetailItem label="Seller" value={product?.seller} lg={lg} />
+							{/* Seller Rating */}
+							<Grid container columnSpacing={2} alignItems="center">
+								<Grid item xs={6}>
+									<Typography variant={lg ? "subtitle1" : "subtitle2"} gutterBottom textAlign="left" sx={{ color: "gray", mt: 1, mb: 1, fontWeight: 400 }} > Seller Rating: </Typography>
+								</Grid>
+								<Grid item xs={6} sx={{ textAlign: 'right', mt: 1, mb: 1 }}>
+									<Rating name="half-rating-read" value={rating} precision={0.25} size={lg ? 'large' : 'medium'} onChange={handleRatingChange} sx={{
+										'& .MuiRating-iconFilled': {
+											color: '#6A9B81',
+										},
+										'& .MuiRating-iconHover': {
+											color: '#6A9B81',
+										},
 
-						{/* Seller Rating */}
-						<Grid container columnSpacing={2} alignItems="center">
-							<Grid item xs={6}>
-								<Typography variant={lg ? "subtitle1" : "subtitle2"} gutterBottom textAlign="left" sx={{ color: "gray", mt: 1, mb: 1, fontWeight: 400 }} > Seller Rating: </Typography>
+									}} />
+								</Grid>
 							</Grid>
-							<Grid item xs={6} sx={{ textAlign: 'right', mt: 1, mb: 1 }}>
-								<Rating name="half-rating-read" value={rating} precision={0.25} size={lg ? 'large' : 'medium'} onChange={handleRatingChange} sx={{
-									'& .MuiRating-iconFilled': {
-										color: '#e87975',
-									},
-									'& .MuiRating-iconHover': {
-										color: '#e87975',
-									},
 
-								}} />
-							</Grid>
-						</Grid>
+							{/* Bid and Donation Request */}
+							{product?.__t === 'AuctionProduct' && (
+								<>
+									<DetailItem label={"Starting Bid"} value={`PKR ${product.startingBid}`} lg={lg} />
+									<DetailItem label={"Current Bid"} value={`PKR ${product.currentBid}`} lg={lg} />
+									<DetailItem label={"End Time"} value={new Date(product.endTime).toLocaleString()} lg={lg} />
+									<TextField
+										label="Your Bid"
+										type="number"
+										fullWidth
+										value={bid}
+										onChange={(e) => setBid(e.target.value)}
+										margin="normal"
+										theme={theme}
+									/>
+								</>
+							)}
+							{product?.__t === 'DonationProduct' && (
+								<>
+									<TextField
+										label="Donation Request Description"
+										multiline
+										rows={4}
+										fullWidth
+										value={requestDescription}
+										onChange={(e) => setRequestDescription(e.target.value)}
+										margin="normal"
+									/>
+								</>
+							)}
 
-						{/* Bid and Donation Request */}
-						{product?.__t === 'AuctionProduct' && (
-							<>
-								<Typography variant={"subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 300, mb: 2 }}>
-									Starting Bid: PKR {product.startingBid}
-								</Typography>
-								<Typography variant={"subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 300, mb: 2 }}>
-									Current Bid: PKR {product.currentBid}
-								</Typography>
-								<Typography variant={"subtitle1"} color="black" textAlign="left" sx={{ fontWeight: 300, mb: 2 }}>
-									End Time: {new Date(product.endTime).toLocaleString()}
-								</Typography>
-								<TextField
-									label="Your Bid"
-									type="number"
-									fullWidth
-									value={bid}
-									onChange={(e) => setBid(e.target.value)}
-									margin="normal"
-									theme={theme}
-								/>
-							</>
-						)}
-						{product?.__t === 'DonationProduct' && (
-							<>
-								<TextField
-									label="Donation Request Description"
-									multiline
-									rows={4}
-									fullWidth
-									value={requestDescription}
-									onChange={(e) => setRequestDescription(e.target.value)}
-									margin="normal"
-								/>
-							</>
-						)}
 
-						{/* Add to Cart/Place Bid/Request donation button */}
-						<SiteButton disabled={seller.username === user} text={buttonText} onClick={buttonAction} styles={{ width: '100%', mt: 3, mb: 3, fontSize: lg ? "1rem" : "0.8rem", padding: 1.5, }} />
+							{/* Add to Cart/Place Bid/Request donation button */}
+							<SiteButton disabled={seller.username === user} text={buttonText} onClick={buttonAction} styles={{ width: '100%', mt: 3, mb: 3, fontSize: lg ? "1rem" : "0.8rem", padding: 1.5, }} />
 
-						{/* Product Description */}
-						<Typography variant="h6" textAlign="left" sx={{ mt: 3, color: "gray" }}>
-							Description
-						</Typography>
-						<Typography variant={lg ? "subtitle1" : "subtitle2"} textAlign="left" sx={{ mt: 2, fontWeight: 400 }}>
-							{product?.description}
-						</Typography>
-					</Paper>
-				</Grid>
+							{/* Product Description */}
+							<Typography variant="h6" textAlign="left" sx={{ mt: 3, color: "gray" }}>
+								Description
+							</Typography>
+							<Typography variant={lg ? "subtitle1" : "subtitle2"} textAlign="left" sx={{ mt: 2, fontWeight: 400 }}>
+								{product?.description}
+							</Typography>
+						</Paper>
+					</Grid>
 
 				{/* Recommendations */}
-				<Grid container spacing={0} sx={{ padding: 3.5, backgroundColor: "#ffffff" }}>
+				<Grid container spacing={0} sx={{ padding: 3.5, backgroundColor: "background.default" }}>
 					<Grid item xs={12} sm={12} md={12} lg={12} sx={{ maxWidth: "100%" }}>
 						<Divider sx={{ width: "100%", mt: 5, mb: 5 }} />
 						<Typography variant="h5" textAlign="left" sx={{ mb: 3, color: "#58a45b", ml: 5, fontWeight: 450 }}>

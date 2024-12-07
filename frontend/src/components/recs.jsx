@@ -61,7 +61,7 @@ const Recs = ({productType}) => {
         slidesToShow: slides,
         slidesToScroll: 1,
         autoplay: emptySlidesCount === 0 ? true : false,
-        autoplaySpeed: 1500,
+        autoplaySpeed: 2000,
         swipe: true,
         adaptiveHeight: true,
         lazyLoad: true,

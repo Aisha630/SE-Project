@@ -24,7 +24,7 @@ import { useEffect } from 'react';
 const theme = createTheme({
   palette: {
     background: {
-      default: 'rgb(243, 244, 246)'
+      default: 'rgb(243, 244, 246)',
     },
     primary: {
       main: 'rgb(243, 244, 246)',
