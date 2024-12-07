@@ -24,49 +24,31 @@
 ### Signup Page
 <img width="1440" alt="signup" src="https://github.com/user-attachments/assets/a31de95b-fddd-4e96-8dc1-1846790bbf8c">
 
-**Secure Registration**  
-Register quickly with built-in password validation, email notifications for OTPs and a forget password feature.  
-
 ---
 
 ### Landing Page
 <img width="1440" alt="landing page" src="https://github.com/user-attachments/assets/848cbc44-bb8e-485e-b764-3370f1e80d3c">
 
-**Welcome to Second Time Around**  
-One-stop shop for pre-loved products, offering users the ability to buy, sell, donate, or auction items on the same platform.  
-
 ---
 
-### Sale Page
+### Browse Listings
 <img width="1440" alt="sale page" src="https://github.com/user-attachments/assets/433983c3-9d9f-4d8a-8704-682424d38023">
 
-**Browse Listings**  
-Easily explore a wide array of categories like clothing, technology, and more, with advanced filters for price, size, colors and other preferences.  
-
 ---
 
-### Auction Page
+### Bidding in Action
 <img width="1440" alt="bidding" src="https://github.com/user-attachments/assets/d9202290-7816-4351-8f5c-b487d408e991">
-
-**Bidding in Action**  
-Participate in auctions for rare items, with live notifications on bid statuses.  
 
 ---
 
 ### Seller Dashboard
 <img width="1440" alt="seller dashboard" src="https://github.com/user-attachments/assets/9bf5d5b9-9bbd-4859-a3aa-872c83ace662">
 
-**Manage Sales and Listings**
-Track sales, manage and edit listings, and build your seller profile with ratings and insights.  
-
 ---
 
 ### Shopping Cart
 <img width="1440" alt="shopping cart" src="https://github.com/user-attachments/assets/50e3a22c-001e-4a5d-acfb-d46b5e8bd500">
 
-**Seamless Checkout**  
-A minimalistic cart for quick and secure item purchases.  
-
 ---
 
-Join us today to buy, sell, or donate with ease!
+Browse these pages and more at Second Time Around. Join us today to buy, sell, or donate with ease!
