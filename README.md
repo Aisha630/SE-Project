@@ -1,53 +1,72 @@
 # Second Time Around
 
-## Introduction
+**Deployed at:** [https://secondtimearound.xyz](https://secondtimearound.xyz)
 
-This project is a multi-vendor e-commerce platform designed to be minamalistic and LUMS-exclusive to seamlessly direct shopping and selling traffic from LUMS facebook pages to a dedicated space with the added functionality of donations and auctions.
+"Second Time Around" is a multi-vendor e-commerce platform designed to be minimalist and user-friendly. Originally built exclusively for the LUMS community, the platform aimed to redirect shopping and selling traffic from scattered Facebook pages to a dedicated space. With added features such as donations and auctions, the platform has now been made available to everyone, creating a broader marketplace for pre-loved items.
 
-## Getting Started
+---
 
-### Prerequisites
+## Features
 
-- [Node.js](https://nodejs.org/) (v14 or later)
-- [MongoDB](https://www.mongodb.com/) (v4 or later)
+1. **Multi-Vendor Platform**: Support for multiple sellers with personalized dashboards and profiles.
+2. **Dedicated Auction Functionality**: Unique auction system for bidding on high-value or rare items.
+3. **Donation Options**: Direct donation channels for users wanting to give items away.
+4. **Categorized Listings**: Clear product categorization for easy browsing.
+5. **Secure Signup/Login**: Registration with email validation features.
+6. **Shopping Cart and Checkout**: Streamlined cart interface for seamless transactions.
+7. **Analytics Dashboard**: Seller-specific dashboard with sales tracking and user ratings.
+8. **Real-time Notifications**: Real-time updates for bids, sales, and purchases using WebSocket technology.
 
-### Set-up Instructions
+---
 
-1. Clone the repository: `git clone https://github.com/Aisha630/SE-Project.git`
-2. Navigate to the `backend` directory
-3. Install packages using `npm i`
-4. Start the server by running `node app.js`
-5. Navigate to the `frontend` directory
-6. Install packages using `npm i`
-7. Run `npm start` to open the website on your browser.
+## Website Walkthrough
 
-### Description of Directories and Files
-#### Backend
-- `app.js` - The main entry point for the application for initializing express app, connecting to db, and starting the server.
-- `config.js` - Contains configuration settings like defining categories for products.
-- `env.js` - Manages environment variables loaded from .env files. It's used to securely store API keys, database URLs, email app password, and port number.
-- `models/` - Contains Joigoose/Mongoose models to define schemas for products, user, verification token etc.
-- `controllers/` - Houses controller files that contain logic to handle requests and responses. 
-- `routes/` - Defines the routes of out application.
-- `middleware/` - Contains middleware functions such as authentication and file upload middleware, that are run for every request to our application.
+### Signup Page
+<img width="1440" alt="signup" src="https://github.com/user-attachments/assets/a31de95b-fddd-4e96-8dc1-1846790bbf8c">
 
-#### Frontend
--  `index.js` - The main entry point of the application. This file renders the root component (App.js) to the DOM.
--  `App.js` - Acts as the root component from which all other page components are rendered.
--  `public/` - This directory contains static assets such as HTML files, images, and any other files that should be served directly by the web server. 
--  `src/` - The source directory where most of the application's code resides. It's the root for all the JavaScript and component files that make up the application.
--  `src/components/` - Contains reusable UI components. 
--  `src/pages/` - Stores the components that represent entire pages in the application. These components use many of the smaller components defined in src/components/
--  `src/context/` - Contains context definitions. Context provides a way to pass data through the component tree without having to pass props down manually at every level.
--  `src/themes/` - This folder contains theming information, such as color schemes, font settings, and any other design tokens that help maintain visual consistency across the app.
--  `src/css/` - Contains Cascading Style Sheets (CSS) files for styling the application. 
--  `src/hooks/` - Includes custom React hooks that encapsulate reusable logic.
--  `src/stores/` - Files for Redux store configuration for global state management.
+**Secure Registration**  
+Register quickly with built-in password validation, email notifications for OTPs and a forget password feature.  
 
-## Authors
+---
 
-- **Aysha**
-- **Bilal**
-- **Hadeed**
-- **Hafsa**
-- **Danish**
+### Landing Page
+<img width="1440" alt="landing page" src="https://github.com/user-attachments/assets/848cbc44-bb8e-485e-b764-3370f1e80d3c">
+
+**Welcome to Second Time Around**  
+One-stop shop for pre-loved products, offering users the ability to buy, sell, donate, or auction items on the same platform.  
+
+---
+
+### Sale Page
+<img width="1440" alt="sale page" src="https://github.com/user-attachments/assets/433983c3-9d9f-4d8a-8704-682424d38023">
+
+**Browse Listings**  
+Easily explore a wide array of categories like clothing, technology, and more, with advanced filters for price, size, colors and other preferences.  
+
+---
+
+### Auction Page
+<img width="1440" alt="bidding" src="https://github.com/user-attachments/assets/d9202290-7816-4351-8f5c-b487d408e991">
+
+**Bidding in Action**  
+Participate in auctions for rare items, with live notifications on bid statuses.  
+
+---
+
+### Seller Dashboard
+<img width="1440" alt="seller dashboard" src="https://github.com/user-attachments/assets/9bf5d5b9-9bbd-4859-a3aa-872c83ace662">
+
+**Manage Sales and Listings**
+Track sales, manage and edit listings, and build your seller profile with ratings and insights.  
+
+---
+
+### Shopping Cart
+<img width="1440" alt="shopping cart" src="https://github.com/user-attachments/assets/50e3a22c-001e-4a5d-acfb-d46b5e8bd500">
+
+**Seamless Checkout**  
+A minimalistic cart for quick and secure item purchases.  
+
+---
+
+Join us today to buy, sell, or donate with ease!
